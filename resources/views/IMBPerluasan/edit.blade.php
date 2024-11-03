@@ -7,8 +7,6 @@
 @section('content')
     <div class="py-12">
         <div style="width: 90%;margin:auto">
-
-
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5 rounded">
                 <div class="p-6 text-gray-900">
                     <h3 class="text-3xl font-bold">Ubah Data IMB Pecahan</h3>
@@ -18,7 +16,7 @@
                             IMB Induk Tidak Ditemukan Mohon Input Terlebih Dahulu
                         </div>
                     @endif
-                    <form id="mainForm" action="/IMBPerluasan/update/{{ $data->id }}" method="POST"
+                    <form id="mainForm" action="{{ route('IMBPerluasan.update', ['id' => $data->id]) }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
@@ -108,8 +106,10 @@
                                 <label for="desa_kelurahan" class="form-label">Desa / Kelurahan:</label>
                                 <select name="desa_kelurahan" id="desa_kelurahan"
                                     class="form-select select2 select2-kelurahan" required>
-                                    @foreach(DB::table('master_subdistrict')->where('district_code', $data->kecamatan_code)->get() as $kel)
-                                    <option value="{{ $kel->code }}" {{ $kel->code == $data->kelurahan_code ? 'selected' : '' }}>{{ $kel->name }}</option>
+                                    @foreach (DB::table('master_subdistrict')->where('district_code', $data->kecamatan_code)->get() as $kel)
+                                        <option value="{{ $kel->code }}"
+                                            {{ $kel->code == $data->kelurahan_code ? 'selected' : '' }}>
+                                            {{ $kel->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -122,19 +122,17 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="luas_bangunan_perluasan" class="form-label">Luas Bangunan Perluasan:</label>
-                                <input type="text" pattern="^\d+(\.\d+)?$" name="luas_bangunan_perluasan" class="form-control"
-                                    value="{{ $data->luas_bangunan_perluasan }}" id="luas_bangunan_perluasan">
+                                <input type="text" pattern="^\d+(\.\d+)?$" name="luas_bangunan_perluasan"
+                                    class="form-control" value="{{ $data->luas_bangunan_perluasan }}"
+                                    id="luas_bangunan_perluasan">
                             </div>
                         </div>
-
-
-
                         <div class="row mb-3">
-
                             <div class="col-md-6 ">
                                 <label class="form-label">Luas Bangunan Lama:</label>
-                                <input type="text" pattern="^\d+(\.\d+)?$" name="luas_bangunan_lama" class="form-control"
-                                value="{{ $data->luas_bangunan_lama }}" id="luas_bangunan_lama">
+                                <input type="text" pattern="^\d+(\.\d+)?$" name="luas_bangunan_lama"
+                                    class="form-control" value="{{ $data->luas_bangunan_lama }}"
+                                    id="luas_bangunan_lama">
                             </div>
                             <div class="col-md-6">
                                 <label for="blok" class="form-label">Blok:</label>
@@ -142,11 +140,7 @@
                                     value="{{ $data->blok }}">
                             </div>
                         </div>
-
-
-
                         <div class="row mb-3">
-
                             <div class="col-md-6">
                                 <label for="no_blok" class="form-label">No Blok:</label>
                                 <input type="text" name="no_blok" class="form-control" id="no_blok"
@@ -157,7 +151,6 @@
                                 <textarea name="keterangan" class="form-control" id="keterangan">{{ $data->keterangan }}</textarea>
                             </div>
                         </div>
-
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="lokasi_perumahan" class="form-label">Lokasi / Perumahan:</label>
@@ -178,19 +171,11 @@
     </div>
 @endsection
 
-
-
-
-
-
-
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- jQuery and Select2 JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
-
-
     <script>
         $('.select2').select2();
 
@@ -201,7 +186,7 @@
                 placeholder: 'Pilih Kecamatan',
                 minimumInputLength: 2,
                 ajax: {
-                    url: '/master/get-kecamatan', // URL to fetch kecamatan data
+                    url: "{{ route('master.kecamatan') }}", // URL to fetch kecamatan data
                     dataType: 'json',
                     delay: 250,
                     data: function(params) {
@@ -235,7 +220,7 @@
                     placeholder: 'Pilih Kelurahan',
                     minimumInputLength: 2,
                     ajax: {
-                        url: '/master/get-kelurahan', // URL to fetch kelurahan data
+                        url: "{{ route('master.kelurahan') }}", // URL to fetch kelurahan data
                         dataType: 'json',
                         delay: 250,
                         data: function(params) {
@@ -269,7 +254,7 @@
                 placeholder: 'Pilih IMB Induk',
                 minimumInputLength: 2,
                 ajax: {
-                    url: '/master/get-imb-pecahan', // URL to fetch kecamatan data
+                    url: "{{ route('master.imb-pecahan') }}", // URL to fetch kecamatan data
                     dataType: 'json',
                     delay: 250,
                     data: function(params) {

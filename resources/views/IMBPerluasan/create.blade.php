@@ -11,7 +11,8 @@
                 <div class="p-6 text-gray-900">
                     <h3 class="text-3xl font-bold">Tambah Data IMB Perluasan</h3>
                     <br>
-                    <form id="mainForm" action="{{ route('IMBPerluasan.store') }}" method="POST" enctype="multipart/form-data">
+                    <form id="mainForm" action="{{ route('IMBPerluasan.store') }}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
                         <div class="row mb-3">
                             <div class="col-md-6">
@@ -69,8 +70,6 @@
                                 </div>
                             </div>
                         </div>
-
-
                         <div class="row mb-3">
                             <div class="col-md-6 ">
                                 <label class="form-label">Jenis Kegiatan:</label>
@@ -83,23 +82,18 @@
                                             </option>
                                         @endforeach
                                     </select>
-
                                 </div>
                             </div>
-
                             <div class="col-md-6">
                                 <label for="fungsi_bangunan" class="form-label">Fungsi Bangunan:</label>
                                 <select name="fungsi_bangunan" id="fungsi_bangunan" class="form-select select2" required>
                                     @foreach (DB::table('app_md_fungsibang')->get() as $fungsi_bang)
-                                        <option value="{{ $fungsi_bang->id_fungsibang }}"
-                                            >
+                                        <option value="{{ $fungsi_bang->id_fungsibang }}">
                                             {{ $fungsi_bang->name_fungsibang }}</option>
                                     @endforeach
                                 </select>
                             </div>
-
                         </div>
-
                         <div class="row mb-3">
                             <div class="col-md-6 ">
                                 <label class="form-label">Kecamatan:</label>
@@ -110,7 +104,6 @@
                                     </select>
                                 </div>
                             </div>
-
                             <div class="col-md-6 ">
                                 <label class="form-label">Desa / Kelurahan:</label>
                                 <div class="">
@@ -121,8 +114,6 @@
                                 </div>
                             </div>
                         </div>
-
-
                         <div class="row mb-3">
                             <div class="col-md-6 ">
                                 <label class="form-label">Type:</label>
@@ -130,7 +121,6 @@
                                     <input type="text" name="type" class="form-control">
                                 </div>
                             </div>
-
                             <div class="col-md-6 ">
                                 <label class="form-label">Luas Bangunan Lama:</label>
                                 <div class="">
@@ -138,36 +128,27 @@
                                 </div>
                             </div>
                         </div>
-
-
                         <div class="row mb-3">
-
                             <div class="col-md-6 ">
                                 <label class="form-label">Luas Bangunan Perluasan:</label>
                                 <div class="">
                                     <textarea name="luas_bangunan_perluasan" class="form-control"></textarea>
                                 </div>
                             </div>
-
                             <div class="col-md-6 ">
                                 <label class="form-label">Blok:</label>
                                 <div class="">
                                     <input type="text" name="blok" class="form-control">
                                 </div>
                             </div>
-
-
                         </div>
-
                         <div class="row mb-3">
-
                             <div class="col-md-6 ">
                                 <label class="form-label">No Blok:</label>
                                 <div class="">
                                     <input type="number" name="no_blok" class="form-control">
                                 </div>
                             </div>
-
                             <div class="col-md-6 ">
                                 <label class="form-label">Keterangan:</label>
                                 <div class="">
@@ -176,7 +157,6 @@
                             </div>
                         </div>
                         <div class="row">
-
                             <div class="col-md-6 ">
                                 <label class="form-label">Lokasi / Perumahan:</label>
                                 <div class="">
@@ -190,14 +170,7 @@
                                         class="form-control">
                                 </div>
                             </div>
-
                         </div>
-
-
-
-
-
-
                         <button type="submit" class="btn btn-success mt-3">Submit</button>
                     </form>
                 </div>
@@ -205,12 +178,6 @@
         </div>
     </div>
 @endsection
-
-
-
-
-
-
 
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -229,7 +196,7 @@
                 placeholder: 'Pilih Kecamatan',
                 minimumInputLength: 2,
                 ajax: {
-                    url: '/master/get-kecamatan', // URL to fetch kecamatan data
+                    url: "{{ route('master.kecamatan') }}", // URL to fetch kecamatan data
                     dataType: 'json',
                     delay: 250,
                     data: function(params) {
@@ -263,7 +230,7 @@
                     placeholder: 'Pilih Kelurahan',
                     minimumInputLength: 2,
                     ajax: {
-                        url: '/master/get-kelurahan', // URL to fetch kelurahan data
+                        url: "{{ route('master.kelurahan') }}", // URL to fetch kelurahan data
                         dataType: 'json',
                         delay: 250,
                         data: function(params) {
@@ -302,7 +269,7 @@
                 placeholder: 'Pilih IMB Pecahan',
                 minimumInputLength: 2,
                 ajax: {
-                    url: '/master/get-imb-pecahan', // URL to fetch kecamatan data
+                    url: "{{ route('master.imb-pecahan') }}", // URL to fetch kecamatan data
                     dataType: 'json',
                     delay: 250,
                     data: function(params) {

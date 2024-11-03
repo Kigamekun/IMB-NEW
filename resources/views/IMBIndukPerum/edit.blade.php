@@ -187,7 +187,7 @@
                 placeholder: 'Pilih Kecamatan',
                 minimumInputLength: 2,
                 ajax: {
-                    url: '/master/get-kecamatan', // URL to fetch kecamatan data
+                    url: "{{ route('master.kecamatan') }}", // URL to fetch kecamatan data
                     dataType: 'json',
                     delay: 250,
                     data: function(params) {
@@ -221,7 +221,7 @@
                     placeholder: 'Pilih Kelurahan',
                     minimumInputLength: 2,
                     ajax: {
-                        url: '/master/get-kelurahan', // URL to fetch kelurahan data
+                        url: "{{ route('master.kelurahan') }}", // URL to fetch kelurahan data
                         dataType: 'json',
                         delay: 250,
                         data: function(params) {

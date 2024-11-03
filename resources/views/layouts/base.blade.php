@@ -286,31 +286,28 @@
 
 
                         <li><a class="nav-link {{ Str::contains($currentPath, 'dashboard') ? 'text-primary' : '' }}"
-                                href="/dashboard"><i class="fas fa-fire"></i>
+                                href="{{ route('dashboard') }}"><i class="fas fa-fire"></i>
                                 <span>Dashboard</span></a></li>
 
                         <li class="menu-header">Menu IMB</li>
                         <li><a class="nav-link {{ Str::contains($currentPath, 'IMBIndukPerum') ? 'text-primary' : '' }}"
-                                href="/IMBIndukPerum"><i class="fas fa-fire"></i>
+                                href="{{ route('IMBIndukPerum.index') }}"><i class="fas fa-fire"></i>
                                 <span>IMB Induk Perum</span></a></li>
                         <li><a class="nav-link {{ Str::contains($currentPath, 'IMBPecahan') ? 'text-primary' : '' }}"
-                                href="/IMBPecahan"><i class="fas fa-fire"></i>
+                                href="{{ route('IMBPecahan.index') }}"><i class="fas fa-fire"></i>
                                 <span>IMB Pecahan</span></a></li>
                         <li><a class="nav-link {{ Str::contains($currentPath, 'IMBPerluasan') ? 'text-primary' : '' }}"
-                                href="/IMBPerluasan"><i class="fas fa-fire"></i>
+                                href="{{ route('IMBPerluasan.index') }}"><i class="fas fa-fire"></i>
                                 <span>IMB Perluasan</span></a></li>
                         <li><a class="nav-link {{ Str::contains($currentPath, 'IMBIndukNonPerum') ? 'text-primary' : '' }}"
-                                href="/IMBIndukNonPerum"><i class="fas fa-fire"></i>
+                                href="{{ route('IMBIndukNonPerum.index') }}"><i class="fas fa-fire"></i>
                                 <span>IMB Induk Non Perum</span></a></li>
 
                         <li><a class="nav-link {{ Str::contains($currentPath, 'IMBIndukNonPerum') ? 'text-primary' : '' }}"
-                                href="/IMBIndukNonPerum"><i class="fas fa-fire"></i>
+                                href="{{ route('IMBIndukNonPerum.index') }}"><i class="fas fa-fire"></i>
                                 <span>Data IMB Tidak Lengkap</span></a></li>
                         <li><a class="nav-link {{ Str::contains($currentPath, 'IMBIndukNonPerum') ? 'text-primary' : '' }}"
-                                href="/IMBIndukNonPerum"><i class="fas fa-fire"></i>
-                                <span>Data IMB Tidak Lengkap</span></a></li>
-                        <li><a class="nav-link {{ Str::contains($currentPath, 'IMBIndukNonPerum') ? 'text-primary' : '' }}"
-                                href="/BuatSurat"><i class="fas fa-fire"></i>
+                                href="{{ route('surat.index') }}"><i class="fas fa-fire"></i>
                                 <span>Buat Surat</span></a></li>
                 </aside>
             </div>

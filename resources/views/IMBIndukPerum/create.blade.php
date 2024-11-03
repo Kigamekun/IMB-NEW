@@ -11,7 +11,7 @@
                 <div class="p-6 text-gray-900">
                     <h3 class="text-3xl font-bold">Tambah Data IMB Induk Perum</h3>
                     <br>
-                    <form id="mainForm" action="/IMBIndukPerum/store" method="POST" enctype="multipart/form-data">
+                    <form id="mainForm" action="{{ route('IMBIndukPerum.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row mb-3">
                             <div class="col-md-6">
@@ -104,7 +104,7 @@
                 placeholder: 'Pilih Kecamatan',
                 minimumInputLength: 2,
                 ajax: {
-                    url: '/master/get-kecamatan', // URL to fetch kecamatan data
+                    url: "{{ route('master.kecamatan') }}", // URL to fetch kecamatan data
                     dataType: 'json',
                     delay: 250,
                     data: function(params) {
@@ -138,7 +138,7 @@
                     placeholder: 'Pilih Kelurahan',
                     minimumInputLength: 2,
                     ajax: {
-                        url: '/master/get-kelurahan', // URL to fetch kelurahan data
+                        url: "{{ route('master.kelurahan') }}", // URL to fetch kelurahan data
                         dataType: 'json',
                         delay: 250,
                         data: function(params) {

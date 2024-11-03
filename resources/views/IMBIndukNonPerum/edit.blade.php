@@ -11,7 +11,8 @@
                 <div class="p-6 text-gray-900">
                     <h3 class="text-3xl font-bold">Ubah Data IMB Induk Non Perum</h3>
                     <br>
-                    <form id="mainForm" action="/IMBIndukNonPerum/update/{{$data->id}}" method="POST" enctype="multipart/form-data">
+                    <form id="mainForm" action="{{ route('IMBIndukNonPerum', ['id' => $data->id]) }}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
 
                         @method('PUT')
@@ -21,7 +22,8 @@
                                 <select name="contoh_jenis" id="contoh_jenis" class="form-select select2" required>
                                     @foreach (DB::table('master_jenis_non_perum')->get() as $master_jenis)
                                         <option value="{{ $master_jenis->id }}"
-                                            {{ $master_jenis->id == $data->contoh_jenis ? 'selected' : '' }}>{{ $master_jenis->name }}</option>
+                                            {{ $master_jenis->id == $data->contoh_jenis ? 'selected' : '' }}>
+                                            {{ $master_jenis->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -39,27 +41,32 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="no_register" class="form-label">No Register:</label>
-                                <input type="text" name="no_register" class="form-control" value="{{ $data->no_register }}" id="no_register">
+                                <input type="text" name="no_register" class="form-control"
+                                    value="{{ $data->no_register }}" id="no_register">
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="tgl_register" class="form-label">Tgl Register:</label>
-                                <input type="date" name="tgl_register" class="form-control" value="{{ $data->tgl_register }}" id="tgl_register">
+                                <input type="date" name="tgl_register" class="form-control"
+                                    value="{{ $data->tgl_register }}" id="tgl_register">
                             </div>
                             <div class="col-md-6">
                                 <label for="nama" class="form-label">Nama:</label>
-                                <input type="text" name="nama" class="form-control" value="{{ $data->nama }}" id="nama" required>
+                                <input type="text" name="nama" class="form-control" value="{{ $data->nama }}"
+                                    id="nama" required>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="atas_nama" class="form-label">Atas Nama:</label>
-                                <input type="text" name="atas_nama" class="form-control" value="{{ $data->atas_nama }}" id="atas_nama">
+                                <input type="text" name="atas_nama" class="form-control" value="{{ $data->atas_nama }}"
+                                    id="atas_nama">
                             </div>
                             <div class="col-md-6">
                                 <label for="lokasi_perumahan" class="form-label">Lokasi / Perumahan:</label>
-                                <input type="text" name="lokasi_perumahan" class="form-control" value="{{ $data->lokasi }}" id="lokasi_perumahan">
+                                <input type="text" name="lokasi_perumahan" class="form-control"
+                                    value="{{ $data->lokasi }}" id="lokasi_perumahan">
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -100,22 +107,24 @@
                                 <select name="desa_kelurahan" id="desa_kelurahan"
                                     class="form-select select2 select2-kelurahan" required>
                                     <option value="">Pilih Desa/Kelurahan</option>
-                                    @foreach(DB::table('master_subdistrict')->where('district_code', $data->kecamatan_code)->get() as $kel)
-                                        <option value="{{ $kel->code }}" {{ $kel->code == $data->kelurahan_code ? 'selected' : '' }}>{{ $kel->name }}</option>
-                                        @endforeach
+                                    @foreach (DB::table('master_subdistrict')->where('district_code', $data->kecamatan_code)->get() as $kel)
+                                        <option value="{{ $kel->code }}"
+                                            {{ $kel->code == $data->kelurahan_code ? 'selected' : '' }}>
+                                            {{ $kel->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="luas" class="form-label">Luas:</label>
-                                <input type="text" pattern="^\d+(\.\d+)?$" name="luas" class="form-control" value="{{ $data->luas_bangunan }}"
-                                    id="luas">
+                                <input type="text" pattern="^\d+(\.\d+)?$" name="luas" class="form-control"
+                                    value="{{ $data->luas_bangunan }}" id="luas">
                             </div>
                             <div class="col-md-6">
                                 <label for="detail_luas_bangunan" class="form-label">Detail Luas Bangunan:</label>
-                                <input type="text" name="detail_luas_bangunan" class="form-control" value="{{ $data->detail_luas_bangunan }}"
-                                    id="detail_luas_bangunan">
+                                <input type="text" name="detail_luas_bangunan" class="form-control"
+                                    value="{{ $data->detail_luas_bangunan }}" id="detail_luas_bangunan">
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -133,9 +142,12 @@
                             <div class="col-md-6">
                                 <label for="jenis_buku" class="form-label">Jenis Buku:</label>
                                 <select name="jenis_buku" id="jenis_buku" class="form-select select2" required>
-                                    <option value="perorangan" {{ $data->jenis_buku == 'perorangan' ? 'selected' : '' }}>Perorangan</option>
-                                    <option value="perusahaan" {{ $data->jenis_buku == 'perusahaan' ? 'selected' : '' }}>Perusahaan</option>
-                                    <option value="sosbud" {{ $data->jenis_buku == 'sosbud' ? 'selected' : '' }}>Sosial Budaya</option>
+                                    <option value="perorangan" {{ $data->jenis_buku == 'perorangan' ? 'selected' : '' }}>
+                                        Perorangan</option>
+                                    <option value="perusahaan" {{ $data->jenis_buku == 'perusahaan' ? 'selected' : '' }}>
+                                        Perusahaan</option>
+                                    <option value="sosbud" {{ $data->jenis_buku == 'sosbud' ? 'selected' : '' }}>Sosial
+                                        Budaya</option>
                                 </select>
                             </div>
                         </div>
@@ -168,7 +180,7 @@
                 placeholder: 'Pilih Kecamatan',
                 minimumInputLength: 2,
                 ajax: {
-                    url: '/master/get-kecamatan', // URL to fetch kecamatan data
+                    url: "{{ route('master.kecamatan') }}", // URL to fetch kecamatan data
                     dataType: 'json',
                     delay: 250,
                     data: function(params) {
@@ -202,7 +214,7 @@
                     placeholder: 'Pilih Kelurahan',
                     minimumInputLength: 2,
                     ajax: {
-                        url: '/master/get-kelurahan', // URL to fetch kelurahan data
+                        url: "{{ route('master.kelurahan') }}", // URL to fetch kelurahan data
                         dataType: 'json',
                         delay: 250,
                         data: function(params) {
@@ -243,7 +255,7 @@
                 placeholder: 'Pilih IMB Induk',
                 minimumInputLength: 2,
                 ajax: {
-                    url: '/master/get-imb-induk', // URL to fetch kecamatan data
+                    url: "{{ route('master.imb-induk') }}", // URL to fetch kecamatan data
                     dataType: 'json',
                     delay: 250,
                     data: function(params) {

@@ -11,7 +11,7 @@
                 <div class="p-6 text-gray-900">
                     <h3 class="text-3xl font-bold">Tambah Data IMB Pecahan</h3>
                     <br>
-                    <form id="mainForm" action="/IMBPecahan/store" method="POST" enctype="multipart/form-data">
+                    <form id="mainForm" action="{{ route('IMBPecahan.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row mb-3">
                             <div class="col-md-6">
@@ -61,7 +61,6 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="jenis_kegiatan" class="form-label">Jenis Kegiatan:</label>
-
                                 <select name="jenis_kegiatan" id="jenis_kegiatan" class="form-select select-jenis-kegiatan "
                                     required>
                                     @foreach (DB::table('app_md_jeniskeg')->get() as $jenis_keg)
@@ -70,31 +69,16 @@
                                         </option>
                                     @endforeach
                                 </select>
-
-
                             </div>
-
-
-
-
-
                             <div class="col-md-6">
                                 <label for="fungsi_bangunan" class="form-label">Fungsi Bangunan:</label>
                                 <select name="fungsi_bangunan" id="fungsi_bangunan" class="form-select select2" required>
                                     @foreach (DB::table('app_md_fungsibang')->get() as $fungsi_bang)
-                                        <option value="{{ $fungsi_bang->id_fungsibang }}">{{ $fungsi_bang->name_fungsibang }}</option>
+                                        <option value="{{ $fungsi_bang->id_fungsibang }}">
+                                            {{ $fungsi_bang->name_fungsibang }}</option>
                                     @endforeach
                                 </select>
                             </div>
-
-
-
-
-
-
-
-
-
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
@@ -140,9 +124,9 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                    <label for="lokasi_perumahan" class="form-label">Lokasi / Perumahan:</label>
-                                    <input type="text" name="lokasi_perumahan" class="form-control"
-                                        id="lokasi_perumahan">
+                                <label for="lokasi_perumahan" class="form-label">Lokasi / Perumahan:</label>
+                                <input type="text" name="lokasi_perumahan" class="form-control"
+                                    id="lokasi_perumahan">
                             </div>
                             <div class="col-md-6">
                                 <label for="scan_imb" class="form-label">Scan IMB:</label>
@@ -157,12 +141,6 @@
         </div>
     </div>
 @endsection
-
-
-
-
-
-
 
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -181,7 +159,7 @@
                 placeholder: 'Pilih Kecamatan',
                 minimumInputLength: 2,
                 ajax: {
-                    url: '/master/get-kecamatan', // URL to fetch kecamatan data
+                    url: "{{ route('master.kecamatan') }}", // URL to fetch kecamatan data
                     dataType: 'json',
                     delay: 250,
                     data: function(params) {
@@ -215,7 +193,7 @@
                     placeholder: 'Pilih Kelurahan',
                     minimumInputLength: 2,
                     ajax: {
-                        url: '/master/get-kelurahan', // URL to fetch kelurahan data
+                        url: "{{ route('master.kelurahan') }}", // URL to fetch kelurahan data
                         dataType: 'json',
                         delay: 250,
                         data: function(params) {
@@ -254,7 +232,7 @@
                 placeholder: 'Pilih IMB Induk',
                 minimumInputLength: 2,
                 ajax: {
-                    url: '/master/get-imb-induk', // URL to fetch kecamatan data
+                    url: "{{ route('master.imb-induk') }}", // URL to fetch kecamatan data
                     dataType: 'json',
                     delay: 250,
                     data: function(params) {

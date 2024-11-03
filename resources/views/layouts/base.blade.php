@@ -307,7 +307,7 @@
                                 href="{{ route('IMBIndukNonPerum.index') }}"><i class="fas fa-fire"></i>
                                 <span>Data IMB Tidak Lengkap</span></a></li>
                         <li><a class="nav-link {{ Str::contains($currentPath, 'IMBIndukNonPerum') ? 'text-primary' : '' }}"
-                                href="{{ route('surat.index') }}"><i class="fas fa-fire"></i>
+                                href="{{ route('surat.create') }}"><i class="fas fa-fire"></i>
                                 <span>Buat Surat</span></a></li>
                 </aside>
             </div>

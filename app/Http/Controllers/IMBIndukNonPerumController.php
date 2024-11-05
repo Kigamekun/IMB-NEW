@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\IMBIndukNonPerum;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
-use DataTables;
 use App\Exports\IMBIndukNonPerumExport;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Imports\ImportIMBIndukNonPerum;
+use \Yajra\DataTables\DataTables;
 
 class IMBIndukNonPerumController extends Controller
 {
@@ -23,6 +23,11 @@ class IMBIndukNonPerumController extends Controller
                 ->select('imb_induk_non_perum.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan', 'master_district.name as kecamatan', 'master_subdistrict.name as kelurahan')
                 ->get();
             return Datatables::of($data)
+                ->addColumn('jenis', function ($row) {
+                    $master = DB::table('master_jenis_non_perum')->where('id', $row->contoh_jenis)->first();
+                    return '<span class="badge badge-primary">' . $master->name . '</span>';
+                })
+
                 ->addColumn('action', function ($row) {
                     return '
                         <div class="d-flex" style="gap:10px;">
@@ -33,7 +38,7 @@ class IMBIndukNonPerumController extends Controller
                             </form>
                         </div>';
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['action', 'jenis'])
                 ->addIndexColumn()
                 ->make(true);
         }
@@ -57,23 +62,23 @@ class IMBIndukNonPerumController extends Controller
     {
 
         $validatedData = $request->validate([
-                'contoh_jenis' => 'required',
-                'imb_induk_non_perum' => 'required',
-                'tgl_imb_induk_non_perum' => 'required',
-                'no_register' => 'required',
-                'tgl_register' => 'required',
-                'nama' => 'required',
-                'atas_nama' => 'required',
-                'lokasi_perumahan' => 'required',
-                'kecamatan' => 'required',
-                'desa_kelurahan' => 'required',
-                'jenis_kegiatan' => 'required',
-                'luas' => 'required',
-                'detail_luas_bangunan' => 'required',
-                'keterangan' => 'required',
-                'scan_imb' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
-                'jenis_buku' => 'required',
-                'fungsi_bangunan' => 'required',
+            'contoh_jenis' => 'required',
+            'imb_induk_non_perum' => 'required',
+            'tgl_imb_induk_non_perum' => 'required',
+            'no_register' => 'required',
+            'tgl_register' => 'required',
+            'nama' => 'required',
+            'atas_nama' => 'required',
+            'lokasi_perumahan' => 'required',
+            'kecamatan' => 'required',
+            'desa_kelurahan' => 'required',
+            'jenis_kegiatan' => 'required',
+            'luas' => 'required',
+            'detail_luas_bangunan' => 'required',
+            'keterangan' => 'required',
+            'scan_imb' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'jenis_buku' => 'required',
+            'fungsi_bangunan' => 'required',
         ]);
 
         $scanImbPath = null;

@@ -220,11 +220,19 @@
     <!-- Address Section -->
     <div style="line-height:5px;margin-left:10px">
         <p>Yth,</p>
-        <p>{{ $pemohon['nama'] }}</p>
-        <p>{{ $pemohon['kabupaten'] }}</p>
+        <p><b>{{ $pemohon['nama'] }}</b></p>
+        <p>di</p>
+        @php
+            $str = DB::table('master_regency')
+                ->where('code', $pemohon['kabupaten'])
+                ->first()->name;
+            $result = str_replace('kab.', 'Kabupaten', strtolower($str));
+            $result = ucwords($result);
+        @endphp
+        <p>{{ $result }}</p>
     </div>
 
-    <div class="content"  style="margin-left: 70px">
+    <div class="content" style="margin-left: 70px">
         <h3>A. DASAR</h3>
         <p style="margin-top:-15px">Peraturan Bupati Nomor 63 tahun 2013 Tentang Izin Mendirikan Bangunan Gedung BAB VII
             Penggantian IMBG Hilang

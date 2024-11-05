@@ -106,7 +106,7 @@
                     searchable: false
                 },
                 {
-                    data: 'contoh_jenis'
+                    data: 'jenis'
                 },
                 {
                     data: 'imb_induk_non_perum'

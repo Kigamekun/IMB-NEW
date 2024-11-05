@@ -28,12 +28,12 @@
                             data-bs-target="#importDataModal">
                             Import Data
                         </button>
-                        {{-- <a class="btn btn-warning ml-2" href="{{ route('IMBPecahan.export') }}">
+                        <a class="btn btn-warning ml-2" href="{{ route('IMBPecahan.export') }}">
                             Export Data
                         </a>
                         <a class="btn btn-success ml-2" href="{{ route('IMBPecahan.download-template') }}">
                             Download Template
-                        </a> --}}
+                        </a>
                     </div>
 
                     <br>

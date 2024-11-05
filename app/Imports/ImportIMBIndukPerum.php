@@ -18,41 +18,40 @@ class ImportIMBIndukPerum implements ToCollection
         $dataRows = $rows->slice(1); // Skip the header rows
         $imbInduk = null;
         $failures = [];
+        $jenisKegiatanList = DB::table('app_md_jeniskeg')->pluck('id_jeniskeg', 'name_jeniskeg')->mapWithKeys(fn($item, $key) => [strtolower($key) => $item]);
+        $fungsiBangunanList = DB::table('app_md_fungsibang')->pluck('id_fungsibang', 'name_fungsibang')->mapWithKeys(fn($item, $key) => [strtolower($key) => $item]);
         $jenis_kegiatan_array = [];
         try {
             foreach ($dataRows as $key => $row) {
                 if (!is_null($row[1])) {
-                    if (DB::table('master_district')->where('name', $row[8])->count() == 0) {
-                        $failures[$key]['message'] = 'Kecamatan ' . $row[8] . ' tidak ditemukan';
-                        $failures[$key]['baris'] = $key;
-                        $imbInduk = null;
+                    $rowDistrict = strtolower($row[8]);
+                    $rowSubdistrict = strtolower($row[9]);
+                    $districts = DB::table('master_district')
+                        ->where(DB::raw('LOWER(name)'), $rowDistrict)
+                        ->pluck('code')
+                        ->toArray();
+                    if (empty($districts)) {
+                        $failures[$key] = [
+                            'message' => 'Kecamatan ' . $row[8] . ' tidak ditemukan',
+                            'baris' => $key,
+                        ];
                         continue;
                     }
-                    if (DB::table('master_subdistrict')->where('name', $row[9])->count() == 0) {
-                        $failures[$key]['message'] = 'Desa/Kelurahan ' . $row[9] . ' tidak ditemukan';
-                        $failures[$key]['baris'] = $key;
-                        $imbInduk = null;
+                    $village = DB::table('master_subdistrict')
+                        ->where(DB::raw('LOWER(name)'), $rowSubdistrict)
+                        ->whereIn('district_code', $districts)
+                        ->first();
+                    if (!$village) {
+                        $failures[$key] = [
+                            'message' => 'Desa/Kelurahan ' . $row[9] . ' tidak ditemukan di kecamatan ' . $row[8],
+                            'baris' => $key,
+                        ];
                         continue;
-                    } else {
-                        $districtCodes = DB::table('master_district')
-                            ->where('name', $row[8])
-                            ->pluck('code')
-                            ->toArray();
-                        $village = DB::table('master_subdistrict')
-                            ->where('name', $row[9])
-                            ->whereIn('district_code', $districtCodes)
-                            ->first();
-                        if (!$village) {
-                            $failures[$key]['message'] = 'Desa/Kelurahan ' . $row[9] . ' tidak berada di kecamatan ' . $row[8];
-                            $failures[$key]['baris'] = $key;
-                            $imbInduk = null;
-                            continue;
-                        }
                     }
-                    $kec = DB::table('master_district')->where('name', $row[8])->first()->code;
-                    $kel = DB::table('master_subdistrict')->where('name', $row[9])->first()->code;
-                    $jenis_kegiatan = DB::table('app_md_jeniskeg')->where('name_jeniskeg', $row[10])->first()->id_jeniskeg;
-                    $fungsi_bangunan = DB::table('app_md_fungsibang')->where('name_fungsibang', $row[11])->first()->id_fungsibang;
+                    $rowJenisKegiatan = strtolower($row[10]);
+                    $rowFungsiBangunan = strtolower($row[11]);
+                    $jenis_kegiatan = $jenisKegiatanList[$rowJenisKegiatan] ?? null;
+                    $fungsi_bangunan = $fungsiBangunanList[$rowFungsiBangunan] ?? null;
                     if (!is_null($imbInduk)) {
                         $jenisKegiatanGabungan = implode(' / ', array_unique($jenis_kegiatan_array));
                         $jenisKegiatanRecord = DB::table('app_md_jeniskeg')
@@ -78,8 +77,8 @@ class ImportIMBIndukPerum implements ToCollection
                         'nama' => $row[5],
                         'atas_nama' => $row[6],
                         'lokasi_perumahan' => $row[7],
-                        'kecamatan' => $kec,
-                        'desa_kelurahan' => $kel,
+                        'kecamatan' => $village->district_code,
+                        'desa_kelurahan' => $village->code,
                     ]);
                     if (!in_array($row[10], $jenis_kegiatan_array)) {
                         $jenis_kegiatan_array[] = $row[10];
@@ -114,8 +113,10 @@ class ImportIMBIndukPerum implements ToCollection
                     }
                 } else {
                     if (!is_null($imbInduk)) {
-                        $jenis_kegiatan = DB::table('app_md_jeniskeg')->where('name_jeniskeg', $row[10])->first()->id_jeniskeg;
-                        $fungsi_bangunan = DB::table('app_md_fungsibang')->where('name_fungsibang', $row[11])->first()->id_fungsibang;
+                        $rowJenisKegiatan = strtolower($row[10]);
+                        $rowFungsiBangunan = strtolower($row[11]);
+                        $jenis_kegiatan = $jenisKegiatanList[$rowJenisKegiatan] ?? null;
+                        $fungsi_bangunan = $fungsiBangunanList[$rowFungsiBangunan] ?? null;
                         if (!in_array($row[10], $jenis_kegiatan_array)) {
                             $jenis_kegiatan_array[] = $row[10];
                         }

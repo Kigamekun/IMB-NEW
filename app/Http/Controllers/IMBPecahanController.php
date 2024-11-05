@@ -218,7 +218,7 @@ class IMBPecahanController extends Controller
 
     public function downloadTemplate()
     {
-        $template = public_path('template/IMBPecahan.xlsx');
+        $template = public_path('template/imb_pecahan_contoh.xlsx');
         return response()->download($template);
     }
 }

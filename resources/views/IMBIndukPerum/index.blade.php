@@ -25,10 +25,10 @@
                         </button>
                         {{-- <a class="btn btn-warning ml-2" href="{{ route('IMBIndukPerum.export') }}">
                             Export Data
-                        </a>
+                        </a> --}}
                         <a class="btn btn-success ml-2" href="{{ route('IMBIndukPerum.download-template') }}">
                             Download Template
-                        </a> --}}
+                        </a>
                     </div>
                     <br>
                     @if (!empty(Session::get('failures')))

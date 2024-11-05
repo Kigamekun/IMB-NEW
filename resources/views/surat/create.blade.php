@@ -180,25 +180,25 @@
                                     </tr>
                                     <tr>
                                         <td>1</td>
-                                        <td><input type="text" name="details[0][type]" class="form-control" required>
+                                        <td><input type="text" name="details[0][type]" style="width: 50px" class="form-control" required>
                                         </td>
-                                        <td><input type="text" name="details[0][jumlah]" class="form-control"
+                                        <td><input type="text" name="details[0][jumlah]" style="width: 50px"  class="form-control"
                                                 required></td>
-                                        <td><input type="text" name="details[0][pecah_type]" class="form-control">
+                                        <td><input type="text" name="details[0][pecah_type]" style="width: 50px"  class="form-control">
                                         </td>
-                                        <td><input type="text" name="details[0][pecah_jumlah]" class="form-control">
+                                        <td><input type="text" name="details[0][pecah_jumlah]" style="width: 50px"  class="form-control">
                                         </td>
                                         <td><input type="text" name="details[0][belum_rincik_type]"
-                                                class="form-control"></td>
+                                                style="width: 50px"  class="form-control"></td>
                                         <td><input type="text" name="details[0][belum_rincik_jumlah]"
-                                                class="form-control"></td>
+                                                style="width: 50px"  class="form-control"></td>
                                         <td><input type="text" name="details[0][sudah_dimohon_type]"
-                                                class="form-control"></td>
+                                                style="width: 50px"  class="form-control"></td>
                                         <td><input type="text" name="details[0][sudah_dimohon_jumlah]"
-                                                class="form-control"></td>
+                                                style="width: 50px"  class="form-control"></td>
                                         <td><input type="text" name="details[0][sudah_dimohon_keterangan]"
-                                                class="form-control"></td>
-                                        <td><button type="button" class="btn btn-danger remove-detail">Hapus</button>
+                                                style="width: 100px"  class="form-control"></td>
+                                        <td><button type="button" class="btn btn-danger remove-detail">-</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -223,10 +223,10 @@
                                         <tr>
                                             <td>1</td>
                                             <td><input type="text" name="details2[0][type]" class="form-control"
-                                                    required>
+                                                    >
                                             </td>
                                             <td><input type="text" name="details2[0][blok]" class="form-control"
-                                                    required>
+                                                    >
                                             </td>
                                             <td><input type="text" name="details2[0][nomor]" class="form-control">
                                             </td>
@@ -417,15 +417,15 @@
             const detailHtml = `
         <tr>
             <td>${detailCount + 1}</td>
-            <td><input type="text" name="details[${detailCount}][type]" class="form-control" required></td>
-            <td><input type="text" name="details[${detailCount}][jumlah]" class="form-control" required></td>
-            <td><input type="text" name="details[${detailCount}][pecah_type]" class="form-control"></td>
-            <td><input type="text" name="details[${detailCount}][pecah_jumlah]" class="form-control"></td>
-            <td><input type="text" name="details[${detailCount}][belum_rincik_type]" class="form-control"></td>
-            <td><input type="text" name="details[${detailCount}][belum_rincik_jumlah]" class="form-control"></td>
-            <td><input type="text" name="details[${detailCount}][sudah_dimohon_type]" class="form-control"></td>
-            <td><input type="text" name="details[${detailCount}][sudah_dimohon_jumlah]" class="form-control"></td>
-            <td><input type="text" name="details[${detailCount}][sudah_dimohon_keterangan]" class="form-control"></td>
+            <td><input type="text" style="width: 50px" name="details[${detailCount}][type]" class="form-control" required></td>
+            <td><input type="text" style="width: 50px" name="details[${detailCount}][jumlah]" class="form-control" required></td>
+            <td><input type="text" style="width: 50px" name="details[${detailCount}][pecah_type]" class="form-control"></td>
+            <td><input type="text" style="width: 50px" name="details[${detailCount}][pecah_jumlah]" class="form-control"></td>
+            <td><input type="text" style="width: 50px" name="details[${detailCount}][belum_rincik_type]" class="form-control"></td>
+            <td><input type="text" style="width: 50px" name="details[${detailCount}][belum_rincik_jumlah]" class="form-control"></td>
+            <td><input type="text" style="width: 50px" name="details[${detailCount}][sudah_dimohon_type]" class="form-control"></td>
+            <td><input type="text" style="width: 50px" name="details[${detailCount}][sudah_dimohon_jumlah]" class="form-control"></td>
+            <td><input type="text" style="width: 50px" name="details[${detailCount}][sudah_dimohon_keterangan]" class="form-control"></td>
             <td><button type="button" class="btn btn-danger remove-detail">Hapus</button></td>
         </tr>
     `;

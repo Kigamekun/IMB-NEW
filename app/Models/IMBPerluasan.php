@@ -19,6 +19,7 @@ class IMBPerluasan extends Model
         'nama',
         'atas_nama',
         'jenis_kegiatan',
+        'fungsi_bangunan',
         'lokasi_perumahan',
         'kecamatan',
         'desa_kelurahan',

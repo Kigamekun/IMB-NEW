@@ -7,8 +7,9 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            font-size: 12px;
+            font-size: 11px !important;
             line-height: 1.5;
+            text-align: justify
         }
 
         .header {
@@ -18,7 +19,7 @@
         }
 
         .content {
-            margin-top: 20px;
+            margin-top: -20px;
         }
 
         .content p {
@@ -190,43 +191,35 @@
 </head>
 
 <body>
-    <div style="float: right;line-height:3px">
-        <p>Cibinong,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2024</p>
-        <p>Kepada</p>
-        <p>Yth. <b>BAPAK IR. PAULUS HANOTO ADJIE</b></p>
-        <p>di</p>
-        <p style="margin-left: 20px">Jakarta Utara</p>
+    <div style="float: right">
+        <p>Cibinong,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2024
+        </p>
     </div>
     <table class="info-table">
         <tr>
             <td>Nomor</td>
             <td>:</td>
-            <td>648.11/2137.PB</td>
+            <td>{{ $nomorSurat }}</td>
         </tr>
         <tr>
             <td>Sifat</td>
             <td>:</td>
-            <td>Biasa</td>
+            <td>{{ $sifat }}</td>
         </tr>
         <tr>
             <td>Lampiran</td>
             <td>:</td>
-            <td>-</td>
+            <td>{{ $lampiran }}</td>
         </tr>
         <tr>
             <td>Perihal</td>
             <td>:</td>
-            <td style="line-height: normal">Keterangan Izin Mendirikan Bangunan Gedung (IMBG)</td>
+            <td style="line-height: normal">{{ $perihal }}</td>
         </tr>
     </table>
-    <!-- Address Section -->
-    <div style="line-height:5px;margin-left:10px">
-        <p>Yth,</p>
-        <p>Bapak Rachmat Iskandar</p>
-        <p>Kota Bandung</p>
-    </div>
 
-    <div class="content" style="margin-left: 70px">
+
+    <div class="content" style="margin-top:1px; margin-left: 70px">
         <h3>A. DASAR</h3>
         <p style="margin-top:-15px">Peraturan Bupati Nomor 63 tahun 2013 Tentang Izin Mendirikan Bangunan Gedung BAB VII
             Penggantian IMBG Hilang
@@ -238,9 +231,9 @@
                     Permohonan Surat Keterangan Penerbitan Izin Mendirikan Bangunan (IMB) tanggal 01 April 2024, dari:
                     <table class="info-tables">
                         <tr>
-                            <td style="width: 30%">Nama</td>
-                            <td style="width: 5%">:</td>
-                            <td style="width: 60%" class="bold-text"><b>RACHMAT ISKANDAR</b></td>
+                            <td style="width: 38%">Nama</td>
+                            <td style="width: 1%">:</td>
+                            <td style="width: 61%" class="bold-text"><b>RACHMAT ISKANDAR</b></td>
                         </tr>
                         <tr>
                             <td>Bertindak Atas Nama</td>
@@ -250,7 +243,8 @@
                         <tr>
                             <td>Alamat</td>
                             <td>:</td>
-                            <td>Jl. Kiaracondong No. 142, RT 01 RW 02, Kelurahan Kebon Jayanti, Kecamatan Batununggal,
+                            <td style="line-height:10px;">Jl. Kiaracondong No. 142, RT 01 RW 02, Kelurahan Kebon
+                                Jayanti, Kecamatan Batununggal,
                                 Kota Bandung</td>
                             </td>
                         </tr>
@@ -280,7 +274,8 @@
                     <tr>
                         <td>Lokasi</td>
                         <td>:</td>
-                        <td>Perumahan Telaga Kahuripan, Desa/Kelurahan Tegal, Kecamatan Kemang, Kabupaten Bogor
+                        <td style="line-height:10px;"> Perumahan Telaga Kahuripan, Desa/Kelurahan Tegal, Kecamatan
+                            Kemang, Kabupaten Bogor
                         </td>
                     </tr>
 
@@ -289,40 +284,31 @@
                         <td></td>
                         <td></td>
                     </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
+
                     <tr>
                         <td>Nomor Register</td>
                         <td>:</td>
-                        <td>648.11/892/PP-DCK/2003</td>
+                        <td>{{ $referensi['registerNomor'] }}</td>
                     </tr>
                     <tr>
                         <td>Tanggal Register</td>
                         <td>:</td>
-                        <td>14 Mei 2003</td>
+                        <td>{{ $referensi['registerTanggal'] }}</td>
                     </tr>
                     <tr>
                         <td>Nomor Izin Mendirikan Bangunan</td>
                         <td>:</td>
-                        <td>648.11/249/VII/PP-DCK/2003</td>
+                        <td>{{ $referensi['imbgNomor'] }}</td>
                     </tr>
                     <tr>
                         <td>Tanggal</td>
                         <td>:</td>
-                        <td>03 Juli 2003</td>
+                        <td>{{ $referensi['imbgTanggal'] }}</td>
                     </tr>
                     <tr>
                         <td>Dipergunakan Untuk</td>
                         <td>:</td>
-                        <td><i><b>Pengantar Pecah & Balik Nama</b></i></td>
+                        <td><i><b>{{ $referensi['tujuan'] }}</b></i></td>
                     </tr>
                 </table>
             </div>
@@ -334,34 +320,41 @@
                         <th>BELUM RINCIK/PECAH</th>
                         <th>Yang Sudah Dimohon Surat Keterangan</th>
                     </tr>
+                    @php
+                        $jumlah = 0;
+                        $pecah_jumlah = 0;
+                        $belum_rincik_jumlah = 0;
+                        $sudah_dimohon_jumlah = 0;
+                    @endphp
+                    @foreach ($details as $item)
+                        <tr>
+                            <td>Type {{ $item['type'] }} = {{ $item['jumlah'] }} Unit</td>
+                            <td>Type {{ $item['pecah_type'] }} = {{ $item['pecah_jumlah'] }} Unit</td>
+                            <td>Type {{ $item['belum_rincik_type'] }} = {{ $item['belum_rincik_jumlah'] }} Unit</td>
+                            <td>
+                                @if ($item['sudah_dimohon_jumlah'] > 0)
+                                    Type {{ $item['sudah_dimohon_type'] }} = {{ $item['sudah_dimohon_jumlah'] }} Unit
+                                @else
+                                    ---
+                                @endif
+                            </td>
+                        </tr>
+                        @php
+                            $jumlah += $item['jumlah'];
+                            $pecah_jumlah += $item['pecah_jumlah'];
+                            $belum_rincik_jumlah += $item['belum_rincik_jumlah'];
+                            $sudah_dimohon_jumlah += $item['sudah_dimohon_jumlah'];
+                        @endphp
+                    @endforeach
                     <tr>
-                        <td>Type 36 = 51 Unit</td>
-                        <td>Type 36 = 39 Unit</td>
-                        <td>Type 36 = 12 Unit</td>
-                        <td>---</td>
-                    </tr>
-                    <tr>
-                        <td>Type 45 = 29 Unit</td>
-                        <td>Type 45 = 10 Unit</td>
-                        <td>Type 45 = 19 Unit</td>
-                        <td>---</td>
-                    </tr>
-                    <tr>
-                        <td>Jumlah = 80 Unit</td>
-                        <td>Jumlah = 49 Unit</td>
-                        <td>Jumlah = 31 Unit</td>
-                        <td>---</td>
+                        <td style="font-weight: bold">Jumlah = {{ $jumlah }} Unit</td>
+                        <td style="font-weight: bold">Jumlah = {{ $pecah_jumlah }} Unit</td>
+                        <td style="font-weight: bold">Jumlah = {{ $belum_rincik_jumlah }} Unit</td>
+                        <td style="font-weight: bold">Jumlah = {{ $sudah_dimohon_jumlah }} Unit</td>
                     </tr>
                 </table>
             </div>
-
-
-
-
         </ol>
-
-        <!-- Table Section -->
-
         <ol start="3">
             <li>Nama dan Nomor Izin Mendirikan Bangunan Gedung tersebut di atas adalah benar tercatat dalam buku
                 register Izin Mendirikan Bangunan pada Dinas Perumahan, Kawasan Permukiman dan Pertanahan Kabupaten
@@ -393,26 +386,23 @@
         </ol>
 
         <p>
-            Surat Keterangan ini hanya sebagai bahan tindak lanjut persyaratan permohonan Izin Mendirikan Bangunan
-            Gedung di Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Kabupaten Bogor dan bukan merupakan Izin
-            Mendirikan Bangunan Gedung.
+            {{ $keterangan['ket2'] }}
         </p>
-        <p>Apabila data yang Saudara berikan tidak benar, maka surat keterangan ini dianggap gugur atau tidak berlaku.
+        <p>
+            {{ $keterangan['ket3'] }}
         </p>
         <p>Demikian disampaikan untuk diketahui dan dipergunakan sebagaimana mestinya.</p>
     </div>
-
-    <div style="float: right">
+    <div style="float: right;margin-top:-10px">
         <div class="signature-section" style="width: 250px;text-align:left">
             <p class="signature-title" style="text-align:left">Sekretaris Dinas Perumahan, Kawasan Permukiman dan
                 Pertanahan,</p>
-            <br>
-            <br>
-            <br>
-            <br>
-            <p class="signature-name" style="text-align:left;line-height:5px">Wawan Darmawan, S.P., M.Si.</p>
-            <p class="signature-role" style="text-align:left;line-height:5px">Pembina TK. I</p>
-            <p class="signature-nip" style="text-align:left;line-height:5px">NIP. 197004032002121003</p>
+                <br>
+                <br>
+                <br>
+            <p class="signature-name" style="text-align:left;line-height:5px">{{ $penandatangan['kepalaDinas'] }}</p>
+            <p class="signature-role" style="text-align:left;line-height:5px">{{ $penandatangan['pangkat'] }}</p>
+            <p class="signature-nip" style="text-align:left;line-height:5px">NIP. {{ $penandatangan['nip'] }}</p>
         </div>
     </div>
 </body>

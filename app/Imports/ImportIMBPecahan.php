@@ -17,52 +17,41 @@ class ImportIMBPecahan implements ToCollection
      */
     public function collection(Collection $rows)
     {
-        // Skip header rows if necessary
         $dataRows = $rows->slice(1); // Adjust slice as needed
         $failures = [];
-
+        $jenisKegiatanList = DB::table('app_md_jeniskeg')->pluck('id_jeniskeg', 'name_jeniskeg')->mapWithKeys(fn($item, $key) => [strtolower($key) => $item]);
+        $fungsiBangunanList = DB::table('app_md_fungsibang')->pluck('id_fungsibang', 'name_fungsibang')->mapWithKeys(fn($item, $key) => [strtolower($key) => $item]);
         try {
             foreach ($dataRows as $key => $row) {
-
-
-                $jenis_kegiatan = DB::table('app_md_jeniskeg')->where('name_jeniskeg', $row[9])->first()->id_jeniskeg;
-                $fungsi_bangunan = DB::table('app_md_fungsibang')->where('name_fungsibang', $row[10])->first()->id_fungsibang;
-
-
+                $rowJenisKegiatan = strtolower($row[9]);
+                $rowFungsiBangunan = strtolower($row[10]);
+                $jenis_kegiatan = $jenisKegiatanList[$rowJenisKegiatan] ?? null;
+                $fungsi_bangunan = $fungsiBangunanList[$rowFungsiBangunan] ?? null;
                 if (!is_null($row[1])) {
-                    if (DB::table('master_district')->where('name', $row[12])->count() == 0) {
-                        $failures[$key]['message'] = 'Kecamatan ' . $row[12] . ' tidak ditemukan';
-                        $failures[$key]['baris'] = $key;
-                        $imbInduk = null;
+                    $rowDistrict = strtolower($row[12]);
+                    $rowSubdistrict = strtolower($row[13]);
+                    $districts = DB::table('master_district')
+                        ->where(DB::raw('LOWER(name)'), $rowDistrict)
+                        ->pluck('code')
+                        ->toArray();
+                    if (empty($districts)) {
+                        $failures[$key] = [
+                            'message' => 'Kecamatan ' . $row[12] . ' tidak ditemukan',
+                            'baris' => $key,
+                        ];
                         continue;
                     }
-                    if (DB::table('master_subdistrict')->where('name', $row[13])->count() == 0) {
-                        $failures[$key]['message'] = 'Desa/Kelurahan ' . $row[13] . ' tidak ditemukan';
-                        $failures[$key]['baris'] = $key;
-                        $imbInduk = null;
+                    $village = DB::table('master_subdistrict')
+                        ->where(DB::raw('LOWER(name)'), $rowSubdistrict)
+                        ->whereIn('district_code', $districts)
+                        ->first();
+                    if (!$village) {
+                        $failures[$key] = [
+                            'message' => 'Desa/Kelurahan ' . $row[13] . ' tidak ditemukan di kecamatan ' . $row[12],
+                            'baris' => $key,
+                        ];
                         continue;
-                    } else {
-                        $districtCodes = DB::table('master_district')
-                            ->where('name', $row[12])
-                            ->pluck('code')
-                            ->toArray();
-                        $village = DB::table('master_subdistrict')
-                            ->where('name', $row[13])
-                            ->whereIn('district_code', $districtCodes)
-                            ->first();
-                        if (!$village) {
-                            $failures[$key]['message'] = 'Desa/Kelurahan ' . $row[13] . ' tidak berada di kecamatan ' . $row[12];
-                            $failures[$key]['baris'] = $key;
-                            $imbInduk = null;
-                            continue;
-                        }
                     }
-
-                    $kec = DB::table('master_district')->where('name', $row[12])->first()->code;
-                    $kel = DB::table('master_subdistrict')->where('name', $row[13])->first()->code;
-
-
-
                     IMBPecahan::create([
                         'imb_induk_id' => $row[1],
                         'tgl_imb_induk' => date('Y-m-d', strtotime($row[2])),
@@ -75,8 +64,8 @@ class ImportIMBPecahan implements ToCollection
                         'jenis_kegiatan' => $jenis_kegiatan,
                         'fungsi_bangunan' => $fungsi_bangunan,
                         'lokasi_perumahan' => $row[11],
-                        'kecamatan' => $kec,
-                        'desa_kelurahan' => $kel,
+                        'kecamatan' => $village->district_code,
+                        'desa_kelurahan' => $village->code,
                         'type' => $row[14],
                         'luas' => $row[15],
                         'blok' => $row[16],
@@ -84,7 +73,6 @@ class ImportIMBPecahan implements ToCollection
                         'keterangan' => $row[18],
                     ]);
                 }
-
             }
             return redirect()->back()->with([
                 'status' => 'success',

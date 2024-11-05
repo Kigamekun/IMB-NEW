@@ -28,73 +28,146 @@ class SuratController extends Controller
 
         // Ambil data utama
         $jenisSurat = $data['jenisSurat'];
-        $tahun = $data['tahun'];
-        $nomorSurat = $data['nomorSurat'];
-        $tanggalSurat = $data['tanggalSurat'];
-        $lampiran = $data['lampiran'];
-        $sifat = $data['sifat'];
-        $perihal = $data['perihal'];
-        $pemohon = [
-            'tanggal' => $data['permohonanTanggal'],
-            'nama' => $data['nama'],
-            'provinsi' => $data['provinsi'],
-            'kabupaten' => $data['kabupaten'],
-            'kecamatan' => $data['kecamatan'],
-            'alamat' => $data['alamat'],
-        ];
-        $referensi = [
-            'tujuan' => $data['tujuanSurat'],
-            'registerNomor' => $data['registerNomor'],
-            'registerTanggal' => $data['registerTanggal'],
-            'imbgNomor' => $data['imbgNomor'],
-            'imbgTanggal' => $data['imbgTanggal'],
-        ];
-        $penandatangan = [
-            'kepalaDinas' => $data['kepalaDinas'],
-            'nip' => $data['nip'],
-            'pangkat' => $data['pangkat'],
-        ];
-        $keterangan = [
-            'ket1' => $data['ket1'],
-            'ket2' => $data['ket2'],
-            'ket3' => $data['ket3'],
-        ];
 
-        // Ambil detail data IMBG
-        $details = $data['details'];
 
-        // Load template view dan kirim data
-        $html = view('surat.format-1', compact(
-            'jenisSurat',
-            'tahun',
-            'nomorSurat',
-            'tanggalSurat',
-            'lampiran',
-            'sifat',
-            'perihal',
-            'pemohon',
-            'referensi',
-            'penandatangan',
-            'keterangan',
-            'details'
-        ))->render();
 
-        // dd($jenisSurat, $tahun, $nomorSurat, $tanggalSurat, $lampiran, $sifat, $perihal, $pemohon, $referensi, $penandatangan, $keterangan, $details);
-        // Setup Dompdf
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
+        if ($jenisSurat == 'format-1') {
+            $tahun = $data['tahun'];
+            $nomorSurat = $data['nomorSurat'];
+            $tanggalSurat = $data['tanggalSurat'];
+            $lampiran = $data['lampiran'];
+            $sifat = $data['sifat'];
+            $perihal = $data['perihal'];
+            $pemohon = [
+                'tanggal' => $data['permohonanTanggal'],
+                'nama' => $data['nama'],
+                'provinsi' => $data['provinsi'],
+                'kabupaten' => $data['kabupaten'],
+                'kecamatan' => $data['kecamatan'],
+                'alamat' => $data['alamat'],
+            ];
+            $referensi = [
+                'tujuan' => $data['tujuanSurat'],
+                'registerNomor' => $data['registerNomor'],
+                'registerTanggal' => $data['registerTanggal'],
+                'imbgNomor' => $data['imbgNomor'],
+                'imbgTanggal' => $data['imbgTanggal'],
+            ];
+            $penandatangan = [
+                'kepalaDinas' => $data['kepalaDinas'],
+                'nip' => $data['nip'],
+                'pangkat' => $data['pangkat'],
+            ];
+            $keterangan = [
+                'ket1' => $data['ket1'],
+                'ket2' => $data['ket2'],
+                'ket3' => $data['ket3'],
+            ];
 
-        // (Opsional) Pengaturan tambahan
-        $options = $dompdf->getOptions();
-        $options->set('isRemoteEnabled', true);
-        $dompdf->setOptions($options);
+            // Ambil detail data IMBG
+            $details = $data['details'];
 
-        // Render PDF
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
+            // Load template view dan kirim data
+            $html = view('surat.format-1', compact(
+                'jenisSurat',
+                'tahun',
+                'nomorSurat',
+                'tanggalSurat',
+                'lampiran',
+                'sifat',
+                'perihal',
+                'pemohon',
+                'referensi',
+                'penandatangan',
+                'keterangan',
+                'details'
+            ))->render();
 
-        // Simpan atau kirimkan sebagai respons
-        return $dompdf->stream('surat.pdf', ['Attachment' => false]);
+            // dd($jenisSurat, $tahun, $nomorSurat, $tanggalSurat, $lampiran, $sifat, $perihal, $pemohon, $referensi, $penandatangan, $keterangan, $details);
+            // Setup Dompdf
+            $dompdf = new Dompdf();
+            $dompdf->loadHtml($html);
+
+            // (Opsional) Pengaturan tambahan
+            $options = $dompdf->getOptions();
+            $options->set('isRemoteEnabled', true);
+            $dompdf->setOptions($options);
+
+            // Render PDF
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+
+            // Simpan atau kirimkan sebagai respons
+            return $dompdf->stream('surat.pdf', ['Attachment' => false]);
+        } else {
+            $tahun = $data['tahun'];
+            $nomorSurat = $data['nomorSurat'];
+            $tanggalSurat = $data['tanggalSurat'];
+            $lampiran = $data['lampiran'];
+            $sifat = $data['sifat'];
+            $perihal = $data['perihal'];
+            $pemohon = [
+                'tanggal' => $data['permohonanTanggal'],
+                'nama' => $data['nama'],
+                'provinsi' => $data['provinsi'],
+                'kabupaten' => $data['kabupaten'],
+                'kecamatan' => $data['kecamatan'],
+                'alamat' => $data['alamat'],
+            ];
+            $referensi = [
+                'tujuan' => $data['tujuanSurat'],
+                'registerNomor' => $data['registerNomor'],
+                'registerTanggal' => $data['registerTanggal'],
+                'imbgNomor' => $data['imbgNomor'],
+                'imbgTanggal' => $data['imbgTanggal'],
+            ];
+            $penandatangan = [
+                'kepalaDinas' => $data['kepalaDinas'],
+                'nip' => $data['nip'],
+                'pangkat' => $data['pangkat'],
+            ];
+            $keterangan = [
+                'ket1' => $data['ket1'],
+                'ket2' => $data['ket2'],
+                'ket3' => $data['ket3'],
+            ];
+
+            // Ambil detail data IMBG
+            $details = $data['details'];
+
+            // Load template view dan kirim data
+            $html = view('surat.format-3', compact(
+                'jenisSurat',
+                'tahun',
+                'nomorSurat',
+                'tanggalSurat',
+                'lampiran',
+                'sifat',
+                'perihal',
+                'pemohon',
+                'referensi',
+                'penandatangan',
+                'keterangan',
+                'details'
+            ))->render();
+
+            // dd($jenisSurat, $tahun, $nomorSurat, $tanggalSurat, $lampiran, $sifat, $perihal, $pemohon, $referensi, $penandatangan, $keterangan, $details);
+            // Setup Dompdf
+            $dompdf = new Dompdf();
+            $dompdf->loadHtml($html);
+
+            // (Opsional) Pengaturan tambahan
+            $options = $dompdf->getOptions();
+            $options->set('isRemoteEnabled', true);
+            $dompdf->setOptions($options);
+
+            // Render PDF
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+
+            // Simpan atau kirimkan sebagai respons
+            return $dompdf->stream('surat.pdf', ['Attachment' => false]);
+        }
     }
 
 }

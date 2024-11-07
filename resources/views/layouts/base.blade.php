@@ -99,11 +99,11 @@
                                 href="{{ route('IMBIndukNonPerum.index') }}"><i class="fas fa-fire"></i>
                                 <span>IMB Induk Non Perum</span></a></li>
 
-                        <li><a class="nav-link {{ Str::contains($currentPath, 'IMBTidakLengkapController') ? 'text-primary' : '' }}"
-                                href="{{ route('IMBIndukNonPerum.index') }}"><i class="fas fa-fire"></i>
+                        <li><a class="nav-link {{ Str::contains($currentPath, 'IMBTidakLengkap') ? 'text-primary' : '' }}"
+                                href="{{ route('DataIMBTidakLengkap.index') }}"><i class="fas fa-fire"></i>
                                 <span>Data IMB Tidak Lengkap</span></a></li>
                         <li><a class="nav-link {{ Str::contains($currentPath, 'surat') ? 'text-primary' : '' }}"
-                                href="{{ route('surat.create') }}"><i class="fas fa-fire"></i>
+                                href="{{ route('surat.index') }}"><i class="fas fa-fire"></i>
                                 <span>Buat Surat</span></a></li>
                 </aside>
             </div>

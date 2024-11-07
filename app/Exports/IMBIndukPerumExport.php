@@ -14,104 +14,52 @@ use \Maatwebsite\Excel\Sheet;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use App\Models\IMBIndukPerum;
 
-class IMBIndukPerumExport implements ShouldAutoSize,FromCollection, WithCustomStartCell, WithEvents
+class IMBIndukPerumExport implements ShouldAutoSize, FromCollection, WithCustomStartCell, WithEvents
 {
 
     public function startCell(): string
     {
-        return 'A3';
+        return 'A2';
     }
 
-    public function registerEvents(): array {
+    public function registerEvents(): array
+    {
 
         return [
-            AfterSheet::class => function(AfterSheet $event) {
+            AfterSheet::class => function (AfterSheet $event) {
                 /** @var Sheet $sheet */
                 $sheet = $event->sheet;
+                $sheet->setCellValue('A1', 'NO');
+                $sheet->setCellValue('B1', 'IMB Induk');
+                $sheet->setCellValue('C1', 'Tanggal IMB Induk');
+                $sheet->setCellValue('D1', 'No Register');
+                $sheet->setCellValue('E1', 'Tanggal Register');
+                $sheet->setCellValue('F1', 'Nama');
+                $sheet->setCellValue('G1', 'Atas Nama');
+                $sheet->setCellValue('H1', 'Lokasi Perumahan');
+                $sheet->setCellValue('I1', 'Kecamatan');
+                $sheet->setCellValue('J1', 'Desa Kelurahan');
 
-
-
-
-
-                $sheet->mergeCells('A1:A2');
-                $sheet->setCellValue('A1', "No");
-
-                $sheet->mergeCells('B1:B2');
-                $sheet->setCellValue('B1', "Nama / Tempat Tinggal");
-
-                $sheet->mergeCells('C1:C2');
-                $sheet->setCellValue('C1', "Letak Bangunan");
-
-                $sheet->mergeCells('D1:D2');
-                $sheet->setCellValue('D1', "Jenis Bangunan");
-
-                $sheet->mergeCells('E1:E2');
-                $sheet->setCellValue('E1', "Luas Bangunan");
-
-                $sheet->mergeCells('F1:G1');
-                $sheet->setCellValue('F1', "Jarak");
-
-                $sheet->setCellValue('G2', "GSB");
-                $sheet->setCellValue('F2', "GSP");
-
-                $sheet->mergeCells('H1:H2');
-                $sheet->setCellValue('H1', "Surat Izin Nomor");
-
-                $sheet->mergeCells('I1:I2');
-                $sheet->setCellValue('I1', "Surat Izin Tanggal");
-
-                $sheet->mergeCells('J1:M1');
-                $sheet->setCellValue('J1', "Hitungan Pembayaran Bea");
-                $sheet->setCellValue('J2', "Bea Pendirian");
-                $sheet->setCellValue('K2', "Bea Pemeriksaan");
-                $sheet->setCellValue('L2', "Daftar Leges");
-                $sheet->setCellValue('M2', "Jumlah");
-
-
-                $sheet->mergeCells('N1:O1');
-
-                $sheet->setCellValue('N1', "Dibayar oleh yang berwajib");
-                $sheet->setCellValue('N2', "Tanggal");
-                $sheet->setCellValue('O2', "Kas No");
-
-                $sheet->mergeCells('P1:P2');
-                $sheet->setCellValue('P1', "Keterangan");
-
-
-                $styleArray = [
-                    'alignment' => [
-                        'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-                        'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
-                    ],
-                ];
-
-                $cellRange = 'A1:P1'; // All headers
-                $event->sheet->getDelegate()->getStyle($cellRange)->applyFromArray($styleArray);
-                $cellRange = 'A2:P2'; // All headers
-                $event->sheet->getDelegate()->getStyle($cellRange)->applyFromArray($styleArray);
             },
         ];
     }
 
     public function collection()
     {
-        return IMBIndukPerum::select(
-            'id',
+        return  \DB::table('imb_induk_perum')
+        ->join('master_district', 'imb_induk_perum.kecamatan', '=', 'master_district.code')
+        ->join('master_subdistrict', 'imb_induk_perum.desa_kelurahan', '=', 'master_subdistrict.code')
+        ->select(
+            'imb_induk_perum.id',
+            'imb_induk',
+            'tgl_imb_induk',
+            'no_register',
+            'tgl_register',
             'nama',
-            'letak_bangunan',
-            'jenis_bangunan',
-            'luas_bangunan',
-            'gsp',
-            'gsb',
-            'surat_izin_nomer',
-            'surat_izin_tanggal',
-            'bea_pendirian',
-            'bea_pemeriksaan',
-            'daftar_leges',
-            'jumlah',
-            'tanggal',
-            'kas_no',
-            'keterangan'
+            'atas_nama',
+            'lokasi_perumahan',
+            'master_district.name as kecamatan',
+            'master_subdistrict.name as desa_kelurahan',
         )->get();
     }
 }

@@ -227,6 +227,7 @@ class IMBIndukPerumController extends Controller
         try {
             return Excel::download(new IMBIndukPerumExport, 'IMBIndukPerum' . Carbon::now()->timestamp . '.xlsx');
         } catch (\Throwable $th) {
+            dd($th);
             return redirect()->back()->with(['status' => 'errors', 'message' => 'Anda memiliki kesalahan format']);
         }
     }

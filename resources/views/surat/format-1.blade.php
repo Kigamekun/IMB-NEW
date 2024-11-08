@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            font-size: 11px !important;
+            font-size: 10px !important;
             line-height: 1.5;
             text-align: justify
         }
@@ -192,7 +192,7 @@
 
 <body>
     <div style="float: right">
-        <p>Cibinong,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2024
+        <p>Cibinong,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2024
         </p>
     </div>
     <table class="info-table">
@@ -231,10 +231,11 @@
         @endphp
         <p>{{ $result }}</p>
     </div>
+    <br>
 
     <div class="content" style="margin-left: 70px">
         <h3>A. DASAR</h3>
-        <p style="margin-top:-15px">Peraturan Bupati Nomor 63 tahun 2013 Tentang Izin Mendirikan Bangunan Gedung BAB VII
+        <p style="margin-top:-5px">Peraturan Bupati Nomor 63 tahun 2013 Tentang Izin Mendirikan Bangunan Gedung BAB VII
             Penggantian IMBG Hilang
             Atau Rusak, Legalisasi dan Pemutakhiran.</p>
         <h3>B. MEMPERHATIKAN</h3>

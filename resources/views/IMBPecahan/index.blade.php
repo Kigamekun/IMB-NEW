@@ -1,12 +1,7 @@
 @extends('layouts.base')
 
 @section('content')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css"
-        integrity="sha512-EZSUkJWTjzDlspOoPSpUFR0o0Xy7jdzW//6qhUkoZ9c4StFkVsp9fbbd0O06p9ELS3H486m4wmrCELjza4JEog=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.bootstrap5.css">
-
 
     <style>
         th {
@@ -15,8 +10,6 @@
     </style>
     <div class="py-12">
         <div style="width: 90%;margin:auto">
-
-
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5 rounded">
                 <div class="p-6 text-gray-900">
                     <h3 class="text-3xl font-bold">Data IMB Pecahan</h3>
@@ -35,25 +28,56 @@
                             Download Template
                         </a>
                     </div>
-
                     <br>
                     @if (!empty(Session::get('failures')))
-                    <div class="alert alert-danger">
-                        <h6>Import data gagal, berikut baris yang gagal diimport:</h6>
-                        <ul>
-                            @foreach (Session::get('failures') as $failure)
-                                <li>Baris ke-{{ $failure['baris'] }}: {{ $failure['message'] }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+                        <div class="alert alert-danger">
+                            <h6>Import data gagal, berikut baris yang gagal diimport:</h6>
+                            <ul>
+                                @foreach (Session::get('failures') as $failure)
+                                    <li>Baris ke-{{ $failure['baris'] }}: {{ $failure['message'] }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <br>
                     <div class="table-responsive py-3">
-
+                        <div class="filters py-3 row">
+                            <div class="mb-3 col-md-3">
+                                {{-- <label for="filter-atas_nama" class="form-label">Atas Nama:</label> --}}
+                                <input type="text" class="form-control" id="filter-atas_nama"
+                                    placeholder="Filter Atas Nama">
+                            </div>
+                            <div class="mb-3 col-md-3">
+                                {{-- <label for="filter-lokasi" class="form-label">Lokasi Perumahan:</label> --}}
+                                <input type="text" class="form-control" id="filter-lokasi"
+                                    placeholder="Filter Lokasi Perumahan">
+                            </div>
+                            <div class="mb-3 col-md-3">
+                                {{-- <label for="filter-kecamatan" class="form-label">Kecamatan:</label> --}}
+                                <input type="text" class="form-control" id="filter-kecamatan"
+                                    placeholder="Filter Kecamatan">
+                            </div>
+                            <div class="mb-3 col-md-3">
+                                {{-- <label for="filter-kelurahan" class="form-label">Kelurahan:</label> --}}
+                                <input type="text" class="form-control" id="filter-kelurahan"
+                                    placeholder="Filter Kelurahan">
+                            </div>
+                            <div class="mb-3 col-md-3">
+                                {{-- <label for="filter-blok" class="form-label">blok:</label> --}}
+                                <input type="text" class="form-control" id="filter-blok" placeholder="Filter blok">
+                            </div>
+                            <div class="mb-3 col-md-3">
+                                {{-- <label for="filter-no_blok" class="form-label">no_blok:</label> --}}
+                                <input type="text" class="form-control" id="filter-no_blok" placeholder="Filter no_blok">
+                            </div>
+                            <div class="mb-3 col-md-3">
+                                {{-- <label for="filter-no_blok" class="form-label">no_blok:</label> --}}
+                                <input type="text" class="form-control" id="filter-imb_induk_id"
+                                    placeholder="Filter imb_induk_id">
+                            </div>
+                        </div>
                         <table class="table table-bordered" id="IMBTable">
                             <thead>
-
-
                                 <tr>
                                     <th>IMB Induk</th>
                                     <th>Tanggal IMB Induk</th>
@@ -75,54 +99,35 @@
                                     <th>Scan IMB</th>
                                     <th>Action</th>
                                 </tr>
-
                             </thead>
                             <tbody>
-
                             </tbody>
                         </table>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 
-
-
-
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
         crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js"
-        integrity="sha512-8QFTrG0oeOiyWo/VM9Y8kgxdlCryqhIxVeRpWSezdRRAvarxVtwLnGroJgnVW9/XBRduxO/z1GblzPrMQoeuew=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
 
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('.dropify').dropify();
-        });
-    </script>
-
-
 
     <script>
-        $('#IMBTable').DataTable({
+        var table = $('#IMBTable').DataTable({
             processing: true,
             serverSide: true,
-
             ajax: {
                 url: "{{ route('IMBPecahan.index') }}",
                 dataSrc: function(res) {
                     if (res.code == 5500) {
                         console.log(res.data);
                         return InternalServerEror()
-
                     } else {
                         console.log(res.data);
                         return res.data
@@ -132,7 +137,6 @@
                     return InternalServerEror()
                 }
             },
-
             columns: [{
                     data: 'imb_induk_id',
                     title: 'IMB Induk'
@@ -214,10 +218,42 @@
                 [2, 'desc']
             ]
         });
+
+        $('#filter-lokasi').on('keyup', function() {
+            table.column(9).search(this.value).draw(); // 8 is the index for 'lokasi_perumahan'
+        });
+
+        // Custom filtering for 'Kecamatan'
+        $('#filter-kecamatan').on('keyup', function() {
+            table.column(10).search(this.value).draw(); // 9 is the index for 'kecamatan'
+        });
+
+        // Custom filtering for 'Kelurahan'
+        $('#filter-kelurahan').on('keyup', function() {
+            table.column(11).search(this.value).draw(); // 10 is the index for 'kelurahan'
+        });
+
+        // Custom filtering for 'Atas Nama'
+        $('#filter-atas_nama').on('keyup', function() {
+            table.column(7).search(this.value).draw(); // 7 is the index for 'atas_nama'
+        });
+
+        // Custom filtering for 'Blok'
+        $('#filter-blok').on('keyup', function() {
+            table.column(13).search(this.value).draw(); // 13 is the index for 'blok'
+        });
+
+        // Custom filtering for 'No Blok'
+        $('#filter-no_blok').on('keyup', function() {
+            table.column(14).search(this.value).draw(); // 14 is the index for 'no_blok'
+        });
+
+        // Custom filtering for 'IMB Induk'
+        $('#filter-imb_induk_id').on('keyup', function() {
+            table.column(0).search(this.value).draw(); // 0 is the index for 'imb_induk_id'
+        });
     </script>
 @endsection
-
-
 
 @section('modal')
     <div class="modal fade" id="importDataModal" tabindex="-1" aria-labelledby="importDataModalLabel" aria-hidden="true">

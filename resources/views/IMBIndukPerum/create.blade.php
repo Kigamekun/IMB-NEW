@@ -208,7 +208,7 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="luas_bangunan_${i}" class="form-label">Luas Bangunan</label>
-                            <input type="text" class="form-control" id="luas_bangunan_${i}" name="luas_bangunan_${i}" required pattern="^\d+(\.\d+)?$">
+                            <input type="text" class="form-control" id="luas_bangunan_${i}" name="luas_bangunan_${i}" required>
                         </div>
                     </div>
                     <div class="row">

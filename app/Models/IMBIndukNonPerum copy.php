@@ -9,26 +9,29 @@ class IMBIndukNonPerum extends Model
 {
     use HasFactory;
 
+
     protected $table = 'imb_induk_non_perum';
 
     protected $fillable = [
-        "jenis",
-        "imb_induk",
-        "tgl_imb_induk",
+        'contoh_jenis',
+        'imb_induk_non_perum',
+        'tgl_imb_induk_non_perum',
         "no_register",
         "tgl_register",
         "nama",
         "atas_nama",
         "lokasi_perumahan",
+        "lokasi",
+        'jenis_kegiatan',
+        'fungsi_bangunan',
+        'luas_bangunan',
+        'detail_luas_bangunan',
+        'keterangan',
+        'scan_imb',
         "kecamatan",
         "desa_kelurahan"
     ];
     public $timestamps = false;
 
 
-    // imbitems
-    public function imbItems()
-    {
-        return $this->hasMany(IMBItem::class, 'induk_perum_id', 'id');
-    }
 }

@@ -7,9 +7,7 @@ use App\Models\IMBIndukPerum;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use App\Models\IMBItem;
-
 use Illuminate\Support\Facades\DB;
-
 
 class ImportIMBIndukPerum implements ToCollection
 {

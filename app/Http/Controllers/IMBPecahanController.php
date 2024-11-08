@@ -9,11 +9,13 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Models\IMBPecahan;
 use \Yajra\DataTables\DataTables;
 
+
 use App\Exports\IMBPecahanExport;
 use Carbon\Carbon;
 
+
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
+use Rap2hpoutre\FastExcel\FastExcel;
 
 class IMBPecahanController extends Controller
 {
@@ -50,9 +52,116 @@ class IMBPecahanController extends Controller
 
     public function importData(Request $request)
     {
+        ini_set('max_execution_time', 0); // Unlimited execution time
+        ini_set('memory_limit', '-1');
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
         $file = $request->file('file');
-        Excel::import(new ImportIMBPecahan(), $file);
-        return redirect()->route('IMBPecahan.index');
+        $failures = [];
+        $jenisKegiatanList = DB::table('app_md_jeniskeg')->pluck('id_jeniskeg', 'name_jeniskeg')->mapWithKeys(fn($item, $key) => [strtolower($key) => $item]);
+        $fungsiBangunanList = DB::table('app_md_fungsibang')->pluck('id_fungsibang', 'name_fungsibang')->mapWithKeys(fn($item, $key) => [strtolower($key) => $item]);
+        $baris = 1;
+        $users = (new FastExcel)->import($file, function ($line) use (&$failures, &$baris, $jenisKegiatanList, $fungsiBangunanList) {
+            $fail = 0;
+            $rowJenisKegiatan = strtolower($line['Jenis Kegiatan']);
+            $rowFungsiBangunan = strtolower($line['Fungsi Bangunan']);
+            $jenis_kegiatan = $jenisKegiatanList[$rowJenisKegiatan] ?? null;
+            $fungsi_bangunan = $fungsiBangunanList[$rowFungsiBangunan] ?? null;
+            $rowDistrict = strtolower($line['Kecamatan']);
+            $rowSubdistrict = strtolower($line['Desa / Kelurahan']);
+            $districts = DB::table('master_district')
+                ->where(DB::raw('LOWER(name)'), $rowDistrict)
+                ->pluck('code')
+                ->toArray();
+            if (empty($districts)) {
+                $fail = 1;
+                IMBPecahan::create([
+                    'imb_induk_id' => $line['No. IMB Induk'],
+                    'tgl_imb_induk' => null,
+                    'imb_pecahan' => $line['No. IMB Pecahan / Rincikan'],
+                    'tgl_imb_pecahan' => null,
+                    'no_register' => $line['No. Register'],
+                    'tgl_register' => null,
+                    'nama' => $line['Nama'],
+                    'atas_nama' => $line['Atas Nama'],
+                    'jenis_kegiatan' => $jenis_kegiatan,
+                    'fungsi_bangunan' => $fungsi_bangunan,
+                    'lokasi_perumahan' => $line['Lokasi / Perumahan'],
+                    'kecamatan_lama' => $line['Kecamatan'],
+                    'kelurahan_lama' => $line['Desa / Kelurahan'],
+                    'type' => $line['Type'],
+                    'luas' => $line['Luas'] == '' ? null : $line['Luas'],
+                    'blok' => $line['Blok'],
+                    'no_blok' => $line['NO BLOK'],
+                    'keterangan' => $line['Keterangan']
+                ]);
+                $failures[] = [
+                    'message' => 'Kecamatan ' . $line['Kecamatan'] . ' tidak ditemukan',
+                    'baris' => $baris,
+                ];
+            } else {
+                $village = DB::table('master_subdistrict')
+                    ->where(DB::raw('LOWER(name)'), $rowSubdistrict)
+                    ->whereIn('district_code', $districts)
+                    ->first();
+                if (!$village) {
+                    $fail = 1;
+                    IMBPecahan::create([
+                        'imb_induk_id' => $line['No. IMB Induk'],
+                        'tgl_imb_induk' => null,
+                        'imb_pecahan' => $line['No. IMB Pecahan / Rincikan'],
+                        'tgl_imb_pecahan' => null,
+                        'no_register' => $line['No. Register'],
+                        'tgl_register' => null,
+                        'nama' => $line['Nama'],
+                        'atas_nama' => $line['Atas Nama'],
+                        'jenis_kegiatan' => $jenis_kegiatan,
+                        'fungsi_bangunan' => $fungsi_bangunan,
+                        'lokasi_perumahan' => $line['Lokasi / Perumahan'],
+                        'kecamatan_lama' => $line['Kecamatan'],
+                        'kelurahan_lama' => $line['Desa / Kelurahan'],
+                        'type' => $line['Type'],
+                        'luas' => $line['Luas'] == '' ? null : $line['Luas'],
+                        'blok' => $line['Blok'],
+                        'no_blok' => $line['NO BLOK'],
+                        'keterangan' => $line['Keterangan']
+                    ]);
+                    $failures[] = [
+                        'message' => 'Desa/Kelurahan ' . $line['Desa / Kelurahan'] . ' tidak ditemukan di kecamatan ' . $line['Kecamatan'],
+                        'baris' => $baris,
+                    ];
+                }
+            }
+            $baris++;
+            if ($fail == 0) {
+                IMBPecahan::create([
+                    'imb_induk_id' => $line['No. IMB Induk'],
+                    'tgl_imb_induk' => null,
+                    'imb_pecahan' => $line['No. IMB Pecahan / Rincikan'],
+                    'tgl_imb_pecahan' => null,
+                    'no_register' => $line['No. Register'],
+                    'tgl_register' => null,
+                    'nama' => $line['Nama'],
+                    'atas_nama' => $line['Atas Nama'],
+                    'jenis_kegiatan' => $jenis_kegiatan,
+                    'fungsi_bangunan' => $fungsi_bangunan,
+                    'lokasi_perumahan' => $line['Lokasi / Perumahan'],
+                    'kecamatan' => $village->district_code,
+                    'desa_kelurahan' => $village->code,
+                    'type' => $line['Type'],
+                    'luas' => $line['Luas'] == '' ? null : $line['Luas'],
+                    'blok' => $line['Blok'],
+                    'no_blok' => $line['NO BLOK'],
+                    'keterangan' => $line['Keterangan']
+                ]);
+            }
+        });
+        if (count($failures) > 0) {
+            return redirect()->back()->with(['status' => 'error', 'message' => 'Import data selesai, namun terdapat kesalahan. Silahkan download file log untuk melihat detail kesalahan.'])->with('failures', $failures);
+        } else {
+            return redirect()->back()->with(['status' => 'success', 'message' => 'Import data berhasil']);
+        }
     }
 
     public function create()

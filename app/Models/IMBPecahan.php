@@ -26,6 +26,8 @@ class IMBPecahan extends Model
         'jenis_kegiatan',
         'fungsi_bangunan',
         'lokasi_perumahan',
+        'kecamatan_lama',
+        'kelurahan_lama',
         'kecamatan',
         'desa_kelurahan',
         'type',

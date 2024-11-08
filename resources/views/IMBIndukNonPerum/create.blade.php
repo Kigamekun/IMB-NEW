@@ -11,123 +11,80 @@
                 <div class="p-6 text-gray-900">
                     <h3 class="text-3xl font-bold">Tambah Data IMB Induk Non Perum</h3>
                     <br>
-                    <form id="mainForm" action="{{ route('IMBIndukNonPerum.store') }}" method="POST"
-                        enctype="multipart/form-data">
+                    <form id="mainForm" action="{{ route('IMBIndukNonPerum.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="contoh_jenis" class="form-label">Contoh Jenis:</label>
-                                <select name="contoh_jenis" id="contoh_jenis" class="form-select select2" required>
+                                <label for="imb_induk" class="form-label">IMB Induk</label>
+                                <input type="text" class="form-control" id="imb_induk" name="imb_induk" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="tgl_imb_induk" class="form-label">Tgl IMB Induk</label>
+                                <input type="date" class="form-control" id="tgl_imb_induk" name="tgl_imb_induk" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="no_register" class="form-label">No Register</label>
+                                <input type="text" class="form-control" id="no_register" name="no_register" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="tgl_register" class="form-label">Tgl Register</label>
+                                <input type="date" class="form-control" id="tgl_register" name="tgl_register" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="nama" class="form-label">Nama</label>
+                                <input type="text" class="form-control" id="nama" name="nama" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="atas_nama" class="form-label">Atas Nama</label>
+                                <input type="text" class="form-control" id="atas_nama" name="atas_nama" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="lokasi_perumahan" class="form-label">Lokasi Perumahan</label>
+                                <input type="text" class="form-control" id="lokasi_perumahan" name="lokasi_perumahan"
+                                    required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="kecamatan" class="form-label">Kecamatan</label>
+                                <select class="form-control select2-kecamatan" id="kecamatan" name="kecamatan" required>
+                                    <option></option> <!-- Placeholder option -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="kelurahan" class="form-label">Desa/Kelurahan</label>
+                                <select class="form-control select2-kelurahan" id="kelurahan" name="kelurahan" required>
+                                    <option></option> <!-- Placeholder option -->
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="jenis" class="form-label">Contoh Jenis:</label>
+                                <select name="jenis" id="jenis" class="form-select data-master" required>
                                     @foreach (DB::table('master_jenis_non_perum')->get() as $master_jenis)
                                         <option value="{{ $master_jenis->id }}">{{ $master_jenis->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-6">
-                                <label for="imb_induk_non_perum" class="form-label">No. IMB Induk Non Perum:</label>
-                                <input type="text" name="imb_induk_non_perum" class="form-control"
-                                    id="imb_induk_non_perum" required>
+                        </div>
+
+
+                        <div class="d-flex justify-content-end">
+                            <div class="mb-3">
+                                <label for="entryCount" class="form-label">Jumlah Entry Item:</label>
+                                <input type="number" class="form-control" id="entryCount" min="1" name="entryCount"
+                                    placeholder="Masukkan jumlah entry">
+                                <button type="button" class="btn btn-primary mt-2 w-100" onclick="generateForms()">Generate
+                                    Item
+                                    Forms</button>
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="tgl_imb_induk_non_perum" class="form-label">Tgl. IMB Induk Non Perum:</label>
-                                <input type="date" name="tgl_imb_induk_non_perum" class="form-control"
-                                    id="tgl_imb_induk_non_perum" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="no_register" class="form-label">No Register:</label>
-                                <input type="text" name="no_register" class="form-control" id="no_register">
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="tgl_register" class="form-label">Tgl Register:</label>
-                                <input type="date" name="tgl_register" class="form-control" id="tgl_register">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="nama" class="form-label">Nama:</label>
-                                <input type="text" name="nama" class="form-control" id="nama" required>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="atas_nama" class="form-label">Atas Nama:</label>
-                                <input type="text" name="atas_nama" class="form-control" id="atas_nama">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="lokasi_perumahan" class="form-label">Lokasi / Perumahan:</label>
-                                <input type="text" name="lokasi_perumahan" class="form-control" id="lokasi_perumahan">
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="jenis_kegiatan" class="form-label">Jenis Kegiatan:</label>
-                                <select name="jenis_kegiatan" id="jenis_kegiatan" class="form-select select2" required>
-                                    @foreach (DB::table('app_md_jeniskeg')->get() as $jenis_keg)
-                                        <option value="{{ $jenis_keg->id_jeniskeg }}">{{ $jenis_keg->name_jeniskeg }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="fungsi_bangunan" class="form-label">Fungsi Bangunan:</label>
-                                <select name="fungsi_bangunan" id="fungsi_bangunan" class="form-select select2" required>
-                                    @foreach (DB::table('app_md_fungsibang')->get() as $fungsi_bang)
-                                        <option value="{{ $fungsi_bang->id_fungsibang }}">
-                                            {{ $fungsi_bang->name_fungsibang }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="kecamatan" class="form-label">Kecamatan:</label>
-                                <select name="kecamatan" id="kecamatan" class="form-select select2-kecamatan" required>
-                                    <option value="">Pilih Kecamatan</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="desa_kelurahan" class="form-label">Desa / Kelurahan:</label>
-                                <select name="desa_kelurahan" id="desa_kelurahan"
-                                    class="form-select select2 select2-kelurahan" required>
-                                    <option value="">Pilih Desa/Kelurahan</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="luas" class="form-label">Luas:</label>
-                                <input type="text" pattern="^\d+(\.\d+)?$" name="luas" class="form-control"
-                                    id="luas">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="detail_luas_bangunan" class="form-label">Detail Luas Bangunan:</label>
-                                <input type="text" name="detail_luas_bangunan" class="form-control"
-                                    id="detail_luas_bangunan">
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="keterangan" class="form-label">Keterangan:</label>
-                                <textarea name="keterangan" class="form-control" id="keterangan"></textarea>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="scan_imb" class="form-label">Scan IMB:</label>
-                                <input type="file" name="scan_imb" class="form-control" id="scan_imb"
-                                    accept=".pdf, .jpg, .jpeg, .png">
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="jenis_buku" class="form-label">Jenis Buku:</label>
-                                <select name="jenis_buku" id="jenis_buku" class="form-select select2" required>
-                                    <option value="perorangan">Perorangan</option>
-                                    <option value="perusahaan">Perusahaan</option>
-                                    <option value="sosbud">Sosial Budaya</option>
-                                </select>
-                            </div>
-                        </div>
+                        <div id="formContainer"></div>
                         <button type="submit" class="btn btn-success mt-3">Submit</button>
                     </form>
                 </div>
@@ -219,46 +176,88 @@
         }
 
 
+
+
+
+        // Fetch data from the database and convert it to a JavaScript object
+        var jenisKegiatan = @json(DB::table('app_md_jeniskeg')->get());
+        var fungsiBangunan = @json(DB::table('app_md_fungsibang')->get());
+
         function initializeSelect2() {
-            $('.select2').select2({
+            $('.data-master').select2({
                 width: '100%', // Adjust the width as needed
                 placeholder: 'Pilih opsi',
             });
+        }
 
+        function generateForms() {
+            const entryCount = document.getElementById('entryCount').value;
+            const formContainer = document.getElementById('formContainer');
+            formContainer.innerHTML = ''; // Reset form container
 
+            for (let i = 0; i < entryCount; i++) {
+                const section = document.createElement('div');
+                section.className = 'mb-4 border rounded p-4';
 
-            $('.select2-imb-induk').select2({
-                width: '100%',
-                placeholder: 'Pilih IMB Induk',
-                minimumInputLength: 2,
-                ajax: {
-                    url: "{{ route('master.imb-induk') }}", // URL to fetch kecamatan data
-                    dataType: 'json',
-                    delay: 250,
-                    data: function(params) {
-                        return {
-                            q: params.term,
-                            page: params.page || 1
-                        };
-                    },
-                    processResults: function(data, params) {
-                        console.log("Fetched data:", data); // Check data structure here
-                        return {
-                            results: data.items.map(function(item) {
-                                return {
-                                    id: item.id,
-                                    text: item.text
-                                };
-                            })
-                        };
-                    },
-                    cache: true
-                }
-            }).on('select2:select', function(e) {
-                console.log("Selected IMB:", e.params.data);
-                split = e.params.data.text.split(' | ');
-                $('#tgl_imb_induk').val(split[1]);
-            });
+                // Create options for fungsi_bangunan dynamically
+                const fungsiBangunanOptions = fungsiBangunan.map(item =>
+                    `<option value="${item.id_fungsibang}">${item.name_fungsibang}</option>`
+                ).join('');
+
+                // Create options for jenis_kegiatan dynamically
+                const jenisKegiatanOptions = jenisKegiatan.map(item =>
+                    `<option value="${item.name_jeniskeg}">${item.name_jeniskeg}</option>`
+                ).join('');
+
+                section.innerHTML = `
+                    <h4>Item ${i + 1}</h4>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="type_${i}" class="form-label">Type</label>
+                            <input type="text" class="form-control" id="type_${i}" name="type_${i}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="luas_bangunan_${i}" class="form-label">Luas Bangunan</label>
+                            <input type="text" class="form-control" id="luas_bangunan_${i}" name="luas_bangunan_${i}" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="jumlah_unit_${i}" class="form-label">Jumlah Unit</label>
+                            <input type="number" class="form-control" id="jumlah_unit_${i}" name="jumlah_unit_${i}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="fungsi_bangunan_${i}" class="form-label">Fungsi Bangunan</label>
+                            <select class="form-select data-master" id="fungsi_bangunan_${i}" name="fungsi_bangunan_${i}" required>
+                                ${fungsiBangunanOptions}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="jenis_kegiatan_${i}" class="form-label">Jenis Kegiatan</label>
+                            <select class="form-select data-master" id="jenis_kegiatan_${i}" name="jenis_kegiatan_${i}" required>
+                                ${jenisKegiatanOptions}
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="keterangan_${i}" class="form-label">Keterangan</label>
+                            <input type="text" class="form-control" id="keterangan_${i}" name="keterangan_${i}" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="scan_imb_${i}" class="form-label">Scan IMB</label>
+                            <input type="file" class="form-control" id="scan_imb_${i}" name="scan_imb_${i}" accept=".pdf, .jpg, .jpeg, .png">
+                        </div>
+                    </div>
+                `;
+
+                formContainer.appendChild(section);
+            }
+
+            // Re-initialize Select2 for newly added elements
+            initializeSelect2();
         }
 
         // Initialize Select2 on page load for any pre-existing select elements

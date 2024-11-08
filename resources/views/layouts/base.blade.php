@@ -26,12 +26,9 @@
 </head>
 
 <body>
-
     @php
         $currentPath = request()->path();
     @endphp
-
-
     <div id="app">
         <div class="main-wrapper">
             <div class="navbar-bg"></div>
@@ -98,17 +95,42 @@
                         <li><a class="nav-link {{ Str::contains($currentPath, 'IMBIndukNonPerum') ? 'text-primary' : '' }}"
                                 href="{{ route('IMBIndukNonPerum.index') }}"><i class="fas fa-fire"></i>
                                 <span>IMB Induk Non Perum</span></a></li>
+                        <li class="menu-header">Sinkronisasi Data IMB</li>
+                        <li class="dropdown {{ Str::contains($currentPath, 'IMBTidakLengkap') ? 'active' : '' }}">
+                            <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Data Tidak
+                                    Lengkap</span></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="nav-link {{ Str::contains($currentPath, 'IMBTidakLengkap/pecahan') ? 'text-primary' : '' }}"
+                                        href="{{ route('DataIMBTidakLengkap.pecahan') }}"><i class="fas fa-fire"></i>
+                                        <span>IMB Pecahan </span></a></li>
+                                <li><a class="nav-link {{ Str::contains($currentPath, 'IMBTidakLengkap/perluasan') ? 'text-primary' : '' }}"
+                                        href="{{ route('DataIMBTidakLengkap.perluasan') }}"><i class="fas fa-fire"></i>
+                                        <span>IMB Perluasan </span></a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown {{ Str::contains($currentPath, 'SinkronisasiLokasiIMB') ? 'active' : '' }}">
+                            <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Sinkronisasi Lokasi</span></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="nav-link {{ request()->query('type') === null ? 'text-primary' : '' }}"
+                                        href="{{ route('SinkronisasiLokasiIMB.index') }}"><i class="fas fa-fire"></i>
+                                        <span>Induk</span></a></li>
+                                <li><a class="nav-link {{ request()->query('type') === 'pecahan' ? 'text-primary' : '' }}"
+                                        href="{{ route('SinkronisasiLokasiIMB.index') }}?type=pecahan"><i class="fas fa-fire"></i>
+                                        <span>Pecahan</span></a></li>
+                                <li><a class="nav-link {{ request()->query('type') === 'perluasan' ? 'text-primary' : '' }}"
+                                        href="{{ route('SinkronisasiLokasiIMB.index') }}?type=perluasan"><i class="fas fa-fire"></i>
+                                        <span>Perluasan</span></a></li>
+                                <li><a class="nav-link {{ request()->query('type') === 'non_perum' ? 'text-primary' : '' }}"
+                                        href="{{ route('SinkronisasiLokasiIMB.index') }}?type=non_perum"><i class="fas fa-fire"></i>
+                                        <span>Non Perum</span></a></li>
+                            </ul>
+                        </li>
 
-                        <li><a class="nav-link {{ Str::contains($currentPath, 'IMBTidakLengkap') ? 'text-primary' : '' }}"
-                                href="{{ route('DataIMBTidakLengkap.index') }}"><i class="fas fa-fire"></i>
-                                <span>Data IMB Tidak Lengkap</span></a></li>
                         <li><a class="nav-link {{ Str::contains($currentPath, 'surat') ? 'text-primary' : '' }}"
                                 href="{{ route('surat.index') }}"><i class="fas fa-fire"></i>
-                                <span>Buat Surat</span></a></li>
+                                <span>Surat Keterangan IMBG</span></a></li>
                 </aside>
             </div>
-
-            <!-- Main Content -->
             <div class="main-content">
                 <section class="section">
                     @yield('content')
@@ -197,12 +219,10 @@
         </script>
     @endif
 
-
     <script>
         function confirmDelete(event) {
             event.preventDefault();
             const form = event.target.closest('form');
-
             if (form !== null) {
                 const item = event.target.getAttribute('data-item') || 'item ini';
                 Swal.fire({
@@ -236,7 +256,6 @@
             }
         }
     </script>
-
     @yield('scripts')
 </body>
 

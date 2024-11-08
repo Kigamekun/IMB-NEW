@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\{IMBController,DataIMBTidaklengkapController, MasterController, SuratController, IMBIndukNonPerumController, IMBIndukPerumController, IMBTidakLengkapController, IMBPerluasanController, IMBPecahanController, IMBBersyaratController, IMBPelunasanController, IMBPemutihanController};
+use App\Http\Controllers\{IMBController,DataIMBTidaklengkapController, MasterController,SinkronisasiLokasiIMBController, SuratController, IMBIndukNonPerumController, IMBIndukPerumController, IMBTidakLengkapController, IMBPerluasanController, IMBPecahanController, IMBBersyaratController, IMBPelunasanController, IMBPemutihanController};
 
 Route::get('/', function () {
     return view('welcome');
@@ -33,6 +33,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('IMBIndukPerum')->group(function () {
         Route::get('/', [IMBIndukPerumController::class, 'index'])->name('IMBIndukPerum.index');
+        Route::get('/items', [IMBIndukPerumController::class, 'items'])->name('IMBIndukPerum.items');
         Route::get('/create', [IMBIndukPerumController::class, 'create'])->name('IMBIndukPerum.create');
         Route::post('/store', [IMBIndukPerumController::class, 'store'])->name('IMBIndukPerum.store');
         Route::get('/edit/{id}', [IMBIndukPerumController::class, 'edit'])->name('IMBIndukPerum.edit');
@@ -55,7 +56,24 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/import', [IMBPecahanController::class, 'importData'])->name('IMBPecahan.importData');
         Route::get('/export', [IMBPecahanController::class, 'exportData'])->name('IMBPecahan.export');
         Route::get('/download-template', [IMBPecahanController::class, 'downloadTemplate'])->name('IMBPecahan.download-template');
+    });
 
+    Route::prefix('SinkronisasiLokasiIMB')->group(function () {
+        Route::get('/hubungkan', [SinkronisasiLokasiIMBController::class, 'hubungkan'])->name('SinkronisasiLokasiIMB.hubungkan');
+        Route::get('/', [SinkronisasiLokasiIMBController::class, 'index'])->name('SinkronisasiLokasiIMB.index');
+        Route::post('/hubungkan', [SinkronisasiLokasiIMBController::class, 'hubungkanStore'])->name('SinkronisasiLokasiIMB.hubungkanStore');
+
+
+
+        Route::get('/create', [SinkronisasiLokasiIMBController::class, 'create'])->name('SinkronisasiLokasiIMB.create');
+        Route::post('/store', [SinkronisasiLokasiIMBController::class, 'store'])->name('SinkronisasiLokasiIMB.store');
+        Route::get('/edit/{id}', [SinkronisasiLokasiIMBController::class, 'edit'])->name('SinkronisasiLokasiIMB.edit');
+        Route::put('/update/{id}', [SinkronisasiLokasiIMBController::class, 'update'])->name('SinkronisasiLokasiIMB.update');
+        Route::delete('/delete/{id}', [SinkronisasiLokasiIMBController::class, 'destroy'])->name('SinkronisasiLokasiIMB.destroy');
+        Route::get('/import', [SinkronisasiLokasiIMBController::class, 'import'])->name('SinkronisasiLokasiIMB.import');
+        Route::post('/import', [SinkronisasiLokasiIMBController::class, 'importData'])->name('SinkronisasiLokasiIMB.importData');
+        Route::get('/export', [SinkronisasiLokasiIMBController::class, 'exportData'])->name('SinkronisasiLokasiIMB.export');
+        Route::get('/download-template', [SinkronisasiLokasiIMBController::class, 'downloadTemplate'])->name('SinkronisasiLokasiIMB.download-template');
     });
 
     Route::prefix('IMBPerluasan')->group(function () {
@@ -74,6 +92,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('IMBIndukNonPerum')->group(function () {
         Route::get('/', [IMBIndukNonPerumController::class, 'index'])->name('IMBIndukNonPerum.index');
+        Route::get('/items', [IMBIndukNonPerumController::class, 'items'])->name('IMBIndukNonPerum.items');
+
         Route::get('/create', [IMBIndukNonPerumController::class, 'create'])->name('IMBIndukNonPerum.create');
         Route::post('/store', [IMBIndukNonPerumController::class, 'store'])->name('IMBIndukNonPerum.store');
         Route::get('/edit/{id}', [IMBIndukNonPerumController::class, 'edit'])->name('IMBIndukNonPerum.edit');
@@ -88,8 +108,10 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::prefix('IMBTidakLengkap')->group(function () {
-        Route::get('/', [DataIMBTidaklengkapController::class, 'index'])->name('DataIMBTidakLengkap.index');
-        Route::post('/pair', [DataIMBTidaklengkapController::class, 'pair'])->name('DataIMBTidakLengkap.pair');
+        Route::get('/pecahan', [DataIMBTidaklengkapController::class, 'pecahan'])->name('DataIMBTidakLengkap.pecahan');
+        Route::get('/perluasan', [DataIMBTidaklengkapController::class, 'perluasan'])->name('DataIMBTidakLengkap.perluasan');
+        Route::post('/pair-pecahan', [DataIMBTidaklengkapController::class, 'pairPecahan'])->name('DataIMBTidakLengkap.pair-pecahan');
+        Route::post('/pair-perluasan', [DataIMBTidaklengkapController::class, 'pairPerluasan'])->name('DataIMBTidakLengkap.pair-perluasan');
 
     });
 

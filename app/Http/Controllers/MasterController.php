@@ -162,13 +162,24 @@ class MasterController extends Controller
         $page = $request->input('page', 1);
         $pageSize = 10;
 
-        // Fetch data with pagination and search term
-        $query = DB::table('imb_induk_perum')->select('id', 'imb_induk','tgl_imb_induk');
-        if ($search) {
-            $query->where('imb_induk', 'like', '%' . $search . '%');
-        }
+        // Base query to fetch data from imb_induk_perum and imb_induk_non_perum
+        $query = DB::table('imb_induk_perum')
+            ->select('id', 'imb_induk', 'tgl_imb_induk', DB::raw("'perum' as jenis"))
+            ->when($search, function ($query, $search) {
+                $query->where('imb_induk', 'like', '%' . $search . '%');
+            })
+            ->unionAll(
+                DB::table('imb_induk_non_perum')
+                    ->select('id', 'imb_induk', 'tgl_imb_induk', DB::raw("'non_perum' as jenis"))
+                    ->when($search, function ($query, $search) {
+                        $query->where('imb_induk', 'like', '%' . $search . '%');
+                    })
+            );
 
-        $results = $query->offset(($page - 1) * $pageSize)
+        // Apply pagination
+        $results = DB::table(DB::raw("({$query->toSql()}) as combined"))
+            ->mergeBindings($query)
+            ->offset(($page - 1) * $pageSize)
             ->limit($pageSize)
             ->get();
 
@@ -177,8 +188,8 @@ class MasterController extends Controller
         return response()->json([
             'items' => $results->map(function ($item) {
                 return [
-                    'id' => $item->imb_induk. ' | ' . $item->tgl_imb_induk,
-                    'text' => $item->imb_induk. ' | ' . $item->tgl_imb_induk
+                    'id' => $item->imb_induk . ' | ' . $item->tgl_imb_induk . ' | ' . $item->jenis,
+                    'text' => $item->imb_induk . ' | ' . $item->tgl_imb_induk . ' | ' . $item->jenis
                 ];
             }),
             'pagination' => [
@@ -188,6 +199,7 @@ class MasterController extends Controller
     }
 
 
+
     public function getIMBPecahan(Request $request)
     {
         $search = $request->input('q');
@@ -195,7 +207,7 @@ class MasterController extends Controller
         $pageSize = 10;
 
         // Fetch data with pagination and search term
-        $query = DB::table('imb_pecahan')->select('id', 'imb_pecahan','tgl_imb_pecahan');
+        $query = DB::table('imb_pecahan')->select('id', 'imb_pecahan', 'tgl_imb_pecahan');
         if ($search) {
             $query->where('imb_pecahan', 'like', '%' . $search . '%');
         }
@@ -209,8 +221,8 @@ class MasterController extends Controller
         return response()->json([
             'items' => $results->map(function ($item) {
                 return [
-                    'id' => $item->imb_pecahan. ' | ' . $item->tgl_imb_pecahan,
-                    'text' => $item->imb_pecahan. ' | ' . $item->tgl_imb_pecahan
+                    'id' => $item->imb_pecahan . ' | ' . $item->tgl_imb_pecahan,
+                    'text' => $item->imb_pecahan . ' | ' . $item->tgl_imb_pecahan
                 ];
             }),
             'pagination' => [

@@ -127,6 +127,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/lihat/{id}', [SuratController::class, 'lihatSurat'])->name('surat.lihat');
         Route::get('/format-1', [SuratController::class, 'format1'])->name('surat.format-1');
         Route::get('/format-3', [SuratController::class, 'format3'])->name('surat.format-3');
+        Route::post('/preview', [SuratController::class, 'preview'])->name('surat.preview');
 
         Route::delete('/destroy', [SuratController::class, 'destroy'])->name('surat.destroy');
 

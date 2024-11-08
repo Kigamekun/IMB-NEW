@@ -180,24 +180,27 @@
                                     </tr>
                                     <tr>
                                         <td>1</td>
-                                        <td><input type="text" name="details[0][type]" style="width: 50px" class="form-control" required>
+                                        <td><input type="text" name="details[0][type]" style="width: 50px"
+                                                class="form-control" required>
                                         </td>
-                                        <td><input type="text" name="details[0][jumlah]" style="width: 50px"  class="form-control"
-                                                required></td>
-                                        <td><input type="text" name="details[0][pecah_type]" style="width: 50px"  class="form-control">
+                                        <td><input type="text" name="details[0][jumlah]" style="width: 50px"
+                                                class="form-control" required></td>
+                                        <td><input type="text" name="details[0][pecah_type]" style="width: 50px"
+                                                class="form-control">
                                         </td>
-                                        <td><input type="text" name="details[0][pecah_jumlah]" style="width: 50px"  class="form-control">
+                                        <td><input type="text" name="details[0][pecah_jumlah]" style="width: 50px"
+                                                class="form-control">
                                         </td>
                                         <td><input type="text" name="details[0][belum_rincik_type]"
-                                                style="width: 50px"  class="form-control"></td>
+                                                style="width: 50px" class="form-control"></td>
                                         <td><input type="text" name="details[0][belum_rincik_jumlah]"
-                                                style="width: 50px"  class="form-control"></td>
+                                                style="width: 50px" class="form-control"></td>
                                         <td><input type="text" name="details[0][sudah_dimohon_type]"
-                                                style="width: 50px"  class="form-control"></td>
+                                                style="width: 50px" class="form-control"></td>
                                         <td><input type="text" name="details[0][sudah_dimohon_jumlah]"
-                                                style="width: 50px"  class="form-control"></td>
+                                                style="width: 50px" class="form-control"></td>
                                         <td><input type="text" name="details[0][sudah_dimohon_keterangan]"
-                                                style="width: 100px"  class="form-control"></td>
+                                                style="width: 100px" class="form-control"></td>
                                         <td><button type="button" class="btn btn-danger remove-detail">-</button>
                                         </td>
                                     </tr>
@@ -222,11 +225,9 @@
                                         </tr>
                                         <tr>
                                             <td>1</td>
-                                            <td><input type="text" name="details2[0][type]" class="form-control"
-                                                    >
+                                            <td><input type="text" name="details2[0][type]" class="form-control">
                                             </td>
-                                            <td><input type="text" name="details2[0][blok]" class="form-control"
-                                                    >
+                                            <td><input type="text" name="details2[0][blok]" class="form-control">
                                             </td>
                                             <td><input type="text" name="details2[0][nomor]" class="form-control">
                                             </td>
@@ -244,7 +245,8 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Simpan dan Cetak</button>
+                            <button type="button" id="preview-surat" class="btn btn-primary">Preview Surat</button>
+                            <button type="submit" class="btn btn-success">Simpan dan Cetak</button>
                         </div>
                     </form>
                 </div>
@@ -458,12 +460,67 @@
         });
 
         $('#jenisSurat').on('change', function() {
-                if ($(this).val() === 'format-1') {
-                    $('#detail-2').hide();
+            if ($(this).val() === 'format-1') {
+                $('#detail-2').hide();
 
-                } else {
-                    $('#detail-2').show();
-                }
+            } else {
+                $('#detail-2').show();
+            }
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function() {
+            $('#preview-surat').click(function() {
+                // Ambil data dari form
+                let dataSurat = {
+                    jenisSurat: $('#jenisSurat').val(),
+                    tahun: $('#tahun').val(),
+                    nomorSurat: $('#nomorSurat').val(),
+                    tanggalSurat: $('#tanggalSurat').val(),
+                    lampiran: $('#lampiran').val(),
+                    sifat: $('#sifat').val(),
+                    perihal: $('#perihal').val(),
+                    permohonanTanggal: $('#permohonanTanggal').val(),
+                    nama: $('#nama').val(),
+                    provinsi: $('#provinsi').val(),
+                    kabupaten: $('#kabupaten').val(),
+                    kecamatan: $('#kecamatan').val(),
+                    alamat: $('#alamat').val(),
+                    tujuanSurat: $('#tujuanSurat').val(),
+                    registerNomor: $('#registerNomor').val(),
+                    registerTanggal: $('#registerTanggal').val(),
+                    imbgNomor: $('#imbgNomor').val(),
+                    imbgTanggal: $('#imbgTanggal').val(),
+                    kepalaDinas: $('#kepalaDinas').val(),
+                    nip: $('#nip').val(),
+                    pangkat: $('#pangkat').val(),
+                    ket1: $('#ket1').val(),
+                    ket2: $('#ket2').val(),
+                    ket3: $('#ket3').val(),
+                    details: [],
+                    details2: []
+                };
+
+                // Kirim data dengan AJAX
+                $.ajax({
+                    url: "{{ route('surat.preview') }}", // Buat route di Laravel untuk preview
+                    type: "POST",
+                    data: dataSurat,
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        // Buat jendela baru untuk menampilkan preview
+                        let previewWindow = window.open('', '_blank');
+                        previewWindow.document.write(response);
+                    },
+                    error: function(xhr) {
+                        alert('Terjadi kesalahan saat memuat preview surat.');
+                    }
+                });
+            });
         });
     </script>
 @endsection

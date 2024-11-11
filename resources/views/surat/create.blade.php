@@ -9,7 +9,7 @@
         <div style="width: 90%;margin:auto">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5 rounded">
                 <div class="container">
-                    <form action="{{ route('surat.store') }}" method="POST" class="form-container">
+                    <form id="suratForm" action="{{ route('surat.store') }}" method="POST" class="form-container">
                         @csrf
                         <div class="section-title">JENIS SURAT</div>
                         <div class="row mb-3">
@@ -17,6 +17,7 @@
                                 <label for="jenisSurat" class="form-label">Jenis Surat:</label>
                                 <select id="jenisSurat" name="jenisSurat" class="form-control form-select">
                                     <option value="format-1">FORMAT-1</option>
+                                    <option value="format-2">FORMAT-2</option>
                                     <option value="format-3">FORMAT-3</option>
                                 </select>
                             </div>
@@ -64,35 +65,44 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="provinsi" class="form-label">Provinsi:</label>
-                                <select id="provinsi" name="provinsi" class="form-select select2-provinsi">
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="kabupaten" class="form-label">Kabupaten/Kota:</label>
-                                <select id="kabupaten" name="kabupaten" class="form-select select2 select2-kabupaten">
-                                    <option value="">--- PILIH ---</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="kecamatan" class="form-label">Kecamatan:</label>
-                                <select id="kecamatan" name="kecamatan" class="form-select select2 select2-kecamatan">
-                                    <option value="">--- PILIH ---</option>
-                                </select>
+                                <label for="bertindak_atas_nama" class="form-label">Bertindak Atas Nama:</label>
+                                <input type="text" id="bertindak_atas_nama" name="bertindak_atas_nama"
+                                    class="form-control">
                             </div>
                             <div class="col-md-6">
                                 <label for="alamat" class="form-label">Alamat:</label>
                                 <input type="text" id="alamat" name="alamat" class="form-control">
                             </div>
                         </div>
+
+
+
+
+
+
                         <div class="section-title">REFERENSI</div>
                         <div class="row mb-3">
                             <div class="col-md-6">
+                                <label for="izin_mendirikan_bangunan_atas_nama" class="form-label">Izin Mendirikan
+                                    Bangunan atas nama :</label>
+                                <input type="text" id="izin_mendirikan_bangunan_atas_nama"
+                                    name="izin_mendirikan_bangunan_atas_nama" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="lokasi" class="form-label">Lokasi:</label>
+                                <input type="text" id="lokasi" name="lokasi" class="form-control">
+                            </div>
+                        </div>
+
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
                                 <label for="tujuanSurat" class="form-label">Tujuan Surat:</label>
-                                <select id="tujuanSurat" name="tujuanSurat" class="form-select form-control">
-                                    <option value="pemutakhiran-data">Pemutakhiran Data</option>
+                                <select id="tujuanSurat" name="tujuanSurat" class="form-select form-control select2">
+                                    <option value="">--- PILIH ---</option>
+                                    @foreach (DB::table('master_tujuan_surat')->get() as $tujuan)
+                                        <option value="{{ $tujuan->nama }}">{{ $tujuan->nama }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-md-6">
@@ -118,23 +128,93 @@
                             <input type="date" id="imbgTanggal" name="imbgTanggal" class="form-control"
                                 value="2024-10-29">
                         </div>
-                        <div class="section-title">PENANDATANGAN</div>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="kepalaDinas" class="form-label">Kepala Dinas:</label>
-                                <input type="text" id="kepalaDinas" name="kepalaDinas" class="form-control"
-                                    value="JUANDA DIMANSYAH, SE, MM">
+                                <label for="provinsi" class="form-label">Provinsi:</label>
+                                <select id="provinsi" name="provinsi" class="form-select select2-provinsi">
+                                </select>
                             </div>
                             <div class="col-md-6">
+                                <label for="kabupaten" class="form-label">Kabupaten/Kota:</label>
+                                <select id="kabupaten" name="kabupaten" class="form-select select2 select2-kabupaten">
+                                    <option value="">--- PILIH ---</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="kecamatan" class="form-label">Kecamatan:</label>
+                                <select id="kecamatan" name="kecamatan" class="form-select select2 select2-kecamatan">
+                                    <option value="">--- PILIH ---</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="kelurahan" class="form-label">Kelurahan:</label>
+                                <select id="kelurahan" name="kelurahan" class="form-select select2 select2-kelurahan">
+                                    <option value="">--- PILIH ---</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="provinsi-terdahulu" class="form-label">Provinsi Terdahulu:</label>
+                                <input type="text" id="provinsi-terdahulu" name="provinsi-terdahulu"
+                                    class="form-control" value="">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="kabupaten-terdahulu" class="form-label">Kabupaten/Kota Terdahulu:</label>
+                                <input type="text" id="kabupaten-terdahulu" name="kabupaten-terdahulu"
+                                    class="form-control" value="">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="kecamatan-terdahulu" class="form-label">Kecamatan Terdahulu:</label>
+                                <input type="text" id="kecamatan-terdahulu" name="kecamatan-terdahulu"
+                                    class="form-control" value="">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="kelurahan-terdahulu" class="form-label">Kelurahan Terdahulu:</label>
+                                <input type="text" id="kelurahan-terdahulu" name="kelurahan-terdahulu"
+                                    class="form-control" value="">
+                            </div>
+
+                        </div>
+
+                        <div class="section-title">PENANDATANGAN</div>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label for="kepalaDinas" class="form-label">Kepala Dinas:</label>
+                                {{-- <input type="text" id="kepalaDinas" name="kepalaDinas" class="form-control"
+                                    value="JUANDA DIMANSYAH, SE, MM"> --}}
+                                <select id="kepalaDinas" name="kepalaDinas" class="form-select form-control select2">
+                                    <option value="">--- PILIH ---</option>
+                                    @foreach (DB::table('app_md_user')->whereNotIn('nip_user', ['-', '', '.'])->get() as $user)
+                                        <option
+                                            value="{{ $user->nip_user . ' | ' . strtoupper($user->name_user) . $user->gelar_blk }}">
+                                            {{ $user->nip_user . ' | ' . strtoupper($user->name_user) . $user->gelar_blk }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            {{-- <div class="col-md-6">
                                 <label for="nip" class="form-label">NIP:</label>
                                 <input type="text" id="nip" name="nip" class="form-control"
                                     value="196503241986031011">
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="mb-3">
                             <label for="pangkat" class="form-label">Pangkat/Golongan:</label>
-                            <input type="text" id="pangkat" name="pangkat" class="form-control"
-                                value="Pembina Utama Muda">
+                            <select id="pangkat" name="pangkat" class="form-select form-control select2">
+                                <option value="">--- PILIH ---</option>
+                                @foreach (DB::table('app_md_golongan')->get() as $golongan)
+                                    <option value="{{ $golongan->name_golongan }}">{{ $golongan->name_golongan }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="section-title">KETERANGAN</div>
                         <div class="mb-3">
@@ -151,63 +231,63 @@
                         </div>
                         <br>
                         <div class="container mt-4">
-                            <h4 class="text-">Detail Data IMBG</h4>
-                            <br>
-                            {{-- <div class="form-group">
-                                <label for="jumlah_item">Jumlah Item:</label>
-                                <input type="number" class="form-control" id="jumlah_item" name="jumlah_item" value="3">
-                            </div> --}}
-                            <table class="table-bordered table ">
-                                <tbody id="details">
-                                    <tr>
-                                        <th rowspan="2">No</th>
-                                        <th colspan="2">Data IMBG</th>
-                                        <th colspan="2">Pecah/Rincik </th>
-                                        <th colspan="2">Belum Rincik/Pecah</th>
-                                        <th colspan="3">Sudah Dimohon Surat Keterangan</th>
-                                        <th rowspan="2">Hapus</th>
-                                    </tr>
-                                    <tr>
-                                        <th>Type</th>
-                                        <th>Jumlah (Unit)</th>
-                                        <th>Type</th>
-                                        <th>Jumlah (Unit)</th>
-                                        <th>Type</th>
-                                        <th>Jumlah (Unit)</th>
-                                        <th>Type</th>
-                                        <th>Jumlah (Unit)</th>
-                                        <th>Keterangan</th>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td><input type="text" name="details[0][type]" style="width: 50px"
-                                                class="form-control" required>
-                                        </td>
-                                        <td><input type="text" name="details[0][jumlah]" style="width: 50px"
-                                                class="form-control" required></td>
-                                        <td><input type="text" name="details[0][pecah_type]" style="width: 50px"
-                                                class="form-control">
-                                        </td>
-                                        <td><input type="text" name="details[0][pecah_jumlah]" style="width: 50px"
-                                                class="form-control">
-                                        </td>
-                                        <td><input type="text" name="details[0][belum_rincik_type]"
-                                                style="width: 50px" class="form-control"></td>
-                                        <td><input type="text" name="details[0][belum_rincik_jumlah]"
-                                                style="width: 50px" class="form-control"></td>
-                                        <td><input type="text" name="details[0][sudah_dimohon_type]"
-                                                style="width: 50px" class="form-control"></td>
-                                        <td><input type="text" name="details[0][sudah_dimohon_jumlah]"
-                                                style="width: 50px" class="form-control"></td>
-                                        <td><input type="text" name="details[0][sudah_dimohon_keterangan]"
-                                                style="width: 100px" class="form-control"></td>
-                                        <td><button type="button" class="btn btn-danger remove-detail">-</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="d-flex justify-content-end">
-                                <button type="button" id="add-detail" class="btn btn-success">Tambah Detail</button>
+                            {{-- <h4 class="text-">Detail Data IMBG</h4> --}}
+                            {{-- <br> --}}
+                            <div id="detail" style="display: none">
+                                <table class="table-bordered table ">
+                                    <tbody id="details">
+                                        <tr>
+                                            <th colspan="2">Data IMBG</th>
+                                            <th colspan="2">Pecah/Rincik </th>
+                                            <th colspan="2">Belum Rincik/Pecah</th>
+                                            <th colspan="2">Sudah Dimohon Surat Keterangan</th>
+                                            <th rowspan="2">Hapus</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Type</th>
+                                            <th>Jumlah (Unit)</th>
+                                            <th>Type</th>
+                                            <th>Jumlah (Unit)</th>
+                                            <th>Type</th>
+                                            <th>Jumlah (Unit)</th>
+                                            <th>Type</th>
+                                            <th>Jumlah (Unit)</th>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" name="details[0][type]" style="width: 50px"
+                                                    class="form-control">
+                                            </td>
+                                            <td><input type="text" name="details[0][jumlah]" style="width: 50px"
+                                                    class="form-control"></td>
+                                            <td><input type="text" name="details[0][pecah_type]" style="width: 50px"
+                                                    class="form-control">
+                                            </td>
+                                            <td><input type="text" name="details[0][pecah_jumlah]" style="width: 50px"
+                                                    class="form-control">
+                                            </td>
+                                            <td><input type="text" name="details[0][belum_rincik_type]"
+                                                    style="width: 50px" class="form-control"></td>
+                                            <td><input type="text" name="details[0][belum_rincik_jumlah]"
+                                                    style="width: 50px" class="form-control"></td>
+                                            <td><input type="text" name="details[0][sudah_dimohon_type]"
+                                                    style="width: 50px" class="form-control"></td>
+                                            <td><input type="text" name="details[0][sudah_dimohon_jumlah]"
+                                                    style="width: 50px" class="form-control"></td>
+                                            <td rowspan="2"><button type="button"
+                                                    class="btn btn-danger remove-detail">-</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8" class="p-3">
+                                                <textarea type="text" name="details[0][sudah_dimohon_keterangan]" style="width: 100%;height:100px"
+                                                    class="form-control"></textarea>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="d-flex justify-content-end">
+                                    <button type="button" id="add-detail" class="btn btn-success">Tambah Detail</button>
+                                </div>
                             </div>
                             <br>
                             <div id='detail-2' style="display: none">
@@ -246,7 +326,7 @@
                             </div>
 
                             <button type="button" id="preview-surat" class="btn btn-primary">Preview Surat</button>
-                            <button type="submit" class="btn btn-success">Simpan dan Cetak</button>
+                            <button type="button" id="submit-surat" class="btn btn-success">Simpan dan Cetak</button>
                         </div>
                     </form>
                 </div>
@@ -407,8 +487,149 @@
             }
         }
 
+        function initializeSelect2WithAjaxTerdahulu() {
+            // Provinsi Select2 with AJAX
+            $('.select2-provinsi-terdahulu').select2({
+                width: '100%',
+                placeholder: 'Pilih Provinsi',
+                minimumInputLength: 2,
+                ajax: {
+                    url: '/master/get-provinsi', // URL to fetch provinsi data
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            q: params.term,
+                            page: params.page || 1
+                        };
+                    },
+                    processResults: function(data, params) {
+                        console.log("Fetched provinsi data:", data); // Check data structure here
+                        return {
+                            results: data.items.map(function(item) {
+                                return {
+                                    id: item.id,
+                                    text: item.text
+                                };
+                            })
+                        };
+                    },
+                    cache: true
+                }
+            }).on('select2:select', function(e) {
+                console.log("Selected Provinsi:", e.params.data);
+                loadKabupaten(e.params.data.id); // Load kabupaten based on selected provinsi
+            });
+
+            // Kabupaten Select2 with AJAX
+            function loadKabupaten(provinsiId) {
+                $('.select2-kabupaten-terdahulu').select2({
+                    width: '100%',
+                    placeholder: 'Pilih Kabupaten/Kota',
+                    minimumInputLength: 2,
+                    ajax: {
+                        url: '/master/get-kabupaten', // URL to fetch kabupaten data
+                        dataType: 'json',
+                        delay: 250,
+                        data: function(params) {
+                            return {
+                                q: params.term,
+                                provinsi_id: provinsiId, // Pass the selected provinsi ID
+                                page: params.page || 1
+                            };
+                        },
+                        processResults: function(data, params) {
+                            console.log("Fetched kabupaten data:", data); // Check data structure here
+                            return {
+                                results: data.items.map(function(item) {
+                                    return {
+                                        id: item.id,
+                                        text: item.text
+                                    };
+                                })
+                            };
+                        },
+                        cache: true
+                    }
+                }).on('select2:select', function(e) {
+                    console.log("Selected Kabupaten/Kota:", e.params.data);
+                    loadKecamatan(e.params.data.id); // Load kecamatan based on selected kabupaten
+                });
+            }
+
+            // Kecamatan Select2 with AJAX
+            function loadKecamatan(kabupatenId) {
+                $('.select2-kecamatan-terdahulu').select2({
+                    width: '100%',
+                    placeholder: 'Pilih Kecamatan',
+                    minimumInputLength: 2,
+                    ajax: {
+                        url: '/master/get-kecamatan', // URL to fetch kecamatan data
+                        dataType: 'json',
+                        delay: 250,
+                        data: function(params) {
+                            return {
+                                q: params.term,
+                                kabupaten_id: kabupatenId, // Pass the selected kabupaten ID
+                                page: params.page || 1
+                            };
+                        },
+                        processResults: function(data, params) {
+                            console.log("Fetched kecamatan data:", data); // Check kecamatan data structure here
+                            return {
+                                results: data.items.map(function(item) {
+                                    return {
+                                        id: item.id,
+                                        text: item.text
+                                    };
+                                })
+                            };
+                        },
+                        cache: true
+                    }
+                }).on('select2:select', function(e) {
+                    console.log("Selected Kecamatan:", e.params.data);
+                    loadKelurahan(e.params.data.id); // Load kelurahan based on selected kecamatan
+                });
+            }
+
+            // Kelurahan Select2 with AJAX
+            function loadKelurahan(kecamatanId) {
+                $('.select2-kelurahan-terdahulu').select2({
+                    width: '100%',
+                    placeholder: 'Pilih Kelurahan',
+                    minimumInputLength: 2,
+                    ajax: {
+                        url: '/master/get-kelurahan', // URL to fetch kelurahan data
+                        dataType: 'json',
+                        delay: 250,
+                        data: function(params) {
+                            return {
+                                q: params.term,
+                                kecamatan_id: kecamatanId, // Pass the selected kecamatan ID
+                                page: params.page || 1
+                            };
+                        },
+                        processResults: function(data, params) {
+                            console.log("Fetched kelurahan data:", data); // Check kelurahan data structure here
+                            return {
+                                results: data.items.map(function(item) {
+                                    return {
+                                        id: item.id,
+                                        text: item.text
+                                    };
+                                })
+                            };
+                        },
+                        cache: true
+                    }
+                });
+            }
+        }
+
         $(document).ready(function() {
             initializeSelect2WithAjax();
+            initializeSelect2WithAjaxTerdahulu();
         });
 
 
@@ -418,7 +639,6 @@
         $('#add-detail').on('click', function() {
             const detailHtml = `
         <tr>
-            <td>${detailCount + 1}</td>
             <td><input type="text" style="width: 50px" name="details[${detailCount}][type]" class="form-control" required></td>
             <td><input type="text" style="width: 50px" name="details[${detailCount}][jumlah]" class="form-control" required></td>
             <td><input type="text" style="width: 50px" name="details[${detailCount}][pecah_type]" class="form-control"></td>
@@ -427,14 +647,18 @@
             <td><input type="text" style="width: 50px" name="details[${detailCount}][belum_rincik_jumlah]" class="form-control"></td>
             <td><input type="text" style="width: 50px" name="details[${detailCount}][sudah_dimohon_type]" class="form-control"></td>
             <td><input type="text" style="width: 50px" name="details[${detailCount}][sudah_dimohon_jumlah]" class="form-control"></td>
-            <td><input type="text" style="width: 50px" name="details[${detailCount}][sudah_dimohon_keterangan]" class="form-control"></td>
-            <td><button type="button" class="btn btn-danger remove-detail">Hapus</button></td>
+            <td rowspan="2"><button type="button" class="btn btn-danger remove-detail">-</button></td>
+        </tr>
+        <tr>
+            <td colspan="8" class="p-3">
+                <textarea name="details[${detailCount}][sudah_dimohon_keterangan]" style="width: 100%; height: 100px" class="form-control"></textarea>
+            </td>
         </tr>
     `;
+
             $('#details').append(detailHtml);
             detailCount++;
         });
-
 
         $('#add-detail-2').on('click', function() {
             const detailHtml = `
@@ -455,17 +679,31 @@
             $(this).closest('tr').remove();
         });
 
-        $(document).on('click', '.remove-detail', function() {
-            $(this).closest('tr').remove();
+        $('#details').on('click', '.remove-detail', function() {
+            $(this).closest('tr').next().remove(); // Menghapus baris keterangan di bawahnya
+            $(this).closest('tr').remove(); // Menghapus baris utama
         });
 
         $('#jenisSurat').on('change', function() {
+            // if ($(this).val() === 'format-1') {
+            //     $('#detail-2').hide();
+            //     $
+
+            // } else {
+            //     $('#detail-2').show();
+            // }
+
             if ($(this).val() === 'format-1') {
                 $('#detail-2').hide();
-
+                $('#detail').hide();
+            } else if ($(this).val() === 'format-2') {
+                $('#detail-2').hide();
+                $('#detail').show();
             } else {
                 $('#detail-2').show();
+                $('#detail').show();
             }
+
         });
     </script>
 
@@ -473,54 +711,135 @@
     <script>
         $(document).ready(function() {
             $('#preview-surat').click(function() {
-                // Ambil data dari form
-                let dataSurat = {
-                    jenisSurat: $('#jenisSurat').val(),
-                    tahun: $('#tahun').val(),
-                    nomorSurat: $('#nomorSurat').val(),
-                    tanggalSurat: $('#tanggalSurat').val(),
-                    lampiran: $('#lampiran').val(),
-                    sifat: $('#sifat').val(),
-                    perihal: $('#perihal').val(),
-                    permohonanTanggal: $('#permohonanTanggal').val(),
-                    nama: $('#nama').val(),
-                    provinsi: $('#provinsi').val(),
-                    kabupaten: $('#kabupaten').val(),
-                    kecamatan: $('#kecamatan').val(),
-                    alamat: $('#alamat').val(),
-                    tujuanSurat: $('#tujuanSurat').val(),
-                    registerNomor: $('#registerNomor').val(),
-                    registerTanggal: $('#registerTanggal').val(),
-                    imbgNomor: $('#imbgNomor').val(),
-                    imbgTanggal: $('#imbgTanggal').val(),
-                    kepalaDinas: $('#kepalaDinas').val(),
-                    nip: $('#nip').val(),
-                    pangkat: $('#pangkat').val(),
-                    ket1: $('#ket1').val(),
-                    ket2: $('#ket2').val(),
-                    ket3: $('#ket3').val(),
-                    details: [],
-                    details2: []
+                // Initialize FormData with the form element
+                let form = document.getElementById('suratForm');
+                let formData = new FormData(form);
+
+                // Add custom entries for details and details2 arrays
+                // $('#details tr').each(function(index) {
+                //     $(this).find('input, textarea').each(function() {
+                //         let name = $(this).attr('name');
+                //         let value = $(this).val();
+                //         formData.append(`details[${index}][${name}]`, value);
+                //     });
+                // });
+
+                // $('#details2 tr').each(function(index) {
+                //     $(this).find('input').each(function() {
+                //         let name = $(this).attr('name');
+                //         let value = $(this).val();
+                //         formData.append(`details2[${index}][${name}]`, value);
+                //     });
+                // });
+
+                // Send data with AJAX
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', "{{ route('surat.preview') }}", true);
+                xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+                xhr.responseType = 'blob';
+
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        var newWindow = window.open('', '_blank', 'width=800,height=600');
+                        var blob = new Blob([xhr.response], {
+                            type: 'application/pdf'
+                        });
+                        var url = URL.createObjectURL(blob);
+                        newWindow.location.href = url;
+                    } else {
+                        Swal.close(); // Hide Swal loading indicator
+                    }
                 };
 
-                // Kirim data dengan AJAX
-                $.ajax({
-                    url: "{{ route('surat.preview') }}", // Buat route di Laravel untuk preview
-                    type: "POST",
-                    data: dataSurat,
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        // Buat jendela baru untuk menampilkan preview
-                        let previewWindow = window.open('', '_blank');
-                        previewWindow.document.write(response);
-                    },
-                    error: function(xhr) {
-                        alert('Terjadi kesalahan saat memuat preview surat.');
+                xhr.send(formData);
+            });
+
+            // $('#submit-surat').click(function() {
+            //     // Initialize FormData with the form element
+            //     let form = document.getElementById('suratForm');
+            //     let formData = new FormData(form);
+            //     // Send data with AJAX
+            //     var xhr = new XMLHttpRequest();
+            //     xhr.open('POST', "{{ route('surat.store') }}", true);
+            //     xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+            //     xhr.responseType = 'blob';
+
+            //     xhr.onload = function() {
+            //         if (xhr.status === 200) {
+            //             var newWindow = window.open('', '_blank', 'width=800,height=600');
+            //             var blob = new Blob([xhr.response], {
+            //                 type: 'application/pdf'
+            //             });
+            //             var url = URL.createObjectURL(blob);
+            //             newWindow.location.href = url;
+            //         } else {
+            //             Swal.close(); // Hide Swal loading indicator
+            //         }
+            //     };
+
+            //     xhr.send(formData);
+            // });
+
+
+            $('#submit-surat').click(function() {
+                Swal.fire({
+                    title: 'Menghasilkan Surat...',
+                    text: 'Mohon tunggu, surat sedang diproses.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
                     }
                 });
+
+                let form = document.getElementById('suratForm');
+                let formData = new FormData(form);
+
+                fetch("{{ route('surat.store') }}", {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        Swal.close();
+
+                        if (data.status === 'success') {
+                            Swal.fire({
+                                title: 'Surat Berhasil Dibuat!',
+                                text: 'Surat akan diunduh secara otomatis.',
+                                icon: 'success',
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+
+                            // Mengunduh file secara otomatis
+                            const fileUrl = `{{ asset('storage/surat/') }}/${data.file}`;
+                            const link = document.createElement('a');
+                            link.href = fileUrl;
+                            link.download = data.file; // Nama file yang diunduh
+                            link.click();
+                        } else {
+                            Swal.fire({
+                                title: 'Gagal Membuat Surat',
+                                text: 'Terjadi kesalahan saat memproses surat.',
+                                icon: 'error',
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        Swal.close();
+                        Swal.fire({
+                            title: 'Gagal Membuat Surat',
+                            text: 'Terjadi kesalahan koneksi atau server.',
+                            icon: 'error',
+                        });
+                    });
             });
+
+
+
         });
     </script>
 @endsection

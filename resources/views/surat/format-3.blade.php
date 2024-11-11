@@ -217,8 +217,6 @@
             <td style="line-height: normal">{{ $perihal }}</td>
         </tr>
     </table>
-
-
     <div class="content" style="margin-top:1px; margin-left: 70px">
         <h3>A. DASAR</h3>
         <p style="margin-top:-15px">Peraturan Bupati Nomor 63 tahun 2013 Tentang Izin Mendirikan Bangunan Gedung BAB VII
@@ -233,58 +231,61 @@
                         <tr>
                             <td style="width: 38%">Nama</td>
                             <td style="width: 1%">:</td>
-                            <td style="width: 61%" class="bold-text"><b>RACHMAT ISKANDAR</b></td>
+                            <td style="width: 61%" class="bold-text"><b>{{ $pemohon['nama'] }}</b></td>
                         </tr>
                         <tr>
                             <td>Bertindak Atas Nama</td>
                             <td>:</td>
-                            <td>PT KURIPAN JAYA</td>
+                            <td>{{ $pemohon['bertindak_atas_nama'] }}</td>
                         </tr>
                         <tr>
                             <td>Alamat</td>
                             <td>:</td>
-                            <td style="line-height:10px;">Jl. Kiaracondong No. 142, RT 01 RW 02, Kelurahan Kebon
-                                Jayanti, Kecamatan Batununggal,
-                                Kota Bandung</td>
+                            <td style="line-height:10px;">{{ $pemohon['alamat'] }}</td>
                             </td>
                         </tr>
-
                     </table>
-
                 </div>
             </li>
-
-
             <li>Hasil pengecekan pada buku Izin Mendirikan Bangunan yang ada pada Dinas Perumahan Kawasan Permukiman dan
                 Pertanahan Kabupaten Bogor, dengan ini dapat disampaikan:</li>
-
-
             <div>
                 <table class="info-tables">
                     <tr>
                         <td style="width: 15%">Izin Mendirikan Bangunan atas nama</td>
                         <td style="width: 1%">:</td>
-                        <td style="width: 75%" class="bold-text"><b>IR. PAULUS HANOTO ADJIE/PT. KURIPAN RAYA</b></td>
+                        <td style="width: 75%" class="bold-text">
+                            <b>{{ $referensi['izin_mendirikan_bangunan_atas_nama'] }}</b>
+                        </td>
                     </tr>
                     <tr>
                         <td>Peruntukan</td>
                         <td>:</td>
-                        <td>Rumah Tinggal</td>
+                        <td>{{ $referensi['tujuan'] }}</td>
                     </tr>
                     <tr>
                         <td>Lokasi</td>
                         <td>:</td>
-                        <td style="line-height:10px;"> Perumahan Telaga Kahuripan, Desa/Kelurahan Tegal, Kecamatan
-                            Kemang, Kabupaten Bogor
+                        <td style="line-height:10px;"> {{ $referensi['lokasi'] }}, Desa/Kelurahan
+                            {{ $referensi['kelurahan'] }}, Kecamatan
+                            {{ $referensi['kecamatan'] }}, {{ $referensi['kabupaten'] }}
                         </td>
                     </tr>
-
                     <tr>
                         <td></td>
                         <td></td>
                         <td></td>
                     </tr>
-
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
                     <tr>
                         <td>Nomor Register</td>
                         <td>:</td>
@@ -359,32 +360,37 @@
             <li>Nama dan Nomor Izin Mendirikan Bangunan Gedung tersebut di atas adalah benar tercatat dalam buku
                 register Izin Mendirikan Bangunan pada Dinas Perumahan, Kawasan Permukiman dan Pertanahan Kabupaten
                 Bogor...</li>
-
-                <div class="table-">
-                    <table>
+            <div class="table-">
+                <table>
+                    <tr>
+                        <th>NO</th>
+                        <th>TIPE</th>
+                        <th>BLOK</th>
+                        <th>NOMOR</th>
+                        <th>JUMLAH</th>
+                    </tr>
+                    @php
+                        $jumlah = 0;
+                    @endphp
+                    @foreach ($details2 as $item)
                         <tr>
-                            <th>NO</th>
-                            <th>TIPE</th>
-                            <th>BLOK</th>
-                            <th>NOMOR</th>
-                            <th>JUMLAH</th>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $item['type'] }}</td>
+                            <td>{{ $item['blok'] }}</td>
+                            <td>{{ $item['nomor'] }}</td>
+                            <td>{{ $item['jumlah'] }}</td>
+                            @php
+                                $jumlah += $item['jumlah'];
+                            @endphp
                         </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>27</td>
-                            <td>F.14</td>
-                            <td>7, 8, 9, 10, 11, 12, 14, 15, 16, 17</td>
-                            <td>15</td>
-                        </tr>
-
-                        <tr>
-                            <td colspan="4">Total</td>
-                            <td>15</td>
-                        </tr>
-                    </table>
-                </div>
+                    @endforeach
+                    <tr>
+                        <td colspan="4">Total</td>
+                        <td>{{ $jumlah }}</td>
+                    </tr>
+                </table>
+            </div>
         </ol>
-
         <p>
             {{ $keterangan['ket2'] }}
         </p>
@@ -397,9 +403,9 @@
         <div class="signature-section" style="width: 250px;text-align:left">
             <p class="signature-title" style="text-align:left">Sekretaris Dinas Perumahan, Kawasan Permukiman dan
                 Pertanahan,</p>
-                <br>
-                <br>
-                <br>
+            <br>
+            <br>
+            <br>
             <p class="signature-name" style="text-align:left;line-height:5px">{{ $penandatangan['kepalaDinas'] }}</p>
             <p class="signature-role" style="text-align:left;line-height:5px">{{ $penandatangan['pangkat'] }}</p>
             <p class="signature-nip" style="text-align:left;line-height:5px">NIP. {{ $penandatangan['nip'] }}</p>

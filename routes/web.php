@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\{IMBController,DataIMBTidaklengkapController, MasterController,SinkronisasiLokasiIMBController, SuratController, IMBIndukNonPerumController, IMBIndukPerumController, IMBTidakLengkapController, IMBPerluasanController, IMBPecahanController, IMBBersyaratController, IMBPelunasanController, IMBPemutihanController};
+use App\Http\Controllers\{IMBController,JenisNonPerumController,TujuanSuratController,DataIMBTidaklengkapController, MasterController,SinkronisasiLokasiIMBController, SuratController, IMBIndukNonPerumController, IMBIndukPerumController, IMBTidakLengkapController, IMBPerluasanController, IMBPecahanController, IMBBersyaratController, IMBPelunasanController, IMBPemutihanController};
 
 Route::get('/', function () {
     return view('welcome');
@@ -129,10 +129,27 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/format-3', [SuratController::class, 'format3'])->name('surat.format-3');
         Route::post('/preview', [SuratController::class, 'preview'])->name('surat.preview');
 
-        Route::delete('/destroy', [SuratController::class, 'destroy'])->name('surat.destroy');
+        Route::get('/download/{id}', [SuratController::class, 'download'])->name('surat.download');
+
+        Route::delete('/destroy/{id}', [SuratController::class, 'destroy'])->name('surat.destroy');
 
     });
 
+    Route::prefix('master')->group(function () {
+        Route::prefix('tujuan-surat')->group(function () {
+            Route::get('/', [TujuanSuratController::class, 'index'])->name('tujuan-surat.index');
+            Route::post('/store', [TujuanSuratController::class, 'store'])->name('tujuan-surat.store');
+            Route::put('/update/{id}', [TujuanSuratController::class, 'update'])->name('tujuan-surat.update');
+            Route::delete('/destroy/{id}', [TujuanSuratController::class, 'destroy'])->name('tujuan-surat.destroy');
+        });
+        Route::prefix('jenis-non-perum')->group(function () {
+            Route::get('/', [JenisNonPerumController::class, 'index'])->name('jenis-non-perum.index');
+            Route::post('/store', [JenisNonPerumController::class, 'store'])->name('jenis-non-perum.store');
+            Route::put('/update/{id}', [JenisNonPerumController::class, 'update'])->name('jenis-non-perum.update');
+            Route::delete('/destroy/{id}', [JenisNonPerumController::class, 'destroy'])->name('jenis-non-perum.destroy');
+        });
+
+    });
 });
 
 

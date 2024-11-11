@@ -112,15 +112,15 @@
             },
 
             columns: [{
-                    data: 'jenis_surat',
+                    data: 'jenisSurat',
                     title: 'IMB Induk'
                 },
                 {
-                    data: 'nomor_surat',
+                    data: 'nomorSurat',
                     title: 'Nomor Surat'
                 },
                 {
-                    data: 'tanggal_surat',
+                    data: 'tanggalSurat',
                     title: 'Tanggal Surat'
                 },
                 {

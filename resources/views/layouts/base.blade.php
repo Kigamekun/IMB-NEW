@@ -108,20 +108,25 @@
                                         <span>IMB Perluasan </span></a></li>
                             </ul>
                         </li>
-                        <li class="dropdown {{ Str::contains($currentPath, 'SinkronisasiLokasiIMB') ? 'active' : '' }}">
-                            <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Sinkronisasi Lokasi</span></a>
+                        <li
+                            class="dropdown {{ Str::contains($currentPath, 'SinkronisasiLokasiIMB') ? 'active' : '' }}">
+                            <a href="#" class="nav-link has-dropdown"><i
+                                    class="fas fa-fire"></i><span>Sinkronisasi Lokasi</span></a>
                             <ul class="dropdown-menu">
                                 <li><a class="nav-link {{ request()->query('type') === null ? 'text-primary' : '' }}"
                                         href="{{ route('SinkronisasiLokasiIMB.index') }}"><i class="fas fa-fire"></i>
                                         <span>Induk</span></a></li>
                                 <li><a class="nav-link {{ request()->query('type') === 'pecahan' ? 'text-primary' : '' }}"
-                                        href="{{ route('SinkronisasiLokasiIMB.index') }}?type=pecahan"><i class="fas fa-fire"></i>
+                                        href="{{ route('SinkronisasiLokasiIMB.index') }}?type=pecahan"><i
+                                            class="fas fa-fire"></i>
                                         <span>Pecahan</span></a></li>
                                 <li><a class="nav-link {{ request()->query('type') === 'perluasan' ? 'text-primary' : '' }}"
-                                        href="{{ route('SinkronisasiLokasiIMB.index') }}?type=perluasan"><i class="fas fa-fire"></i>
+                                        href="{{ route('SinkronisasiLokasiIMB.index') }}?type=perluasan"><i
+                                            class="fas fa-fire"></i>
                                         <span>Perluasan</span></a></li>
                                 <li><a class="nav-link {{ request()->query('type') === 'non_perum' ? 'text-primary' : '' }}"
-                                        href="{{ route('SinkronisasiLokasiIMB.index') }}?type=non_perum"><i class="fas fa-fire"></i>
+                                        href="{{ route('SinkronisasiLokasiIMB.index') }}?type=non_perum"><i
+                                            class="fas fa-fire"></i>
                                         <span>Non Perum</span></a></li>
                             </ul>
                         </li>
@@ -129,6 +134,18 @@
                         <li><a class="nav-link {{ Str::contains($currentPath, 'surat') ? 'text-primary' : '' }}"
                                 href="{{ route('surat.index') }}"><i class="fas fa-fire"></i>
                                 <span>Surat Keterangan IMBG</span></a></li>
+
+
+                        <li class="menu-header">Master</li>
+
+                        <li><a class="nav-link {{ Str::contains($currentPath, 'master/jenis-non-perum') ? 'text-primary' : '' }}"
+                                href="{{ route('jenis-non-perum.index') }}"><i class="fas fa-fire"></i>
+                                <span>Jenis Non Perum</span></a></li>
+
+                        <li><a class="nav-link {{ Str::contains($currentPath, 'master/tujuan-surat') ? 'text-primary' : '' }}"
+                                href="{{ route('tujuan-surat.index') }}"><i class="fas fa-fire"></i>
+                                <span>Tujuan Surat</span></a></li>
+
                 </aside>
             </div>
             <div class="main-content">

@@ -53,7 +53,41 @@
                 @endif
                     <br>
                     <div class="table-responsive py-3">
-
+                        <div class="filters py-3 row">
+                            <div class="mb-3 col-md-3">
+                                {{-- <label for="filter-atas_nama" class="form-label">Atas Nama:</label> --}}
+                                <input type="text" class="form-control" id="filter-atas_nama"
+                                    placeholder="Filter Atas Nama">
+                            </div>
+                            <div class="mb-3 col-md-3">
+                                {{-- <label for="filter-lokasi" class="form-label">Lokasi Perumahan:</label> --}}
+                                <input type="text" class="form-control" id="filter-lokasi"
+                                    placeholder="Filter Lokasi Perumahan">
+                            </div>
+                            <div class="mb-3 col-md-3">
+                                {{-- <label for="filter-kecamatan" class="form-label">Kecamatan:</label> --}}
+                                <input type="text" class="form-control" id="filter-kecamatan"
+                                    placeholder="Filter Kecamatan">
+                            </div>
+                            <div class="mb-3 col-md-3">
+                                {{-- <label for="filter-kelurahan" class="form-label">Kelurahan:</label> --}}
+                                <input type="text" class="form-control" id="filter-kelurahan"
+                                    placeholder="Filter Kelurahan">
+                            </div>
+                            <div class="mb-3 col-md-3">
+                                {{-- <label for="filter-blok" class="form-label">blok:</label> --}}
+                                <input type="text" class="form-control" id="filter-blok" placeholder="Filter blok">
+                            </div>
+                            <div class="mb-3 col-md-3">
+                                {{-- <label for="filter-no_blok" class="form-label">no_blok:</label> --}}
+                                <input type="text" class="form-control" id="filter-no_blok" placeholder="Filter no_blok">
+                            </div>
+                            <div class="mb-3 col-md-3">
+                                {{-- <label for="filter-no_blok" class="form-label">no_blok:</label> --}}
+                                <input type="text" class="form-control" id="filter-imb_induk_id"
+                                    placeholder="Filter IMB Pecahan ID">
+                            </div>
+                        </div>
                         <table class="table table-bordered" id="IMBTable">
                             <thead>
 
@@ -114,7 +148,7 @@
 
 
     <script>
-        $('#IMBTable').DataTable({
+        var table = $('#IMBTable').DataTable({
             processing: true,
             serverSide: true,
 
@@ -216,6 +250,36 @@
             ],
 
         });
+
+        $('#filter-atas_nama').keyup(function() {
+            table.column(6).search(this.value).draw();
+        });
+
+        $('#filter-lokasi').keyup(function() {
+            table.column(8).search(this.value).draw();
+        });
+
+        $('#filter-kecamatan').keyup(function() {
+            table.column(9).search(this.value).draw();
+        });
+
+        $('#filter-kelurahan').keyup(function() {
+            table.column(10).search(this.value).draw();
+        });
+
+        $('#filter-blok').keyup(function() {
+            table.column(14).search(this.value).draw();
+        });
+
+        $('#filter-no_blok').keyup(function() {
+            table.column(15).search(this.value).draw();
+        });
+
+        $('#filter-imb_pecahan_id').keyup(function() {
+            table.column(0).search(this.value).draw();
+        });
+
+
     </script>
 @endsection
 

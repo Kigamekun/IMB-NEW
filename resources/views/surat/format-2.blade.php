@@ -328,6 +328,48 @@
                     </tr>
                 </table>
             </div>
+            <div class="table-">
+                <table>
+                    <tr>
+                        <th>TIPE</th>
+                        <th>PECAH/RINCIK</th>
+                        <th>BELUM RINCIK/PECAH</th>
+                        <th>Yang Sudah Dimohon Surat Keterangan</th>
+                    </tr>
+                    @php
+                        $jumlah = 0;
+                        $pecah_jumlah = 0;
+                        $belum_rincik_jumlah = 0;
+                        $sudah_dimohon_jumlah = 0;
+                    @endphp
+                    @foreach ($details as $item)
+                        <tr>
+                            <td>Type {{ $item['type'] }} = {{ $item['jumlah'] }} Unit</td>
+                            <td>Type {{ $item['pecah_type'] }} = {{ $item['pecah_jumlah'] }} Unit</td>
+                            <td>Type {{ $item['belum_rincik_type'] }} = {{ $item['belum_rincik_jumlah'] }} Unit</td>
+                            <td>
+                                @if ($item['sudah_dimohon_jumlah'] > 0)
+                                    Type {{ $item['sudah_dimohon_type'] }} = {{ $item['sudah_dimohon_jumlah'] }} Unit
+                                @else
+                                    ---
+                                @endif
+                            </td>
+                        </tr>
+                        @php
+                            $jumlah += $item['jumlah'];
+                            $pecah_jumlah += $item['pecah_jumlah'];
+                            $belum_rincik_jumlah += $item['belum_rincik_jumlah'];
+                            $sudah_dimohon_jumlah += $item['sudah_dimohon_jumlah'];
+                        @endphp
+                    @endforeach
+                    <tr>
+                        <td style="font-weight: bold">Jumlah = {{ $jumlah }} Unit</td>
+                        <td style="font-weight: bold">Jumlah = {{ $pecah_jumlah }} Unit</td>
+                        <td style="font-weight: bold">Jumlah = {{ $belum_rincik_jumlah }} Unit</td>
+                        <td style="font-weight: bold">Jumlah = {{ $sudah_dimohon_jumlah }} Unit</td>
+                    </tr>
+                </table>
+            </div>
         </ol>
         <ol start="3">
             <li>{{ $keterangan['ket1'] }}</li>

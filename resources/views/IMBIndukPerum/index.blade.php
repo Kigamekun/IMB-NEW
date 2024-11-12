@@ -101,7 +101,8 @@
             ajax: {
                 url: "{{ route('IMBIndukPerum.index') }}",
             },
-            columns: [{
+            columns: [
+                {
                     data: 'DT_RowIndex',
                     orderable: false,
                     searchable: false

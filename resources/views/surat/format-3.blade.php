@@ -241,7 +241,9 @@
                         <tr>
                             <td>Alamat</td>
                             <td>:</td>
-                            <td style="line-height:10px;">{{ $pemohon['alamat'] }}</td>
+                            <td style="line-height:10px;">{{ $pemohon['alamat'] }}, Desa/Kelurahan
+                                {{ $pemohon['kelurahanPemohon'] }}, Kecamatan
+                                {{ $pemohon['kecamatanPemohon'] }}, {{ $pemohon['kabupatenPemohon'] }}</td>
                             </td>
                         </tr>
                     </table>
@@ -266,9 +268,24 @@
                     <tr>
                         <td>Lokasi</td>
                         <td>:</td>
-                        <td style="line-height:10px;"> {{ $referensi['lokasi'] }}, Desa/Kelurahan
+                        <td style="line-height:10px;">
+                            {{ $referensi['lokasi'] }}, Desa/Kelurahan
                             {{ $referensi['kelurahan'] }}, Kecamatan
                             {{ $referensi['kecamatan'] }}, {{ $referensi['kabupaten'] }}
+
+                            {{ $referensi['lokasi'] }},
+                            Desa/Kelurahan {{ $referensi['kelurahan'] }}
+                            @if (isset($referensi['kelurahan-terdahulu']) && $referensi['kelurahan-terdahulu'] != null)
+                                (d/h. {{ $referensi['kelurahan-terdahulu'] }})
+                            @endif
+                            , Kecamatan {{ $referensi['kecamatan'] }}
+                            @if (isset($referensi['kecamatan-terdahulu']) && $referensi['kecamatan-terdahulu'] != null)
+                                (d/h. {{ $referensi['kecamatan-terdahulu'] }})
+                            @endif
+                            , {{ $referensi['kabupaten'] }}
+                            @if (isset($referensi['kabupaten-terdahulu']) && $referensi['kabupaten-terdahulu'] != null)
+                                (d/h. {{ $referensi['kabupaten-terdahulu'] }})
+                            @endif
                         </td>
                     </tr>
                     <tr>
@@ -401,7 +418,7 @@
     </div>
     <div style="float: right;margin-top:-10px">
         <div class="signature-section" style="width: 250px;text-align:left">
-            <p class="signature-title" style="text-align:left">Sekretaris Dinas Perumahan, Kawasan Permukiman dan
+            <p class="signature-title" style="text-align:left">{{ $penandatangan['jabatan'] }} Perumahan, Kawasan Permukiman dan
                 Pertanahan,</p>
             <br>
             <br>

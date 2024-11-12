@@ -74,12 +74,37 @@
                                 <input type="text" id="alamat" name="alamat" class="form-control">
                             </div>
                         </div>
-
-
-
-
-
-
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="provinsiPemohon" class="form-label">Provinsi:</label>
+                                <select id="provinsiPemohon" name="provinsiPemohon"
+                                    class="form-select select2-provinsi-pemohon">
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="kabupatenPemohon" class="form-label">Kabupaten/Kota:</label>
+                                <select id="kabupatenPemohon" name="kabupatenPemohon"
+                                    class="form-select select2 select2-kabupaten-pemohon">
+                                    <option value="">--- PILIH ---</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="kecamatanPemohon" class="form-label">Kecamatan:</label>
+                                <select id="kecamatanPemohon" name="kecamatanPemohon"
+                                    class="form-select select2 select2-kecamatan-pemohon">
+                                    <option value="">--- PILIH ---</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="kelurahanPemohon" class="form-label">Kelurahan:</label>
+                                <select id="kelurahanPemohon" name="kelurahanPemohon"
+                                    class="form-select select2 select2-kelurahan-pemohon">
+                                    <option value="">--- PILIH ---</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="section-title">REFERENSI</div>
                         <div class="row mb-3">
                             <div class="col-md-6">
@@ -93,8 +118,6 @@
                                 <input type="text" id="lokasi" name="lokasi" class="form-control">
                             </div>
                         </div>
-
-
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="tujuanSurat" class="form-label">Tujuan Surat:</label>
@@ -148,49 +171,36 @@
                                     <option value="">--- PILIH ---</option>
                                 </select>
                             </div>
-
                             <div class="col-md-6">
                                 <label for="kelurahan" class="form-label">Kelurahan:</label>
                                 <select id="kelurahan" name="kelurahan" class="form-select select2 select2-kelurahan">
                                     <option value="">--- PILIH ---</option>
                                 </select>
                             </div>
-
                         </div>
-
                         <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="provinsi-terdahulu" class="form-label">Provinsi Terdahulu:</label>
-                                <input type="text" id="provinsi-terdahulu" name="provinsi-terdahulu"
-                                    class="form-control" value="">
-                            </div>
                             <div class="col-md-6">
                                 <label for="kabupaten-terdahulu" class="form-label">Kabupaten/Kota Terdahulu:</label>
                                 <input type="text" id="kabupaten-terdahulu" name="kabupaten-terdahulu"
                                     class="form-control" value="">
                             </div>
-                        </div>
-                        <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="kecamatan-terdahulu" class="form-label">Kecamatan Terdahulu:</label>
                                 <input type="text" id="kecamatan-terdahulu" name="kecamatan-terdahulu"
                                     class="form-control" value="">
                             </div>
-
+                        </div>
+                        <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="kelurahan-terdahulu" class="form-label">Kelurahan Terdahulu:</label>
                                 <input type="text" id="kelurahan-terdahulu" name="kelurahan-terdahulu"
                                     class="form-control" value="">
                             </div>
-
                         </div>
-
                         <div class="section-title">PENANDATANGAN</div>
                         <div class="row mb-3">
-                            <div class="col-md-12">
-                                <label for="kepalaDinas" class="form-label">Kepala Dinas:</label>
-                                {{-- <input type="text" id="kepalaDinas" name="kepalaDinas" class="form-control"
-                                    value="JUANDA DIMANSYAH, SE, MM"> --}}
+                            <div class="col-md-6">
+                                <label for="kepalaDinas" class="form-label">Penandatangan:</label>
                                 <select id="kepalaDinas" name="kepalaDinas" class="form-select form-control select2">
                                     <option value="">--- PILIH ---</option>
                                     @foreach (DB::table('app_md_user')->whereNotIn('nip_user', ['-', '', '.'])->get() as $user)
@@ -201,11 +211,15 @@
                                     @endforeach
                                 </select>
                             </div>
-                            {{-- <div class="col-md-6">
-                                <label for="nip" class="form-label">NIP:</label>
-                                <input type="text" id="nip" name="nip" class="form-control"
-                                    value="196503241986031011">
-                            </div> --}}
+                            <div class="col-md-6">
+                                <label for="jabatan" class="form-label">Jabatan:</label>
+                                <select id="jabatan" name="jabatan" class="form-select form-control select2">
+                                    <option value="">--- PILIH ---</option>
+                                    @foreach (DB::table('app_md_jabatan')->get() as $jabatan)
+                                        <option value="{{ $jabatan->name_jabatan }}">{{ $jabatan->name_jabatan }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="pangkat" class="form-label">Pangkat/Golongan:</label>
@@ -231,8 +245,6 @@
                         </div>
                         <br>
                         <div class="container mt-4">
-                            {{-- <h4 class="text-">Detail Data IMBG</h4> --}}
-                            {{-- <br> --}}
                             <div id="detail" style="display: none">
                                 <table class="table-bordered table ">
                                     <tbody id="details">
@@ -324,7 +336,6 @@
                                         Detail</button>
                                 </div>
                             </div>
-
                             <button type="button" id="preview-surat" class="btn btn-primary">Preview Surat</button>
                             <button type="button" id="submit-surat" class="btn btn-success">Simpan dan Cetak</button>
                         </div>
@@ -489,7 +500,7 @@
 
         function initializeSelect2WithAjaxTerdahulu() {
             // Provinsi Select2 with AJAX
-            $('.select2-provinsi-terdahulu').select2({
+            $('.select2-provinsi-pemohon').select2({
                 width: '100%',
                 placeholder: 'Pilih Provinsi',
                 minimumInputLength: 2,
@@ -523,7 +534,7 @@
 
             // Kabupaten Select2 with AJAX
             function loadKabupaten(provinsiId) {
-                $('.select2-kabupaten-terdahulu').select2({
+                $('.select2-kabupaten-pemohon').select2({
                     width: '100%',
                     placeholder: 'Pilih Kabupaten/Kota',
                     minimumInputLength: 2,
@@ -559,7 +570,7 @@
 
             // Kecamatan Select2 with AJAX
             function loadKecamatan(kabupatenId) {
-                $('.select2-kecamatan-terdahulu').select2({
+                $('.select2-kecamatan-pemohon').select2({
                     width: '100%',
                     placeholder: 'Pilih Kecamatan',
                     minimumInputLength: 2,
@@ -595,7 +606,7 @@
 
             // Kelurahan Select2 with AJAX
             function loadKelurahan(kecamatanId) {
-                $('.select2-kelurahan-terdahulu').select2({
+                $('.select2-kelurahan-pemohon').select2({
                     width: '100%',
                     placeholder: 'Pilih Kelurahan',
                     minimumInputLength: 2,

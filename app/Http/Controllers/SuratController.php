@@ -419,9 +419,68 @@ class SuratController extends Controller
             ->first()->name;
         $provinsi = ucwords(strtolower($strProvinsi));
 
+
+
+
+
+
+
+
+
+
+
+        $strKabupatenPemohon = \DB::table('master_regency')
+            ->where('code', $data['kabupatenPemohon'])
+            ->first()->name;
+        $kabupatenPemohon = str_replace('kab.', 'Kabupaten', strtolower($strKabupatenPemohon));
+        $kabupatenPemohon = ucwords($kabupatenPemohon);
+
+        // Untuk Kecamatan
+        $strKecamatanPemohon = \DB::table('master_district')
+            ->where('code', $data['kecamatanPemohon'])
+            ->first()->name;
+        $kecamatanPemohon = ucwords(strtolower($strKecamatanPemohon));
+
+        // Untuk Kelurahan
+        $strKelurahanPemohon = \DB::table('master_subdistrict')
+            ->where('code', $data['kelurahanPemohon'])
+            ->first()->name;
+        $kelurahanPemohon = ucwords(strtolower($strKelurahanPemohon));
+
+        // Untuk Provinsi
+        $strProvinsiPemohon = \DB::table('master_province')
+            ->where('code', $data['provinsiPemohon'])
+            ->first()->name;
+
+        $provinsiPemohon = ucwords(strtolower($strProvinsiPemohon));
+
+
+
+        $timestamp = strtotime($data['tanggalSurat']);
+
+        $months = [
+            '01' => 'Januari',
+            '02' => 'Februari',
+            '03' => 'Maret',
+            '04' => 'April',
+            '05' => 'Mei',
+            '06' => 'Juni',
+            '07' => 'Juli',
+            '08' => 'Agustus',
+            '09' => 'September',
+            '10' => 'Oktober',
+            '11' => 'November',
+            '12' => 'Desember'
+        ];
+
+        $day = date('d', $timestamp);
+        $month = $months[date('m', $timestamp)];
+        $year = date('Y', $timestamp);
+
+
         $tahun = $data['tahun'];
         $nomorSurat = $data['nomorSurat'];
-        $tanggalSurat = $data['tanggalSurat'];
+        $tanggalSurat = "$day $month $year";
         $lampiran = $data['lampiran'];
         $sifat = $data['sifat'];
         $perihal = $data['perihal'];
@@ -430,6 +489,10 @@ class SuratController extends Controller
             'nama' => $data['nama'],
             'bertindak_atas_nama' => $data['bertindak_atas_nama'],
             'alamat' => $data['alamat'],
+            'provinsiPemohon' => $provinsiPemohon,
+            'kabupatenPemohon' => $kabupatenPemohon,
+            'kecamatanPemohon' => $kecamatanPemohon,
+            'kelurahanPemohon' => $kelurahanPemohon,
         ];
         $referensi = [
             'izin_mendirikan_bangunan_atas_nama' => $data['izin_mendirikan_bangunan_atas_nama'],
@@ -450,6 +513,7 @@ class SuratController extends Controller
         ];
         $penandatangan = [
             'kepalaDinas' => $kepalaDinas,
+            'jabatan' => $data['jabatan'],
             'nip' => $nip,
             'pangkat' => $data['pangkat'],
         ];
@@ -458,6 +522,7 @@ class SuratController extends Controller
             'ket2' => $data['ket2'],
             'ket3' => $data['ket3'],
         ];
+
 
         // Ambil detail data IMBG
         $details = $data['details'];

@@ -236,7 +236,7 @@
         <ol style="margin-top:-15px">
             <li>
                 <div>
-                    Permohonan Surat Keterangan Penerbitan Izin Mendirikan Bangunan (IMB) tanggal 01 April 2024, dari:
+                    Permohonan Surat Keterangan Penerbitan Izin Mendirikan Bangunan (IMB) tanggal {{$tanggalSurat}}, dari:
                     <table class="info-tables">
                         <tr>
                             <td style="width: 38%">Nama</td>

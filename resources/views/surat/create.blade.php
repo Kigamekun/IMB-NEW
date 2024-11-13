@@ -685,7 +685,7 @@
             //     $('#detail-2').show();
             // }
 
-            if ($(this).val() === 'format-1') {
+            if ($(this).val() === 'format-1' || $(this).val() === 'format-4') {
                 $('#detail-2').hide();
                 $('#detail').hide();
             } else if ($(this).val() === 'format-2') {

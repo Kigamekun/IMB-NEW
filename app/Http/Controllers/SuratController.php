@@ -17,48 +17,42 @@ class SuratController extends Controller
             $data = \DB::table('surat')->get();
             return Datatables::of($data)
                 ->addColumn('action', function ($row) {
-                    if ($row->upload) {
-                        return '
-                        <div class="d-flex" style="gap:10px;">
-
-                        <a  href="' . route('surat.download', $row->id) . '" class="btn btn-success btn-sm">Download</a>
-
-                            <button type="button"
-                            data-url="' . route('surat.upload', $row->id) . '"
-                            class="ml-2 btn btn-info btn-sm text-white" data-bs-toggle="modal"
-                                data-bs-target="#uploadSuratModal">
-                                Upload Surat
-                            </button>
-                            <a target="_blank" href="' . route('surat.lihat', $row->id) . '" class="btn btn-primary btn-sm">Lihat</a>
-                            <form action="' . route('surat.destroy', $row->id) . '" method="POST" style="display:inline;">
-                                ' . csrf_field() . method_field('DELETE') . '
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="confirmDelete(event)">Hapus</button>
-                            </form>
+                    $actions = '
+                        <div class="d-flex flex-wrap" style="gap:8px;">
+                            <div class="d-flex align-items-center" style="gap:5px; width: 50%;">
+                                <a href="' . route('surat.download', $row->id) . '" class="btn btn-success btn-sm" title="Download">
+                                    <i class="fas fa-download"></i>
+                                </a>
+                                <button type="button" data-url="' . route('surat.upload', $row->id) . '" class="btn btn-info btn-sm text-white" title="Upload"
+                                    data-bs-toggle="modal" data-bs-target="#uploadSuratModal">
+                                    <i class="fas fa-upload"></i>
+                                </button>
+                            </div>
+                            <div class="d-flex align-items-center" style="gap:5px; width: 50%;">
+                                <a href="' . route('surat.lihat', $row->id) . '" onclick="window.open(this.href, \'_blank\', \'width=800,height=600\'); return false;" class="btn btn-primary btn-sm" title="Lihat">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <button type="button" data-url="' . route('surat.update_nomor', $row->id) . '" class="btn btn-warning btn-sm text-white" title="Update Nomor"
+                                    data-bs-toggle="modal" data-bs-target="#updateNomorModal">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+                            <div class="d-flex align-items-center" style="gap:5px; width: 50%;">
+                                <form action="' . route('surat.destroy', $row->id) . '" method="POST" style="display:inline;">
+                                    ' . csrf_field() . method_field('DELETE') . '
+                                    <button type="submit" class="btn btn-danger btn-sm" title="Hapus" onclick="confirmDelete(event)">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </div>';
-                    } else {
-                        return '
-                        <div class="d-flex" style="gap:10px;">
-                        <a  href="' . route('surat.download', $row->id) . '" class="btn btn-success btn-sm">Download</a>
-
-                            <button type="button"
-                            data-url="' . route('surat.upload', $row->id) . '"
-                            class="ml-2 btn btn-info btn-sm text-white" data-bs-toggle="modal"
-                                data-bs-target="#uploadSuratModal">
-                                Upload Surat
-                            </button>
-                            <form action="' . route('surat.destroy', $row->id) . '" method="POST" style="display:inline;">
-                                ' . csrf_field() . method_field('DELETE') . '
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="confirmDelete(event)">Hapus</button>
-                            </form>
-                        </div>';
-                    }
+                    return $actions;
                 })
+
                 ->addColumn('sudah_upload', function ($row) {
-                    if ($row->upload) {
-                        return '<span class="badge badge-success">Sudah</span>';
-                    } else {
-                        return '<span class="badge badge-danger">Belum</span>';
-                    }
+                    return $row->upload ?
+                        '<span class="badge badge-success">Sudah</span>' :
+                        '<span class="badge badge-danger">Belum</span>';
                 })
                 ->rawColumns(['action', 'sudah_upload'])
                 ->addIndexColumn()
@@ -419,16 +413,6 @@ class SuratController extends Controller
             ->first()->name;
         $provinsi = ucwords(strtolower($strProvinsi));
 
-
-
-
-
-
-
-
-
-
-
         $strKabupatenPemohon = \DB::table('master_regency')
             ->where('code', $data['kabupatenPemohon'])
             ->first()->name;
@@ -590,7 +574,7 @@ class SuratController extends Controller
 
             // Simpan atau kirimkan sebagai respons
             return $dompdf->stream('surat.pdf', ['Attachment' => false]);
-        } else {
+        } else if ($jenisSurat == 'format-3') {
             $html = view('surat.format-3', compact(
                 'jenisSurat',
                 'tahun',
@@ -622,8 +606,37 @@ class SuratController extends Controller
 
             // Simpan atau kirimkan sebagai respons
             return $dompdf->stream('surat.pdf', ['Attachment' => false]);
-        }
+        } else {
+            $html = view('surat.format-4', compact(
+                'jenisSurat',
+                'tahun',
+                'nomorSurat',
+                'tanggalSurat',
+                'lampiran',
+                'sifat',
+                'perihal',
+                'pemohon',
+                'referensi',
+                'penandatangan',
+                'keterangan'
+            ))->render();
 
+            // Setup Dompdf
+            $dompdf = new Dompdf();
+            $dompdf->loadHtml($html);
+
+            // (Opsional) Pengaturan tambahan
+            $options = $dompdf->getOptions();
+            $options->set('isRemoteEnabled', true);
+            $dompdf->setOptions($options);
+
+            // Render PDF
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+
+            // Simpan atau kirimkan sebagai respons
+            return $dompdf->stream('surat.pdf', ['Attachment' => false]);
+        }
     }
     public function upload(Request $request, $id)
     {
@@ -640,10 +653,31 @@ class SuratController extends Controller
         return redirect()->back()->with(['status' => 'success', 'message' => 'Surat berhasil diupload']);
     }
 
+    public function updateNomor(Request $request, $id)
+    {
+
+        \DB::table('surat')
+            ->where('id', $id)
+            ->update(['nomorSurat' => $request->nomor_surat]);
+
+        return redirect()->back()->with(['status' => 'success', 'message' => 'Nomor surat berhasil diupdate']);
+    }
+
     public function lihatSurat($id)
     {
         $surat = \DB::table('surat')->where('id', $id)->first()->upload;
-        return response()->file(storage_path('app/' . $surat));
+
+
+        if ($surat == null) {
+            $surat = \DB::table('surat')->where('id', $id)->first()->file;
+
+            return response()->file(storage_path('app/public/surat/' . $surat));
+
+        } else {
+            return response()->file(storage_path('app/' . $surat));
+
+        }
+
     }
 
     public function destroy($id)

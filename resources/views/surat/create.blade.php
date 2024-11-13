@@ -19,6 +19,7 @@
                                     <option value="format-1">FORMAT-1</option>
                                     <option value="format-2">FORMAT-2</option>
                                     <option value="format-3">FORMAT-3</option>
+                                    <option value="format-4">FORMAT-4</option>
                                 </select>
                             </div>
                             <div class="col-md-4">
@@ -152,38 +153,47 @@
                                 value="2024-10-29">
                         </div>
                         <div class="row mb-3">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <label for="provinsi" class="form-label">Provinsi:</label>
                                 <select id="provinsi" name="provinsi" class="form-select select2-provinsi">
                                 </select>
                             </div>
+
+                        </div>
+                        <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="kabupaten" class="form-label">Kabupaten/Kota:</label>
                                 <select id="kabupaten" name="kabupaten" class="form-select select2 select2-kabupaten">
                                     <option value="">--- PILIH ---</option>
                                 </select>
                             </div>
+
+                            <div class="col-md-6">
+                                <label for="kabupaten-terdahulu" class="form-label">Kabupaten/Kota Terdahulu:</label>
+                                <input type="text" id="kabupaten-terdahulu" name="kabupaten-terdahulu"
+                                    class="form-control" value="">
+                            </div>
+
+
+
+
                         </div>
                         <div class="row mb-3">
+
+
+
+
                             <div class="col-md-6">
                                 <label for="kecamatan" class="form-label">Kecamatan:</label>
                                 <select id="kecamatan" name="kecamatan" class="form-select select2 select2-kecamatan">
                                     <option value="">--- PILIH ---</option>
                                 </select>
                             </div>
-                            <div class="col-md-6">
-                                <label for="kelurahan" class="form-label">Kelurahan:</label>
-                                <select id="kelurahan" name="kelurahan" class="form-select select2 select2-kelurahan">
-                                    <option value="">--- PILIH ---</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="kabupaten-terdahulu" class="form-label">Kabupaten/Kota Terdahulu:</label>
-                                <input type="text" id="kabupaten-terdahulu" name="kabupaten-terdahulu"
-                                    class="form-control" value="">
-                            </div>
+
+
+
+
+
                             <div class="col-md-6">
                                 <label for="kecamatan-terdahulu" class="form-label">Kecamatan Terdahulu:</label>
                                 <input type="text" id="kecamatan-terdahulu" name="kecamatan-terdahulu"
@@ -191,6 +201,12 @@
                             </div>
                         </div>
                         <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="kelurahan" class="form-label">Kelurahan:</label>
+                                <select id="kelurahan" name="kelurahan" class="form-select select2 select2-kelurahan">
+                                    <option value="">--- PILIH ---</option>
+                                </select>
+                            </div>
                             <div class="col-md-6">
                                 <label for="kelurahan-terdahulu" class="form-label">Kelurahan Terdahulu:</label>
                                 <input type="text" id="kelurahan-terdahulu" name="kelurahan-terdahulu"

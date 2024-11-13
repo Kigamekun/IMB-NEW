@@ -46,11 +46,17 @@
 
 
                                 <tr>
-                                    <th>Jenis Surat</th>
-                                    <th>Nomor Surat</th>
-                                    <th>Tanggal Surat</th>
-                                    <th>Perihal</th>
-                                    <th>Status Upload</th>
+                                    <th>No</th>
+                                    <th>Tahun</th>
+                                    <th>No SK</th>
+                                    <th>Tanggal</th>
+                                    <th>Pemohon</th>
+                                    <th>Atas Nama</th>
+                                    <th>Alamat Pemohon</th>
+                                    <th>No Register</th>
+                                    <th>No IMBG</th>
+                                    <th>Lokasi Bangunan</th>
+                                    <th>Jenis</th>
                                     <th>Action</th>
                                 </tr>
 
@@ -111,30 +117,82 @@
                 }
             },
 
-            columns: [{
-                    data: 'jenisSurat',
-                    title: 'IMB Induk'
+            columns: [
+                // {
+                //     data: 'jenisSurat',
+                //     title: 'IMB Induk'
+                // },
+                // {
+                //     data: 'nomorSurat',
+                //     title: 'Nomor Surat'
+                // },
+                // {
+                //     data: 'tanggalSurat',
+                //     title: 'Tanggal Surat'
+                // },
+                // {
+                //     data: 'perihal',
+                //     title: 'Perihal'
+                // },
+                // {
+                //     data: 'sudah_upload',
+                //     title: 'Sudah Upload'
+                // },
+                // {
+                //     data: 'action',
+                //     title: 'Action'
+                // }
+
+                {
+                    data: 'DT_RowIndex',
+                    title: 'No',
+
+                },
+                {
+                    data: 'tahun',
+                    title: 'Tahun'
                 },
                 {
                     data: 'nomorSurat',
-                    title: 'Nomor Surat'
+                    title: 'No SK'
                 },
                 {
                     data: 'tanggalSurat',
-                    title: 'Tanggal Surat'
+                    title: 'Tanggal'
                 },
                 {
-                    data: 'perihal',
-                    title: 'Perihal'
+                    data: 'nama',
+                    title: 'Pemohon'
                 },
                 {
-                    data: 'sudah_upload',
-                    title: 'Sudah Upload'
+                    data: 'bertindak_atas_nama',
+                    title: 'Atas Nama'
+                },
+                {
+                    data: 'alamat',
+                    title: 'Alamat Pemohon'
+                },
+                {
+                    data: 'registerNomor',
+                    title: 'No Register'
+                },
+                {
+                    data: 'imbgNomor',
+                    title: 'No IMBG'
+                },
+                {
+                    data: 'lokasi',
+                    title : 'Lokasi Bangunan'
+                },
+                {
+                    data: 'jenisSurat',
+                    title: 'Jenis'
                 },
                 {
                     data: 'action',
                     title: 'Action'
                 }
+
             ],
             order: [
                 [2, 'desc']
@@ -169,6 +227,31 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="updateNomorModal" tabindex="-1" aria-labelledby="updateNomorModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fs-5" id="updateNomorModalLabel">Update Nomor Surat</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="update-nomor-form" action="" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="nomor_surat" class="form-label">Nomor Surat</label>
+                            <input type="text" class="form-control" id="nomor_surat" name="nomor_surat" placeholder="Masukkan nomor surat">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
 
     <div class="modal fade" id="importDataModal" tabindex="-1" aria-labelledby="importDataModalLabel" aria-hidden="true">
@@ -211,5 +294,26 @@
                 form.setAttribute('action', url);
             });
         });
+    </script>
+    <script>
+         document.addEventListener('DOMContentLoaded', function() {
+        // Listen for show event for upload and update modals
+        const uploadModal = document.getElementById('uploadSuratModal');
+        const updateModal = document.getElementById('updateNomorModal');
+
+        uploadModal.addEventListener('show.bs.modal', function(event) {
+            const button = event.relatedTarget;
+            const url = button.getAttribute('data-url');
+            const form = document.getElementById('upload-data');
+            form.setAttribute('action', url);
+        });
+
+        updateModal.addEventListener('show.bs.modal', function(event) {
+            const button = event.relatedTarget;
+            const url = button.getAttribute('data-url');
+            const form = document.getElementById('update-nomor-form');
+            form.setAttribute('action', url);
+        });
+    });
     </script>
 @endsection

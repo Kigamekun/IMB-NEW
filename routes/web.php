@@ -124,6 +124,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/create', [SuratController::class, 'create'])->name('surat.create');
         Route::post('/store', [SuratController::class, 'store'])->name('surat.store');
         Route::post('/upload/{id}', [SuratController::class, 'upload'])->name('surat.upload');
+        Route::post('/update_nomor/{id}', [SuratController::class, 'updateNomor'])->name('surat.update_nomor');
         Route::get('/lihat/{id}', [SuratController::class, 'lihatSurat'])->name('surat.lihat');
         Route::get('/format-1', [SuratController::class, 'format1'])->name('surat.format-1');
         Route::get('/format-3', [SuratController::class, 'format3'])->name('surat.format-3');

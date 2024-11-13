@@ -114,7 +114,7 @@ class SuratController extends Controller
             'kelurahanPemohon' => $request->input('kelurahanPemohon'),
             'jabatan' => $request->input('jabatan'),
 
-            'provinsi' => $request->input('provinsi'),
+            'provinsi' => 32,
             'kabupaten' => $request->input('kabupaten'),
             'kecamatan' => $request->input('kecamatan'),
             'kelurahan' => $request->input('kelurahan'),
@@ -132,7 +132,7 @@ class SuratController extends Controller
 
 
         $jenisSurat = $data['jenisSurat'];
-        list($kepalaDinas, $nip) = explode(' | ', $request->kepalaDinas);
+        list($nip, $kepalaDinas) = explode(' | ', $request->kepalaDinas);
 
         $details = json_encode($request->input('details'));
         $details2 = json_encode($request->input('details2'));
@@ -158,7 +158,7 @@ class SuratController extends Controller
 
         // Untuk Provinsi
         $strProvinsi = \DB::table('master_province')
-            ->where('code', $data['provinsi'])
+            ->where('code', 32)
             ->first()->name;
         $provinsi = ucwords(strtolower($strProvinsi));
 
@@ -388,7 +388,7 @@ class SuratController extends Controller
 
         $jenisSurat = $data['jenisSurat'];
 
-        list($kepalaDinas, $nip) = explode(' | ', $request->kepalaDinas);
+        list($nip, $kepalaDinas) = explode(' | ', $request->kepalaDinas);
 
         $details = json_encode($request->input('details'));
         $details2 = json_encode($request->input('details2'));
@@ -415,7 +415,7 @@ class SuratController extends Controller
 
         // Untuk Provinsi
         $strProvinsi = \DB::table('master_province')
-            ->where('code', $data['provinsi'])
+            ->where('code', 32)
             ->first()->name;
         $provinsi = ucwords(strtolower($strProvinsi));
 

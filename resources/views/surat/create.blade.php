@@ -376,12 +376,12 @@
 
         function initializeSelect2WithAjax() {
             // Provinsi Select2 with AJAX
-            $('.select2-provinsi').select2({
+            $('.select2-kabupaten').select2({
                 width: '100%',
-                placeholder: 'Pilih Provinsi',
+                placeholder: 'Pilih kabupaten',
                 minimumInputLength: 2,
                 ajax: {
-                    url: '/master/get-provinsi', // URL to fetch provinsi data
+                    url: '{{  route("master.kabupaten") }}', // URL to fetch kabupaten data
                     dataType: 'json',
                     delay: 250,
                     data: function(params) {
@@ -391,7 +391,7 @@
                         };
                     },
                     processResults: function(data, params) {
-                        console.log("Fetched provinsi data:", data); // Check data structure here
+                        console.log("Fetched kabupaten data:", data); // Check data structure here
                         return {
                             results: data.items.map(function(item) {
                                 return {
@@ -405,44 +405,9 @@
                 }
             }).on('select2:select', function(e) {
                 console.log("Selected Provinsi:", e.params.data);
-                loadKabupaten(e.params.data.id); // Load kabupaten based on selected provinsi
+                loadKecamatan(e.params.data.id); // Load kabupaten based on selected provinsi
             });
 
-            // Kabupaten Select2 with AJAX
-            function loadKabupaten(provinsiId) {
-                $('.select2-kabupaten').select2({
-                    width: '100%',
-                    placeholder: 'Pilih Kabupaten/Kota',
-                    minimumInputLength: 2,
-                    ajax: {
-                        url: '/master/get-kabupaten', // URL to fetch kabupaten data
-                        dataType: 'json',
-                        delay: 250,
-                        data: function(params) {
-                            return {
-                                q: params.term,
-                                provinsi_id: provinsiId, // Pass the selected provinsi ID
-                                page: params.page || 1
-                            };
-                        },
-                        processResults: function(data, params) {
-                            console.log("Fetched kabupaten data:", data); // Check data structure here
-                            return {
-                                results: data.items.map(function(item) {
-                                    return {
-                                        id: item.id,
-                                        text: item.text
-                                    };
-                                })
-                            };
-                        },
-                        cache: true
-                    }
-                }).on('select2:select', function(e) {
-                    console.log("Selected Kabupaten/Kota:", e.params.data);
-                    loadKecamatan(e.params.data.id); // Load kecamatan based on selected kabupaten
-                });
-            }
 
             // Kecamatan Select2 with AJAX
             function loadKecamatan(kabupatenId) {
@@ -451,7 +416,7 @@
                     placeholder: 'Pilih Kecamatan',
                     minimumInputLength: 2,
                     ajax: {
-                        url: '/master/get-kecamatan', // URL to fetch kecamatan data
+                        url: '{{ route("master.kecamatan") }}', // URL to fetch kecamatan data
                         dataType: 'json',
                         delay: 250,
                         data: function(params) {
@@ -487,7 +452,7 @@
                     placeholder: 'Pilih Kelurahan',
                     minimumInputLength: 2,
                     ajax: {
-                        url: '/master/get-kelurahan', // URL to fetch kelurahan data
+                        url: '{{ route("master.kelurahan") }}', // URL to fetch kelurahan data
                         dataType: 'json',
                         delay: 250,
                         data: function(params) {
@@ -521,7 +486,7 @@
                 placeholder: 'Pilih Provinsi',
                 minimumInputLength: 2,
                 ajax: {
-                    url: '/master/get-provinsi', // URL to fetch provinsi data
+                    url: '{{  route("master.provinsi") }}', // URL to fetch provinsi data
                     dataType: 'json',
                     delay: 250,
                     data: function(params) {
@@ -555,7 +520,7 @@
                     placeholder: 'Pilih Kabupaten/Kota',
                     minimumInputLength: 2,
                     ajax: {
-                        url: '/master/get-kabupaten', // URL to fetch kabupaten data
+                        url: '{{ route("master.kabupaten") }}', // URL to fetch kabupaten data
                         dataType: 'json',
                         delay: 250,
                         data: function(params) {
@@ -591,7 +556,7 @@
                     placeholder: 'Pilih Kecamatan',
                     minimumInputLength: 2,
                     ajax: {
-                        url: '/master/get-kecamatan', // URL to fetch kecamatan data
+                        url: '{{ route("master.kecamatan") }}', // URL to fetch kecamatan data
                         dataType: 'json',
                         delay: 250,
                         data: function(params) {
@@ -627,7 +592,7 @@
                     placeholder: 'Pilih Kelurahan',
                     minimumInputLength: 2,
                     ajax: {
-                        url: '/master/get-kelurahan', // URL to fetch kelurahan data
+                        url: '{{ route("master.kelurahan") }}', // URL to fetch kelurahan data
                         dataType: 'json',
                         delay: 250,
                         data: function(params) {

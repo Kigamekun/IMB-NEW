@@ -287,11 +287,8 @@
                         <td>Lokasi</td>
                         <td>:</td>
                         <td style="line-height:10px;">
-                            {{ $referensi['lokasi'] }}, Desa/Kelurahan
-                            {{ $referensi['kelurahan'] }}, Kecamatan
-                            {{ $referensi['kecamatan'] }}, {{ $referensi['kabupaten'] }}
+                            {{ $referensi['lokasi'] }}, 
 
-                            {{ $referensi['lokasi'] }},
                             Desa/Kelurahan {{ $referensi['kelurahan'] }}
                             @if (isset($referensi['kelurahan-terdahulu']) && $referensi['kelurahan-terdahulu'] != null)
                                 (d/h. {{ $referensi['kelurahan-terdahulu'] }})

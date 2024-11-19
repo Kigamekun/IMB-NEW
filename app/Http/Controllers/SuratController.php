@@ -318,6 +318,8 @@ class SuratController extends Controller
             'kelurahanPemohon' => $kelurahanPemohon,
         ];
         $referensi = [
+            'font_surat' => $data['font_surat'],
+
             'izin_mendirikan_bangunan_atas_nama' => $data['izin_mendirikan_bangunan_atas_nama'],
             'lokasi' => $data['lokasi'],
             'tujuan' => $data['tujuanSurat'],
@@ -326,6 +328,8 @@ class SuratController extends Controller
             'registerTanggal' => $data['registerTanggal'],
             'imbgNomor' => $data['imbgNomor'],
             'imbgTanggal' => $data['imbgTanggal'],
+            'imbgTanggalConvert' => $imbgTanggalConvert,
+            'registerTanggalConvert' => $registerTanggalConvert,
             'provinsi' => $provinsi,
             'kabupaten' => $kabupaten,
             'kecamatan' => $kecamatan,
@@ -989,6 +993,20 @@ class SuratController extends Controller
 
         // Load template view dan kirim data
         if ($jenisSurat == 'format-1') {
+            return view('surat.format-1', compact(
+                'jenisSurat',
+                'tahun',
+                'nomorSurat',
+                'tanggalSurat',
+                'lampiran',
+                'sifat',
+                'perihal',
+                'pemohon',
+                'referensi',
+                'penandatangan',
+                'keterangan'
+            ))->render();
+
             $html = view('surat.format-1', compact(
                 'jenisSurat',
                 'tahun',
@@ -1019,6 +1037,21 @@ class SuratController extends Controller
             // Simpan atau kirimkan sebagai respons
             return $dompdf->stream('surat.pdf', ['Attachment' => false]);
         } else if ($jenisSurat == 'format-2') {
+            return view('surat.format-2', compact(
+                'jenisSurat',
+                'tahun',
+                'nomorSurat',
+                'tanggalSurat',
+                'lampiran',
+                'sifat',
+                'perihal',
+                'pemohon',
+                'referensi',
+                'penandatangan',
+                'keterangan',
+                'details'
+            ))->render();
+
             $html = view('surat.format-2', compact(
                 'jenisSurat',
                 'tahun',
@@ -1050,6 +1083,23 @@ class SuratController extends Controller
             // Simpan atau kirimkan sebagai respons
             return $dompdf->stream('surat.pdf', ['Attachment' => false]);
         } else if ($jenisSurat == 'format-3') {
+
+            return view('surat.format-3', compact(
+                'jenisSurat',
+                'tahun',
+                'nomorSurat',
+                'tanggalSurat',
+                'lampiran',
+                'sifat',
+                'perihal',
+                'pemohon',
+                'referensi',
+                'penandatangan',
+                'keterangan',
+                'details',
+                'details2'
+            ))->render();
+
             $html = view('surat.format-3', compact(
                 'jenisSurat',
                 'tahun',
@@ -1096,7 +1146,7 @@ class SuratController extends Controller
                 'keterangan'
             ))->render();
 
-            return view('surat.format-4', compact(
+            $html = view('surat.format-4', compact(
                 'jenisSurat',
                 'tahun',
                 'nomorSurat',
@@ -1154,19 +1204,356 @@ class SuratController extends Controller
 
     public function lihatSurat($id)
     {
-        $surat = \DB::table('surat')->where('id', $id)->first()->upload;
+        // $surat = \DB::table('surat')->where('id', $id)->first()->upload;
 
 
-        if ($surat == null) {
-            $surat = \DB::table('surat')->where('id', $id)->first()->file;
+        // if ($surat == null) {
+        //     $surat = \DB::table('surat')->where('id', $id)->first()->file;
 
-            return response()->file(storage_path('app/public/surat/' . $surat));
+        //     return response()->file(storage_path('app/public/surat/' . $surat));
 
+        // } else {
+        //     return response()->file(storage_path('app/' . $surat));
+
+        // }
+
+
+        $data = \DB::table('surat')->where('id', $id)->first();
+
+        $data = (array) $data;
+
+        $jenisSurat = $data['jenisSurat'];
+
+        list($nip, $kepalaDinas) = explode(' | ', $data['kepalaDinas']);
+
+        $details = json_decode($data['details'],true);
+        $details2 = json_decode($data['details2'],true);
+
+
+        // Untuk Kabupaten
+        $strKabupaten = \DB::table('master_regency')
+            ->where('code', $data['kabupaten'])
+            ->first()->name;
+        $kabupaten = str_replace('kab.', 'Kabupaten', strtolower($strKabupaten));
+        $kabupaten = ucwords($kabupaten);
+
+        // Untuk Kecamatan
+        $strKecamatan = \DB::table('master_district')
+            ->where('code', $data['kecamatan'])
+            ->first()->name;
+        $kecamatan = ucwords(strtolower($strKecamatan));
+
+        // Untuk Kelurahan
+        $strKelurahan = \DB::table('master_subdistrict')
+            ->where('code', $data['kelurahan'])
+            ->first()->name;
+        $kelurahan = ucwords(strtolower($strKelurahan));
+
+        // Untuk Provinsi
+        $strProvinsi = \DB::table('master_province')
+            ->where('code', 32)
+            ->first()->name;
+        $provinsi = ucwords(strtolower($strProvinsi));
+
+        $strKabupatenPemohon = \DB::table('master_regency')
+            ->where('code', $data['kabupatenPemohon'])
+            ->first()->name;
+        $kabupatenPemohon = str_replace('kab.', 'Kabupaten', strtolower($strKabupatenPemohon));
+        $kabupatenPemohon = ucwords($kabupatenPemohon);
+
+        // Untuk Kecamatan
+        $strKecamatanPemohon = \DB::table('master_district')
+            ->where('code', $data['kecamatanPemohon'])
+            ->first()->name;
+        $kecamatanPemohon = ucwords(strtolower($strKecamatanPemohon));
+
+        // Untuk Kelurahan
+        $strKelurahanPemohon = \DB::table('master_subdistrict')
+            ->where('code', $data['kelurahanPemohon'])
+            ->first()->name;
+        $kelurahanPemohon = ucwords(strtolower($strKelurahanPemohon));
+
+        // Untuk Provinsi
+        $strProvinsiPemohon = \DB::table('master_province')
+            ->where('code', $data['provinsiPemohon'])
+            ->first()->name;
+
+        $provinsiPemohon = ucwords(strtolower($strProvinsiPemohon));
+
+
+
+        $timestamp = strtotime($data['permohonanTanggal']);
+
+        $months = [
+            '01' => 'Januari',
+            '02' => 'Februari',
+            '03' => 'Maret',
+            '04' => 'April',
+            '05' => 'Mei',
+            '06' => 'Juni',
+            '07' => 'Juli',
+            '08' => 'Agustus',
+            '09' => 'September',
+            '10' => 'Oktober',
+            '11' => 'November',
+            '12' => 'Desember'
+        ];
+
+        $day = date('d', $timestamp);
+        $month = $months[date('m', $timestamp)];
+        $year = date('Y', $timestamp);
+
+        $imbgTgl = strtotime($data['imbgTanggal']);
+
+        $dayImb = date('d', $imbgTgl);
+        $monthImb = $months[date('m', $imbgTgl)];
+        $yearImb = date('Y', $imbgTgl);
+
+        $registerTgl = strtotime($data['registerTanggal']);
+
+        $dayRegister = date('d', $registerTgl);
+        $monthRegister = $months[date('m', $registerTgl)];
+        $yearRegister = date('Y', $registerTgl);
+
+        $tahun = $data['tahun'];
+        $nomorSurat = $data['nomorSurat'];
+        $tanggalSurat = "$day $month $year";
+        $imbgTanggalConvert = "$dayImb $monthImb $yearImb";
+        $registerTanggalConvert = "$dayRegister $monthRegister $yearRegister";
+        $lampiran = $data['lampiran'];
+        $sifat = $data['sifat'];
+        $perihal = $data['perihal'];
+        $pemohon = [
+            'tanggal' => $data['permohonanTanggal'],
+            'nama' => $data['nama'],
+            'bertindak_atas_nama' => $data['bertindak_atas_nama'],
+            'alamat' => $data['alamat'],
+            'sapaanPemohon' => $data['sapaanPemohon'],
+
+            'provinsiPemohon' => $provinsiPemohon,
+            'kabupatenPemohon' => $kabupatenPemohon,
+            'kecamatanPemohon' => $kecamatanPemohon,
+            'kelurahanPemohon' => $kelurahanPemohon,
+        ];
+        $referensi = [
+            'izin_mendirikan_bangunan_atas_nama' => $data['izin_mendirikan_bangunan_atas_nama'],
+            'lokasi' => $data['lokasi'],
+            'font_surat' => $data['font_surat'],
+            'jenisKegiatan' => $data['jenisKegiatan'],
+            'tujuan' => $data['tujuanSurat'],
+            'registerNomor' => $data['registerNomor'],
+            'registerTanggal' => $data['registerTanggal'],
+            'imbgNomor' => $data['imbgNomor'],
+            'imbgTanggal' => $data['imbgTanggal'],
+            'imbgTanggalConvert' => $imbgTanggalConvert,
+            'registerTanggalConvert' => $registerTanggalConvert,
+            'provinsi' => $provinsi,
+            'kabupaten' => $kabupaten,
+            'kecamatan' => $kecamatan,
+            'kelurahan' => $kelurahan,
+            'kabupaten-terdahulu' => $data['kabupaten_terdahulu'],
+            'kecamatan-terdahulu' => $data['kecamatan_terdahulu'],
+            'kelurahan-terdahulu' => $data['kelurahan_terdahulu'],
+
+        ];
+        $penandatangan = [
+            'kepalaDinas' => $kepalaDinas,
+            'jabatan' => $data['jabatan'],
+            'nip' => $nip,
+            'pangkat' => $data['pangkat'],
+        ];
+        $keterangan = json_decode($data['keterangan'],true);
+
+
+        // Ambil detail data IMBG
+        $details = $details;
+        $details2 = $details2;
+
+        // Load template view dan kirim data
+        if ($jenisSurat == 'format-1') {
+            return view('surat.format-1', compact(
+                'jenisSurat',
+                'tahun',
+                'nomorSurat',
+                'tanggalSurat',
+                'lampiran',
+                'sifat',
+                'perihal',
+                'pemohon',
+                'referensi',
+                'penandatangan',
+                'keterangan'
+            ))->render();
+
+            $html = view('surat.format-1', compact(
+                'jenisSurat',
+                'tahun',
+                'nomorSurat',
+                'tanggalSurat',
+                'lampiran',
+                'sifat',
+                'perihal',
+                'pemohon',
+                'referensi',
+                'penandatangan',
+                'keterangan'
+            ))->render();
+
+            // Setup Dompdf
+            $dompdf = new Dompdf();
+            $dompdf->loadHtml($html);
+
+            // (Opsional) Pengaturan tambahan
+            $options = $dompdf->getOptions();
+            $options->set('isRemoteEnabled', true);
+            $dompdf->setOptions($options);
+
+            // Render PDF
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+
+            // Simpan atau kirimkan sebagai respons
+            return $dompdf->stream('surat.pdf', ['Attachment' => false]);
+        } else if ($jenisSurat == 'format-2') {
+            return view('surat.format-2', compact(
+                'jenisSurat',
+                'tahun',
+                'nomorSurat',
+                'tanggalSurat',
+                'lampiran',
+                'sifat',
+                'perihal',
+                'pemohon',
+                'referensi',
+                'penandatangan',
+                'keterangan',
+                'details'
+            ))->render();
+
+            $html = view('surat.format-2', compact(
+                'jenisSurat',
+                'tahun',
+                'nomorSurat',
+                'tanggalSurat',
+                'lampiran',
+                'sifat',
+                'perihal',
+                'pemohon',
+                'referensi',
+                'penandatangan',
+                'keterangan',
+                'details'
+            ))->render();
+
+            // Setup Dompdf
+            $dompdf = new Dompdf();
+            $dompdf->loadHtml($html);
+
+            // (Opsional) Pengaturan tambahan
+            $options = $dompdf->getOptions();
+            $options->set('isRemoteEnabled', true);
+            $dompdf->setOptions($options);
+
+            // Render PDF
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+
+            // Simpan atau kirimkan sebagai respons
+            return $dompdf->stream('surat.pdf', ['Attachment' => false]);
+        } else if ($jenisSurat == 'format-3') {
+
+            return view('surat.format-3', compact(
+                'jenisSurat',
+                'tahun',
+                'nomorSurat',
+                'tanggalSurat',
+                'lampiran',
+                'sifat',
+                'perihal',
+                'pemohon',
+                'referensi',
+                'penandatangan',
+                'keterangan',
+                'details',
+                'details2'
+            ))->render();
+
+            $html = view('surat.format-3', compact(
+                'jenisSurat',
+                'tahun',
+                'nomorSurat',
+                'tanggalSurat',
+                'lampiran',
+                'sifat',
+                'perihal',
+                'pemohon',
+                'referensi',
+                'penandatangan',
+                'keterangan',
+                'details',
+                'details2'
+            ))->render();
+
+            // Setup Dompdf
+            $dompdf = new Dompdf();
+            $dompdf->loadHtml($html);
+
+            // (Opsional) Pengaturan tambahan
+            $options = $dompdf->getOptions();
+            $options->set('isRemoteEnabled', true);
+            $dompdf->setOptions($options);
+
+            // Render PDF
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+
+            // Simpan atau kirimkan sebagai respons
+            return $dompdf->stream('surat.pdf', ['Attachment' => false]);
         } else {
-            return response()->file(storage_path('app/' . $surat));
+            return view('surat.format-4', compact(
+                'jenisSurat',
+                'tahun',
+                'nomorSurat',
+                'tanggalSurat',
+                'lampiran',
+                'sifat',
+                'perihal',
+                'pemohon',
+                'referensi',
+                'penandatangan',
+                'keterangan'
+            ))->render();
 
+            $html = view('surat.format-4', compact(
+                'jenisSurat',
+                'tahun',
+                'nomorSurat',
+                'tanggalSurat',
+                'lampiran',
+                'sifat',
+                'perihal',
+                'pemohon',
+                'referensi',
+                'penandatangan',
+                'keterangan'
+            ));
+
+            // Setup Dompdf
+            $dompdf = new Dompdf();
+            $dompdf->loadHtml($html);
+
+            // (Opsional) Pengaturan tambahan
+            $options = $dompdf->getOptions();
+            $options->set('isRemoteEnabled', true);
+            $dompdf->setOptions($options);
+
+            // Render PDF
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+
+            // Simpan atau kirimkan sebagai respons
+            return $dompdf->stream('surat.pdf', ['Attachment' => false]);
         }
-
     }
 
     public function destroy($id)

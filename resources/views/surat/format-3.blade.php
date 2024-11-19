@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            font-size: {{ $referensi['font_surat'] }} !important;
+            font-size: {{ $referensi['font_surat'] }}px !important;
             line-height: 1.5;
             text-align: justify
         }
@@ -65,7 +65,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
-            font-size: {{ $referensi['font_surat'] }} !important;
+            font-size: {{ $referensi['font_surat'] }}px !important;
         }
 
         table,

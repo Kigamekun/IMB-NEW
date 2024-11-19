@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            font-size: 10px !important;
+            font-size: {{ $referensi['font_surat'] }} !important;
             line-height: 1.5;
             text-align: justify
         }
@@ -68,7 +68,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
-            font-size: 0.9em;
+            font-size: {{ $referensi['font_surat'] }} !important;
         }
 
         table,
@@ -187,6 +187,10 @@
             text-align: center;
             margin-top: 5px;
         }
+
+        table td {
+            line-height:1 !important;
+        }
     </style>
 </head>
 
@@ -220,10 +224,9 @@
     <!-- Address Section -->
     <div style="line-height:5px;margin-left:10px">
         <p>Yth,</p>
-        <p><b>{{ $pemohon['nama'] }}</b></p>
+        <p><b>{{ $pemohon['sapaanPemohon'] }} {{ $pemohon['nama'] }}</b></p>
         <p>di</p>
-
-        <p>{{ $referensi['kabupaten'] }}</p>
+        <p>Bogor</p>
     </div>
     <br>
 
@@ -236,12 +239,13 @@
         <ol style="margin-top:-15px">
             <li>
                 <div>
-                    Permohonan Surat Keterangan Penerbitan Izin Mendirikan Bangunan (IMB) tanggal {{$tanggalSurat}}, dari:
+                    Permohonan Surat Keterangan Penerbitan Izin Mendirikan Bangunan (IMB) tanggal {{ $tanggalSurat }},
+                    dari:
                     <table class="info-tables">
                         <tr>
-                            <td style="width: 38%">Nama</td>
-                            <td style="width: 1%">:</td>
-                            <td style="width: 61%" class="bold-text"><b>{{ $pemohon['nama'] }}</b></td>
+                            <td style="width: 200px">Nama</td>
+                            <td style="width: 5px">:</td>
+                            <td class="bold-text"><b>{{ $pemohon['nama'] }}</b></td>
                         </tr>
                         <tr>
                             <td>Bertindak Atas Nama</td>
@@ -251,7 +255,7 @@
                         <tr>
                             <td>Alamat</td>
                             <td>:</td>
-                            <td style="line-height:10px;">
+                            <td style="line-height:18px;">
                                 {{ $pemohon['alamat'] }}, Desa/Kelurahan
                                 {{ $pemohon['kelurahanPemohon'] }}, Kecamatan
                                 {{ $pemohon['kecamatanPemohon'] }}, {{ $pemohon['kabupatenPemohon'] }}
@@ -272,52 +276,39 @@
             <div>
                 <table class="info-tables">
                     <tr>
-                        <td style="width: 15%">Izin Mendirikan Bangunan atas nama</td>
-                        <td style="width: 1%">:</td>
-                        <td style="width: 75%" class="bold-text">
-                            <b>{{ $referensi['izin_mendirikan_bangunan_atas_nama'] }}</b></td>
+                        <td style="width: 200px">Izin Mendirikan Bangunan atas nama</td>
+                        <td style="width: 5px">:</td>
+                        <td class="bold-text">
+                            <b>{{ $referensi['izin_mendirikan_bangunan_atas_nama'] }}</b>
+                        </td>
                     </tr>
-                    <tr>
+                    {{-- <tr>
                         <td>Peruntukan</td>
                         <td>:</td>
                         <td>{{ $referensi['tujuan'] }}</td>
-                    </tr>
+                    </tr> --}}
                     <tr>
                         <td>Lokasi</td>
                         <td>:</td>
-                        <td style="line-height:10px;">
-                        {{ $referensi['lokasi'] }}, 
+                        <td style="line-height:18px;">
+                            {{ $referensi['lokasi'] != null || $referensi['lokasi'] != '' ? $referensi['lokasi'] . ',' : '' }}
 
-Desa/Kelurahan {{ $referensi['kelurahan'] }}
-@if (isset($referensi['kelurahan-terdahulu']) && $referensi['kelurahan-terdahulu'] != null)
-    (d/h. {{ $referensi['kelurahan-terdahulu'] }})
-@endif
-, Kecamatan {{ $referensi['kecamatan'] }}
-@if (isset($referensi['kecamatan-terdahulu']) && $referensi['kecamatan-terdahulu'] != null)
-    (d/h. {{ $referensi['kecamatan-terdahulu'] }})
-@endif
-, {{ $referensi['kabupaten'] }}
-@if (isset($referensi['kabupaten-terdahulu']) && $referensi['kabupaten-terdahulu'] != null)
-    (d/h. {{ $referensi['kabupaten-terdahulu'] }})
-@endif
+
+                            Desa/Kelurahan {{ $referensi['kelurahan'] }}
+                            @if (isset($referensi['kelurahan-terdahulu']) && $referensi['kelurahan-terdahulu'] != null)
+                                (d/h. {{ $referensi['kelurahan-terdahulu'] }})
+                            @endif
+                            , Kecamatan {{ $referensi['kecamatan'] }}
+                            @if (isset($referensi['kecamatan-terdahulu']) && $referensi['kecamatan-terdahulu'] != null)
+                                (d/h. {{ $referensi['kecamatan-terdahulu'] }})
+                            @endif
+                            , {{ $referensi['kabupaten'] }}
+                            @if (isset($referensi['kabupaten-terdahulu']) && $referensi['kabupaten-terdahulu'] != null)
+                                (d/h. {{ $referensi['kabupaten-terdahulu'] }})
+                            @endif
                         </td>
                     </tr>
 
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
                     <tr>
                         <td>Nomor Register</td>
                         <td>:</td>
@@ -326,7 +317,7 @@ Desa/Kelurahan {{ $referensi['kelurahan'] }}
                     <tr>
                         <td>Tanggal Register</td>
                         <td>:</td>
-                        <td>{{ $referensi['registerTanggal'] }}</td>
+                        <td>{{ $referensi['registerTanggalConvert'] }}</td>
                     </tr>
                     <tr>
                         <td>Nomor Izin Mendirikan Bangunan</td>
@@ -336,7 +327,7 @@ Desa/Kelurahan {{ $referensi['kelurahan'] }}
                     <tr>
                         <td>Tanggal</td>
                         <td>:</td>
-                        <td>{{ $referensi['imbgTanggal'] }}</td>
+                        <td>{{ $referensi['imbgTanggalConvert'] }}</td>
                     </tr>
                     <tr>
                         <td>Dipergunakan Untuk</td>
@@ -389,19 +380,27 @@ Desa/Kelurahan {{ $referensi['kelurahan'] }}
             </div>
         </ol>
         <ol start="3">
-            <li>{{ $keterangan['ket1'] }}</li>
+            <li>{{ $keterangan[0] }}</li>
         </ol>
         <p>
-            {{ $keterangan['ket2'] }}
+            {{ $keterangan[1] }}
         </p>
         <p>
-            {{ $keterangan['ket3'] }}
+            {{ $keterangan[2] }}
         </p>
+        @if (count($keterangan) > 3)
+            @foreach ($keterangan as $index => $ket)
+                @if ($index > 2)
+                    <p>{{ $ket }}</p>
+                @endif
+            @endforeach
+        @endif
         <p>Demikian disampaikan untuk diketahui dan dipergunakan sebagaimana mestinya.</p>
     </div>
     <div style="float: right">
         <div class="signature-section" style="width: 250px;text-align:left">
-            <p class="signature-title" style="text-align:left">{{ $penandatangan['jabatan'] }} Perumahan, Kawasan Permukiman dan
+            <p class="signature-title" style="text-align:left">{{ $penandatangan['jabatan'] }} Perumahan, Kawasan
+                Permukiman dan
                 Pertanahan,</p>
             <br>
             <br>

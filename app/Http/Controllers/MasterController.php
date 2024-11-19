@@ -20,8 +20,7 @@ class MasterController extends Controller
             $query->where('name', 'like', '%' . $search . '%');
         }
 
-        $results = $query->offset(($page - 1) * $pageSize)
-            ->limit($pageSize)
+        $results = $query
             ->get();
 
         $morePages = count($results) == $pageSize;
@@ -59,8 +58,7 @@ class MasterController extends Controller
             $query->where('name', 'like', '%' . $search . '%');
         }
 
-        $results = $query->offset(($page - 1) * $pageSize)
-            ->limit($pageSize)
+        $results = $query
             ->get();
 
         $morePages = count($results) == $pageSize;
@@ -98,8 +96,7 @@ class MasterController extends Controller
             $query->where('name', 'like', '%' . $search . '%');
         }
 
-        $results = $query->offset(($page - 1) * $pageSize)
-            ->limit($pageSize)
+        $results = $query
             ->get();
 
         $morePages = count($results) == $pageSize;
@@ -137,8 +134,7 @@ class MasterController extends Controller
             $query->where('name', 'like', '%' . $search . '%');
         }
 
-        $results = $query->offset(($page - 1) * $pageSize)
-            ->limit($pageSize)
+        $results = $query
             ->get();
 
         $morePages = count($results) == $pageSize;

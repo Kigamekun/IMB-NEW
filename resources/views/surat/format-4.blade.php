@@ -5,11 +5,35 @@
     <meta charset="UTF-8">
     <title>Surat Izin Mendirikan Bangunan</title>
     <style>
+        @media print {
+            @page {
+                size: 210mm 330mm;
+            }
+
+            body {
+                font-family: Arial, sans-serif;
+                font-size: 12px;
+                line-height: 1.6;
+            }
+
+            table td {
+                line-height: 1.6;
+            }
+
+            .no-print {
+                display: none;
+            }
+        }
+
         body {
             font-family: Arial, sans-serif;
-            font-size: 12px !important;
-            line-height: 1.5;
-            text-align: justify
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            font-size: {{ $referensi['font_surat'] }}px !important;
+            line-height: 1;
+            text-align: justify;
         }
 
         .header {
@@ -64,7 +88,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
-            font-size: 0.9em;
+            font-size: {{ $referensi['font_surat'] }}px !important;
         }
 
         table,
@@ -93,17 +117,18 @@
         }
 
         .info-table {
-            width: 300px;
-            border: none;
+            border:none;
+            width: 250px;
             border-collapse: collapse;
         }
 
+
         .info-table td {
+            border:none;
             text-align: left;
-            border: none;
             padding: 4px 8px;
             vertical-align: top;
-            line-height: .8;
+            line-height: 1 !important;
         }
 
         .info-table td:first-child {
@@ -124,10 +149,6 @@
             /* Lebar kolom terakhir */
         }
 
-
-
-
-
         .info-tables {
             width: 100%;
             border: none;
@@ -139,25 +160,7 @@
             border: none;
             padding: 4px 8px;
             vertical-align: top;
-            line-height: .8;
-        }
-
-        .info-tables td:first-child {
-            width: 15%;
-            /* Lebar kolom pertama */
-            white-space: nowrap;
-            /* Mencegah kolom pertama meluas */
-        }
-
-        .info-tables td:nth-child(2) {
-            width: 1%;
-            /* Lebar kolom untuk tanda titik dua (:) */
-            text-align: center;
-        }
-
-        .info-tables td:last-child {
-            width: 84%;
-            /* Lebar kolom terakhir */
+            line-height: 1;
         }
 
         .signature-section {
@@ -183,11 +186,15 @@
             text-align: center;
             margin-top: 5px;
         }
+
+        table td {
+            line-height: 1 !important;
+        }
     </style>
 </head>
 
 <body>
-    <div style="float: right">
+    <div style="float: right;margin-right:100px">
         <p>Cibinong,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2024
         </p>
     </div>
@@ -208,27 +215,28 @@
             <td>{{ $lampiran }}</td>
         </tr>
         <tr>
-            <td>Perihal</td>
+            <td>Hal</td>
             <td>:</td>
             <td style="line-height: normal">{{ $perihal }}</td>
         </tr>
     </table>
     <div style="line-height:5px;margin-left:10px">
         <p>Yth,</p>
-        <p><b>{{ $pemohon['nama'] }}</b></p>
+        <p><b>{{ $pemohon['sapaanPemohon'] }} {{ $pemohon['nama'] }}</b></p>
         <p>di</p>
-        <p>{{ $referensi['kabupaten'] }}</p>
+        <p>Bogor</p>
     </div>
     <br>
     <div style="margin-left: 10px">
-        <p style="margin-top:-5px; text-indent: 25px;">Peraturan Bupati Nomor 63 tahun 2013 Tentang Izin Mendirikan Bangunan Gedung BAB VII
-            Penggantian IMBG Hilang
-            Atau Rusak, Legalisasi dan Pemutakhiran.</p>
-        <table class="info-tables" style="margin-left: -12px;margin-top:-10px;">
+        <p style="margin-top:-5px; text-indent: 25px;">Sehubungan permohonan Surat Keterangan Izin Mendirikan Bangunan
+            Gedung (IMBG) {{ $referensi['jenisKegiatan'] }}, tanggal {{ $tanggalSurat }} dari:</p>
+
+        <table class="info-tables" style="margin-left: -12px; margin-top: -10px; width: 100%; border-collapse: collapse;">
+            <!-- Bagian Pemohon -->
             <tr>
-                <td style="width: 27%">Nama</td>
-                <td style="width: 1%">:</td>
-                <td style="width: 75%" class="bold-text"><b>{{ $pemohon['nama'] }}</b></td>
+                <td style="width: 200px;">Nama</td>
+                <td style="width: 5px;">:</td>
+                <td><b>{{ $pemohon['nama'] }}</b></td>
             </tr>
             <tr>
                 <td>Bertindak Atas Nama</td>
@@ -238,35 +246,34 @@
             <tr>
                 <td>Alamat</td>
                 <td>:</td>
-                <td style="line-height:10px;">
+                <td style=" line-height: 1 !important;">
                     {{ $pemohon['alamat'] }}, Desa/Kelurahan
                     {{ $pemohon['kelurahanPemohon'] }}, Kecamatan
                     {{ $pemohon['kecamatanPemohon'] }}, {{ $pemohon['kabupatenPemohon'] }}
                 </td>
+            </tr>
+
+            <!-- Baris Kosong untuk Pemisah -->
+            <tr>
+                <td colspan="3"
+                    style="text-align: justify; padding-top: 10px; padding-bottom: 10px; line-height: 1 !important; word-wrap: break-word;text-indent: 25px;">
+                    Setelah dilakukan pengecekan pada buku Izin Mendirikan Bangunan yang ada pada Dinas Perumahan
+                    Kawasan
+                    Permukiman dan Pertanahan Kabupaten Bogor, dengan ini dapat disampaikan:
                 </td>
             </tr>
-        </table>
-        <p style="margin-top:-5px;text-indent: 25px;">Peraturan Bupati Nomor 63 tahun 2013 Tentang Izin Mendirikan Bangunan Gedung BAB VII
-            Penggantian IMBG Hilang
-            Atau Rusak, Legalisasi dan Pemutakhiran.</p>
-        <table class="info-tables" style="margin-left: -12px;margin-top:-10px;">
+
+            <!-- Bagian Izin Mendirikan Bangunan -->
             <tr>
-                <td style="width: 15%">Izin Mendirikan Bangunan atas nama</td>
-                <td style="width: 1%">:</td>
-                <td style="width: 75%" class="bold-text">
-                    <b>{{ $referensi['izin_mendirikan_bangunan_atas_nama'] }}</b>
-                </td>
-            </tr>
-            <tr>
-                <td>Peruntukan</td>
+                <td>Izin Mendirikan Bangunan atas nama</td>
                 <td>:</td>
-                <td>{{ $referensi['tujuan'] }}</td>
+                <td><b>{{ $referensi['izin_mendirikan_bangunan_atas_nama'] }}</b></td>
             </tr>
             <tr>
                 <td>Lokasi</td>
                 <td>:</td>
-                <td style="line-height:10px;">
-                    {{ $referensi['lokasi'] }},
+                <td style=" line-height: 1 !important;">
+                    {{ $referensi['lokasi'] != null || $referensi['lokasi'] != '' ? $referensi['lokasi'] . ',' : '' }}
                     Desa/Kelurahan {{ $referensi['kelurahan'] }}
                     @if (isset($referensi['kelurahan-terdahulu']) && $referensi['kelurahan-terdahulu'] != null)
                         (d/h. {{ $referensi['kelurahan-terdahulu'] }})
@@ -289,7 +296,13 @@
             <tr>
                 <td>Tanggal Register</td>
                 <td>:</td>
-                <td>{{ $referensi['registerTanggal'] }}</td>
+                <td>
+                    @if (date('d-m', strtotime($referensi['registerTanggal'])) === '01-01')
+                        -
+                    @else
+                        {{ $referensi['registerTanggalConvert'] }}
+                    @endif
+                </td>
             </tr>
             <tr>
                 <td>Nomor Izin Mendirikan Bangunan</td>
@@ -299,33 +312,46 @@
             <tr>
                 <td>Tanggal</td>
                 <td>:</td>
-                <td>{{ $referensi['imbgTanggal'] }}</td>
+                <td>{{ $referensi['imbgTanggalConvert'] }}</td>
             </tr>
             <tr>
                 <td>Peruntukan</td>
                 <td>:</td>
-                <td><i><b>{{ $referensi['tujuan'] }}</b></i></td>
+                <td><i><b>{{ $referensi['jenisKegiatan'] }}</b></i></td>
             </tr>
         </table>
-        <br>
-        <p style="margin-top:-5px;text-indent: 25px;">{{$keterangan['ket1']}}</p>
-        <p style="margin-top:-5px;text-indent: 25px;">{{$keterangan['ket2']}}</p>
-        <p style="margin-top:-5px;text-indent: 25px;">{{$keterangan['ket3']}}</p>
 
-    <div style="float: right">
-        <div class="signature-section" style="width: 250px;text-align:left">
-            <p class="signature-title" style="text-align:left">{{ $penandatangan['jabatan'] }} Perumahan, Kawasan
-                Permukiman dan
-                Pertanahan,</p>
-            <br>
-            <br>
-            <br>
-            <br>
-            <p class="signature-name" style="text-align:left;line-height:5px">{{ $penandatangan['kepalaDinas'] }}</p>
-            <p class="signature-role" style="text-align:left;line-height:5px">{{ $penandatangan['pangkat'] }}</p>
-            <p class="signature-nip" style="text-align:left;line-height:5px">NIP. {{ $penandatangan['nip'] }}</p>
+        <br>
+        <p style="margin-top:-5px;text-indent: 25px;">{{ $keterangan[0] }}</p>
+        <p style="margin-top:-5px;text-indent: 25px;">
+            {{ $keterangan[1] }}
+        </p>
+        <p style="margin-top:-5px;text-indent: 25px;">
+            {{ $keterangan[2] }}
+        </p>
+        @if (count($keterangan) > 3)
+            @foreach ($keterangan as $index => $ket)
+                @if ($index > 2)
+                    <p style="margin-top:-5px;text-indent: 25px;">{{ $ket }}</p>
+                @endif
+            @endforeach
+        @endif
+
+        <div style="float: right">
+            <div class="signature-section" style="width: 250px;text-align:left">
+                <p class="signature-title" style="text-align:left">{{ $penandatangan['jabatan'] }} Perumahan, Kawasan
+                    Permukiman dan
+                    Pertanahan,</p>
+                <br>
+                <br>
+                <br>
+                <br>
+                <p class="signature-name" style="text-align:left;line-height:5px">{{ $penandatangan['kepalaDinas'] }}
+                </p>
+                <p class="signature-role" style="text-align:left;line-height:5px">{{ $penandatangan['pangkat'] }}</p>
+                <p class="signature-nip" style="text-align:left;line-height:5px">NIP. {{ $penandatangan['nip'] }}</p>
+            </div>
         </div>
-    </div>
 </body>
 
 </html>

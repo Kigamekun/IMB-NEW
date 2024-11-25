@@ -47,22 +47,22 @@
                             <div class="mb-3 col-md-3">
                                 {{-- <label for="filter-atas_nama" class="form-label">Atas Nama:</label> --}}
                                 <input type="text" class="form-control" id="filter-atas_nama"
-                                    placeholder="Filter Atas Nama">
+                                    placeholder="Atas Nama">
                             </div>
                             <div class="mb-3 col-md-3">
                                 {{-- <label for="filter-lokasi" class="form-label">Lokasi Perumahan:</label> --}}
                                 <input type="text" class="form-control" id="filter-lokasi"
-                                    placeholder="Filter Lokasi Perumahan">
+                                    placeholder="Lokasi Perumahan">
                             </div>
                             <div class="mb-3 col-md-3">
                                 {{-- <label for="filter-kecamatan" class="form-label">Kecamatan:</label> --}}
                                 <input type="text" class="form-control" id="filter-kecamatan"
-                                    placeholder="Filter Kecamatan">
+                                    placeholder="Kecamatan">
                             </div>
                             <div class="mb-3 col-md-3">
                                 {{-- <label for="filter-kelurahan" class="form-label">Kelurahan:</label> --}}
                                 <input type="text" class="form-control" id="filter-kelurahan"
-                                    placeholder="Filter Kelurahan">
+                                    placeholder="Kelurahan">
                             </div>
                         </div>
                         <table id="IMBTable" class="table table-bordered">

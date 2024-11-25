@@ -47,23 +47,32 @@
                             <div class="mb-3 col-md-3">
                                 {{-- <label for="filter-atas_nama" class="form-label">Atas Nama:</label> --}}
                                 <input type="text" class="form-control" id="filter-atas_nama"
-                                    placeholder="Filter Atas Nama">
+                                    placeholder="Atas Nama">
                             </div>
                             <div class="mb-3 col-md-3">
                                 {{-- <label for="filter-lokasi" class="form-label">Lokasi Perumahan:</label> --}}
                                 <input type="text" class="form-control" id="filter-lokasi"
-                                    placeholder="Filter Lokasi Perumahan">
+                                    placeholder="Lokasi Perumahan">
                             </div>
                             <div class="mb-3 col-md-3">
                                 {{-- <label for="filter-kecamatan" class="form-label">Kecamatan:</label> --}}
                                 <input type="text" class="form-control" id="filter-kecamatan"
-                                    placeholder="Filter Kecamatan">
+                                    placeholder="Kecamatan">
                             </div>
                             <div class="mb-3 col-md-3">
                                 {{-- <label for="filter-kelurahan" class="form-label">Kelurahan:</label> --}}
                                 <input type="text" class="form-control" id="filter-kelurahan"
-                                    placeholder="Filter Kelurahan">
+                                    placeholder="Kelurahan">
                             </div>
+                            <div class="mb-3 col-md-3">
+                                <select class="form-control" id="filter-jenis_imb">
+                                    <option value="all" selected>Keseluruhan</option>
+                                    @foreach (DB::table('master_jenis_non_perum')->get() as $jenis)
+                                        <option value="{{ $jenis->name }}">{{ $jenis->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
                         </div>
                         <table id="IMBTable" class="table table-bordered">
                             <thead>
@@ -156,17 +165,18 @@
             table.column(8).search(this.value).draw(); // 8 is the index for 'lokasi_perumahan'
         });
 
-        // Custom filtering for 'Kecamatan'
+        $('#filter-jenis_imb').on('change', function() {
+            table.column(2).search(this.value).draw(); // 2 adalah index kolom untuk 'jenis'
+        });
+
         $('#filter-kecamatan').on('keyup', function() {
             table.column(9).search(this.value).draw(); // 9 is the index for 'kecamatan'
         });
 
-        // Custom filtering for 'Kelurahan'
         $('#filter-kelurahan').on('keyup', function() {
             table.column(10).search(this.value).draw(); // 10 is the index for 'kelurahan'
         });
 
-        // Custom filtering for 'Atas Nama'
         $('#filter-atas_nama').on('keyup', function() {
             table.column(7).search(this.value).draw(); // 7 is the index for 'atas_nama'
         });

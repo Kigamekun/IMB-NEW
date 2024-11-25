@@ -21,13 +21,16 @@ class IMBIndukNonPerumController extends Controller
             $data = IMBIndukNonPerum::join('app_md_jeniskeg', 'imb_induk_non_perum.jenis_kegiatan', '=', 'app_md_jeniskeg.id_jeniskeg')
                 ->join('master_district', 'imb_induk_non_perum.kecamatan', '=', 'master_district.code')
                 ->join('master_subdistrict', 'imb_induk_non_perum.desa_kelurahan', '=', 'master_subdistrict.code')
-                ->select('imb_induk_non_perum.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan', 'master_district.name as kecamatan', 'master_subdistrict.name as kelurahan')
+                ->join('master_jenis_non_perum', 'imb_induk_non_perum.jenis', '=', 'master_jenis_non_perum.id')
+                ->select('imb_induk_non_perum.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan', 'master_district.name as kecamatan', 'master_subdistrict.name as kelurahan', 'master_jenis_non_perum.name as jenis')
                 ->get();
+
+
             return Datatables::of($data)
-                ->addColumn('jenis', function ($row) {
-                    $master = DB::table('master_jenis_non_perum')->where('id', $row->jenis)->first();
-                    return '<span class="badge badge-primary">' . $master->name . '</span>';
-                })
+                // ->addColumn('jenis', function ($row) {
+                //     $master = DB::table('master_jenis_non_perum')->where('id', $row->jenis)->first();
+                //     return '<span class="badge badge-primary">' . $master->name . '</span>';
+                // })
                 ->addColumn('action', function ($row) {
                     return '
                         <div class="d-flex" style="gap:10px;">

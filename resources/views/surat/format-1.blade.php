@@ -226,7 +226,7 @@
         <p>Yth,</p>
         <p><b>{{ $pemohon['sapaanPemohon'] }} {{ $pemohon['nama'] }}</b></p>
         <p>di</p>
-        <p>Bogor</p>
+        <p>{{$pemohon['kabupatenPemohon'] }}</p>
     </div>
     <br>
 

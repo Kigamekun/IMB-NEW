@@ -152,7 +152,7 @@ $(function() {
     if(!mini) {
       body.removeClass('sidebar-mini');
       $(".main-sidebar").css({
-        overflow: 'hidden'
+        overflow: 'scroll'
       });
       setTimeout(function() {
         $(".main-sidebar").niceScroll(sidebar_nicescroll_opts);

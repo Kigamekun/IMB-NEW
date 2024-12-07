@@ -26,7 +26,7 @@
                                     value="{{ $data->tgl_imb_induk }}" required>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6">
                                 <label for="no_register" class="form-label">No Register</label>
                                 <input type="text" class="form-control" id="no_register" name="no_register"
@@ -38,7 +38,7 @@
                                     value="{{ $data->tgl_register }}" required>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6">
                                 <label for="nama" class="form-label">Nama</label>
                                 <input type="text" class="form-control" id="nama" name="nama"
@@ -50,7 +50,7 @@
                                     value="{{ $data->atas_nama }}" required>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6">
                                 <label for="lokasi_perumahan" class="form-label
                                 ">Lokasi
@@ -66,7 +66,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6">
                                 <label for="kelurahan" class="form-label">Desa/Kelurahan</label>
                                 <select class="form-control select2 select2-kelurahan" id="kelurahan" name="kelurahan" required>
@@ -77,21 +77,21 @@
                             </div>
                         </div>
 
-                        <div class="d-flex justify-content-end">
+                        <div class="d-flex justify-content-end" style="margin-top: 10px">
                             <div class="mb-3">
                                 <label for="entryCount" class="form-label">Jumlah Entry Item:</label>
                                 <input type="number" class="form-control" id="entryCount" min="1" name="entryCount"
                                     value="{{ count($item) }}" placeholder="Masukkan jumlah entry">
-                                <button type="button" class="btn btn-primary mt-2 w-100" onclick="generateForms()">Generate
+                                <button type="button" class="btn btn-primary mt-2 w-100" onclick="generateForms()" style="margin-top: 10px">Generate
                                     Item
                                     Forms</button>
                             </div>
                         </div>
-                        <div id="formContainer">
+                        <div id="formContainer"  >
 
                             @foreach ($item as $key => $itm)
                                 <h4>Item {{ $key + 1 }}</h4>
-                                <div class="row">
+                                <div class="row" style="margin-top: 10px">
                                     <div class="col-md-6 mb-3">
                                         <label for="type_{{ $key }}" class="form-label">Type</label>
                                         <input type="text" class="form-control" id="type_{{ $key }}"
@@ -105,7 +105,7 @@
                                             name="luas_bangunan_{{ $key }}" value="{{$itm->luas_bangunan}}" pattern="^\d+(\.\d+)?$" required>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row" style="margin-top: 10px">
                                     <div class="col-md-6 mb-3">
                                         <label for="jumlah_unit_{{ $key }}" class="form-label">Jumlah
                                             Unit</label>
@@ -125,7 +125,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row" style="margin-top: 10px">
                                     <div class="col-md-6 mb-3">
                                         <label for="jenis_kegiatan_{{ $key }}" class="form-label">Jenis
                                             Kegiatan</label>
@@ -144,7 +144,7 @@
                                             name="keterangan_{{ $key }}" required>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row" style="margin-top: 10px">
                                     <div class="col-md-12 mb-3">
                                         <label for="scan_imb_{{ $key }}" class="form-label">Scan IMB</label>
                                         <input type="file" class="form-control" id="scan_imb_{{ $key }}"
@@ -155,7 +155,7 @@
 
 
                         </div>
-                        <button type="submit" class="btn btn-success mt-3">Submit</button>
+                        <button type="submit" class="btn btn-success mt-3" style="margin-top: 10px; margin-bottom:20px">Submit</button>
                     </form>
                 </div>
             </div>

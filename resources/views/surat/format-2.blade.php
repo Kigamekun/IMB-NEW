@@ -194,8 +194,8 @@
     </style>
 </head>
 
-<body>
-    <div style="float: right">
+<body style="width: 750px">
+    <div style="float: right; margin-right:125px">
         <p>Cibinong,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2024
         </p>
     </div>
@@ -226,15 +226,27 @@
         <p>Yth,</p>
         <p><b>{{ $pemohon['sapaanPemohon'] }} {{ $pemohon['nama'] }}</b></p>
         <p>di</p>
-        <p>Bogor</p>
+        @php
+            // Cek apakah 'Kabupaten' ada di kabupatenPemohon
+            $kabupaten = $pemohon['kabupatenPemohon'];
+
+            // Hanya hapus 'Kabupaten' jika kabupatenPemohon tidak ada di pemohon_alamat
+            if (!str_contains($pemohon['alamat'], 'Kabupaten') && str_contains($kabupaten, 'Kabupaten')) {
+                $kabupaten = trim(str_replace('Kabupaten', '', $kabupaten));
+            }
+        @endphp
+
+        <p>{{ $kabupaten }}</p>
     </div>
     <br>
 
-    <div class="content" style="margin-left: 70px">
+    <div class="content" style="margin-left: 65px">
         <h3>A. DASAR</h3>
-        <p style="margin-top:-5px">Peraturan Bupati Nomor 63 tahun 2013 Tentang Izin Mendirikan Bangunan Gedung BAB VII
-            Penggantian IMBG Hilang
-            Atau Rusak, Legalisasi dan Pemutakhiran.</p>
+        <ol style="margin-top:-15px">
+            <li>Peraturan Bupati Nomor 63 tahun 2013 Tentang Izin Mendirikan Bangunan Gedung BAB VII
+                Penggantian IMBG Hilang
+                Atau Rusak, Legalisasi dan Pemutakhiran.</li>
+            </ol>
         <h3>B. MEMPERHATIKAN</h3>
         <ol style="margin-top:-15px">
             <li>
@@ -243,7 +255,7 @@
                     dari:
                     <table class="info-tables">
                         <tr>
-                            <td style="width: 200px">Nama</td>
+                            <td style="width: 200px">Nama &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                             <td style="width: 5px">:</td>
                             <td class="bold-text"><b>{{ $pemohon['nama'] }}</b></td>
                         </tr>
@@ -255,10 +267,11 @@
                         <tr>
                             <td>Alamat</td>
                             <td>:</td>
-                            <td style="line-height:18px;">
+                            <td style="line-height:100%;">
                                 {{ $pemohon['alamat'] }}, Desa/Kelurahan
                                 {{ $pemohon['kelurahanPemohon'] }}, Kecamatan
-                                {{ $pemohon['kecamatanPemohon'] }}, {{ $pemohon['kabupatenPemohon'] }}
+                                {{ $pemohon['kecamatanPemohon'] }},
+                                {{ $pemohon['kabupatenPemohon'] }}
                             </td>
                             </td>
                         </tr>
@@ -276,7 +289,7 @@
             <div>
                 <table class="info-tables">
                     <tr>
-                        <td style="width: 200px">Izin Mendirikan Bangunan atas nama</td>
+                        <td style="width: 200px">Izin Mendirikan Bangunan Atas Nama</td>
                         <td style="width: 5px">:</td>
                         <td class="bold-text">
                             <b>{{ $referensi['izin_mendirikan_bangunan_atas_nama'] }}</b>

@@ -24,11 +24,11 @@ class IMBPerluasanController extends Controller
             return Datatables::of($data)
                 ->addColumn('action', function ($row) {
                     return '
-                    <div class="d-flex" style="gap:10px;">
-                        <a href="' . route('IMBPerluasan.edit', $row->id) . '" class="edit btn btn-warning btn-sm">Edit</a>
+                    <div class="d-flex" style="gap:10px;display:flex">
+                        <a href="' . route('IMBPerluasan.edit', $row->id) . '" class="edit btn btn-warning btn-sm"><i class="fa fa-pencil"></i></a>
                         <form action="' . route('IMBPerluasan.destroy', $row->id) . '" method="POST" style="display:inline;">
                             ' . csrf_field() . method_field('DELETE') . '
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="confirmDelete(event)">Hapus</button>
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="confirmDelete(event)"><i class="fa fa-trash"></i></button>
                         </form>
                     </div>';
                 })
@@ -111,7 +111,7 @@ class IMBPerluasanController extends Controller
             'scan_imb' => $scanImbPath,
         ]);
 
-        return redirect()->back()->with(['status' => 'success', 'message' => 'IMBPerluasan created successfully!']);
+        return redirect()->route('IMBPerluasan.index')->with(['status' => 'success', 'message' => 'IMBPerluasan created successfully!']);
     }
 
     public function edit($id)
@@ -171,27 +171,50 @@ class IMBPerluasanController extends Controller
             $jenisKegiatanId = $jenisKegiatanRecord->id_jeniskeg;
         }
 
-        DB::table('imb_perluasan')->where('id', $id)->update([
-            'imb_pecahan' => $validatedData['imb_pecahan'],
-            'tgl_imb_pecahan' => $validatedData['tgl_imb_pecahan'],
-            'imb_perluasan' => $validatedData['imb_perluasan'],
-            'tgl_imb_perluasan' => $validatedData['tgl_imb_perluasan'],
-            'no_register' => $validatedData['no_register'],
-            'tgl_register' => $validatedData['tgl_register'],
-            'nama' => $validatedData['nama'],
-            'atas_nama' => $validatedData['atas_nama'],
-            'jenis_kegiatan' => $jenisKegiatanId,
-            'lokasi_perumahan' => $validatedData['lokasi_perumahan'],
-            'kecamatan' => $validatedData['kecamatan'],
-            'desa_kelurahan' => $validatedData['desa_kelurahan'],
-            'type' => $validatedData['type'],
-            'luas_bangunan_lama' => $validatedData['luas_bangunan_lama'],
-            'luas_bangunan_perluasan' => $validatedData['luas_bangunan_perluasan'],
-            'blok' => $validatedData['blok'],
-            'no_blok' => $validatedData['no_blok'],
-            'keterangan' => $validatedData['keterangan'],
-            'scan_imb' => $scanImbPath,
-        ]);
+        if (!is_null($scanImbPath)) {
+            DB::table('imb_perluasan')->where('id', $id)->update([
+                'imb_pecahan' => $validatedData['imb_pecahan'],
+                'tgl_imb_pecahan' => $validatedData['tgl_imb_pecahan'],
+                'imb_perluasan' => $validatedData['imb_perluasan'],
+                'tgl_imb_perluasan' => $validatedData['tgl_imb_perluasan'],
+                'no_register' => $validatedData['no_register'],
+                'tgl_register' => $validatedData['tgl_register'],
+                'nama' => $validatedData['nama'],
+                'atas_nama' => $validatedData['atas_nama'],
+                'jenis_kegiatan' => $jenisKegiatanId,
+                'lokasi_perumahan' => $validatedData['lokasi_perumahan'],
+                'kecamatan' => $validatedData['kecamatan'],
+                'desa_kelurahan' => $validatedData['desa_kelurahan'],
+                'type' => $validatedData['type'],
+                'luas_bangunan_lama' => $validatedData['luas_bangunan_lama'],
+                'luas_bangunan_perluasan' => $validatedData['luas_bangunan_perluasan'],
+                'blok' => $validatedData['blok'],
+                'no_blok' => $validatedData['no_blok'],
+                'keterangan' => $validatedData['keterangan'],
+                'scan_imb' => $scanImbPath,
+            ]);
+        } else {
+            DB::table('imb_perluasan')->where('id', $id)->update([
+                'imb_pecahan' => $validatedData['imb_pecahan'],
+                'tgl_imb_pecahan' => $validatedData['tgl_imb_pecahan'],
+                'imb_perluasan' => $validatedData['imb_perluasan'],
+                'tgl_imb_perluasan' => $validatedData['tgl_imb_perluasan'],
+                'no_register' => $validatedData['no_register'],
+                'tgl_register' => $validatedData['tgl_register'],
+                'nama' => $validatedData['nama'],
+                'atas_nama' => $validatedData['atas_nama'],
+                'jenis_kegiatan' => $jenisKegiatanId,
+                'lokasi_perumahan' => $validatedData['lokasi_perumahan'],
+                'kecamatan' => $validatedData['kecamatan'],
+                'desa_kelurahan' => $validatedData['desa_kelurahan'],
+                'type' => $validatedData['type'],
+                'luas_bangunan_lama' => $validatedData['luas_bangunan_lama'],
+                'luas_bangunan_perluasan' => $validatedData['luas_bangunan_perluasan'],
+                'blok' => $validatedData['blok'],
+                'no_blok' => $validatedData['no_blok'],
+                'keterangan' => $validatedData['keterangan'],
+            ]);
+        }
 
         return redirect()->back()->with(['status' => 'success', 'message' => 'Data berhasil diupdate']);
 

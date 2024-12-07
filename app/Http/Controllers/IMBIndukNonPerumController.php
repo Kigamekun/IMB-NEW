@@ -33,11 +33,11 @@ class IMBIndukNonPerumController extends Controller
                 // })
                 ->addColumn('action', function ($row) {
                     return '
-                        <div class="d-flex" style="gap:10px;">
-                            <a href="' . route('IMBIndukNonPerum.edit', $row->id) . '" class="edit btn btn-warning btn-sm">Edit</a>
+                        <div class="d-flex" style="gap:10px;display:flex;">
+                            <a href="' . route('IMBIndukNonPerum.edit', $row->id) . '" class="edit btn btn-warning btn-sm"><i class="fa fa-pencil"></i></a>
                             <form action="' . route('IMBIndukNonPerum.destroy', $row->id) . '" method="POST" style="display:inline;">
                                 ' . csrf_field() . method_field('DELETE') . '
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="confirmDelete(event)">Hapus</button>
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="confirmDelete(event)"><i class="fa fa-trash"></i></button>
                             </form>
                         </div>';
                 })
@@ -355,23 +355,39 @@ class IMBIndukNonPerumController extends Controller
                 $scanImbPath = null;
                 if ($request->hasFile("scan_imb_$i")) {
                     $scanImbPath = $request->file("scan_imb_$i")->store('scans');
+                    $jenisKegiatan = $request->input("jenis_kegiatan_$i");
+                    $jenisKegiatanArray[] = $jenisKegiatan;
+
+                    $kegiatan = DB::table('app_md_jeniskeg')->where('name_jeniskeg', $jenisKegiatan)->first()->id_jeniskeg;
+
+                    DB::table('item_imb_induk_non_perum')->insert([
+                        'induk_perum_id' => $id,
+                        'jenis_kegiatan' => $kegiatan,
+                        'fungsi_bangunan' => $request->input("fungsi_bangunan_$i"),
+                        'type' => $request->input("type_$i"),
+                        'luas_bangunan' => $request->input("luas_bangunan_$i"),
+                        'jumlah_unit' => $request->input("jumlah_unit_$i"),
+                        'keterangan' => $request->input("keterangan_$i"),
+                        'scan_imb' => $scanImbPath,
+                    ]);
+                } else {
+                    $jenisKegiatan = $request->input("jenis_kegiatan_$i");
+                    $jenisKegiatanArray[] = $jenisKegiatan;
+
+                    $kegiatan = DB::table('app_md_jeniskeg')->where('name_jeniskeg', $jenisKegiatan)->first()->id_jeniskeg;
+
+                    DB::table('item_imb_induk_non_perum')->insert([
+                        'induk_perum_id' => $id,
+                        'jenis_kegiatan' => $kegiatan,
+                        'fungsi_bangunan' => $request->input("fungsi_bangunan_$i"),
+                        'type' => $request->input("type_$i"),
+                        'luas_bangunan' => $request->input("luas_bangunan_$i"),
+                        'jumlah_unit' => $request->input("jumlah_unit_$i"),
+                        'keterangan' => $request->input("keterangan_$i"),
+                    ]);
                 }
 
-                $jenisKegiatan = $request->input("jenis_kegiatan_$i");
-                $jenisKegiatanArray[] = $jenisKegiatan;
 
-                $kegiatan = DB::table('app_md_jeniskeg')->where('name_jeniskeg', $jenisKegiatan)->first()->id_jeniskeg;
-
-                DB::table('item_imb_induk_non_perum')->insert([
-                    'induk_perum_id' => $id,
-                    'jenis_kegiatan' => $kegiatan,
-                    'fungsi_bangunan' => $request->input("fungsi_bangunan_$i"),
-                    'type' => $request->input("type_$i"),
-                    'luas_bangunan' => $request->input("luas_bangunan_$i"),
-                    'jumlah_unit' => $request->input("jumlah_unit_$i"),
-                    'keterangan' => $request->input("keterangan_$i"),
-                    'scan_imb' => $scanImbPath,
-                ]);
             }
 
             $jenisKegiatanGabungan = implode(' / ', array_unique($jenisKegiatanArray));

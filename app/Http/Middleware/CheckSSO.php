@@ -33,7 +33,7 @@ class CheckSSO
         // } else {
         //     return redirect('http://103.51.103.105/simpol');
         // }
-        auth()->loginUsingId(1);
+        // auth()->loginUsingId(1);
 
         return $next($request);
     }

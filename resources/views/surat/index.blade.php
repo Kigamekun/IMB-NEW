@@ -20,14 +20,28 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5 rounded">
                 <div class="p-6 text-gray-900">
                     <h3 class="text-3xl font-bold">Data Surat</h3>
-                    <div class="d-flex justify-content-end">
+                    <div style="margin-top:20px">
                         <a href="{{ route('surat.create') }}" type="button" class="btn btn-primary">
                             Tambah Data
                         </a>
 
                     </div>
+                    <div class="mt-6" style="display: flex; gap:25px; margin-top:20px" id="form-search">
+                        {{-- <button type="submit" class="btn btn-primary" style="height: 35px">Cari Surat</button> --}}
+                        <div class="mb-3">
+                            {{-- <label for="nomorSurat" class="form-label">Nomor Surat</label> --}}
+                            <input type="text" class="form-control" id="nomorSurat" placeholder="Masukkan Nomor Surat">
+                        </div>
+                        <div class="mb-3">
+                            {{-- <label for="namaPemohonSurat" class="form-label">Nama Pemohon</label> --}}
+                            <input type="text" class="form-control" id="namaPemohonSurat"
+                                placeholder="Masukkan Nama Pemohon">
+                        </div>
 
-                    <br>
+                    </div>
+
+                    <br />
+
                     @if (!empty(Session::get('failures')))
                         <div class="alert alert-danger">
                             <h6>Import data gagal, berikut baris yang gagal diimport:</h6>
@@ -39,12 +53,11 @@
                         </div>
                     @endif
                     <br>
+
                     <div class="table-responsive py-3">
 
                         <table class="table table-bordered" id="IMBTable">
                             <thead>
-
-
                                 <tr>
                                     <th>No</th>
                                     <th>Tahun</th>
@@ -59,10 +72,8 @@
                                     <th>Jenis</th>
                                     <th>Action</th>
                                 </tr>
-
                             </thead>
                             <tbody>
-
                             </tbody>
                         </table>
                     </div>
@@ -96,12 +107,16 @@
 
 
     <script>
-        $('#IMBTable').DataTable({
+        var table = $('#IMBTable').DataTable({
             processing: true,
             serverSide: true,
 
             ajax: {
                 url: "{{ route('surat.index') }}",
+                data: function(d) {
+                    d.nomor_surat = $('#nomorSurat').val();
+                    d.nama_pemohon = $('#namaPemohonSurat').val();
+                },
                 dataSrc: function(res) {
                     if (res.code == 5500) {
                         console.log(res.data);
@@ -118,30 +133,7 @@
             },
 
             columns: [
-                // {
-                //     data: 'jenisSurat',
-                //     title: 'IMB Induk'
-                // },
-                // {
-                //     data: 'nomorSurat',
-                //     title: 'Nomor Surat'
-                // },
-                // {
-                //     data: 'tanggalSurat',
-                //     title: 'Tanggal Surat'
-                // },
-                // {
-                //     data: 'perihal',
-                //     title: 'Perihal'
-                // },
-                // {
-                //     data: 'sudah_upload',
-                //     title: 'Sudah Upload'
-                // },
-                // {
-                //     data: 'action',
-                //     title: 'Action'
-                // }
+
 
                 {
                     data: 'DT_RowIndex',
@@ -182,7 +174,7 @@
                 },
                 {
                     data: 'lokasi',
-                    title : 'Lokasi Bangunan'
+                    title: 'Lokasi Bangunan'
                 },
                 {
                     data: 'jenisSurat',
@@ -194,9 +186,14 @@
                 }
 
             ],
-            order: [
-                [2, 'desc']
-            ]
+            // order: [
+            //     [2, 'desc']
+            // ]
+        });
+
+        // Refresh table on filter change
+        $('#form-search input').on('keyup change', function() {
+            table.ajax.reload(null, false); // Reload DataTable dengan data baru tanpa mengubah halaman
         });
     </script>
 @endsection
@@ -209,7 +206,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title fs-5" id="uploadSuratModalLabel">Upload Surat </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="upload-data" action="" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -220,7 +217,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
                 </form>
@@ -233,18 +230,19 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title fs-5" id="updateNomorModalLabel">Update Nomor Surat</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="update-nomor-form" action="" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="nomor_surat" class="form-label">Nomor Surat</label>
-                            <input type="text" class="form-control" id="nomor_surat" name="nomor_surat" placeholder="Masukkan nomor surat">
+                            <input type="text" class="form-control" id="nomor_surat" name="nomor_surat"
+                                placeholder="Masukkan nomor surat">
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
                 </form>
@@ -259,7 +257,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title fs-5" id="importDataModalLabel">Import Data </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('IMBPecahan.import') }}" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -270,7 +268,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
                 </form>
@@ -280,6 +278,12 @@
 @endsection
 
 @section('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Listen for modal show event
@@ -296,24 +300,46 @@
         });
     </script>
     <script>
-         document.addEventListener('DOMContentLoaded', function() {
-        // Listen for show event for upload and update modals
-        const uploadModal = document.getElementById('uploadSuratModal');
-        const updateModal = document.getElementById('updateNomorModal');
+        document.addEventListener('DOMContentLoaded', function() {
+            // Listen for show event for upload and update modals
+            const uploadModal = document.getElementById('uploadSuratModal');
+            const updateModal = document.getElementById('updateNomorModal');
 
-        uploadModal.addEventListener('show.bs.modal', function(event) {
-            const button = event.relatedTarget;
-            const url = button.getAttribute('data-url');
+            uploadModal.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+                const url = button.getAttribute('data-url');
+                const form = document.getElementById('upload-data');
+                form.setAttribute('action', url);
+            });
+
+            updateModal.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+                const url = button.getAttribute('data-url');
+                const form = document.getElementById('update-nomor-form');
+                form.setAttribute('action', url);
+            });
+        });
+    </script>
+
+    <script>
+        $('#IMBTable').on('click', '.uploadSuratModal', function() {
+            const url = $(this).attr('data-url');
+
             const form = document.getElementById('upload-data');
             form.setAttribute('action', url);
         });
 
-        updateModal.addEventListener('show.bs.modal', function(event) {
-            const button = event.relatedTarget;
-            const url = button.getAttribute('data-url');
+        $('#IMBTable').on('click', '.updateNomorModal', function(event) {
+            // Ambil data-id dari tombol yang diklik
+            const dataId = $(this).attr('data-id');
+
+            // Ambil data-url dari tombol yang diklik
+            const url = $(this).attr('data-url');
+
+            // Set action pada form
             const form = document.getElementById('update-nomor-form');
             form.setAttribute('action', url);
+
         });
-    });
     </script>
 @endsection

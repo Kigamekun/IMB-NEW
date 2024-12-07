@@ -191,11 +191,28 @@
     </style>
 </head>
 
-<body>
-    <div style="float: right">
-        <p>Cibinong,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2024
+<body style="width: 750px">
+    <div style="float: right; margin-right:125px; display:grid grid-column: 1">
+        <p>Cibinong,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2024
         </p>
+        <div style="line-height:1px;">
+            <p>Kepada</p>
+            <p>Yth. <b>{{ $pemohon['sapaanPemohon'] }} {{ $pemohon['nama'] }}</b></p>
+            <p>di</p>
+            @php
+                // Cek apakah 'Kabupaten' ada di kabupatenPemohon
+                $kabupaten = $pemohon['kabupatenPemohon'];
+
+                // Hanya hapus 'Kabupaten' jika kabupatenPemohon tidak ada di pemohon_alamat
+                if (!str_contains($pemohon['alamat'], 'Kabupaten') && str_contains($kabupaten, 'Kabupaten')) {
+                    $kabupaten = trim(str_replace('Kabupaten', '', $kabupaten));
+                }
+            @endphp
+
+            <p>{{ $kabupaten }}</p>
+        </div>
     </div>
+
     <table class="info-table">
         <tr>
             <td>Nomor</td>
@@ -218,9 +235,10 @@
             <td style="line-height: normal">{{ $perihal }}</td>
         </tr>
     </table>
+
     <div class="content" style="margin-top:1px; margin-left: 70px">
         <h3>A. DASAR</h3>
-        <p style="margin-top:-5px">Peraturan Bupati Nomor 63 tahun 2013 Tentang Izin Mendirikan Bangunan Gedung BAB VII
+        <p style="margin-top:-15px">Peraturan Bupati Nomor 63 tahun 2013 Tentang Izin Mendirikan Bangunan Gedung BAB VII
             Penggantian IMBG Hilang
             Atau Rusak, Legalisasi dan Pemutakhiran.</p>
         <h3>B. MEMPERHATIKAN</h3>
@@ -231,7 +249,7 @@
                     dari:
                     <table class="info-tables">
                         <tr>
-                            <td style="width: 200px">Nama</td>
+                            <td style="width: 200px">Nama &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                             <td style="width: 5px">:</td>
                             <td class="bold-text"><b>{{ $pemohon['nama'] }}</b></td>
                         </tr>
@@ -256,17 +274,17 @@
             <div>
                 <table class="info-tables">
                     <tr>
-                        <td style="width: 200px">Izin Mendirikan Bangunan atas nama</td>
+                        <td style="width: 200px">Izin Mendirikan Bangunan Atas Nama</td>
                         <td style="width: 5px">:</td>
                         <td class="bold-text">
                             <b>{{ $referensi['izin_mendirikan_bangunan_atas_nama'] }}</b>
                         </td>
                     </tr>
-                    <tr>
+                    {{-- <tr>
                         <td>Peruntukan</td>
                         <td>:</td>
                         <td>{{ $referensi['tujuan'] }}</td>
-                    </tr>
+                    </tr> --}}
                     <tr>
                         <td>Lokasi</td>
                         <td>:</td>
@@ -336,7 +354,9 @@
                             <td>Type {{ $item['belum_rincik_type'] }} = {{ $item['belum_rincik_jumlah'] }} Unit</td>
                             <td>
                                 @if ($item['sudah_dimohon_jumlah'] > 0)
-                                    Type {{ $item['sudah_dimohon_type'] }} = {{ $item['sudah_dimohon_jumlah'] }} Unit
+                                    Type {{ $item['sudah_dimohon_type'] }} = {{ $item['sudah_dimohon_jumlah'] }} Unit,
+                                    <br/>
+                                    {{ $item['sudah_dimohon_keterangan'] }}
                                 @else
                                     ---
                                 @endif

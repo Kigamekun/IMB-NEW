@@ -15,12 +15,12 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5 rounded">
                 <div class="p-6 text-gray-900">
                     <h3 class="text-3xl font-bold">Data IMB Induk Perum</h3>
-                    <div class="d-flex justify-content-end">
+                    <div class="d-flex justify-content-end mb-5">
                         <a href="{{ route('IMBIndukPerum.create') }}" type="button" class="btn btn-primary">
                             Tambah Data
                         </a>
-                        <button type="button" class="ml-2 btn btn-info text-white" data-bs-toggle="modal"
-                            data-bs-target="#importDataModal">
+                        <button type="button" class="ml-2 btn btn-info text-white" data-toggle="modal"
+                            data-target="#importDataModal">
                             Import Data
                         </button>
                         <a class="btn btn-warning ml-2" href="{{ route('IMBIndukPerum.export') }}">
@@ -30,7 +30,6 @@
                             Download Template
                         </a>
                     </div>
-                    <br>
                     @if (!empty(Session::get('failures')))
                         <div class="alert alert-danger">
                             <h6>Import data gagal, berikut baris yang gagal diimport:</h6>
@@ -42,8 +41,8 @@
                         </div>
                     @endif
                     <br>
-                    <div class="table-responsive py-3">
-                        <div class="filters py-3 row">
+                    <div class="table-responsive py-3 ">
+                        <div class="filters py-3 row mb-5" style="margin-bottom: 20px">
                             <div class="mb-3 col-md-3">
                                 {{-- <label for="filter-atas_nama" class="form-label">Atas Nama:</label> --}}
                                 <input type="text" class="form-control" id="filter-atas_nama"
@@ -65,7 +64,7 @@
                                     placeholder="Kelurahan">
                             </div>
                         </div>
-                        <table id="IMBTable" class="table table-bordered">
+                        <table id="IMBTable" class="table table-bordered" >
                             <thead>
                                 <tr>
                                     <th>No.</th>
@@ -233,7 +232,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title fs-5" id="importDataModalLabel">Import Data </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('IMBIndukPerum.import') }}" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -244,7 +243,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
                 </form>

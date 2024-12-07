@@ -34,6 +34,8 @@
             font-size: {{ $referensi['font_surat'] }}px !important;
             line-height: 1;
             text-align: justify;
+            white-space: normal; /* Izinkan teks membungkus */
+
         }
 
         .header {
@@ -193,8 +195,8 @@
     </style>
 </head>
 
-<body>
-    <div style="float: right;margin-right:100px">
+<body style="width: 750px">
+    <div style="float: right;margin-right: 100px">
         <p>Cibinong,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2024
         </p>
     </div>
@@ -224,26 +226,32 @@
         <p>Yth,</p>
         <p><b>{{ $pemohon['sapaanPemohon'] }} {{ $pemohon['nama'] }}</b></p>
         <p>di</p>
-        <p>Bogor</p>
+        @php
+        if (str_contains($pemohon['kabupatenPemohon'], 'Kabupaten')) {
+            $pemohon['kabupatenPemohon'] = trim(str_replace('Kabupaten', '', $pemohon['kabupatenPemohon']));
+        }
+        @endphp
+
+        <p>{{$pemohon['kabupatenPemohon'] }}</p>
     </div>
     <br>
-    <div style="margin-left: 10px">
-        <p style="margin-top:-5px; text-indent: 25px;">Sehubungan permohonan Surat Keterangan Izin Mendirikan Bangunan
+    <div style="margin-left: -15px">
+        <p style="margin-top:-5px; text-indent: 50px;">Sehubungan permohonan Surat Keterangan Izin Mendirikan Bangunan
             Gedung (IMBG) {{ $referensi['jenisKegiatan'] }}, tanggal {{ $tanggalSurat }} dari:</p>
 
-        <table class="info-tables" style="margin-left: -12px; margin-top: -10px; width: 100%; border-collapse: collapse;">
+        <table class="info-tables" style="margin-left: 16px; margin-top: -10px; width: 100%; border-collapse: collapse; ">
             <!-- Bagian Pemohon -->
-            <tr>
+            <tr style="margin-left: 100px">
                 <td style="width: 200px;">Nama</td>
                 <td style="width: 5px;">:</td>
                 <td><b>{{ $pemohon['nama'] }}</b></td>
             </tr>
-            <tr>
+            <tr style="margin-left: 100px">
                 <td>Bertindak Atas Nama</td>
                 <td>:</td>
                 <td>{{ $pemohon['bertindak_atas_nama'] }}</td>
             </tr>
-            <tr>
+            <tr style="margin-left: 100px">
                 <td>Alamat</td>
                 <td>:</td>
                 <td style=" line-height: 1 !important;">
@@ -256,16 +264,15 @@
             <!-- Baris Kosong untuk Pemisah -->
             <tr>
                 <td colspan="3"
-                    style="text-align: justify; padding-top: 10px; padding-bottom: 10px; line-height: 1 !important; word-wrap: break-word;text-indent: 25px;">
-                    Setelah dilakukan pengecekan pada buku Izin Mendirikan Bangunan yang ada pada Dinas Perumahan
-                    Kawasan
+                    style="text-align: justify; padding-top: 10px; padding-bottom: 10px; line-height: 1.5 !important; word-wrap: break-word; white-space: normal; text-indent: 25px;">
+                    Setelah dilakukan pengecekan pada buku Izin Mendirikan Bangunan yang ada pada Dinas Perumahan Kawasan
                     Permukiman dan Pertanahan Kabupaten Bogor, dengan ini dapat disampaikan:
                 </td>
             </tr>
 
             <!-- Bagian Izin Mendirikan Bangunan -->
             <tr>
-                <td>Izin Mendirikan Bangunan atas nama</td>
+                <td>Izin Mendirikan Bangunan Atas Nama</td>
                 <td>:</td>
                 <td><b>{{ $referensi['izin_mendirikan_bangunan_atas_nama'] }}</b></td>
             </tr>
@@ -322,11 +329,11 @@
         </table>
 
         <br>
-        <p style="margin-top:-5px;text-indent: 25px;">{{ $keterangan[0] }}</p>
-        <p style="margin-top:-5px;text-indent: 25px;">
+        <p style="text-align: justify; padding-top: 10px; padding-bottom: 10px; line-height: 1.5 !important; word-wrap: break-word; white-space: normal; text-indent: 25px; margin-left:25px">{{ $keterangan[0] }}</p>
+        <p style="text-align: justify; padding-top: 10px; padding-bottom: 10px; line-height: 1.5 !important; word-wrap: break-word; white-space: normal; text-indent: 25px; margin-left:25px">
             {{ $keterangan[1] }}
         </p>
-        <p style="margin-top:-5px;text-indent: 25px;">
+        <p style="text-align: justify; padding-top: 10px; padding-bottom: 10px; line-height: 1.5 !important; word-wrap: break-word; white-space: normal; text-indent: 25px; margin-left:25px">
             {{ $keterangan[2] }}
         </p>
         @if (count($keterangan) > 3)
@@ -352,6 +359,7 @@
                 <p class="signature-nip" style="text-align:left;line-height:5px">NIP. {{ $penandatangan['nip'] }}</p>
             </div>
         </div>
+    </div>
 </body>
 
 </html>

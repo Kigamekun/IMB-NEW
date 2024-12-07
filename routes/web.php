@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\{IMBController,JenisNonPerumController,TujuanSuratController,DataIMBTidaklengkapController, MasterController,SinkronisasiLokasiIMBController, SuratController, IMBIndukNonPerumController, IMBIndukPerumController, IMBTidakLengkapController, IMBPerluasanController, IMBPecahanController, IMBBersyaratController, IMBPelunasanController, IMBPemutihanController};
+use App\Http\Controllers\{IMBController, RekapController, JenisNonPerumController, TujuanSuratController, DataIMBTidaklengkapController, MasterController, SinkronisasiLokasiIMBController, SuratController, IMBIndukNonPerumController, IMBIndukPerumController, IMBTidakLengkapController, IMBPerluasanController, IMBPecahanController, IMBBersyaratController, IMBPelunasanController, IMBPemutihanController};
 
 Route::get('/', function () {
     return view('dashboard');
@@ -12,6 +12,219 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+
+
+Route::get('/imb/search', function () {
+    return view('imb-search');
+})->name('imb');
+
+
+Route::get('/chart-simpol', function () {
+    return view('chart-simpol');
+})->name('chart-simpol');
+
+
+// Route::get('/chart-simpol-data', function (Request $request) {
+//     $jenis = $_GET['jenis'] ?? 'all'; // Default 'all'
+//     $tahun = $_GET['tahun'];       // Tahun wajib diisi
+
+//     // Validasi input
+//     if (!$tahun || !is_numeric($tahun)) {
+//         return response()->json(['error' => 'Tahun harus diisi dan berupa angka'], 400);
+//     }
+
+//     $data = [];
+
+//     // Ambil data berdasarkan jenis
+//     switch ($jenis) {
+//         case 'imbinduk':
+//             $data = DB::table('imb_induk_perum')
+//                 ->select(DB::raw('MONTH(tgl_imb_induk) as bulan'), DB::raw('COUNT(*) as jumlah'))
+//                 ->whereYear('tgl_imb_induk', $tahun)
+//                 ->groupBy('bulan')
+//                 ->orderBy('bulan')
+//                 ->get();
+//             break;
+
+//         case 'imbpecahan':
+//             $data = DB::table('imb_pecahan')
+//                 ->select(DB::raw('MONTH(tgl_imb_pecahan) as bulan'), DB::raw('COUNT(*) as jumlah'))
+//                 ->whereYear('tgl_imb_pecahan', $tahun)
+//                 ->groupBy('bulan')
+//                 ->orderBy('bulan')
+//                 ->get();
+//             break;
+
+//         case 'imbperluasan':
+//             $data = DB::table('imb_perluasan')
+//                 ->select(DB::raw('MONTH(tgl_imb_perluasan) as bulan'), DB::raw('COUNT(*) as jumlah'))
+//                 ->whereYear('tgl_imb_perluasan', $tahun)
+//                 ->groupBy('bulan')
+//                 ->orderBy('bulan')
+//                 ->get();
+//             break;
+
+//         case 'imbinduknonperum':
+//             $data = DB::table('imb_induk_non_perum')
+//                 ->select(DB::raw('MONTH(tgl_imb_induk) as bulan'), DB::raw('COUNT(*) as jumlah'))
+//                 ->whereYear('tgl_imb_induk', $tahun)
+//                 ->groupBy('bulan')
+//                 ->orderBy('bulan')
+//                 ->get();
+//             break;
+
+//         default: // Jika jenis = 'all'
+//         $imbInduk = DB::table('imb_induk_perum')
+//         ->select(DB::raw('MONTH(tgl_imb_induk) as bulan'), DB::raw('COUNT(*) as jumlah'))
+//         ->whereYear('tgl_imb_induk', $tahun)
+//         ->groupBy(DB::raw('MONTH(tgl_imb_induk)'));
+
+//     $imbPecahan = DB::table('imb_pecahan')
+//         ->select(DB::raw('MONTH(tgl_imb_pecahan) as bulan'), DB::raw('COUNT(*) as jumlah'))
+//         ->whereYear('tgl_imb_pecahan', $tahun)
+//         ->groupBy(DB::raw('MONTH(tgl_imb_pecahan)'));
+
+//     $imbPerluasan = DB::table('imb_perluasan')
+//         ->select(DB::raw('MONTH(tgl_imb_perluasan) as bulan'), DB::raw('COUNT(*) as jumlah'))
+//         ->whereYear('tgl_imb_perluasan', $tahun)
+//         ->groupBy(DB::raw('MONTH(tgl_imb_perluasan)'));
+
+//     $imbIndukNonPerum = DB::table('imb_induk_non_perum')
+//         ->select(DB::raw('MONTH(tgl_imb_induk) as bulan'), DB::raw('COUNT(*) as jumlah'))
+//         ->whereYear('tgl_imb_induk', $tahun)
+//         ->groupBy(DB::raw('MONTH(tgl_imb_induk)'));
+
+//     $data = $imbInduk->union($imbPecahan)
+//         ->union($imbPerluasan)
+//         ->union($imbIndukNonPerum)
+//         ->orderBy('bulan')
+//         ->get();
+//             break;
+//     }
+
+//     // Format data menjadi { label, value }
+//     $formattedData = $data->map(function ($item) {
+//         return [
+//             'label' => date('F', mktime(0, 0, 0, $item->bulan, 1)), // Nama bulan
+//             'value' => $item->jumlah
+//         ];
+//     });
+
+//     return response()->json($formattedData);
+// })->name('chart-simpol-data');
+
+
+
+Route::get('/chart-simpol-data', function (Request $request) {
+    $jenis = $_GET['jenis'] ?? 'all'; // Default 'all'
+    $tahun = $_GET['tahun'];       // Tahun wajib diisi
+
+    // Validasi input
+    if (!$tahun || !is_numeric($tahun)) {
+        return response()->json(['error' => 'Tahun harus diisi dan berupa angka'], 400);
+    }
+
+    $data = [];
+
+    // Ambil data berdasarkan jenis
+    switch ($jenis) {
+        case 'imbinduk':
+            $data = DB::table('imb_induk_perum')
+                ->select(DB::raw('MONTH(tgl_imb_induk) as bulan'), DB::raw('COUNT(*) as jumlah'))
+                ->whereYear('tgl_imb_induk', $tahun)
+                ->groupBy('bulan')
+                ->orderBy('bulan')
+                ->get();
+            break;
+
+        case 'imbpecahan':
+            $data = DB::table('imb_pecahan')
+                ->select(DB::raw('MONTH(tgl_imb_pecahan) as bulan'), DB::raw('COUNT(*) as jumlah'))
+                ->whereYear('tgl_imb_pecahan', $tahun)
+                ->groupBy('bulan')
+                ->orderBy('bulan')
+                ->get();
+            break;
+
+        case 'imbperluasan':
+            $data = DB::table('imb_perluasan')
+                ->select(DB::raw('MONTH(tgl_imb_perluasan) as bulan'), DB::raw('COUNT(*) as jumlah'))
+                ->whereYear('tgl_imb_perluasan', $tahun)
+                ->groupBy('bulan')
+                ->orderBy('bulan')
+                ->get();
+            break;
+
+        case 'imbinduknonperum':
+            $data = DB::table('imb_induk_non_perum')
+                ->select(DB::raw('MONTH(tgl_imb_induk) as bulan'), DB::raw('COUNT(*) as jumlah'))
+                ->whereYear('tgl_imb_induk', $tahun)
+                ->groupBy('bulan')
+                ->orderBy('bulan')
+                ->get();
+            break;
+
+        default: // Jika jenis = 'all'
+            $imbInduk = DB::table('imb_induk_perum')
+                ->select(DB::raw('MONTH(tgl_imb_induk) as bulan'), DB::raw('COUNT(*) as jumlah'))
+                ->whereYear('tgl_imb_induk', $tahun)
+                ->groupBy('bulan');
+
+            $imbPecahan = DB::table('imb_pecahan')
+                ->select(DB::raw('MONTH(tgl_imb_pecahan) as bulan'), DB::raw('COUNT(*) as jumlah'))
+                ->whereYear('tgl_imb_pecahan', $tahun)
+                ->groupBy('bulan');
+
+            $imbPerluasan = DB::table('imb_perluasan')
+                ->select(DB::raw('MONTH(tgl_imb_perluasan) as bulan'), DB::raw('COUNT(*) as jumlah'))
+                ->whereYear('tgl_imb_perluasan', $tahun)
+                ->groupBy('bulan');
+
+            $imbIndukNonPerum = DB::table('imb_induk_non_perum')
+                ->select(DB::raw('MONTH(tgl_imb_induk) as bulan'), DB::raw('COUNT(*) as jumlah'))
+                ->whereYear('tgl_imb_induk', $tahun)
+                ->groupBy('bulan');
+
+            $data = $imbInduk->union($imbPecahan)
+                ->union($imbPerluasan)
+                ->union($imbIndukNonPerum)
+                ->orderBy('bulan')
+                ->get();
+            break;
+    }
+
+    // Buat array bulan default
+    $defaultData = collect(range(1, 12))->map(function ($bulan) {
+        return [
+            'bulan' => $bulan,
+            'jumlah' => 0
+        ];
+    });
+
+    // Gabungkan data dari database dengan data default
+    $mergedData = $defaultData->map(function ($default) use ($data) {
+        $found = $data->firstWhere('bulan', $default['bulan']);
+        return [
+            'bulan' => $default['bulan'],
+            'jumlah' => $found ? $found->jumlah : 0
+        ];
+    });
+
+    // Format data menjadi { label, value }
+    $formattedData = $mergedData->map(function ($item) {
+        return [
+            'label' => date('F', mktime(0, 0, 0, $item['bulan'], 1)), // Nama bulan
+            'value' => $item['jumlah']
+        ];
+    });
+
+    return response()->json($formattedData);
+})->name('chart-simpol-data');
+
+
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -32,6 +245,8 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::prefix('IMBIndukPerum')->group(function () {
+        Route::get('/cari-imb', [IMBIndukPerumController::class, 'cariIMB'])->name('IMBIndukPerum.cari-imb');
+        Route::get('/getIMBDetail/{id}/{type}', [IMBIndukPerumController::class, 'getIMBDetail'])->name('IMBIndukPerum.getIMBDetail');
         Route::get('/', [IMBIndukPerumController::class, 'index'])->name('IMBIndukPerum.index');
         Route::get('/items', [IMBIndukPerumController::class, 'items'])->name('IMBIndukPerum.items');
         Route::get('/create', [IMBIndukPerumController::class, 'create'])->name('IMBIndukPerum.create');
@@ -118,9 +333,58 @@ Route::middleware(['auth'])->group(function () {
 
 
 
+    Route::prefix('rekap')->group(function () {
+        Route::prefix('register-imb-pertahun')->group(function () {
+            Route::get('/detail-imb-induk', [RekapController::class, 'DetailIMBInduk'])->name('rekap.DetailIMBInduk');
+            Route::match(['GET', 'POST'], '/detail-imb-induk-list', [RekapController::class, 'DetailIMBIndukList'])->name('rekap.DetailIMBIndukList');
+            Route::match(['GET', 'POST'], '/detail-imb-induk-list/{nama_pemohon}', [RekapController::class, 'DetailIMBIndukListNamaPemohon'])->name('rekap.DetailIMBIndukListNamaPemohon');
+            Route::match(['GET', 'POST'], '/detail-imb-induk/{nama_pemohon}', [RekapController::class, 'DetailIMBIndukNamaPemohon'])->name('rekap.DetailIMBIndukNamaPemohon');
+
+            Route::get('/detail-imb-pecahan', [RekapController::class, 'DetailIMBPecahan'])->name('rekap.DetailIMBPecahan');
+            Route::match(['GET', 'POST'], '/detail-imb-pecahan-list', [RekapController::class, 'DetailIMBPecahanList'])->name('rekap.DetailIMBPecahanList');
+            Route::match(['GET', 'POST'], '/detail-imb-pecahan/{imb_induk}', [RekapController::class, 'DetailIMBPecahanNamaIMB'])->name('rekap.DetailIMBPecahanNamaIMB');
+
+            Route::get('/detail-imb-perluasan', [RekapController::class, 'DetailIMBPerluasan'])->name('rekap.DetailIMBPerluasan');
+            Route::match(['GET', 'POST'], '/detail-imb-perluasan-list', [RekapController::class, 'DetailIMBPerluasanList'])->name('rekap.DetailIMBPerluasanList');
+            Route::match(['GET', 'POST'], '/detail-imb-perluasan-list/{nama_pemohon}', [RekapController::class, 'DetailIMBPerluasanListNamaPemohon'])->name('rekap.DetailIMBPerluasanListNamaPemohon');
+            Route::match(['GET', 'POST'], '/detail-imb-perluasan/{nama_pemohon}', [RekapController::class, 'DetailIMBPerluasanNamaPemohon'])->name('rekap.DetailIMBPerluasanNamaPemohon');
+        });
+
+        Route::prefix('rekap-imb')->group(function () {
+            Route::match(['GET', 'POST'], '/rekap-penerbitan', [RekapController::class, 'RekapPenerbitan'])->name('rekap.RekapPenerbitan');
+            Route::match(['GET', 'POST'], '/rekap-penerbitan-detail', [RekapController::class, 'RekapPenerbitanDetail'])->name('rekap.RekapPenerbitanDetail');
+
+            Route::match(['GET', 'POST'], '/rekap-unit-dan-fungsi', [RekapController::class, 'RekapUnitDanFungsi'])->name('rekap.RekapUnitDanFungsi');
+            Route::match(['GET', 'POST'], '/rekap-unit-dan-fungsi-detail', [RekapController::class, 'RekapUnitDanFungsiDetail'])->name('rekap.RekapUnitDanFungsiDetail');
+
+            Route::match(['GET', 'POST'], '/rekap-lokasi', [RekapController::class, 'RekapLokasi'])->name('rekap.RekapLokasi');
+            Route::match(['GET', 'POST'], '/rekap-lokasi-detail', [RekapController::class, 'RekapLokasiDetail'])->name('rekap.RekapLokasiDetail');
+
+            Route::match(['GET', 'POST'], '/rekap-unit-fungsi-dan-lokasi', [RekapController::class, 'RekapUnitFungsiDanLokasi'])->name('rekap.RekapUnitFungsiDanLokasi');
+            Route::match(['GET', 'POST'], '/rekap-unit-fungsi-dan-lokasi-detail', [RekapController::class, 'RekapUnitFungsiDanLokasiDetail'])->name('rekap.RekapUnitFungsiDanLokasiDetail');
+
+        });
+
+        Route::prefix('rekap-imb-pertahun')->group(function () {
+            Route::match(['GET', 'POST'], '/rekap-unit-dan-fungsi', [RekapController::class, 'RekapUnitDanFungsi'])->name('rekap.RekapUnitDanFungsi');
+
+            Route::match(['GET', 'POST'], '/rekap-lokasi', [RekapController::class, 'RekapLokasi'])->name('rekap.RekapLokasi');
+
+            Route::match(['GET', 'POST'], '/rekap-unit-fungsi-dan-lokasi', [RekapController::class, 'RekapUnitFungsiDanLokasi'])->name('rekap.RekapUnitFungsiDanLokasi');
+        });
+
+        Route::prefix('rekap-sk-imbg')->group(function () {
+            Route::match(['GET', 'POST'], '/perbulan', [RekapController::class, 'RekapSKIMBGPerbulan'])->name('rekap.RekapSKIMBGPerbulan');
+
+            Route::match(['GET', 'POST'], '/pertahun', [RekapController::class, 'RekapSKIMBGPertahun'])->name('rekap.RekapSKIMBGPertahun');
+
+        });
+    });
+
 
     Route::prefix('surat')->group(function () {
         Route::get('/', [SuratController::class, 'index'])->name('surat.index');
+        Route::get('/cari-surat', [SuratController::class, 'cariSurat'])->name('surat.cari-surat');
         Route::get('/create', [SuratController::class, 'create'])->name('surat.create');
         Route::post('/store', [SuratController::class, 'store'])->name('surat.store');
         Route::post('/upload/{id}', [SuratController::class, 'upload'])->name('surat.upload');
@@ -128,9 +392,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/update/{id}', [SuratController::class, 'update'])->name('surat.update');
         Route::post('/update_nomor/{id}', [SuratController::class, 'updateNomor'])->name('surat.update_nomor');
         Route::get('/lihat/{id}', [SuratController::class, 'lihatSurat'])->name('surat.lihat');
+        Route::get('/lihatTable/{id}', [SuratController::class, 'LihatTableIndex'])->name('surat.lihatTable');
         Route::get('/format-1', [SuratController::class, 'format1'])->name('surat.format-1');
         Route::get('/format-3', [SuratController::class, 'format3'])->name('surat.format-3');
         Route::post('/preview', [SuratController::class, 'preview'])->name('surat.preview');
+        Route::post('/preview-table', [SuratController::class, 'previewTable'])->name('surat.previewTable'); // tambahan
+        // Route::get('/preview-index', [SuratController::class, 'previewIndex'])->name('surat.previewIndex');
 
         Route::get('/download/{id}', [SuratController::class, 'download'])->name('surat.download');
 

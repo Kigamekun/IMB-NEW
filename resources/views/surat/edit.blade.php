@@ -6,12 +6,13 @@
 
 @section('content')
     <div class="py-12">
-        <div style="width: 90%;margin:auto">
+        <div style="width: 100%;margin:auto">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5 rounded">
                 <div class="container">
-                    <form id="suratForm" action="{{ route('surat.store') }}" method="POST" class="form-container">
+                    <form id="suratForm" action="{{ route('surat.update', $data['id']) }}" method="POST" class="form-container">
                         @csrf
-                        <div class="section-title">JENIS SURAT</div>
+                        @method('POST')
+                        <div class="section-title"><h3>JENIS SURAT</h3></div>
                         <div class="row mb-3">
                             <div class="col-md-4">
                                 <label for="jenisSurat" class="form-label">Jenis Surat:</label>
@@ -38,27 +39,27 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <div class="col-md-4">
+                            <div class="col-md-4" style="margin-top: 10px;">
                                 <label for="tanggalSurat" class="form-label">Tanggal Surat:</label>
                                 <input type="date" id="tanggalSurat" name="tanggalSurat" class="form-control"
                                     value="{{ $data['tanggalSurat'] }}">
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4" style="margin-top: 10px;">
                                 <label for="lampiran" class="form-label">Lampiran:</label>
                                 <input type="text" id="lampiran" name="lampiran" class="form-control"
                                     value="{{ $data['lampiran'] }}">
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4" style="margin-top: 10px;">
                                 <label for="sifat" class="form-label">Sifat:</label>
                                 <input type="text" id="sifat" name="sifat" class="form-control"
                                     value="{{ $data['sifat'] }}">
                             </div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3" style="margin-top: 10px;">
                             <label for="perihal" class="form-label">Perihal:</label>
                             <textarea id="perihal" name="perihal" class="form-control" style="height: 100px" rows="2">{{ $data['perihal'] }}</textarea>
                         </div>
-                        <div class="section-title">PEMOHON</div>
+                        <div class="section-title"><h3>PEMOHON</h3></div>
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <label for="permohonanTanggal" class="form-label">Permohonan Tanggal:</label>
@@ -68,12 +69,12 @@
                         </div>
                         <div class="row mb-3">
 
-                            <div class="col-md-6">
+                            <div class="col-md-6" style="margin-top: 10px;">
                                 <label for="nama" class="form-label">Nama:</label>
                                 <input type="text" id="nama" name="nama" class="form-control"
                                     value="{{ $data['nama'] }}">
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6" style="margin-top: 10px;">
                                 <label for="sapaanPemohon" class="form-label">Sapaan Pemohon:</label>
                                 <select name="sapaanPemohon" id="sapaanPemohon" class="form-control">
                                     <option {{ $data['sapaanPemohon'] == 'Bapak' ? 'selected' : '' }} value="Bapak">Bapak</option>
@@ -86,19 +87,19 @@
 
                         </div>
                         <div class="row mb-3">
-                            <div class="col-md-6">
+                            <div class="col-md-6" style="margin-top: 10px;">
                                 <label for="bertindak_atas_nama" class="form-label">Bertindak Atas Nama:</label>
                                 <input type="text" id="bertindak_atas_nama" name="bertindak_atas_nama"
                                     class="form-control" value="{{ $data['bertindak_atas_nama'] }}">
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6" style="margin-top: 10px;">
                                 <label for="alamat" class="form-label">Alamat:</label>
                                 <input type="text" id="alamat" name="alamat" class="form-control"
                                     value="{{ $data['alamat'] }}">
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <div class="col-md-6">
+                            <div class="col-md-6" style="margin-top: 10px;">
                                 <label for="provinsiPemohon" class="form-label">Provinsi:</label>
                                 <select id="provinsiPemohon" name="provinsiPemohon"
                                     class="form-select select2-provinsi-pemohon">
@@ -111,7 +112,7 @@
 
                                 </select>
                             </div>
-                            <div class="col-md-6">
+                            {{-- <div class="col-md-6">
                                 <label for="kabupatenPemohon" class="form-label">Kabupaten/Kota:</label>
                                 <select id="kabupatenPemohon" name="kabupatenPemohon"
                                     class="form-select select2 select2-kabupaten-pemohon">
@@ -122,13 +123,37 @@
                                         </option>
                                     @endforeach
                                 </select>
+                            </div> --}}
+                            <!-- Kabupaten/Kota -->
+                            <div class="col-md-6" style="margin-top: 10px;">
+                                <label for="kabupatenPemohon" class="form-label">Kabupaten/Kota:</label>
+                                <select id="kabupatenPemohon" name="kabupatenPemohon" class="form-control select2 select2-kabupaten-pemohon">
+                                    @foreach (DB::table('master_regency')->where('province_code', $data['provinsiPemohon'])->get() as $item)
+                                        <option value="{{ $item->code }}"
+                                            {{ $item->code == $data['kabupatenPemohon'] ? 'selected' : '' }}>
+                                            {{ $item->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
+
                         </div>
                         <div class="row mb-3">
-                            <div class="col-md-6">
+                            {{-- <div class="col-md-6" style="margin-top: 10px">
                                 <label for="kecamatanPemohon" class="form-label">Kecamatan:</label>
                                 <select id="kecamatanPemohon" name="kecamatanPemohon"
-                                    class="form-select select2 select2-kecamatan-pemohon">
+                                    class="form-select select2-kecamatan-pemohon">
+                                    @foreach (DB::table('master_district')->where('regency_code', $data['kabupatenPemohon'])->get() as $item)
+                                        <option value="{{ $item->code }}"
+                                            {{ $item->code == $data['kecamatanPemohon'] ? 'selected' : '' }}>
+                                            {{ $item->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div> --}}
+                            <div class="col-md-6" style="margin-top: 10px;">
+                                <label for="kecamatanPemohon" class="form-label">Kecamatan:</label>
+                                <select id="kecamatanPemohon" name="kecamatanPemohon" class="form-control select2-kecamatan-pemohon">
                                     @foreach (DB::table('master_district')->where('regency_code', $data['kabupatenPemohon'])->get() as $item)
                                         <option value="{{ $item->code }}"
                                             {{ $item->code == $data['kecamatanPemohon'] ? 'selected' : '' }}>
@@ -138,7 +163,7 @@
                                 </select>
                             </div>
                             {{-- @dd($data) --}}
-                            <div class="col-md-6">
+                            {{-- <div class="col-md-6">
                                 <label for="kelurahanPemohon" class="form-label">Kelurahan:</label>
                                 <select id="kelurahanPemohon" name="kelurahanPemohon"
                                     class="form-select select2 select2-kelurahan-pemohon">
@@ -149,9 +174,20 @@
                                         </option>
                                     @endforeach
                                 </select>
+                            </div> --}}
+                            <div class="col-md-6" style="margin-top: 10px;">
+                                <label for="kelurahanPemohon" class="form-label">Kelurahan:</label>
+                                <select id="kelurahanPemohon" name="kelurahanPemohon" class="form-control select2-kelurahan-pemohon">
+                                    @foreach (DB::table('master_subdistrict')->where('district_code', $data['kecamatanPemohon'])->get() as $item)
+                                        <option value="{{ $item->code }}"
+                                            {{ $item->code == $data['kelurahanPemohon'] ? 'selected' : '' }}>
+                                            {{ $item->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
-                        <div class="section-title">REFERENSI</div>
+                        <div class="section-title"><h3 >REFERENSI</h3></div>
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="izin_mendirikan_bangunan_atas_nama" class="form-label">Izin Mendirikan
@@ -166,8 +202,8 @@
                                     value="{{ $data['lokasi'] }}">
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
+                        {{-- <div class="row mb-3">
+                            <div class="col-md-6" style="margin-top: 10px;">
                                 <div {{ $data['jenisSurat'] == 'format-4' ? 'style="display:none"' : '' }}
                                     id="format-biasa-tujuan">
                                     <label for="tujuanSurat" class="form-label">Tujuan Surat:</label>
@@ -182,8 +218,8 @@
                                 </div>
 
                                 <div {{ $data['jenisSurat'] == 'format-4' ? '' : 'style="display:none"' }}
-                                    id="format-4-tujuan">
-                                    <label for="jenisKegiatan" class="form-label">Jenis Kegiatan:</label>
+                                    id="format-4-tujuan" >
+                                    <label for="jenisKegiatan" class="form-label" >Jenis Kegiatan:</label>
                                     <select id="jenisKegiatan" name="jenisKegiatan"
                                         class="form-select form-control select2">
                                         <option value="">--- PILIH ---</option>
@@ -199,13 +235,110 @@
 
 
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6" style="margin-top: 10px;">
                                 <label for="registerNomor" class="form-label">Register Nomor:</label>
                                 <input type="text" id="registerNomor" name="registerNomor" class="form-control"
                                     value="{{ $data['registerNomor'] }}">
                             </div>
+                        </div> --}}
+                        <div class="row mb-3" style="margin-top: 10px">
+                            {{-- <div class="col-md-6">
+                                <div style="display: none" id="format-biasa-tujuan">
+                                    <label for="tujuanSurat" class="form-label">Tujuan Surat:</label>
+                                    <select id="tujuanSurat" name="tujuanSurat" class="form-select form-control select2">
+                                        <option value="">--- PILIH ---</option>
+                                        @foreach (DB::table('master_tujuan_surat')->get() as $tujuan)
+                                            <option value="{{ $tujuan->nama }}"
+                                                {{ $data['tujuanSurat'] == $tujuan->nama ? 'selected' : '' }}>
+                                                {{ $tujuan->nama }}</option>
+                                        @endforeach
+                                    </select>
+
+                                </div>
+
+                                <div style="display: none" id="format-4-tujuan">
+                                    <label for="jenisKegiatan" class="form-label">Jenis Kegiatan:</label>
+                                    <select id="jenisKegiatan" name="jenisKegiatan"
+                                        class="form-select form-control select2">
+                                        <option value="">--- PILIH ---</option>
+                                        @foreach (DB::table('app_md_jeniskeg')->get() as $jenis_keg)
+                                            <option {{ $data['jenisKegiatan'] == $tujuan->nama ? 'selected' : '' }}
+                                                value="{{ $jenis_keg->name_jeniskeg }}">
+                                                {{ $jenis_keg->name_jeniskeg }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                </div>
+                            </div> --}}
+                            <div class="col-md-6">
+                                <div id="format-biasa-tujuan" style="{{ $data['jenisSurat'] != 'format-4' ? 'display: block;' : 'display: none;' }}">
+                                    <label for="tujuanSurat" class="form-label">Tujuan Surat:</label>
+                                    <select id="tujuanSurat" name="tujuanSurat" class="form-select form-control select2">
+                                        <option value="">--- PILIH ---</option>
+                                        @foreach (DB::table('master_tujuan_surat')->get() as $tujuan)
+                                            <option value="{{ $tujuan->nama }}"
+                                                {{ $data['tujuanSurat'] == $tujuan->nama ? 'selected' : '' }}>
+                                                {{ $tujuan->nama }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div id="format-4-tujuan" style="{{ $data['jenisSurat'] == 'format-4' ? 'display: block;' : 'display: none;' }}">
+                                    <label for="jenisKegiatan" class="form-label">Jenis Kegiatan:</label>
+                                    <select id="jenisKegiatan" name="jenisKegiatan" class="form-select form-control select2">
+                                        <option value="">--- PILIH ---</option>
+                                        @foreach (DB::table('app_md_jeniskeg')->get() as $jenis_keg)
+                                            <option value="{{ $jenis_keg->name_jeniskeg }}"
+                                                {{ $data['jenisKegiatan'] == $jenis_keg->name_jeniskeg ? 'selected' : '' }}>
+                                                {{ $jenis_keg->name_jeniskeg }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="registerNomor" class="form-label">Register Nomor:</label>
+                                <input type="text" id="registerNomor" name="registerNomor" class="form-control"
+                                    value="-">
+                            </div>
                         </div>
-                        <div class="row mb-3">
+                        {{-- <div class="row mb-3">
+                            <div class="col-md-6" style="margin-top: 10px;">
+                                <div id="format-biasa-tujuan" {{ $data['jenisSurat'] == 'format-4' ? 'style="display:none"' : '' }}>
+                                    <label for="tujuanSurat" class="form-label">Tujuan Surat:</label>
+                                    <select id="tujuanSurat" name="tujuanSurat" class="form-select form-control select2">
+                                        <option value="">--- PILIH ---</option>
+                                        @foreach (DB::table('master_tujuan_surat')->get() as $tujuan)
+                                            <option value="{{ $tujuan->nama }}"
+                                                {{ $data['tujuanSurat'] == $tujuan->nama ? 'selected' : '' }}>
+                                                {{ $tujuan->nama }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div id="format-4-tujuan" {{ $data['jenisSurat'] == 'format-4' ? '' : 'style="display:none"' }}>
+                                    <label for="jenisKegiatan" class="form-label">Jenis Kegiatan:</label>
+                                    <select id="jenisKegiatan" name="jenisKegiatan" class="form-select form-control select2">
+                                        <option value="">--- PILIH ---</option>
+                                        @foreach (DB::table('app_md_jeniskeg')->get() as $jenis_keg)
+                                            <option value="{{ $jenis_keg->name_jeniskeg }}"
+                                                {{ $data['jenisKegiatan'] == $jenis_keg->name_jeniskeg ? 'selected' : '' }}>
+                                                {{ $jenis_keg->name_jeniskeg }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="margin-top: 10px;">
+                                <label for="registerNomor" class="form-label">Register Nomor:</label>
+                                <input type="text" id="registerNomor" name="registerNomor" class="form-control" value="{{ $data['registerNomor'] }}">
+                            </div>
+                        </div> --}}
+
+                        <div class="row mb-3" style="margin-top: 10px;">
                             <div class="col-md-6">
                                 <label for="registerTanggal" class="form-label">Register Tanggal:</label>
                                 <input type="date" id="registerTanggal" name="registerTanggal" class="form-control"
@@ -217,13 +350,13 @@
                                     value="{{ $data['imbgNomor'] }}">
                             </div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3" style="margin-top: 10px;">
                             <label for="imbgTanggal" class="form-label">IMBG Tanggal:</label>
                             <input type="date" id="imbgTanggal" name="imbgTanggal" class="form-control"
                                 value="{{ $data['imbgTanggal'] }}">
                         </div>
                         <div class="row mb-3">
-                            <div class="col-md-6">
+                            {{-- <div class="col-md-6" style="margin-top: 10px;">
                                 <label for="kabupaten" class="form-label">Kabupaten/Kota:</label>
                                 <select id="kabupaten" name="kabupaten" class="form-select select2 select2-kabupaten">
                                     @foreach (DB::table('master_regency')->where('province_code', 32)->get() as $item)
@@ -233,16 +366,27 @@
                                         </option>
                                     @endforeach
                                 </select>
-                            </div>
+                            </div> --}}
 
-                            <div class="col-md-6">
+                            <div class="col-md-6" style="margin-top: 10px;">
+                                <label for="kabupaten" class="control-label">Kabupaten/Kota:</label>
+                                <select id="kabupaten" name="kabupaten" class="form-control select2 select2-kabupaten" >
+                                    @foreach (DB::table('master_regency')->where('province_code', 32)->get() as $item)
+                                        <option value="{{ $item->code }}"
+                                            {{ $item->code == $data['kabupaten'] ? 'selected' : '' }}>
+                                            {{ $item->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6" style="margin-top: 10px;">
                                 <label for="kabupaten-terdahulu" class="form-label">Kabupaten/Kota Terdahulu:</label>
                                 <input type="text" id="kabupaten-terdahulu" name="kabupaten-terdahulu"
                                     class="form-control" value="{{ $data['kabupaten_terdahulu'] }}">
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
+                        <div class="row mb-3" style="margin-top: 10px;">
+                            {{-- <div class="col-md-6">
                                 <label for="kecamatan" class="form-label">Kecamatan:</label>
                                 <select id="kecamatan" name="kecamatan" class="form-select select2 select2-kecamatan">
                                     @foreach (DB::table('master_district')->where('regency_code', $data['kabupaten'])->get() as $item)
@@ -252,15 +396,28 @@
                                         </option>
                                     @endforeach
                                 </select>
+                            </div> --}}
+                            {{-- Yang terbaru --}}
+                            <div class="col-md-6">
+                                <label for="kecamatan" class="control-label">Kecamatan:</label>
+                                <select id="kecamatan" name="kecamatan" class="form-control select2 select2-kecamatan">
+                                    @foreach (DB::table('master_district')->where('regency_code', $data['kabupaten'])->get() as $item)
+                                        <option value="{{ $item->code }}"
+                                            {{ $item->code == $data['kecamatan'] ? 'selected' : '' }}>
+                                            {{ $item->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
+
                             <div class="col-md-6">
                                 <label for="kecamatan-terdahulu" class="form-label">Kecamatan Terdahulu:</label>
                                 <input type="text" id="kecamatan-terdahulu" name="kecamatan-terdahulu"
                                     class="form-control" value="{{ $data['kecamatan_terdahulu'] }}">
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
+                        <div class="row mb-3" style="margin-top: 10px;">
+                            {{-- <div class="col-md-6">
                                 <label for="kelurahan" class="form-label">Kelurahan:</label>
                                 <select id="kelurahan" name="kelurahan" class="form-select select2 select2-kelurahan">
                                     @foreach (DB::table('master_subdistrict')->where('district_code', $data['kecamatan'])->get() as $item)
@@ -270,14 +427,26 @@
                                         </option>
                                     @endforeach
                                 </select>
+                            </div> --}}
+                            <div class="form-group col-md-6">
+                                <label for="kelurahan" class="control-label">Kelurahan:</label>
+                                <select id="kelurahan" name="kelurahan" class="form-control select2 select2-kelurahan">
+                                    @foreach (DB::table('master_subdistrict')->where('district_code', $data['kecamatan'])->get() as $item)
+                                        <option value="{{ $item->code }}"
+                                            {{ $item->code == $data['kelurahan'] ? 'selected' : '' }}>
+                                            {{ $item->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
+
                             <div class="col-md-6">
                                 <label for="kelurahan-terdahulu" class="form-label">Kelurahan Terdahulu:</label>
                                 <input type="text" id="kelurahan-terdahulu" name="kelurahan-terdahulu"
                                     class="form-control" value="{{ $data['kelurahan_terdahulu'] }}">
                             </div>
                         </div>
-                        <div class="section-title">PENANDATANGAN</div>
+                        <div class="section-title"><h3>PENANDATANGAN</h3></div>
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="kepalaDinas" class="form-label">Penandatangan:</label>
@@ -304,7 +473,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3" style="margin-top: 10px">
                             <label for="pangkat" class="form-label">Pangkat/Golongan:</label>
                             <select id="pangkat" name="pangkat" class="form-select form-control select2">
                                 @foreach (DB::table('app_md_golongan')->get() as $golongan)
@@ -314,24 +483,24 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="section-title">KETERANGAN</div>
+                        <div class="section-title"><h3>KETERANGAN</h3></div>
                         <div id="keteranganContainer">
                             @foreach ($data['keterangan'] as $key => $item)
-                                <div class="mb-3" >
+                                <div class="mb-3" style="margin-top: 10px" >
                                     <label for="ket{{ $key + 1 }}"
                                         class="form-label">KET-{{ $key + 1 }}:</label>
                                     <textarea id="ket{{ $key + 1 }}" name="ket[]" class="form-control" style="height: 100px" rows="3">{{ $item }}</textarea>
                                 </div>
                             @endforeach
                         </div>
-                        <div class="d-flex justify-content-end w-100">
+                        <div class="d-flex justify-content-end w-100" style="margin-top: 10px">
                             <button type="button" id="addKeteranganButton" class="btn btn-success">Tambah
                                 Keterangan</button>
 
                         </div>
                         <br>
 
-                        <div class="section-title">SETTING SURAT</div>
+                        <div class="section-title"><h3>SETTING SURAT</h3></div>
                         <label for="fontSize" class="form-label">Font Size:</label>
 
                         <input type="text" id="font_surat" name="font_surat" value="11" class="form-control">
@@ -339,7 +508,7 @@
 
                         <br>
                         <div class="container mt-4">
-                            <div id="detail" style="display: none">
+                            <div id="detail" style="display: none; margin-left:-15px">
                                 <table class="table-bordered table ">
                                     <tbody id="details">
                                         <tr>
@@ -446,6 +615,7 @@
                             </div>
                             <button type="button" id="preview-surat" class="btn btn-primary">Preview Surat</button>
                             <button type="button" id="submit-surat" class="btn btn-success">Update dan Cetak</button>
+                            <button type="button" id="preview-table" class="btn btn-primary">Preview Table</button>
                         </div>
                     </form>
                 </div>
@@ -781,94 +951,100 @@
         });
 
 
-
         $('#jenisSurat').on('change', function() {
+
+            if ($(this).val()  === 'format-1' || $(this).val()  === 'format-4') {
+                $('#preview-table').addClass('hidden');
+            } else {
+                $('#preview-table').removeClass('hidden');
+            }
 
             if ($(this).val() === 'format-1' || $(this).val() === 'format-4') {
                 $('#detail-2').hide();
                 $('#detail').hide();
-                if ($(this).val() == 'format-4') {
+                $('#preview-table').hide();
+                if ($(this).val() === 'format-4') {
                     $('#ket1').val(
                         'Nama dan nomor Izin Mendirikan Bangunan Gedung tersebut di atas adalah benar tercatat dalam buku registrasi Izin Mendirikan Bangunan Gedung pada Dinas Perumahan Kawasan Permukiman dan Pertanahan Kabupaten Bogor.'
-                    )
+                    );
                     $('#ket2').val(
                         'Untuk proses Izin Mendirikan Bangunan Gedung, saat ini mengacu kepada Peraturan Pemerintah Republik Indonesia Nomor 16 Tahun 2021.'
-                    )
-                    $('#ket3').val('Demikian disampaikan untuk diketahui dan dipergunakan seperlunya.')
-                    $('#format-4-tujuan').show();
-                    $('#format-biasa-tujuan').hide();
-
+                    );
+                    $('#ket3').val('Demikian disampaikan untuk diketahui dan dipergunakan seperlunya.');
+                    $('#format-4-tujuan').show();  // Show jenis kegiatan
+                    $('#format-biasa-tujuan').hide();  // Hide tujuan surat
                 } else {
                     $('#ket1').val(
                         'Nama dan Nomor Izin Mendirikan Bangunan Gedung tersebut di atas adalah benar tercatat dalam buku register Izin Mendirikan Bangunan pada Dinas Perumahan Kawasan Permukiman Dan Pertanahan Kabupaten Bogor.'
-                    )
+                    );
                     $('#ket2').val(
                         'Surat Keterangan ini hanya sebagai bahan tindak lanjut persyaratan permohonan Izin Mendirikan Bangunan Gedung di Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Kabupaten Bogor dan bukan merupakan Izin Mendirikan Bangunan Gedung.'
-                    )
+                    );
                     $('#ket3').val(
                         'Apabila data yang Saudara berikan tidak benar, maka surat keterangan ini dianggap gugur atau tidak berlaku.'
-                    )
-                    $('#format-4-tujuan').hide();
-                    $('#format-biasa-tujuan').show();
+                    );
+                    $('#format-4-tujuan').hide();  // Hide jenis kegiatan
+                    $('#format-biasa-tujuan').show();  // Show tujuan surat
                 }
-
-
             } else if ($(this).val() === 'format-2') {
                 $('#detail-2').hide();
+                $('#preview-table').show();
                 $('#detail').show();
                 $('#ket1').val(
                     'Nama dan Nomor Izin Mendirikan Bangunan Gedung tersebut di atas adalah benar tercatat dalam buku register Izin Mendirikan Bangunan pada Dinas Perumahan Kawasan Permukiman Dan Pertanahan Kabupaten Bogor.'
-                )
+                );
                 $('#ket2').val(
                     'Surat Keterangan ini hanya sebagai bahan tindak lanjut persyaratan permohonan Izin Mendirikan Bangunan Gedung di Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Kabupaten Bogor dan bukan merupakan Izin Mendirikan Bangunan Gedung.'
-                )
+                );
                 $('#ket3').val(
                     'Apabila data yang Saudara berikan tidak benar, maka surat keterangan ini dianggap gugur atau tidak berlaku.'
-                )
-                $('#format-4-tujuan').hide();
-                $('#format-biasa-tujuan').show();
+                );
+                $('#format-4-tujuan').hide(); // Hide format-4-tujuan
+                $('#format-biasa-tujuan').show(); // Show format-biasa-tujuan
             } else {
-
                 $('#detail-2').show();
                 $('#detail').show();
                 $('#ket1').val(
                     'Nama dan Nomor Izin Mendirikan Bangunan Gedung tersebut di atas adalah benar tercatat dalam buku register Izin Mendirikan Bangunan pada Dinas Perumahan Kawasan Permukiman Dan Pertanahan Kabupaten Bogor.'
-                )
+                );
                 $('#ket2').val(
                     'Surat Keterangan ini hanya sebagai bahan tindak lanjut persyaratan permohonan Izin Mendirikan Bangunan Gedung di Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Kabupaten Bogor dan bukan merupakan Izin Mendirikan Bangunan Gedung.'
-                )
+                );
                 $('#ket3').val(
                     'Apabila data yang Saudara berikan tidak benar, maka surat keterangan ini dianggap gugur atau tidak berlaku.'
-                )
-                $('#format-4-tujuan').hide();
-                $('#format-biasa-tujuan').show();
+                );
+                $('#format-4-tujuan').hide(); // Hide format-4-tujuan
+                $('#format-biasa-tujuan').show(); // Show format-biasa-tujuan
             }
-
         });
+
 
     </script>
 
 
     <script>
         $(document).ready(function() {
+
             $('#preview-surat').click(function() {
                 // Initialize FormData with the form element
                 let form = document.getElementById('suratForm');
                 let formData = new FormData(form);
+
                 // Send data with AJAX
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', "{{ route('surat.preview') }}", true);
                 xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
-                xhr.responseType = 'blob';
+                xhr.responseType = 'text'; // Ubah ke 'text' untuk menerima HTML
 
                 xhr.onload = function() {
                     if (xhr.status === 200) {
+                        // Membuka new window
                         var newWindow = window.open('', '_blank', 'width=800,height=600');
-                        var blob = new Blob([xhr.response], {
-                            type: 'application/pdf'
-                        });
-                        var url = URL.createObjectURL(blob);
-                        newWindow.location.href = url;
+                        // Menulis HTML yang diterima dari server ke dalam new window
+                        console.log(xhr.response);
+                        newWindow.document.open();
+                        newWindow.document.write(xhr.response);
+                        newWindow.document.close();
                     } else {
                         Swal.close(); // Hide Swal loading indicator
                     }
@@ -876,6 +1052,36 @@
 
                 xhr.send(formData);
             });
+
+
+            $('#preview-table').click(function() {
+                // Initialize FormData with the form element
+                let form = document.getElementById('suratForm');
+                let formData = new FormData(form);
+
+                // Send data with AJAX
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', "{{ route('surat.previewTable') }}", true);
+                xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+                xhr.responseType = 'text'; // Ubah ke 'text' untuk menerima HTML
+
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        // Membuka new window
+                        var newWindow = window.open('', '_blank', 'width=800,height=600');
+                        // Menulis HTML yang diterima dari server ke dalam new window
+                        console.log(xhr.response);
+                        newWindow.document.open();
+                        newWindow.document.write(xhr.response);
+                        newWindow.document.close();
+                    } else {
+                        Swal.close(); // Hide Swal loading indicator
+                    }
+                };
+
+                xhr.send(formData);
+            });
+
 
             $('#submit-surat').click(function() {
                 Swal.fire({
@@ -891,47 +1097,67 @@
                 let formData = new FormData(form);
 
                 fetch(@json($url), {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: formData
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        Swal.close();
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: formData
+                })
+                .then(response => {
 
-                        if (data.status === 'success') {
+                    if (!response.ok) {
+                        // Jika respons tidak OK (status 4xx/5xx)
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data)
+                    Swal.close();
+
+                    // if (data.status === 'success') {
+                    //     Swal.fire({
+                    //         title: 'Surat Berhasil Diupdate!',
+                    //         text: 'Surat akan diunduh secara otomatis.',
+                    //         icon: 'success',
+                    //         timer: 2000,
+                    //         showConfirmButton: false
+                    //     });
+                    if (data.status === 'success') {
                             Swal.fire({
-                                title: 'Surat Berhasil Di update!',
+                                title: 'Surat Berhasil Dibuat!',
                                 text: 'Surat akan diunduh secara otomatis.',
                                 icon: 'success',
                                 timer: 2000,
                                 showConfirmButton: false
+                            }).then(() => {
+                                window.location.href = "{{ route('surat.index') }}";
                             });
 
-                            // Mengunduh file secara otomatis
-                            const fileUrl = `{{ asset('storage/surat/') }}/${data.file}`;
-                            const link = document.createElement('a');
-                            link.href = fileUrl;
-                            link.download = data.file; // Nama file yang diunduh
-                            link.click();
-                        } else {
-                            Swal.fire({
-                                title: 'Gagal Membuat Surat',
-                                text: 'Terjadi kesalahan saat memproses surat.',
-                                icon: 'error',
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        Swal.close();
+                        // Mengunduh file secara otomatis
+                        const fileUrl = `{{ asset('storage/surat/') }}/${data.file}`;
+                        const link = document.createElement('a');
+                        link.href = fileUrl;
+                        link.download = data.file; // Nama file yang diunduh
+                        link.click();
+                    } else {
                         Swal.fire({
                             title: 'Gagal Membuat Surat',
-                            text: 'Terjadi kesalahan koneksi atau server.',
+                            text: data.message || 'Terjadi kesalahan saat memproses surat.',
                             icon: 'error',
                         });
+                    }
+                })
+                .catch(error => {
+                    console.log(error)
+                    Swal.close();
+                    console.error('Fetch Error:', error); // Debug untuk melihat error
+                    Swal.fire({
+                        title: 'Gagal Membuat Surat',
+                        text: 'Terjadi kesalahan koneksi atau server.',
+                        icon: 'error',
                     });
+                });
             });
 
 

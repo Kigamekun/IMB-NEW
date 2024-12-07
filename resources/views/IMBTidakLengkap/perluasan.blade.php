@@ -85,7 +85,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="pairImbModalLabel">Pair IMB Perluasan with Existing IMB Pecahan</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="pairImbForm" method="POST" action="{{ route('DataIMBTidakLengkap.pair-perluasan') }}">
                     @csrf
@@ -103,7 +103,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save Pairing</button>
                     </div>
                 </form>
@@ -118,18 +118,18 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize Select2 inside the modal
-            $('#pairImbModal').on('show.bs.modal', function(event) {
+            $('#IMBTable').on('click', '.pair-btn', function() {
                 // Get the button that triggered the modal
-                const button = event.relatedTarget;
+                // const button = event.relatedTarget;
                 // Extract perluasan_id and set it in the hidden input field
-                const perluasanId = button.getAttribute('data-perluasan-id');
+                const perluasanId = $(this).attr('data-perluasan-id');
                 document.getElementById('perluasanId').value = perluasanId;
 
                 // Initialize the Select2 dropdown with the modal as its parent
                 $('.select2-imb-pecahan').select2({
                     width: '100%',
                     placeholder: 'Pilih IMB Pecahan',
-                    minimumInputLength: 2,
+                    minimumInputLength: 0,
                     dropdownParent: $('#pairImbModal'),  // Set modal as parent for dropdown
                     ajax: {
                         url: "{{ route('master.imb-pecahan') }}", // Route to fetch IMB Induk options

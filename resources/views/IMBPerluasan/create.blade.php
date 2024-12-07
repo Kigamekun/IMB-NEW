@@ -28,7 +28,7 @@
                                     readonly required>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6 ">
                                 <label class="form-label">No IMB Perluasan:</label>
                                 <div class="">
@@ -42,7 +42,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6 ">
                                 <label class="form-label">No Register:</label>
                                 <div class="">
@@ -56,7 +56,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6 ">
                                 <label class="form-label">Nama:</label>
                                 <div class="">
@@ -70,8 +70,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6 ">
+                        <div class="row mb-3" style="margin-top: 10px">
+                            {{-- <div class="col-md-6 ">
                                 <label class="form-label">Jenis Kegiatan:</label>
                                 <div class="">
                                     <select name="jenis_kegiatan" id="jenis_kegiatan"
@@ -83,8 +83,18 @@
                                         @endforeach
                                     </select>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="col-md-6">
+                                <label for="jenis_kegiatan" class="form-label">Jenis Kegiatan:</label>
+                                <select class="form-control form-select select2-jenis-kegiatan " name="jenis_kegiatan" id="jenis_kegiatan" required>
+                                    @foreach (DB::table('app_md_jeniskeg')->get() as $jenis_keg)
+                                        <option value="{{ $jenis_keg->name_jeniskeg }}" selected>
+                                            {{ $jenis_keg->name_jeniskeg }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            {{-- <div class="col-md-6">
                                 <label for="fungsi_bangunan" class="form-label">Fungsi Bangunan:</label>
                                 <select name="fungsi_bangunan" id="fungsi_bangunan" class="form-select select2" required>
                                     @foreach (DB::table('app_md_fungsibang')->get() as $fungsi_bang)
@@ -92,9 +102,18 @@
                                             {{ $fungsi_bang->name_fungsibang }}</option>
                                     @endforeach
                                 </select>
+                            </div> --}}
+                            <div class="col-md-6">
+                                <label for="fungsi_bangunan" class="form-label">Fungsi Bangunan:</label>
+                                <select class="form-control form-select select2-fungsi-bangunan" name="fungsi_bangunan" id="fungsi_bangunan" required>
+                                    @foreach (DB::table('app_md_fungsibang')->get() as $fungsi_bang)
+                                        <option value="{{ $fungsi_bang->id_fungsibang }}">
+                                            {{ $fungsi_bang->name_fungsibang }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6 ">
                                 <label class="form-label">Kecamatan:</label>
                                 <div class="">
@@ -114,7 +133,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6 ">
                                 <label class="form-label">Type:</label>
                                 <div class="">
@@ -128,7 +147,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6 ">
                                 <label class="form-label">Luas Bangunan Perluasan:</label>
                                 <div class="">
@@ -142,7 +161,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6 ">
                                 <label class="form-label">No Blok:</label>
                                 <div class="">
@@ -156,7 +175,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row" style="margin-top: 10px">
                             <div class="col-md-6 ">
                                 <label class="form-label">Lokasi / Perumahan:</label>
                                 <div class="">
@@ -171,7 +190,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-success mt-3">Submit</button>
+                        <button type="submit" class="btn btn-success mt-3" style="margin-top: 10px; margin-bottom:20px">Submit</button>
                     </form>
                 </div>
             </div>
@@ -190,6 +209,14 @@
         $('.select2').select2();
 
         function initializeSelect2WithAjax() {
+            $('.select2-jenis-kegiatan').select2({
+                width: '100%', // Adjust the width as needed
+                placeholder: 'Pilih opsi',
+            });
+            $('.select2-fungsi-bangunan').select2({
+                width: '100%', // Adjust the width as needed
+                placeholder: 'Pilih opsi',
+            });
             // Kecamatan Select2 with AJAX
             $('.select2-kecamatan').select2({
                 width: '100%',

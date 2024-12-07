@@ -38,7 +38,7 @@
                                     required>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6">
                                 <label for="no_imb_pecahan" class="form-label">No. IMB Pecahan:</label>
                                 <input type="text" name="no_imb_pecahan" class="form-control" id="no_imb_pecahan"
@@ -50,7 +50,7 @@
                                     value="{{ $data->tgl_imb_pecahan }}" required>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6">
                                 <label for="no_register" class="form-label">No Register:</label>
                                 <input type="text" name="no_register" class="form-control" id="no_register"
@@ -62,7 +62,7 @@
                                     value="{{ $data->tgl_register }}">
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6">
                                 <label for="nama" class="form-label">Nama:</label>
                                 <input type="text" name="nama" class="form-control" id="nama"
@@ -74,18 +74,40 @@
                                     value="{{ $data->atas_nama }}">
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
+                            {{-- <div class="col-md-6">
+                                <label for="jenis_kegiatan" class="form-label">Jenis Kegiatan:</label>
+                                <select name="jenis_kegiatan" id="jenis_kegiatan" class="form-select select2" required>
+                                    @foreach (DB::table('app_md_jeniskeg')->get() as $jenis_keg)
+                                        <option value="{{ $jenis_keg->name_jeniskeg }}"
+                                            {{ $jenis_keg->name_jeniskeg == $data->jenis_kegiatan ? 'selected' : '' }}>
+                                            {{ $jenis_keg->name_jeniskeg }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div> --}}
                             <div class="col-md-6">
                                 <label for="jenis_kegiatan" class="form-label">Jenis Kegiatan:</label>
-                                <select name="jenis_kegiatan" id="jenis_kegiatan" class="form-select select2 " required>
+                                <select class="form-control select2 select2-jenis-kegiatan" name="jenis_kegiatan" id="jenis_kegiatan" required>
+                                    @foreach (DB::table('app_md_jeniskeg')->get() as $jenis_keg)
+                                        <option value="{{ $jenis_keg->name_jeniskeg }}"
+                                            {{ $jenis_keg->name_jeniskeg == $data->jenis_kegiatan ? 'selected' : '' }}>
+                                            {{ $jenis_keg->name_jeniskeg }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            {{-- <div class="col-md-6 mb-3">
+                                <label for="jenis_kegiatan_${i}" class="form-label">Jenis Kegiatan</label>
+                                <select class="form-select data-master" id="jenis_kegiatan_${i}" name="jenis_kegiatan_${i}" required>
                                     @foreach (DB::table('app_md_jeniskeg')->get() as $jenis_keg)
                                         <option value="{{ $jenis_keg->name_jeniskeg }}"
                                             {{ $jenis_keg->id_jeniskeg == $data->jenis_kegiatan ? 'selected' : '' }}>
                                             {{ $jenis_keg->name_jeniskeg }}</option>
                                     @endforeach
                                 </select>
-                            </div>
-                            <div class="col-md-6">
+                            </div> --}}
+                            {{-- <div class="col-md-6">
                                 <label for="fungsi_bangunan" class="form-label">Fungsi Bangunan:</label>
                                 <select name="fungsi_bangunan" id="fungsi_bangunan" class="form-select select2" required>
                                     @foreach (DB::table('app_md_fungsibang')->get() as $fungsi_bang)
@@ -94,16 +116,27 @@
                                             {{ $fungsi_bang->name_fungsibang }}</option>
                                     @endforeach
                                 </select>
+                            </div> --}}
+                            <div class="col-md-6">
+                                <label for="fungsi_bangunan" class="form-label">Fungsi Bangunan:</label>
+                                <select class="form-control select2 select2-fungsi-bangunan" name="fungsi_bangunan" id="fungsi_bangunan"required>
+                                    @foreach (DB::table('app_md_fungsibang')->get() as $fungsi_bang)
+                                        <option value="{{ $fungsi_bang->id_fungsibang }}"
+                                            {{ $fungsi_bang->id_fungsibang == $data->fungsi_bangunan ? 'selected' : '' }}>
+                                            {{ $fungsi_bang->name_fungsibang }}</option>
+                                    @endforeach
+                                </select>
                             </div>
+
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6">
                                 <label for="kecamatan" class="form-label">Kecamatan:</label>
                                 <select name="kecamatan" id="kecamatan" class="form-select select2-kecamatan" required>
                                     <option value="{{ $data->kecamatan_code }}" selected>{{ $data->kecamatan }}</option>
                                 </select>
                             </div>
-                            <div class="col-md-6">
+                            {{-- <div class="col-md-6">
                                 <label for="desa_kelurahan" class="form-label">Desa / Kelurahan:</label>
                                 <select name="desa_kelurahan" id="desa_kelurahan"
                                     class="form-select select2 select2-kelurahan" required>
@@ -113,9 +146,19 @@
                                             {{ $kel->name }}</option>
                                     @endforeach
                                 </select>
+                            </div> --}}
+                            <div class="col-md-6">
+                                <label for="kelurahan" class="form-label">Desa/Kelurahan</label>
+                                <select class="form-control select2 select2-kelurahan" name="desa_kelurahan" id="desa_kelurahan"required>
+                                    @foreach (DB::table('master_subdistrict')->where('district_code', $data->kecamatan_code)->get() as $kel)
+                                        <option value="{{ $kel->code }}"
+                                            {{ $kel->code == $data->kelurahan_code ? 'selected' : '' }}>
+                                            {{ $kel->name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6">
                                 <label for="type" class="form-label">Type:</label>
                                 <input type="text" name="type" class="form-control" id="type"
@@ -127,7 +170,7 @@
                                     value="{{ $data->luas }}" id="luas">
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6">
                                 <label for="blok" class="form-label">Blok:</label>
                                 <input type="text" name="blok" class="form-control" id="blok"
@@ -139,13 +182,13 @@
                                     value="{{ $data->no_blok }}">
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-12">
                                 <label for="keterangan" class="form-label">Keterangan:</label>
                                 <textarea name="keterangan" class="form-control" id="keterangan">{{ $data->keterangan }}</textarea>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6">
                                 <label for="lokasi_perumahan" class="form-label">Lokasi / Perumahan:</label>
                                 <input type="text" name="lokasi_perumahan" class="form-control"
@@ -157,7 +200,7 @@
                                     accept=".pdf, .jpg, .jpeg, .png">
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-success mt-3">Submit</button>
+                        <button type="submit" class="btn btn-success mt-3" style="margin-top: 10px; margin-bottom:20px">Submit</button>
                     </form>
                 </div>
             </div>

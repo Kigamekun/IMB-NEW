@@ -75,10 +75,17 @@
                                         <div class="col-md-6">
                                             <label for="tgl_pecahan" class="form-label">Kelurahan Baru:</label>
                                             <select name="desa_kelurahan" id="desa_kelurahan"
-                                                class="form-select select2 select2-kelurahan" required>
+                                                class="form-select select2-kelurahan" required>
                                                 <option value="">Pilih Desa/Kelurahan</option>
                                             </select>
                                         </div>
+
+                                        {{-- <div class="col-md-6">
+                                            <label for="tgl_pecahan" class="form-label">Kelurahan Baru:</label>
+                                            <select name="desa_kelurahan" id="desa_kelurahan" class="form-select select2-kelurahan" required>
+                                                <option value="">Pilih Desa/Kelurahan</option>
+                                            </select>
+                                        </div> --}}
                                     </div>
                                     <button type="submit" class="btn btn-success mt-3">Submit</button>
                                 </form>
@@ -110,22 +117,22 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
+                                    <div class="row mb-3" style="margin-top: 10px">
                                         <div class="col-md-6">
                                             <label for="no_imb_pecahan" class="form-label">Kecamatan Baru:</label>
-                                            <select name="kecamatan" id="kecamatan" class="form-select select2-kecamatan" required>
+                                            <select name="kecamatan" id="kecamatan" class="form-control select2-kecamatan" required>
                                                 <option value="">Pilih Kecamatan</option>
                                             </select>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="tgl_pecahan" class="form-label">Kelurahan Baru:</label>
                                             <select name="desa_kelurahan" id="desa_kelurahan"
-                                                class="form-select select2 select2-kelurahan" required>
+                                                class="form-control  select2-kelurahan" required>
                                                 <option value="">Pilih Desa/Kelurahan</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-success mt-3">Submit</button>
+                                    <button type="submit" class="btn btn-success mt-3" style="margin-top: 10px">Submit</button>
                                 </form>
                             @break
 

@@ -17,20 +17,20 @@ class TujuanSuratController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $id = Crypt::encrypt($row->id);
-                    $btn = '<div class="d-flex" style="gap:5px;">';
+                    $btn = '<div class="d-flex" style="gap:5px;display:flex;">';
                     $btn .= '
-                    <button type="button" title="EDIT" class="btn btn-sm  btn-warning" data-bs-toggle="modal" data-bs-target="#updateData"
+                    <button type="button" title="EDIT" class="btn btn-sm  btn-warning" data-toggle="modal" data-target="#updateData"
                     data-nama="' . $row->nama . '"
                     data-url="' . route('tujuan-surat.update', ['id' => $id]) . '"
                     >
-                        Edit
+                        <i class="fa fa-pencil"></i>
                     </button>';
                     $btn .= '
                     <form id="deleteForm" action="' . route('tujuan-surat.destroy', ['id' => $id]) . '" method="POST">
                             ' . csrf_field() . '
                             ' . method_field('DELETE') . '
                                 <button type="button" title="DELETE" class="btn btn-sm btn-danger btn-delete" onclick="confirmDelete(event)">
-                                    Delete
+                                    <i class="fa fa-trash"></i>
                                 </button>
                             </form>
                     </div>';

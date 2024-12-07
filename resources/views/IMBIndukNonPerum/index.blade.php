@@ -19,8 +19,8 @@
                         <a href="{{ route('IMBIndukNonPerum.create') }}" type="button" class="btn btn-primary">
                             Tambah Data
                         </a>
-                        <button type="button" class="ml-2 btn btn-info text-white" data-bs-toggle="modal"
-                            data-bs-target="#importDataModal">
+                        <button type="button" class="ml-2 btn btn-info text-white" data-toggle="modal"
+                            data-target="#importDataModal">
                             Import Data
                         </button>
                         <a class="btn btn-warning ml-2" href="{{ route('IMBIndukNonPerum.export') }}">
@@ -64,7 +64,7 @@
                                 <input type="text" class="form-control" id="filter-kelurahan"
                                     placeholder="Kelurahan">
                             </div>
-                            <div class="mb-3 col-md-3">
+                            <div class="mb-3 col-md-3" style="margin-top: 10px; margin-bottom:10px">
                                 <select class="form-control" id="filter-jenis_imb">
                                     <option value="all" selected>Keseluruhan</option>
                                     @foreach (DB::table('master_jenis_non_perum')->get() as $jenis)
@@ -246,7 +246,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title fs-5" id="importDataModalLabel">Import Data </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('IMBIndukNonPerum.import') }}" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -257,7 +257,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
                 </form>

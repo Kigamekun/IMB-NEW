@@ -13,7 +13,7 @@
                     <br>
                     <form id="mainForm" action="{{ route('IMBPecahan.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <div class="row mb-3">
+                        <div class="row mb-3" >
                             <div class="col-md-6">
                                 <label for="no_imb_induk" class="form-label">No. IMB Induk:</label>
                                 <select name="no_imb_induk" id="no_imb_induk" class="form-select select2-imb-induk"
@@ -27,7 +27,7 @@
                                     required>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6">
                                 <label for="no_imb_pecahan" class="form-label">No. IMB Pecahan:</label>
                                 <input type="text" name="no_imb_pecahan" class="form-control" id="no_imb_pecahan"
@@ -38,7 +38,7 @@
                                 <input type="date" name="tgl_pecahan" class="form-control" id="tgl_pecahan" required>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6">
                                 <label for="no_register" class="form-label">No Register:</label>
                                 <input type="text" name="no_register" class="form-control" id="no_register">
@@ -48,7 +48,7 @@
                                 <input type="date" name="tgl_register" class="form-control" id="tgl_register">
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6">
                                 <label for="nama" class="form-label">Nama:</label>
                                 <input type="text" name="nama" class="form-control" id="nama" required>
@@ -58,8 +58,8 @@
                                 <input type="text" name="atas_nama" class="form-control" id="atas_nama">
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
+                        <div class="row mb-3" style="margin-top: 10px">
+                            {{-- <div class="col-md-6">
                                 <label for="jenis_kegiatan" class="form-label">Jenis Kegiatan:</label>
                                 <select name="jenis_kegiatan" id="jenis_kegiatan" class="form-select select-jenis-kegiatan "
                                     required>
@@ -69,10 +69,29 @@
                                         </option>
                                     @endforeach
                                 </select>
+                            </div> --}}
+                            <div class="col-md-6">
+                                <label for="jenis_kegiatan" class="form-label">Jenis Kegiatan:</label>
+                                <select class="form-control form-select select-jenis-kegiatan " name="jenis_kegiatan" id="jenis_kegiatan" required>
+                                    @foreach (DB::table('app_md_jeniskeg')->get() as $jenis_keg)
+                                        <option value="{{ $jenis_keg->name_jeniskeg }}" selected>
+                                            {{ $jenis_keg->name_jeniskeg }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
+                            {{-- <div class="col-md-6">
+                                <label for="fungsi_bangunan" class="form-label">Fungsi Bangunan:</label>
+                                <select name="fungsi_bangunan" id="fungsi_bangunan" class="form-select select-fungsi-bangunan " required>
+                                    @foreach (DB::table('app_md_fungsibang')->get() as $fungsi_bang)
+                                        <option value="{{ $fungsi_bang->id_fungsibang }}">
+                                            {{ $fungsi_bang->name_fungsibang }}</option>
+                                    @endforeach
+                                </select>
+                            </div> --}}
                             <div class="col-md-6">
                                 <label for="fungsi_bangunan" class="form-label">Fungsi Bangunan:</label>
-                                <select name="fungsi_bangunan" id="fungsi_bangunan" class="form-select select2" required>
+                                <select class="form-control form-select select-fungsi-bangunan " name="fungsi_bangunan" id="fungsi_bangunan" required>
                                     @foreach (DB::table('app_md_fungsibang')->get() as $fungsi_bang)
                                         <option value="{{ $fungsi_bang->id_fungsibang }}">
                                             {{ $fungsi_bang->name_fungsibang }}</option>
@@ -80,22 +99,29 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6">
                                 <label for="kecamatan" class="form-label">Kecamatan:</label>
                                 <select name="kecamatan" id="kecamatan" class="form-select select2-kecamatan" required>
                                     <option value="">Pilih Kecamatan</option>
                                 </select>
                             </div>
-                            <div class="col-md-6">
+                            {{-- <div class="col-md-6">
                                 <label for="desa_kelurahan" class="form-label">Desa / Kelurahan:</label>
                                 <select name="desa_kelurahan" id="desa_kelurahan"
                                     class="form-select select2 select2-kelurahan" required>
                                     <option value="">Pilih Desa/Kelurahan</option>
                                 </select>
+                            </div> --}}
+                            <div class="col-md-6">
+                                <label for="desa_kelurahan" class="form-label">Desa / Kelurahan:</label>
+                                <select class="form-control form-select select2-kelurahan" name="desa_kelurahan" id="desa_kelurahan" required>
+                                    <option value="">Pilih Desa/Kelurahan</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="row mb-3">
+
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6">
                                 <label for="type" class="form-label">Type:</label>
                                 <input type="text" name="type" class="form-control" id="type">
@@ -106,7 +132,7 @@
                                     id="luas">
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6">
                                 <label for="blok" class="form-label">Blok:</label>
                                 <input type="text" name="blok" class="form-control" id="blok">
@@ -116,13 +142,13 @@
                                 <input type="text" name="no_blok" class="form-control" id="no_blok">
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-12">
                                 <label for="keterangan" class="form-label">Keterangan:</label>
                                 <textarea name="keterangan" class="form-control" id="keterangan"></textarea>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6">
                                 <label for="lokasi_perumahan" class="form-label">Lokasi / Perumahan:</label>
                                 <input type="text" name="lokasi_perumahan" class="form-control"
@@ -134,7 +160,7 @@
                                     accept=".pdf, .jpg, .jpeg, .png">
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-success mt-3">Submit</button>
+                        <button type="submit" class="btn btn-success mt-3" style="margin-top: 10px; margin-bottom:20px">Submit</button>
                     </form>
                 </div>
             </div>
@@ -226,7 +252,10 @@
                 width: '100%', // Adjust the width as needed
                 placeholder: 'Pilih opsi',
             });
-
+            $('.select-fungsi-bangunan').select2({
+                width: '100%', // Adjust the width as needed
+                placeholder: 'Pilih opsi',
+            });
             $('.select2-imb-induk').select2({
                 width: '100%',
                 placeholder: 'Pilih IMB Induk',

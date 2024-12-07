@@ -2,6 +2,7 @@
 
 @section('styles')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{url('assets-adminlte/dist/css/select2.css')}}">
 @endsection
 
 @section('content')
@@ -23,7 +24,7 @@
                                 <input type="date" class="form-control" id="tgl_imb_induk" name="tgl_imb_induk" required>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6">
                                 <label for="no_register" class="form-label">No Register</label>
                                 <input type="text" class="form-control" id="no_register" name="no_register" required>
@@ -33,7 +34,7 @@
                                 <input type="date" class="form-control" id="tgl_register" name="tgl_register" required>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6">
                                 <label for="nama" class="form-label">Nama</label>
                                 <input type="text" class="form-control" id="nama" name="nama" required>
@@ -43,7 +44,7 @@
                                 <input type="text" class="form-control" id="atas_nama" name="atas_nama" required>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6">
                                 <label for="lokasi_perumahan" class="form-label">Lokasi Perumahan</label>
                                 <input type="text" class="form-control" id="lokasi_perumahan" name="lokasi_perumahan"
@@ -51,12 +52,12 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="kecamatan" class="form-label">Kecamatan</label>
-                                <select class="form-control select2-kecamatan" id="kecamatan" name="kecamatan" required>
+                                <select class="form-control form-select select2-kecamatan" id="kecamatan" name="kecamatan" required>
                                     <option></option> <!-- Placeholder option -->
                                 </select>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6">
                                 <label for="kelurahan" class="form-label">Desa/Kelurahan</label>
                                 <select class="form-control select2-kelurahan" id="kelurahan" name="kelurahan" required>
@@ -64,18 +65,18 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-end">
+                        <div class="d-flex justify-content-end" style="margin-top: 10px">
                             <div class="mb-3">
                                 <label for="entryCount" class="form-label">Jumlah Entry Item:</label>
                                 <input type="number" class="form-control" id="entryCount" min="1" name="entryCount"
                                     placeholder="Masukkan jumlah entry">
-                                <button type="button" class="btn btn-primary mt-2 w-100" onclick="generateForms()">Generate
+                                <button type="button" class="btn btn-primary mt-2 w-100" style="margin-top: 10px" onclick="generateForms()">Generate
                                     Item
                                     Forms</button>
                             </div>
                         </div>
                         <div id="formContainer"></div>
-                        <button type="submit" class="btn btn-success mt-3">Submit</button>
+                        <button type="submit" class="btn btn-success mt-3" style="margin-top: 10px">Submit</button>
                     </form>
                 </div>
             </div>
@@ -87,11 +88,7 @@
 
 
 
-
-
 @section('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- jQuery and Select2 JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
 

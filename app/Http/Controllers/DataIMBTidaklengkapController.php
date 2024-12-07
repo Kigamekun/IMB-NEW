@@ -24,12 +24,12 @@ class DataIMBTidaklengkapController extends Controller
                 ->addColumn('action', function ($row) {
                     return '
                         <div class="d-flex" style="gap:10px;">
-                            <a href="" class="edit btn btn-warning btn-sm">Edit</a>
-                            <button type="button" class="btn btn-primary btn-sm pair-btn" data-bs-toggle="modal"
-                                data-bs-target="#pairImbModal" data-pecahan-id="' . $row->imb_induk_id . '">Pair</button>
+
+                            <button type="button" class="btn btn-primary btn-sm pair-btn" data-toggle="modal"
+                                data-target="#pairImbModal" data-pecahan-id="' . $row->imb_induk_id . '">Pair</button>
                             <form action="" method="POST" style="display:inline;">
                                 ' . csrf_field() . method_field('DELETE') . '
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="confirmDelete(event)">Hapus</button>
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="confirmDelete(event)"><i class="fa fa-trash"></i></button>
                             </form>
                         </div>';
                 })
@@ -63,12 +63,11 @@ class DataIMBTidaklengkapController extends Controller
                 ->addColumn('action', function ($row) {
                     return '
                         <div class="d-flex" style="gap:10px;">
-                            <a href="" class="edit btn btn-warning btn-sm">Edit</a>
-                            <button type="button" class="btn btn-primary btn-sm pair-btn" data-bs-toggle="modal"
-                                data-bs-target="#pairImbModal" data-perluasan-id="' . $row->imb_pecahan . '">Pair</button>
+                            <button type="button" class="btn btn-primary btn-sm pair-btn" data-toggle="modal"
+                                data-target="#pairImbModal" data-perluasan-id="' . $row->imb_pecahan . '">Pair</button>
                             <form action="" method="POST" style="display:inline;">
                                 ' . csrf_field() . method_field('DELETE') . '
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="confirmDelete(event)">Hapus</button>
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="confirmDelete(event)"><i class="fa fa-trash"></i></button>
                             </form>
                         </div>';
                 })

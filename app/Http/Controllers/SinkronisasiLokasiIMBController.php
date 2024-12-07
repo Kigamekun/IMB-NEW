@@ -72,11 +72,11 @@ class SinkronisasiLokasiIMBController extends Controller
             return Datatables::of($data)
                 ->addColumn('action', function ($row) {
                     return '
-                    <div class="d-flex" style="gap:10px;">
-                        <a href="' . route('IMBPecahan.edit', $row->id) . '" class="edit btn btn-warning btn-sm">Edit</a>
+                    <div class="d-flex" style="gap:10px;display:flex;">
+                        <a href="' . route('IMBPecahan.edit', $row->id) . '" class="edit btn btn-warning btn-sm"><i class="fa fa-pencil"></i></a>
                         <form action="' . route('IMBPecahan.destroy', $row->id) . '" method="POST" style="display:inline;">
                             ' . csrf_field() . method_field('DELETE') . '
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="confirmDelete(event)">Hapus</button>
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="confirmDelete(event)"><i class="fa fa-trash"></i></button>
                         </form>
                     </div>';
                 })

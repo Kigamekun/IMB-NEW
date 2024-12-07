@@ -194,12 +194,12 @@
     </style>
 </head>
 
-<body>
-    <div style="float: right">
+<body style="width: 750px">
+    <div style="float: right; margin-right:100px">
         <p>Cibinong,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2024
         </p>
     </div>
-    <table class="info-table">
+    <table class="info-table" style=" width:250px; font-weight:bold">
         <tr>
             <td>Nomor</td>
             <td>:</td>
@@ -226,24 +226,38 @@
         <p>Yth,</p>
         <p><b>{{ $pemohon['sapaanPemohon'] }} {{ $pemohon['nama'] }}</b></p>
         <p>di</p>
-        <p>{{$pemohon['kabupatenPemohon'] }}</p>
+
+        @php
+            // Cek apakah 'Kabupaten' ada di kabupatenPemohon
+            $kabupaten = $pemohon['kabupatenPemohon'];
+
+            // Hanya hapus 'Kabupaten' jika kabupatenPemohon tidak ada di pemohon_alamat
+            if (!str_contains($pemohon['alamat'], 'Kabupaten') && str_contains($kabupaten, 'Kabupaten')) {
+                $kabupaten = trim(str_replace('Kabupaten', '', $kabupaten));
+            }
+        @endphp
+
+        <p>{{ $kabupaten }}</p>
     </div>
     <br>
 
-    <div class="content" style="margin-left: 70px">
-        <h3>A. DASAR</h3>
-        <p style="margin-top:-5px">Peraturan Bupati Nomor 63 tahun 2013 Tentang Izin Mendirikan Bangunan Gedung BAB VII
-            Penggantian IMBG Hilang
-            Atau Rusak, Legalisasi dan Pemutakhiran.</p>
-        <h3>B. MEMPERHATIKAN</h3>
-        <ol style="margin-top:-15px">
-            <li>
+    <div class="content" style="margin-left: -30px">
+        {{-- <h3>A. DASAR</h3> --}}
+        <ul>
+            <li><p style="margin-top:-15px; text-indent: 25px">Peraturan Bupati Nomor 63 tahun 2013 Tentang Izin Mendirikan Bangunan Gedung BAB VII
+                Penggantian IMBG Hilang
+                atau Rusak, Legalisasi dan Pemutakhiran.</p></li>
+        </ul>
+
+        {{-- <h3>B. MEMPERHATIKAN</h3> --}}
+        <ol style="margin-top:-10px; list-style-type:none">
+            <li >
                 <div>
                     Permohonan Surat Keterangan Penerbitan Izin Mendirikan Bangunan (IMB) tanggal {{ $tanggalSurat }},
                     dari:
-                    <table class="info-tables">
+                    <table class="info-tables" style="width: 100%; margin-left:-7px">
                         <tr>
-                            <td style="width: 200px">Nama</td>
+                            <td style="width: 250px;">Nama &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                             <td style="width: 5px">:</td>
                             <td class="bold-text"><b>{{ $pemohon['nama'] }}</b></td>
                         </tr>
@@ -255,10 +269,11 @@
                         <tr>
                             <td>Alamat</td>
                             <td>:</td>
-                            <td style="line-height:18px;">
+                            <td style="line-height:18px;" id="pemohon_alamat">
                                 {{ $pemohon['alamat'] }}, Desa/Kelurahan
                                 {{ $pemohon['kelurahanPemohon'] }}, Kecamatan
-                                {{ $pemohon['kecamatanPemohon'] }}, {{ $pemohon['kabupatenPemohon'] }}
+                                {{ $pemohon['kecamatanPemohon'] }},
+                                {{ $pemohon['kabupatenPemohon'] }}
                             </td>
                             </td>
                         </tr>
@@ -274,19 +289,19 @@
 
 
             <div>
-                <table class="info-tables">
+                <table class="info-tables" style="width: 100%; margin-left:-7px">
                     <tr>
-                        <td style="width: 200px">Izin Mendirikan Bangunan atas nama</td>
+                        <td style="width: 200px">Izin Mendirikan Bangunan Atas Nama</td>
                         <td style="width: 5px">:</td>
                         <td class="bold-text">
                             <b>{{ $referensi['izin_mendirikan_bangunan_atas_nama'] }}</b>
                         </td>
                     </tr>
-                    <tr>
+                    {{-- <tr>
                         <td>Peruntukan</td>
                         <td>:</td>
                         <td>{{ $referensi['tujuan'] }}</td>
-                    </tr>
+                    </tr> --}}
                     <tr>
                         <td>Lokasi</td>
                         <td>:</td>
@@ -351,24 +366,25 @@
                 </table>
             </div>
         </ol>
-        <ol start="3">
+        {{-- <ol start="3" style="list-style-type:none">
             <li>{{ $keterangan[0] }}</li>
-        </ol>
-        <p>
+        </ol> --}}
+        <p style="margin-left: 45px; text-indent: 25px">{{ $keterangan[0] }}</p>
+        <p style="margin-left: 45px; text-indent: 25px">
             {{ $keterangan[1] }}
         </p>
-        <p>
+        <p style="margin-left: 45px; text-indent: 25px">
             {{ $keterangan[2] }}
         </p>
         @if (count($keterangan) > 3)
             @foreach ($keterangan as $index => $ket)
                 @if ($index > 2)
-                    <p>{{ $ket }}</p>
+                    <p style="margin-left: 30px; text-indent: 25px">{{ $ket }}</p>
                 @endif
             @endforeach
         @endif
 
-        <p>Demikian disampaikan untuk diketahui dan dipergunakan sebagaimana mestinya.</p>
+        <p style="margin-left: 45px; text-indent:25px">Demikian disampaikan untuk diketahui dan dipergunakan sebagaimana mestinya.</p>
     </div>
     <div style="float: right">
         <div class="signature-section" style="width: 250px;text-align:left">

@@ -3,8 +3,9 @@
 
 @section('content')
     <style>
-        th {
-            white-space: nowrap;
+       th {
+            white-space: wrap;
+            text-align: center;
         }
     </style>
 
@@ -20,9 +21,24 @@
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5 rounded">
                 <div class="p-6 text-gray-900">
-                    <h3 class="text-3xl font-bold">Data IMB</h3>
-
-
+                    <h3 class="text-3xl font-bold">REKAP UNIT DAN FUNGSI DETAIL</h3>
+                    <br />
+                    <div class="mb-4">
+                        <form id="filterForm" class="form-inline">
+                            <div style="display:flex;gap:10px;">
+                                <div>
+                                    <input type="number" id="startYear" class="form-control" placeholder="Tahun Awal" />
+                                </div>
+                                <div>
+                                    <input type="number" id="endYear" class="form-control" placeholder="Tahun Akhir" />
+                                </div>
+                                <div>
+                                    <button type="button" id="filterButton" class="btn btn-primary">Filter</button>
+                                    <button type="button" id="resetButton" class="btn btn-secondary">Reset</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                     <br />
 
                     <div class="table-responsive py-3">
@@ -34,8 +50,8 @@
                                     <th rowspan="3">TAHUN</th>
                                     <th rowspan="3">JUMLAH IMB</th>
                                     <th rowspan="3">JUMLAH UNIT</th>
-                                    <th colspan="9" rowspan="2">JENIS IMB</th>
-                                    <th colspan="10">FUNGSI BANGUNAN</th>
+                                    <th colspan="9" rowspan="2"  style="text-align: center">JENIS IMB</th>
+                                    <th colspan="10" style="text-align: center">FUNGSI BANGUNAN</th>
                                 </tr>
                                 <tr>
                                     <th colspan="2">HUNIAN</th>
@@ -54,15 +70,15 @@
                                     <th>PEMUTIHAN</th>
                                     <th>BERSYARAT</th>
                                     <th>LAINNYA</th>
-                                    <th>IMB</th>
+                                    <th>ITEM IMB</th>
                                     <th>UNIT</th>
-                                    <th>IMB</th>
+                                    <th>ITEM IMB</th>
                                     <th>UNIT</th>
-                                    <th>IMB</th>
+                                    <th>ITEM IMB</th>
                                     <th>UNIT</th>
-                                    <th>IMB</th>
+                                    <th>ITEM IMB</th>
                                     <th>UNIT</th>
-                                    <th>IMB</th>
+                                    <th>ITEM IMB</th>
                                     <th>UNIT</th>
                                 </tr>
                             </thead>
@@ -137,9 +153,81 @@
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
 
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.js"></script>
+
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/dataTables.buttons.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
+
     <script>
         $(document).ready(function() {
-            $('#IMBTable').DataTable();
+           const table = $('#IMBTable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [{
+                        extend: 'copy',
+                        filename: 'Copy_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-')
+                    },
+                    {
+                        extend: 'csv',
+                        filename: 'CSVExport_' + new Date().toISOString().slice(0, 19).replace(/:/g,
+                            '-'),
+                        title: null
+                    },
+                    {
+                        extend: 'excel',
+                        filename: 'ExcelExport_' + new Date().toISOString().slice(0, 19).replace(/:/g,
+                            '-'),
+                        title: null,
+                    },
+                    {
+                        extend: 'pdf',
+                        filename: 'PDFExport_' + new Date().toISOString().slice(0, 19).replace(/:/g,
+                            '-'),
+                        title: null,
+                    },
+                    {
+                        extend: 'print',
+                        title: '',
+                    }
+                ]
+            });
+
+
+
+            // Filter button functionality
+            $('#filterButton').on('click', function() {
+                const startYear = parseInt($('#startYear').val(), 10);
+                const endYear = parseInt($('#endYear').val(), 10);
+
+                // Filter logic
+                table.draw(); // Trigger DataTable redraw with filter
+            });
+
+            // Reset button functionality
+            $('#resetButton').on('click', function() {
+                $('#startYear').val('');
+                $('#endYear').val('');
+                table.draw();
+            });
+
+            // DataTable custom search function for year filtering
+            $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                const tahun = parseInt(data[1]) || 0; // Assume column 1 is 'TAHUN'
+                const startYear = parseInt($('#startYear').val(), 10);
+                const endYear = parseInt($('#endYear').val(), 10);
+
+                if (
+                    (!startYear || tahun >= startYear) &&
+                    (!endYear || tahun <= endYear)
+                ) {
+                    return true;
+                }
+                return false;
+            });
         });
     </script>
 @endsection

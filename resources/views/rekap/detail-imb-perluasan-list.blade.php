@@ -11,7 +11,39 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5 rounded">
                 <div class="p-6 text-gray-900">
                     <h3 class="text-3xl font-bold">Data Rekap</h3>
-
+                    <br />
+                    <div class="mb-4">
+                        <form id="filterForm" class="form-inline">
+                            <div style="display:flex;flex-wrap:wrap;gap:10px;">
+                                <div>
+                                    <input type="number" id="startYear" class="form-control" placeholder="Tahun Awal" />
+                                </div>
+                                <div>
+                                    <input type="number" id="endYear" class="form-control" placeholder="Tahun Akhir" />
+                                </div>
+                                <div>
+                                    <select name="" value="" class="form-control" id="kecamatan">
+                                        <option value="" hidden>Pilih kecamatan</option>
+                                        {{-- @foreach ($data as $index => $row)
+                                        <option value="{{ DB::table('master_district')->where('code',$row->kecamatan)->first()->name }}">{{ DB::table('master_district')->where('code',$row->kecamatan)->first()->name }}</option>
+                                      @endforeach --}}
+                                    </select>
+                                </div>
+                                <div>
+                                    <select name="" value="" class="form-control" id="kelurahan">
+                                        <option value="" hidden>Pilih kelurahan</option>
+                                        {{-- @foreach ($data as $index => $row)
+                                        <option value="{{ DB::table('master_subdistrict')->where('code',$row->desa_kelurahan)->first()->name }}">{{ DB::table('master_subdistrict')->where('code',$row->desa_kelurahan)->first()->name }}</option>
+                                      @endforeach --}}
+                                    </select>
+                                </div>
+                                <div>
+                                    <button type="button" id="filterButton" class="btn btn-primary">Filter</button>
+                                    <button type="button" id="resetButton" class="btn btn-secondary">Reset</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                     <br />
                     <div class="table-responsive py-3">
                         <table class="table table-bordered" style="width: 100% !important;border-bottom:none !important;"

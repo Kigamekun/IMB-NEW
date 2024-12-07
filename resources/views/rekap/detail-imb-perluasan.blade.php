@@ -30,14 +30,14 @@
                                     <div class="form-group">
                                         <label for="imbPecahan">IMB Pecahan</label>
                                         <input type="text" id="imbPecahan" name="imbPecahan"
-                                            class="form-control" placeholder="Masukkan IMB Induk...">
+                                            class="form-control" placeholder="Masukkan IMB Pecahan...">
                                     </div>
                                 </div>
                                 <div class="col-md-6 ">
                                     <div class="form-group">
                                         <label for="namaPerumahan">Nama Perumahan</label>
                                         <input type="text" id="namaPerumahan" name="namaPerumahan"
-                                            class="form-control" placeholder="Masukkan IMB Induk...">
+                                            class="form-control" placeholder="Masukkan IMB Pecahan...">
                                     </div>
                                 </div>
 
@@ -60,17 +60,18 @@
                                 </div>
 
                             </div>
+                            <br>
+                            <br>
+                            <!-- Buttons -->
+                            <div class="row text-center">
+                                <div class="col-md-12">
+                                    <button type="submit" name="submit_type" value="induk" class="btn btn-primary btn-block">
+                                        Detail IMB Pecahan
+                                    </button>
+                                </div>
+                            </div>
                     </div>
-                    <br>
-                    <br>
-                    <!-- Buttons -->
-                    <div class="row text-center">
-                        <div class="col-md-12">
-                            <button type="submit" name="submit_type" value="induk" class="btn btn-primary btn-block">
-                                Detail IMB Induk
-                            </button>
-                        </div>
-                    </div>
+
                     <br>
                     <br>
                     </form>

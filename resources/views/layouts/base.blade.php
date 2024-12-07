@@ -54,6 +54,9 @@
         .dt-search {
             margin-bottom: 10px;
         }
+        .menu-text {
+          text-wrap: wrap;
+        }
     </style>
     <div class="wrapper">
 
@@ -1386,35 +1389,258 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
                         <ul class="treeview-menu" style="display: none;">
                           <!-- Rekap IMB -->
                           <li class="treeview" data-level="1">
-                            <a class="nav-link" onclick="redirectToCategory('rekap-imb')">
+                            <a class="nav-link">
                               <i class="fa fa-square-o"></i>
                               <span class="title menu-text">Rekap IMB</span>
-                            </a>
+                              <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                              </span>
+                              </a>
+                            <ul class="treeview-menu " style="display: none;">
+                                <!-- IMB Rekap penerbitan  -->
+                                <li class="nav-item">
+                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapPenerbitan') }}">
+                                        <i class="fa fa-square-o"></i>
+                                        <span class="title menu-text">Penerbitan</span>
+                                        <span></span>
+                                    </a>
+                                </li>
+                                <!-- IMB Rekap penerbitan detail -->
+                                <li class="nav-item">
+                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapPenerbitanDetail') }}">
+                                        <i class="fa fa-square-o"></i>
+                                        <span class="title menu-text">Penerbitan Detail</span>
+                                        <span></span>
+                                    </a>
+                                </li>
+                                <!-- IMB Rekap Unit dan Fungsi -->
+                                <li class="nav-item">
+                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapUnitDanFungsi') }}">
+                                        <i class="fa fa-square-o"></i>
+                                        <span class="title menu-text">Unit dan Fungsi</span>
+                                        <span></span>
+                                    </a>
+                                </li>
+                                <!-- IMB Rekap Unit dan Fungsi detail -->
+                                <li class="nav-item">
+                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapUnitDanFungsiDetail') }}">
+                                        <i class="fa fa-square-o"></i>
+                                        <span class="title menu-text">Unit dan Fungsi Detail</span>
+                                        <span></span>
+                                    </a>
+                                </li>
+                                <!-- IMB Rekap Lokasi -->
+                                <li class="nav-item">
+                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapLokasi') }}">
+                                        <i class="fa fa-square-o"></i>
+                                        <span class="title menu-text">Lokasi</span>
+                                        <span></span>
+                                    </a>
+                                </li>
+                                <!-- IMB Rekap lokasi detail -->
+                                <li class="nav-item">
+                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapLokasiDetail') }}">
+                                        <i class="fa fa-square-o"></i>
+                                        <span class="title menu-text">Lokasi Detail</span>
+                                        <span></span>
+                                    </a>
+                                </li>
+                                <!-- IMB Rekap Unit Fungsi dan Lokasi -->
+                                <li class="nav-item">
+                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapUnitFungsiDanLokasi') }}">
+                                        <i class="fa fa-square-o"></i>
+                                        <span class="title menu-text">Unit Fungsi dan Lokasi</span>
+                                        <span></span>
+                                    </a>
+                                </li>
+                                <!-- IMB Rekap Unit Fungsi dan Lokasi detail -->
+                                <li class="nav-item">
+                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapUnitFungsiDanLokasiDetail') }}">
+                                        <i class="fa fa-square-o"></i>
+                                        <span class="title menu-text">Unit Fungsi dan Lokasi Detail</span>
+                                        <span></span>
+                                    </a>
+                                </li>
+                              </ul>
                           </li>
-
                           <!-- Rekap IMB Pertahun -->
                           <li class="treeview" data-level="1">
-                            <a class="nav-link" onclick="redirectToCategory('rekap-imb-pertahun')">
+                            <a class="nav-link">
                               <i class="fa fa-square-o"></i>
-                              <span class="title menu-text">Rekap IMB Pertahun</span>
+                              <span class="title menu-text">IMB Pertahun</span>
+                              <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                              </span>
                             </a>
+                            <ul class="treeview-menu " style="display: none;">
+                                <!-- IMB Rekap unit dan fungsi  -->
+                                <li class="nav-item">
+                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapUnitDanFungsi') }}">
+                                        <i class="fa fa-square-o"></i>
+                                        <span class="title menu-text">Unit dan Fungsi</span>
+                                        <span></span>
+                                    </a>
+                                </li>
+                                <!-- IMB Rekap Lokasi  -->
+                                <li class="nav-item">
+                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapLokasi') }}">
+                                        <i class="fa fa-square-o"></i>
+                                        <span class="title menu-text">Lokasi</span>
+                                        <span></span>
+                                    </a>
+                                </li>
+                                <!-- IMB Rekap unit fungsi dan Lokasi  -->
+                                <li class="nav-item">
+                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapUnitFungsiDanLokasi') }}">
+                                        <i class="fa fa-square-o"></i>
+                                        <span class="title menu-text">Unit Fungsi dan Lokasi</span>
+                                        <span></span>
+                                    </a>
+                                </li>
+                            </ul>
                           </li>
 
                           <!-- Register IMB Pertahun -->
                           <li class="treeview" data-level="1">
-                            <a class="nav-link" onclick="redirectToCategory('register-imb-pertahun')">
+                            <a class="nav-link">
                               <i class="fa fa-square-o"></i>
                               <span class="title menu-text">Register IMB Pertahun</span>
+                              <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                              </span>
                             </a>
+                            <ul class="treeview-menu " style="display: none;">
+                              <!-- IMB Rekap  -->
+                              <li class="nav-item">
+                                  <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.DetailIMBInduk') }}">
+                                      <i class="fa fa-square-o"></i>
+                                      <span class="title menu-text">IMB Induk</span>
+                                      <span></span>
+                                  </a>
+                              </li>
+                              <!-- IMB Rekap -->
+                              {{-- <li class="nav-item">
+                                  <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.DetailIMBIndukList') }}">
+                                      <i class="fa fa-square-o"></i>
+                                      <span class="title menu-text">IMB Induk List</span>
+                                      <span></span>
+                                  </a>
+                              </li> --}}
+                              <!-- IMB Rekap -->
+                              <li class="nav-item">
+                                  <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.DetailIMBPecahan') }}">
+                                      <i class="fa fa-square-o"></i>
+                                      <span class="title menu-text">IMB Pecahan</span>
+                                      <span></span>
+                                  </a>
+                              </li>
+                              <!-- IMB Rekap  -->
+                              {{-- <li class="nav-item">
+                                  <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.DetailIMBPecahanList') }}">
+                                      <i class="fa fa-square-o"></i>
+                                      <span class="title menu-text">IMB Pecahan List</span>
+                                      <span></span>
+                                  </a>
+                              </li> --}}
+                              <!-- IMB Rekap -->
+                              <li class="nav-item">
+                                  <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.DetailIMBPerluasan') }}">
+                                      <i class="fa fa-square-o"></i>
+                                      <span class="title menu-text">IMB Perluasan</span>
+                                      <span></span>
+                                  </a>
+                              </li>
+                              <!-- IMB Rekap -->
+                              <li class="nav-item">
+                                  <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.DetailIMBPerluasanList') }}">
+                                      <i class="fa fa-square-o"></i>
+                                      <span class="title menu-text">IMB Perluasan List</span>
+                                      <span></span>
+                                  </a>
+                              </li>
+                            </ul>
                           </li>
 
-                          <!-- Rekap SK IMBG Pertahun -->
-                          <li class="treeview" data-level="1">
-                            <a class="nav-link" onclick="redirectToCategory('rekap-sk-imbg-pertahun')">
-                              <i class="fa fa-square-o"></i>
-                              <span class="title menu-text">Rekap SK IMBG Pertahun</span>
-                            </a>
-                          </li>
+                            <!-- Rekap SK IMBG Pertahun -->
+                            {{-- <li class="treeview" data-level="1">
+                                <a class="nav-link">
+                                <i class="fa fa-square-o"></i>
+                                <span class="title menu-text">SK IMBG</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                                </a>
+                                <ul class="treeview-menu " style="display: none;">
+                                    <!-- IMB Rekap  -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapSKIMBGPerbulan') }}">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Perbulan</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                <!-- IMB Rekap   -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapSKIMBGPertahun') }}">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Pertahun</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li> --}}
+                            <!-- Rekap SK IMBG REGISTER Pertahun -->
+                            <li class="treeview" data-level="1">
+                                <a class="nav-link">
+                                <i class="fa fa-square-o"></i>
+                                <span class="title menu-text">SK IMBG</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                                </a>
+                                <ul class="treeview-menu " style="display: none;">
+                                    <!-- IMB Rekap  -->
+                                    {{-- <li class="nav-item">
+                                        <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapSKIMBGPerbulan') }}">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Perbulan</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                <!-- IMB Rekap   -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapSKIMBGPertahun') }}">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Pertahun</span>
+                                            <span></span>
+                                        </a>
+                                    </li> --}}
+                                    <!-- IMB Rekap  -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.ListSurat10') }}">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Register Perbulan</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                <!-- IMB Rekap   -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.ListSurat') }}">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Register Pertahun</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <!-- IMB Rekap   -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="padding-left:20px" href="{{route('rekap.RekapSuratPertahun')}}">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Rekap SK IMBG</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                         </ul>
                       </li>
 
@@ -1854,6 +2080,19 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <script>
+      function redirectToCategory(type) {
+        if (type === "rekap-imb") {
+            window.location.href = "/rekap/" + type + "/rekap-penerbitan"
+        } else if (type === "rekap-imb-pertahun") {
+            window.location.href = "/rekap/" + type + "/rekap-unit-dan-fungsi"
+        } else if (type === "register-imb-pertahun") {
+            window.location.href = "/rekap/" + type + "/detail-imb-induk"
+        } else if (type === "rekap-sk-imbg") {
+            window.location.href = "/rekap/" + type + "/perbulan"
+        }
+      }
+    </script>
 
     @if (!is_null(Session::get('message')))
         <script>

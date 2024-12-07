@@ -22,8 +22,6 @@
                         <h1 class="text-left">Rekap Register IMB Per Tahun</h1>
                         <h4 class="text-left">Detail IMB Induk</h4>
                         <br>
-
-
                         <form id="rekapForm" method="GET" action="{{ route('rekap.DetailIMBIndukList') }}">
                             <div class="row">
                                 <div class="col-md-6 ">
@@ -48,40 +46,34 @@
                                         <select id="tahun" name="tahun" class="form-control">
                                             <option value="">Pilih Tahun...</option>
                                             <?php
-                                                $currentYear = date('Y'); // Tahun sekarang
-                                                $startYear = $currentYear - 50; // 50 tahun ke belakang
+                                            $currentYear = date('Y'); // Tahun sekarang
+                                            $startYear = $currentYear - 50; // 50 tahun ke belakang
 
-                                                for ($year = $currentYear; $year >= $startYear; $year--) {
-                                                    echo "<option value='$year'>$year</option>";
-                                                }
+                                            for ($year = $currentYear; $year >= $startYear; $year--) {
+                                                echo "<option value='$year'>$year</option>";
+                                            }
                                             ?>
                                         </select>
                                     </div>
                                 </div>
 
                             </div>
-                    </div>
-                    <br>
-                    <br>
-                    <!-- Buttons -->
-                    <div class="row text-center">
-                        <div class="col-md-12">
-                            <button type="submit" name="submit_type" value="induk" class="btn btn-primary btn-block">
-                                Detail IMB Induk
-                            </button>
-                        </div>
+                            <br>
+                            <br>
+                            <!-- Buttons -->
+                            <div class="row text-center">
+                                <div class="col-md-12">
+                                    <button type="submit" name="submit_type" value="induk"
+                                        class="btn btn-primary btn-block">
+                                        Detail IMB Induk
+                                    </button>
+                                </div>
+                            </div>
                     </div>
                     <br>
                     <br>
                     </form>
-
-
-
-
-
                 </div>
-
-
             </div>
 
         </div>

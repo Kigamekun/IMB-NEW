@@ -76,53 +76,53 @@
                 },
 
                 {
-                    data: 'JUMLAH_IMB',
+                    data: 'jumlah_imb',
                     orderable: false,
                     searchable: false
                 },
                 {
-                    data: 'IMB_INDUK_PERUMAHAN',
+                    data: 'imb_induk_perumahan',
                     orderable: false,
                     searchable: false
                 },
                 {
-                    data: 'IMB_PECAHAN',
+                    data: 'imb_pecahan',
                     orderable: false,
                     searchable: false
                 },
 
                 {
-                    data: 'IMB_PERLUASAN',
+                    data: 'imb_perluasan',
                     orderable: false,
                     searchable: false
                 },
                 {
-                    data: 'IMB_NON_PERUMAHAN_PERUSAHAAN',
+                    data: 'imb_non_perusahaan',
                     orderable: false,
                     searchable: false
                 },
                 {
-                    data: 'IMB_NON_PERUMAHAN_PERORANGAN',
+                    data: 'imb_perorangan',
                     orderable: false,
                     searchable: false
                 },
                 {
-                    data: 'IMB_NON_PERUMAHAN_SOSIAL_BUDAYA',
+                    data: 'imb_sosbud',
                     orderable: false,
                     searchable: false
                 },
                 {
-                    data: 'IMB_BERSYARAT',
+                    data: 'imb_pemutihan',
                     orderable: false,
                     searchable: false
                 },
                 {
-                    data: 'IMB_BERSYARAT',
+                    data: 'imb_bersyarat',
                     orderable: false,
                     searchable: false
                 },
                 {
-                    data: 'IMB_LAINNYA',
+                    data: 'imb_lainnya',
                     orderable: false,
                     searchable: false
                 },

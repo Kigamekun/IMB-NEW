@@ -31,8 +31,7 @@
                     <br>
                     <br>
                     <div class="table-responsive py-3">
-                        <table class="table table-bordered" style="width: 100% !important;border-bottom:none !important;"
-                            id="IMBTable">
+                        <table class="table table-bordered" style="width: 100% !important;border-bottom:none !important;" id="IMBTable">
                             <thead>
                                 <tr>
                                     <th>NO</th>
@@ -45,13 +44,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @php
-                                    $totalJumlahIMB = 0;
-                                    $totalIndukPerumahan = 0;
-                                    $totalPecahan = 0;
-                                    $totalPerluasan = 0;
-                                    $totalIndukNonPerumahan = 0;
-                                @endphp
                                 @foreach ($data as $index => $row)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
@@ -62,25 +54,21 @@
                                         <td>{{ $row->imb_perluasan }}</td>
                                         <td>{{ $row->imb_induk_non_perumahan }}</td>
                                     </tr>
-                                    @php
-                                        $totalJumlahIMB += $row->jumlah_imb;
-                                        $totalIndukPerumahan += $row->imb_induk_perumahan;
-                                        $totalPecahan += $row->imb_pecahan;
-                                        $totalPerluasan += $row->imb_perluasan;
-                                        $totalIndukNonPerumahan += $row->imb_induk_non_perumahan;
-                                    @endphp
                                 @endforeach
+                            </tbody>
+                            <tfoot>
                                 <tr>
                                     <td><strong>Total</strong></td>
                                     <td>-</td>
-                                    <td><strong>{{ $totalJumlahIMB }}</strong></td>
-                                    <td><strong>{{ $totalIndukPerumahan }}</strong></td>
-                                    <td><strong>{{ $totalPecahan }}</strong></td>
-                                    <td><strong>{{ $totalPerluasan }}</strong></td>
-                                    <td><strong>{{ $totalIndukNonPerumahan }}</strong></td>
+                                    <td><strong id="totalJumlahIMB"></strong></td>
+                                    <td><strong id="totalIndukPerumahan"></strong></td>
+                                    <td><strong id="totalPecahan"></strong></td>
+                                    <td><strong id="totalPerluasan"></strong></td>
+                                    <td><strong id="totalIndukNonPerumahan"></strong></td>
                                 </tr>
-                            </tbody>
+                            </tfoot>
                         </table>
+
                     </div>
                 </div>
             </div>
@@ -104,69 +92,82 @@
     <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
     <script>
-        $(document).ready(function() {
-            // Initialize DataTable
-            const table = $('#IMBTable').DataTable({
-                dom: 'Bfrtip',
-                buttons: [{
-                        extend: 'copy',
-                        filename: 'Copy_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-')
-                    },
-                    {
-                        extend: 'csv',
-                        filename: 'CSVExport_' + new Date().toISOString().slice(0, 19).replace(/:/g,
-                            '-'),
-                        title: null
-                    },
-                    {
-                        extend: 'excel',
-                        filename: 'ExcelExport_' + new Date().toISOString().slice(0, 19).replace(/:/g,
-                            '-'),
-                        title: null,
-                    },
-                    {
-                        extend: 'pdf',
-                        filename: 'PDFExport_' + new Date().toISOString().slice(0, 19).replace(/:/g,
-                            '-'),
-                        title: null,
-                    },
-                    {
-                        extend: 'print',
-                        title: '',
-                    }
-                ]
+      $(document).ready(function() {
+    // Initialize DataTable
+    const table = $('#IMBTable').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'copy',
+                filename: 'Copy_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-')
+            },
+            {
+                extend: 'csv',
+                filename: 'CSVExport_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-')
+            },
+            {
+                extend: 'excel',
+                filename: 'ExcelExport_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-')
+            },
+            {
+                extend: 'pdf',
+                filename: 'PDFExport_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-')
+            },
+            {
+                extend: 'print'
+            }
+        ],
+        footerCallback: function(row, data, start, end, display) {
+            // Initialize totals
+            let totalJumlahIMB = 0;
+            let totalIndukPerumahan = 0;
+            let totalPecahan = 0;
+            let totalPerluasan = 0;
+            let totalIndukNonPerumahan = 0;
+
+            // Iterate through visible rows to calculate totals
+            display.forEach(function(idx) {
+                const rowData = data[idx];
+                totalJumlahIMB += parseFloat(rowData[2]) || 0; // 'JUMLAH IMB'
+                totalIndukPerumahan += parseFloat(rowData[3]) || 0; // 'IMB INDUK PERUMAHAN'
+                totalPecahan += parseFloat(rowData[4]) || 0; // 'IMB PECAHAN'
+                totalPerluasan += parseFloat(rowData[5]) || 0; // 'IMB PERLUASAN'
+                totalIndukNonPerumahan += parseFloat(rowData[6]) || 0; // 'IMB INDUK NON PERUMAHAN'
             });
 
-            // Filter button functionality
-            $('#filterButton').on('click', function() {
-                const startYear = parseInt($('#startYear').val(), 10);
-                const endYear = parseInt($('#endYear').val(), 10);
+            // Update footer with totals
+            $('#totalJumlahIMB').text(totalJumlahIMB.toFixed(2));
+            $('#totalIndukPerumahan').text(totalIndukPerumahan.toFixed(2));
+            $('#totalPecahan').text(totalPecahan.toFixed(2));
+            $('#totalPerluasan').text(totalPerluasan.toFixed(2));
+            $('#totalIndukNonPerumahan').text(totalIndukNonPerumahan.toFixed(2));
+        }
+    });
 
-                // Filter logic
-                table.draw(); // Trigger DataTable redraw with filter
-            });
+    // Filter button functionality
+    $('#filterButton').on('click', function() {
+        const startYear = parseInt($('#startYear').val(), 10);
+        const endYear = parseInt($('#endYear').val(), 10);
 
-            // Reset button functionality
-            $('#resetButton').on('click', function() {
-                $('#startYear').val('');
-                $('#endYear').val('');
-                table.draw();
-            });
+        table.draw(); // Trigger DataTable redraw with filter
+    });
 
-            // DataTable custom search function for year filtering
-            $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-                const tahun = parseInt(data[1]) || 0; // Assume column 1 is 'TAHUN'
-                const startYear = parseInt($('#startYear').val(), 10);
-                const endYear = parseInt($('#endYear').val(), 10);
+    // Reset button functionality
+    $('#resetButton').on('click', function() {
+        $('#startYear').val('');
+        $('#endYear').val('');
+        table.draw(); // Reset and redraw table
+    });
 
-                if (
-                    (!startYear || tahun >= startYear) &&
-                    (!endYear || tahun <= endYear)
-                ) {
-                    return true;
-                }
-                return false;
-            });
-        });
+    // Custom filter for year range
+    $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+        const year = parseInt(data[1]) || 0; // Assume column 1 is 'TAHUN'
+        const startYear = parseInt($('#startYear').val(), 10);
+        const endYear = parseInt($('#endYear').val(), 10);
+
+        return (!startYear || year >= startYear) && (!endYear || year <= endYear);
+    });
+});
+
     </script>
 @endsection

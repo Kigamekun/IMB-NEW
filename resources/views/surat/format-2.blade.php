@@ -194,7 +194,7 @@
     </style>
 </head>
 
-<body style="width: 750px">
+<body style="width: 700px">
     <div style="float: right; margin-right:125px">
         <p>Cibinong,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2024
         </p>
@@ -245,8 +245,9 @@
         <ol style="margin-top:-15px">
             <li>Peraturan Bupati Nomor 63 tahun 2013 Tentang Izin Mendirikan Bangunan Gedung BAB VII
                 Penggantian IMBG Hilang
-                Atau Rusak, Legalisasi dan Pemutakhiran.</li>
-            </ol>
+                Atau Rusak, Legalisasi dan Pemutakhiran.
+            </li>
+        </ol>
         <h3>B. MEMPERHATIKAN</h3>
         <ol style="margin-top:-15px">
             <li>

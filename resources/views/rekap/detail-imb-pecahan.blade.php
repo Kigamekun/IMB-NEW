@@ -29,8 +29,8 @@
                                 <div class="col-md-6 ">
                                     <div class="form-group">
                                         <label for="imbInduk">IMB Induk</label>
-                                        <input type="text" id="imbInduk" name="imbInduk"
-                                            class="form-control" placeholder="Masukkan IMB Induk...">
+                                        <input type="text" id="imbInduk" name="imbInduk" class="form-control"
+                                            placeholder="Masukkan IMB Induk...">
                                     </div>
                                 </div>
 
@@ -41,40 +41,34 @@
                                         <select id="tahun" name="tahun" class="form-control">
                                             <option value="">Pilih Tahun...</option>
                                             <?php
-                                                $currentYear = date('Y'); // Tahun sekarang
-                                                $startYear = $currentYear - 50; // 50 tahun ke belakang
+                                            $currentYear = date('Y'); // Tahun sekarang
+                                            $startYear = $currentYear - 50; // 50 tahun ke belakang
 
-                                                for ($year = $currentYear; $year >= $startYear; $year--) {
-                                                    echo "<option value='$year'>$year</option>";
-                                                }
+                                            for ($year = $currentYear; $year >= $startYear; $year--) {
+                                                echo "<option value='$year'>$year</option>";
+                                            }
                                             ?>
                                         </select>
                                     </div>
                                 </div>
 
                             </div>
-                    </div>
-                    <br>
-                    <br>
-                    <!-- Buttons -->
-                    <div class="row text-center">
-                        <div class="col-md-12">
-                            <button type="submit" name="submit_type" value="induk" class="btn btn-primary btn-block">
-                                Detail IMB Pecahan
-                            </button>
-                        </div>
+                            <br>
+                            <br>
+                            <!-- Buttons -->
+                            <div class="row text-center">
+                                <div class="col-md-12">
+                                    <button type="submit" name="submit_type" value="induk"
+                                        class="btn btn-primary btn-block">
+                                        Detail IMB Pecahan
+                                    </button>
+                                </div>
+                            </div>
                     </div>
                     <br>
                     <br>
                     </form>
-
-
-
-
-
                 </div>
-
-
             </div>
 
         </div>

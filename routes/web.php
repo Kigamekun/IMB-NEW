@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\{IMBController, RekapController, JenisNonPerumController, TujuanSuratController, DataIMBTidaklengkapController, MasterController, SinkronisasiLokasiIMBController, SuratController, IMBIndukNonPerumController, IMBIndukPerumController, IMBTidakLengkapController, IMBPerluasanController, IMBPecahanController, IMBBersyaratController, IMBPelunasanController, IMBPemutihanController};
+use App\Http\Controllers\{IMBController, RekapController, JenisNonPerumController, TujuanSuratController, DataIMBTidaklengkapController, MasterController, SinkronisasiLokasiIMBController, SuratController, IMBIndukNonPerumController, IMBIndukPerumController, IMBTidakLengkapController, IMBPerluasanController, IMBPecahanController, IMBBersyaratController, IMBPelunasanController, IMBPemutihanController, ListSuratController};
 
 Route::get('/', function () {
     return view('dashboard');
@@ -374,10 +374,15 @@ Route::middleware(['auth'])->group(function () {
         });
 
         Route::prefix('rekap-sk-imbg')->group(function () {
-            Route::match(['GET', 'POST'], '/perbulan', [RekapController::class, 'RekapSKIMBGPerbulan'])->name('rekap.RekapSKIMBGPerbulan');
+            // 10 DAN 10.1
 
-            Route::match(['GET', 'POST'], '/pertahun', [RekapController::class, 'RekapSKIMBGPertahun'])->name('rekap.RekapSKIMBGPertahun');
+            Route::prefix('register')->group(function () {
+                Route::match(['GET', 'POST'], '/perbulan', [ListSuratController::class, 'ListSurat10'])->name('rekap.ListSurat10');
+                Route::match(['GET', 'POST'], '/pertahun', [ListSuratController::class, 'ListSurat'])->name('rekap.ListSurat');
 
+            });
+            Route::match(['GET', 'POST'], '/pertahun', [RekapController::class, 'RekapSuratPertahun'])->name('rekap.RekapSuratPertahun');
+            Route::match(['GET', 'POST'], '/perbulan/{tahun}', [RekapController::class, 'RekapSuratPerbulan'])->name('rekap.RekapSuratPerbulan');
         });
     });
 

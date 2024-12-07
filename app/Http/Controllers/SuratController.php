@@ -189,6 +189,57 @@ class SuratController extends Controller
         $data = $request->all();
         $namaFile = 'surat-' . $data['nomorSurat'] . uniqid() . '.pdf';
 
+        // dd($data);
+        if (in_array($data['jenisSurat'], ['format-1', 'format-2', 'format-3'])) {
+            $validate['jenisKegiatan'] = 'nullable';
+        } elseif ($data['jenisSurat'] == 'format-4') {
+            $validate['tujuanSurat'] = 'nullable';
+        }
+        if ($data['jenisSurat'] == 'format-2') {
+            $validate['details'] = 'required';
+            $validate['details2'] = 'nullable';
+        } elseif ($data['jenisSurat'] == 'format-3') {
+            $validate['details'] = 'required';
+            $validate['details2'] = 'required';
+        } elseif (in_array($data['jenisSurat'], ['format-1', 'format-4'])) {
+            $validate['details'] = 'nullable';
+            $validate['details2'] = 'nullable';
+        }
+        $validate = $request->validate([
+            'jenisSurat' => 'required',
+            'tahun' => 'required',
+            'nomorSurat' => 'nullable',
+            'tanggalSurat' => 'required',
+            'lampiran' => 'required',
+            'sifat' => 'required',
+            'perihal' => 'required',
+            'permohonanTanggal' => 'required',
+            'nama' => 'required',
+            'bertindak_atas_nama' => 'required',
+            'alamat' => 'required',
+            'izin_mendirikan_bangunan_atas_nama' => 'required',
+            'lokasi' => 'required',
+
+            'registerNomor' => 'required',
+            'registerTanggal' => 'required',
+            'imbgNomor' => 'required',
+            'imbgTanggal' => 'required',
+            'sapaanPemohon' => 'required',
+            'provinsiPemohon' => 'required',
+            'kabupatenPemohon' => 'required',
+            'kecamatanPemohon' => 'required',
+            'kelurahanPemohon' => 'required',
+            'jabatan' => 'required',
+            'font_surat' => 'required',
+            'kabupaten' => 'required',
+            'kecamatan' => 'required',
+            'kelurahan' => 'required',
+            'kepalaDinas' => 'required',
+            'pangkat' => 'required',
+            'ket' => 'required',
+
+        ]);
+
         \DB::table('surat')->insert([
             'jenisSurat' => $request->input('jenisSurat'),
             'tahun' => $request->input('tahun'),
@@ -1047,13 +1098,13 @@ class SuratController extends Controller
 
         // Pastikan ID adalah integer
         $id = (int) $id;
-
         // Validasi data
-        $request->validate([
-            'jenisSurat' => 'required|string',
-            'nomorSurat' => 'required|integer',
-            // Validasi lainnya...
-        ]);
+        // $request->validate([
+        //     'jenisSurat' => 'required|string',
+        //     'nomorSurat' => 'required|integer',
+        //     // Validasi lainnya...
+        // ]);
+
 
         // Cek apakah ID valid
         $surat = \DB::table('surat')->where('id', $id)->first();
@@ -1068,6 +1119,7 @@ class SuratController extends Controller
         // Validasi input data
         $validated = $request->validate([
             'jenisSurat' => 'required|string|max:255',
+
             'tahun' => 'required|integer',
             'nomorSurat' => 'required|string|max:255',
             'tanggalSurat' => 'required|date',
@@ -2206,82 +2258,82 @@ class SuratController extends Controller
     //         ->make(true);
     // }
     public function cariSurat(Request $request)
-{
-    // Query dengan join untuk mendapatkan nama kecamatan dan kelurahan
-    $query = \DB::table('surat')
-        ->leftJoin('master_district', 'surat.kecamatan', '=', 'master_district.code') // Join ke master_district
-        ->leftJoin('master_subdistrict', 'surat.kelurahan', '=', 'master_subdistrict.code') // Join ke master_subdistrict
-        ->select(
-            'surat.*',
-            'master_district.name as nama_kecamatan',
-            'master_subdistrict.name as nama_kelurahan'
-        );
+    {
+        // Query dengan join untuk mendapatkan nama kecamatan dan kelurahan
+        $query = \DB::table('surat')
+            ->leftJoin('master_district', 'surat.kecamatan', '=', 'master_district.code') // Join ke master_district
+            ->leftJoin('master_subdistrict', 'surat.kelurahan', '=', 'master_subdistrict.code') // Join ke master_subdistrict
+            ->select(
+                'surat.*',
+                'master_district.name as nama_kecamatan',
+                'master_subdistrict.name as nama_kelurahan'
+            );
 
-    // Filter berdasarkan input dari request
-    if ($request->has('nomor_surat')) {
-        $query->where('surat.nomorSurat', 'like', '%' . $request->input('nomor_surat') . '%');
+        // Filter berdasarkan input dari request
+        if ($request->has('nomor_surat')) {
+            $query->where('surat.nomorSurat', 'like', '%' . $request->input('nomor_surat') . '%');
+        }
+
+        if ($request->has('nama_pemohon')) {
+            $query->where('surat.nama', 'like', '%' . $request->input('nama_pemohon') . '%');
+        }
+
+        if ($request->has('lokasi_bangunan')) {
+            $query->where('surat.lokasi', 'like', '%' . $request->input('lokasi_bangunan') . '%');
+        }
+
+        if ($request->has('kecamatan_pemohon')) {
+            $query->where('master_district.name', 'like', '%' . $request->input('kecamatan_pemohon') . '%');
+        }
+
+        if ($request->has('kelurahan_pemohon')) {
+            $query->where('master_subdistrict.name', 'like', '%' . $request->input('kelurahan_pemohon') . '%');
+        }
+
+        // Ambil data
+        $data = $query->get();
+
+        // Generate Datatable response
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function ($row) {
+                $showLihatTable = !in_array($row->jenisSurat, ['format-1', 'format-4']); // Menyembunyikan jika format-1 atau format-4
+
+                $actions = '
+                    <div class="d-flex " style="gap:8px;">
+                        <div class="d-flex align-items-center" style="gap:5px; width: 50%;">
+                            <a href="' . route('surat.lihat', $row->id) . '" onclick="window.open(this.href, \'_blank\', \'width=800,height=600\'); return false;" class="btn btn-primary btn-sm" title="Lihat">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </div>';
+
+                // Tombol Lihat Table hanya akan muncul jika jenisSurat bukan format-1 dan format-4
+                if ($showLihatTable) {
+                    $actions .= '
+                        <div class="d-flex align-items-center" style="gap:5px; width: 50%;">
+                            <a href="' . route('surat.lihatTable', $row->id) . '" onclick="window.open(this.href, \'_blank\', \'width=800,height=600\'); return false;" class="btn btn-primary btn-sm" title="Lihat Table">
+                                <i class="fas fa-table"></i>
+                            </a>
+                        </div>';
+                }
+
+                $actions .= '</div>';
+                return $actions;
+            })
+            ->addColumn('sudah_upload', function ($row) {
+                return $row->upload ?
+                    '<span class="badge badge-success">Sudah</span>' :
+                    '<span class="badge badge-danger">Belum</span>';
+            })
+            ->editColumn('nama_kecamatan', function ($row) {
+                return ucwords(strtolower($row->nama_kecamatan));
+            })
+            ->editColumn('nama_kelurahan', function ($row) {
+                return ucwords(strtolower($row->nama_kelurahan));
+            })
+            ->rawColumns(['action', 'sudah_upload'])
+            ->make(true);
     }
-
-    if ($request->has('nama_pemohon')) {
-        $query->where('surat.nama', 'like', '%' . $request->input('nama_pemohon') . '%');
-    }
-
-    if ($request->has('lokasi_bangunan')) {
-        $query->where('surat.lokasi', 'like', '%' . $request->input('lokasi_bangunan') . '%');
-    }
-
-    if ($request->has('kecamatan_pemohon')) {
-        $query->where('master_district.name', 'like', '%' . $request->input('kecamatan_pemohon') . '%');
-    }
-
-    if ($request->has('kelurahan_pemohon')) {
-        $query->where('master_subdistrict.name', 'like', '%' . $request->input('kelurahan_pemohon') . '%');
-    }
-
-    // Ambil data
-    $data = $query->get();
-
-    // Generate Datatable response
-    return Datatables::of($data)
-        ->addIndexColumn()
-        ->addColumn('action', function ($row) {
-            $showLihatTable = !in_array($row->jenisSurat, ['format-1', 'format-4']); // Menyembunyikan jika format-1 atau format-4
-
-            $actions = '
-                <div class="d-flex " style="gap:8px;">
-                    <div class="d-flex align-items-center" style="gap:5px; width: 50%;">
-                        <a href="' . route('surat.lihat', $row->id) . '" onclick="window.open(this.href, \'_blank\', \'width=800,height=600\'); return false;" class="btn btn-primary btn-sm" title="Lihat">
-                             <i class="fas fa-eye"></i>
-                        </a>
-                    </div>';
-
-            // Tombol Lihat Table hanya akan muncul jika jenisSurat bukan format-1 dan format-4
-            if ($showLihatTable) {
-                $actions .= '
-                    <div class="d-flex align-items-center" style="gap:5px; width: 50%;">
-                        <a href="' . route('surat.lihatTable', $row->id) . '" onclick="window.open(this.href, \'_blank\', \'width=800,height=600\'); return false;" class="btn btn-primary btn-sm" title="Lihat Table">
-                             <i class="fas fa-table"></i>
-                        </a>
-                    </div>';
-            }
-
-            $actions .= '</div>';
-            return $actions;
-        })
-        ->addColumn('sudah_upload', function ($row) {
-            return $row->upload ?
-                '<span class="badge badge-success">Sudah</span>' :
-                '<span class="badge badge-danger">Belum</span>';
-        })
-        ->editColumn('nama_kecamatan', function ($row) {
-            return ucwords(strtolower($row->nama_kecamatan));
-        })
-        ->editColumn('nama_kelurahan', function ($row) {
-            return ucwords(strtolower($row->nama_kelurahan));
-        })
-        ->rawColumns(['action', 'sudah_upload'])
-        ->make(true);
-}
 
 
 }

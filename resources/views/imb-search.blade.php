@@ -434,7 +434,8 @@
                     { data: 'no_imb' },
                     { data: 'tgl_imb' },
                     { data: 'lokasi' },
-                    
+                    // { data: 'blok' },
+                    // { data: 'noBlok' },
                     // { data: 'pecahan_blok', name: 'imb_pecahan.blok' }, // Updated to match the new field
                     // { data: 'pecahan_no_blok', name: 'imb_pecahan.no_blok' }, // Updated to match the new field
                     // { data: 'perluasan_blok', name: 'imb_perluasan.blok' }, // Updated to match the new field

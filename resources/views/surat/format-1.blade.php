@@ -38,7 +38,13 @@
         }
 
 
-
+        ul.custom-list {
+        list-style-type: none;
+        }
+        ul.custom-list li::before {
+            content: "-";
+            margin-left: 10px
+        }
 
         .content {}
 
@@ -194,7 +200,7 @@
     </style>
 </head>
 
-<body style="width: 750px">
+<body style="width: 700px">
     <div style="float: right; margin-right:100px">
         <p>Cibinong,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2024
         </p>
@@ -241,27 +247,27 @@
     </div>
     <br>
 
-    <div class="content" style="margin-left: -30px">
-        {{-- <h3>A. DASAR</h3> --}}
-        <ul>
-            <li><p style="margin-top:-15px; text-indent: 25px">Peraturan Bupati Nomor 63 tahun 2013 Tentang Izin Mendirikan Bangunan Gedung BAB VII
+    <div class="content" style="margin-left: 65px">
+        <h3>A. DASAR</h3>
+        <ul class="custom-list" style="margin-top:-15px; ">
+            <li ><p style="margin-top:-15px;">Peraturan Bupati Nomor 63 tahun 2013 Tentang Izin Mendirikan Bangunan Gedung BAB VII
                 Penggantian IMBG Hilang
                 atau Rusak, Legalisasi dan Pemutakhiran.</p></li>
         </ul>
 
-        {{-- <h3>B. MEMPERHATIKAN</h3> --}}
-        <ol style="margin-top:-10px; list-style-type:none">
+        <h3>B. MEMPERHATIKAN</h3>
+        <ol style="margin-top:-10px;">
             <li >
                 <div>
                     Permohonan Surat Keterangan Penerbitan Izin Mendirikan Bangunan (IMB) tanggal {{ $tanggalSurat }},
                     dari:
-                    <table class="info-tables" style="width: 100%; margin-left:-7px">
+                    <table class="info-tables" style="width: 100%; margin-left:-7px; gap:-10px">
                         <tr>
                             <td style="width: 250px;">Nama &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                             <td style="width: 5px">:</td>
                             <td class="bold-text"><b>{{ $pemohon['nama'] }}</b></td>
                         </tr>
-                        <tr>
+                        <tr >
                             <td>Bertindak Atas Nama</td>
                             <td>:</td>
                             <td>{{ $pemohon['bertindak_atas_nama'] }}</td>
@@ -269,7 +275,7 @@
                         <tr>
                             <td>Alamat</td>
                             <td>:</td>
-                            <td style="line-height:18px;" id="pemohon_alamat">
+                            <td style="line-height:16px !important; " id="pemohon_alamat">
                                 {{ $pemohon['alamat'] }}, Desa/Kelurahan
                                 {{ $pemohon['kelurahanPemohon'] }}, Kecamatan
                                 {{ $pemohon['kecamatanPemohon'] }},
@@ -305,7 +311,7 @@
                     <tr>
                         <td>Lokasi</td>
                         <td>:</td>
-                        <td style="line-height:18px;">
+                        <td style="line-height:16px !important;">
                             {{ $referensi['lokasi'] != null || $referensi['lokasi'] != '' ? $referensi['lokasi'] . ',' : '' }}
 
                             Desa/Kelurahan {{ $referensi['kelurahan'] }}

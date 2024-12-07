@@ -4,7 +4,8 @@
 @section('content')
     <style>
         th {
-            white-space: nowrap;
+            white-space: wrap;
+            text-align: center;
         }
     </style>
 
@@ -20,9 +21,24 @@
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5 rounded">
                 <div class="p-6 text-gray-900">
-                    <h3 class="text-3xl font-bold">Data IMB</h3>
-
-
+                    <h3 class="text-3xl font-bold">REKAP UNIT DAN FUNGSI</h3>
+                    <br />
+                    <div class="mb-4">
+                        <form id="filterForm" class="form-inline">
+                            <div style="display:flex;gap:10px;">
+                                <div>
+                                    <input type="number" id="startYear" class="form-control" placeholder="Tahun Awal" />
+                                </div>
+                                <div>
+                                    <input type="number" id="endYear" class="form-control" placeholder="Tahun Akhir" />
+                                </div>
+                                <div>
+                                    <button type="button" id="filterButton" class="btn btn-primary">Filter</button>
+                                    <button type="button" id="resetButton" class="btn btn-secondary">Reset</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                     <br />
 
                     <div class="table-responsive py-3">
@@ -36,8 +52,8 @@
                                     <th rowspan="3">TAHUN</th>
                                     <th rowspan="3">JUMLAH IMB</th>
                                     <th rowspan="3">JUMLAH UNIT</th>
-                                    <th colspan="4" rowspan="2">JENIS IMB</th>
-                                    <th colspan="10">FUNGSI BANGUNAN</th>
+                                    <th colspan="4" rowspan="2" style="text-align: center;">JENIS IMB</th>
+                                    <th colspan="10" style="text-align: center">FUNGSI BANGUNAN</th>
                                 </tr>
                                 <tr>
                                     <th colspan="2">HUNIAN</th>
@@ -51,39 +67,67 @@
                                     <th>PECAHAN</th>
                                     <th>PERLUASAN</th>
                                     <th>INDUK NON PERUMAHAN</th>
-                                    <th>IMB</th>
+                                    <th>ITEM IMB</th>
                                     <th>UNIT</th>
-                                    <th>IMB</th>
+                                    <th>ITEM IMB</th>
                                     <th>UNIT</th>
-                                    <th>IMB</th>
+                                    <th>ITEM IMB</th>
                                     <th>UNIT</th>
-                                    <th>IMB</th>
+                                    <th>ITEM IMB</th>
                                     <th>UNIT</th>
-                                    <th>IMB</th>
+                                    <th>ITEM IMB</th>
                                     <th>UNIT</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($data as $index => $row)
-            <tr>
-                <td>{{ $index + 1 }}</td>
-                <td>{{ $row->tahun }}</td>
-                <td>{{ $row->imb_induk_perumahan + $row->imb_pecahan + $row->imb_perluasan + $row->imb_non_perumahan }}</td>
-                <td>{{ $row->unit_induk_perumahan + $row->unit_pecahan + $row->unit_perluasan + $row->unit_non_perumahan }}</td>
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $row->tahun }}</td>
+                                        <td>{{ $row->imb_induk_perumahan + $row->imb_pecahan + $row->imb_perluasan + $row->imb_non_perumahan }}
+                                        </td>
+                                        <td>
+                                            {{ $row->hunian_unit + $row->usaha_unit + $row->sosbud_unit + $row->khusus_unit + $row->campuran_unit }}
+                                        </td>
 
-                <td>{{ $row->imb_induk_perumahan }}</td>
-                <td>{{ $row->imb_pecahan }}</td>
-                <td>{{ $row->imb_perluasan }} </td>
-                <td>{{ $row->imb_non_perumahan }}</td>
-                <td>{{ $row->hunian_imb }} </td><td> {{ $row->hunian_unit }}</td>
-                <td>{{ $row->usaha_imb }} </td><td> {{ $row->usaha_unit }}</td>
-                <td>{{ $row->sosbud_imb }} </td><td> {{ $row->sosbud_unit }}</td>
-                <td>{{ $row->khusus_imb }} </td><td> {{ $row->khusus_unit }}</td>
-                <td>{{ $row->campuran_imb }} </td><td> {{ $row->campuran_unit }}</td>
-            </tr>
-        @endforeach
+                                        <td>{{ $row->imb_induk_perumahan }}</td>
+                                        <td>{{ $row->imb_pecahan }}</td>
+                                        <td>{{ $row->imb_perluasan }} </td>
+                                        <td>{{ $row->imb_non_perumahan }}</td>
+                                        <td>{{ $row->hunian_imb }} </td>
+                                        <td> {{ $row->hunian_unit }}</td>
+                                        <td>{{ $row->usaha_imb }} </td>
+                                        <td> {{ $row->usaha_unit }}</td>
+                                        <td>{{ $row->sosbud_imb }} </td>
+                                        <td> {{ $row->sosbud_unit }}</td>
+                                        <td>{{ $row->khusus_imb }} </td>
+                                        <td> {{ $row->khusus_unit }}</td>
+                                        <td>{{ $row->campuran_imb }} </td>
+                                        <td> {{ $row->campuran_unit }}</td>
+                                    </tr>
+                                @endforeach
                             </tbody>
-
+                            <tfoot>
+                                <tr>
+                                    <th colspan="2">Total</th>
+                                    <th id="totalJumlahIMB">0</th>
+                                    <th id="totalJumlahUnit">0</th>
+                                    <th id="totalIndukPerumahan">0</th>
+                                    <th id="totalPecahan">0</th>
+                                    <th id="totalPerluasan">0</th>
+                                    <th id="totalIndukNonPerumahan">0</th>
+                                    <th id="totalHunianIMB">0</th>
+                                    <th id="totalHunianUnit">0</th>
+                                    <th id="totalUsahaIMB">0</th>
+                                    <th id="totalUsahaUnit">0</th>
+                                    <th id="totalSosBudIMB">0</th>
+                                    <th id="totalSosBudUnit">0</th>
+                                    <th id="totalKhususIMB">0</th>
+                                    <th id="totalKhususUnit">0</th>
+                                    <th id="totalCampuranIMB">0</th>
+                                    <th id="totalCampuranUnit">0</th>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -112,7 +156,66 @@
 
     <script>
         $(document).ready(function() {
-            $('#IMBTable').DataTable({
+           const table = $('#IMBTable').DataTable({
+                 footerCallback: function(row, data, start, end, display) {
+                    // Inisialisasi total untuk setiap kolom
+                    let totals = {
+                        jumlahIMB: 0,
+                        jumlahUnit: 0,
+                        indukPerumahan: 0,
+                        pecahan: 0,
+                        perluasan: 0,
+                        indukNonPerumahan: 0,
+                        hunianIMB: 0,
+                        hunianUnit: 0,
+                        usahaIMB: 0,
+                        usahaUnit: 0,
+                        sosBudIMB: 0,
+                        sosBudUnit: 0,
+                        khususIMB: 0,
+                        khususUnit: 0,
+                        campuranIMB: 0,
+                        campuranUnit: 0
+                    };
+
+                    // Iterasi melalui data untuk menghitung total
+                    data.forEach(function(rowData) {
+                        totals.jumlahIMB += parseInt(rowData[2]) || 0;
+                        totals.jumlahUnit += parseInt(rowData[3]) || 0;
+                        totals.indukPerumahan += parseInt(rowData[4]) || 0;
+                        totals.pecahan += parseInt(rowData[5]) || 0;
+                        totals.perluasan += parseInt(rowData[6]) || 0;
+                        totals.indukNonPerumahan += parseInt(rowData[7]) || 0;
+                        totals.hunianIMB += parseInt(rowData[8]) || 0;
+                        totals.hunianUnit += parseInt(rowData[9]) || 0;
+                        totals.usahaIMB += parseInt(rowData[10]) || 0;
+                        totals.usahaUnit += parseInt(rowData[11]) || 0;
+                        totals.sosBudIMB += parseInt(rowData[12]) || 0;
+                        totals.sosBudUnit += parseInt(rowData[13]) || 0;
+                        totals.khususIMB += parseInt(rowData[14]) || 0;
+                        totals.khususUnit += parseInt(rowData[15]) || 0;
+                        totals.campuranIMB += parseInt(rowData[16]) || 0;
+                        totals.campuranUnit += parseInt(rowData[17]) || 0;
+                    });
+
+                    // Perbarui elemen footer
+                    $('#totalJumlahIMB').text(totals.jumlahIMB.toFixed(2));
+                    $('#totalJumlahUnit').text(totals.jumlahUnit.toFixed(2));
+                    $('#totalIndukPerumahan').text(totals.indukPerumahan.toFixed(2));
+                    $('#totalPecahan').text(totals.pecahan.toFixed(2));
+                    $('#totalPerluasan').text(totals.perluasan.toFixed(2));
+                    $('#totalIndukNonPerumahan').text(totals.indukNonPerumahan.toFixed(2));
+                    $('#totalHunianIMB').text(totals.hunianIMB.toFixed(2));
+                    $('#totalHunianUnit').text(totals.hunianUnit.toFixed(2));
+                    $('#totalUsahaIMB').text(totals.usahaIMB.toFixed(2));
+                    $('#totalUsahaUnit').text(totals.usahaUnit.toFixed(2));
+                    $('#totalSosBudIMB').text(totals.sosBudIMB.toFixed(2));
+                    $('#totalSosBudUnit').text(totals.sosBudUnit.toFixed(2));
+                    $('#totalKhususIMB').text(totals.khususIMB.toFixed(2));
+                    $('#totalKhususUnit').text(totals.khususUnit.toFixed(2));
+                    $('#totalCampuranIMB').text(totals.campuranIMB.toFixed(2));
+                    $('#totalCampuranUnit').text(totals.campuranUnit.toFixed(2));
+                },
                 dom: 'Bfrtip',
                 buttons: [{
                         extend: 'copy',
@@ -174,5 +277,6 @@
                 return false;
             });
         });
+
     </script>
 @endsection

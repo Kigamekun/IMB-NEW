@@ -275,7 +275,7 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="kepalaDinas" class="form-label">Penandatangan:</label>
-                                <select id="kepalaDinas" name="kepalaDinas" class="form-select form-control select2">
+                                <select id="kepalaDinas" name="kepalaDinas" class="form-select form-control select2" required>
                                     <option value="">--- PILIH ---</option>
                                     @foreach (DB::table('app_md_user')->whereNotIn('nip_user', ['-', '', '.'])->get() as $user)
                                         <option
@@ -287,7 +287,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="jabatan" class="form-label">Jabatan:</label>
-                                <select id="jabatan" name="jabatan" class="form-select form-control select2">
+                                <select id="jabatan" name="jabatan" class="form-select form-control select2" required>
                                     <option value="">--- PILIH ---</option>
                                     @foreach (DB::table('app_md_jabatan')->get() as $jabatan)
                                         <option value="{{ $jabatan->name_jabatan }}">{{ $jabatan->name_jabatan }}</option>
@@ -297,7 +297,7 @@
                         </div>
                         <div class="mb-3" style="margin-top: 10px">
                             <label for="pangkat" class="form-label">Pangkat/Golongan:</label>
-                            <select id="pangkat" name="pangkat" class="form-select form-control select2">
+                            <select id="pangkat" name="pangkat" class="form-select form-control select2" required>
                                 <option value="">--- PILIH ---</option>
                                 @foreach (DB::table('app_md_golongan')->get() as $golongan)
                                     <option value="{{ $golongan->name_golongan }}">{{ $golongan->name_golongan }}</option>

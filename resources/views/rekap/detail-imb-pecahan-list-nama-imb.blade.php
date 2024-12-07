@@ -36,7 +36,6 @@
                                     <th>No Blok</th>
                                     <th>Keterangan</th>
                                     <th>Scan IMB</th>
-                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -147,10 +146,6 @@
                 {
                     data: 'scan_imb',
                     title: 'Scan IMB'
-                },
-                {
-                    data: 'action',
-                    title: 'Action'
                 }
             ],
             order: [

@@ -26,7 +26,9 @@ class IMBPecahanController extends Controller
             $data = IMBPecahan::join('app_md_jeniskeg', 'imb_pecahan.jenis_kegiatan', '=', 'app_md_jeniskeg.id_jeniskeg')
                 ->join('master_district', 'imb_pecahan.kecamatan', '=', 'master_district.code')
                 ->join('master_subdistrict', 'imb_pecahan.desa_kelurahan', '=', 'master_subdistrict.code')
-                ->select('imb_pecahan.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan', 'master_district.name as kecamatan', 'master_district.code as kecamatan_code', 'master_subdistrict.name as kelurahan', 'master_subdistrict.code as kelurahan_code')->get();
+                ->select('imb_pecahan.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan', 'master_district.name as kecamatan', 'master_district.code as kecamatan_code', 'master_subdistrict.name as kelurahan', 'master_subdistrict.code as kelurahan_code')
+                ->orderBy('imb_pecahan.created_at', 'desc')
+                ->get();
             return Datatables::of($data)
                 ->addColumn('action', function ($row) {
                     return '
@@ -38,7 +40,14 @@ class IMBPecahanController extends Controller
                         </form>
                     </div>';
                 })
-                ->rawColumns(['action'])
+                ->editColumn('scan_imb', function ($row) {
+                    if ($row->scan_imb) {
+                        return '<a href="' . asset('storage/' . $row->scan_imb) . '" download>'.$row->scan_imb .'</a>';
+                    } else {
+                        return '-';
+                    }
+                })
+                ->rawColumns(['action','scan_imb'])
                 ->addIndexColumn()
                 ->make(true);
         }
@@ -194,7 +203,7 @@ class IMBPecahanController extends Controller
         ]);
         $scanImbPath = null;
         if ($request->hasFile('scan_imb')) {
-            $scanImbPath = $request->file('scan_imb')->store('scans');
+            $scanImbPath = $request->file('scan_imb')->store('scans', 'public');
         }
         $imbInduk = explode(' | ', $validatedData['no_imb_induk']);
         $jenisKegiatanRecord = DB::table('app_md_jeniskeg')
@@ -270,7 +279,7 @@ class IMBPecahanController extends Controller
 
         $scanImbPath = null;
         if ($request->hasFile('scan_imb')) {
-            $scanImbPath = $request->file('scan_imb')->store('scans');
+            $scanImbPath = $request->file('scan_imb')->store('scans', 'public');
         }
 
         $imbInduk = explode(' | ', $validatedData['no_imb_induk']);

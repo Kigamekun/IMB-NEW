@@ -192,8 +192,10 @@ class SuratController extends Controller
         // dd($data);
         if (in_array($data['jenisSurat'], ['format-1', 'format-2', 'format-3'])) {
             $validate['jenisKegiatan'] = 'nullable';
+            $validate['tujuanSurat'] = 'required';
         } elseif ($data['jenisSurat'] == 'format-4') {
             $validate['tujuanSurat'] = 'nullable';
+            $validate['jenisKegiatan'] = 'required';
         }
         if ($data['jenisSurat'] == 'format-2') {
             $validate['details'] = 'required';
@@ -1092,18 +1094,10 @@ class SuratController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Log untuk debugging
-        // \Log::info('Request Payload:', $request->all());
-        // \Log::info('ID Parameter:', $id);
 
         // Pastikan ID adalah integer
         $id = (int) $id;
-        // Validasi data
-        // $request->validate([
-        //     'jenisSurat' => 'required|string',
-        //     'nomorSurat' => 'required|integer',
-        //     // Validasi lainnya...
-        // ]);
+
 
 
         // Cek apakah ID valid
@@ -1116,16 +1110,32 @@ class SuratController extends Controller
             return response()->json(['status' => 'error', 'message' => 'Invalid ID.'], 400);
         }
 
+
+        if ($request->input('jenisSurat') == 'format-2') {
+            $validated['details'] = 'required';
+            $validated['details2'] = 'nullable';
+        } elseif ($request->input('jenisSurat') == 'format-3') {
+            $validated['details'] = 'required';
+            $validated['details2'] = 'required';
+        } elseif (in_array($request->input('jenisSurat'), ['format-1', 'format-4'])) {
+            $validated['details'] = 'nullable';
+            $validated['details2'] = 'nullable';
+        }
+
         // Validasi input data
         $validated = $request->validate([
             'jenisSurat' => 'required|string|max:255',
-
+            'bertindak_atas_nama' => 'required|string|max:255',
+            'izin_mendirikan_bangunan_atas_nama' => 'required',
+            'lokasi' => 'required|string|max:255',
             'tahun' => 'required|integer',
             'nomorSurat' => 'required|string|max:255',
             'tanggalSurat' => 'required|date',
             'lampiran' => 'nullable|string|max:255',
             'sifat' => 'required|string|max:255',
             'perihal' => 'required|string|max:255',
+            'tujuanSurat' => 'nullable|string|max:255',
+            'jenisKegiatan' => 'nullable|string|max:255',
             'permohonanTanggal' => 'required|date',
             'nama' => 'required|string|max:255',
             'alamat' => 'required|string|max:255',
@@ -1133,10 +1143,19 @@ class SuratController extends Controller
             'kecamatan' => 'required|string|max:255',
             'kelurahan' => 'required|string|max:255',
             'kepalaDinas' => 'required|string|max:255',
-            'keterangan' => 'nullable|array',
+            'ket' => 'nullable|array',
             'details' => 'nullable|array',
             'details2' => 'nullable|array',
-            // Tambahkan validasi lain jika diperlukan
+            'registerNomor' => 'required',
+            'registerTanggal' => 'required',
+            'provinsiPemohon' => 'required',
+            'kabupatenPemohon' => 'required',
+            'kecamatanPemohon' => 'required',
+            'kelurahanPemohon' => 'required',
+            'jabatan' => 'required',
+            'font_surat' => 'required',
+            'pangkat' => 'required',
+
         ]);
 
         try {
@@ -1152,16 +1171,30 @@ class SuratController extends Controller
                 'lampiran' => $validated['lampiran'] ?? '-',
                 'sifat' => $validated['sifat'],
                 'perihal' => $validated['perihal'],
+                'registerNomor' => $validated['registerNomor'],
+                'registerTanggal' => $validated['registerTanggal'],
                 'permohonanTanggal' => $validated['permohonanTanggal'],
                 'nama' => $validated['nama'],
+                'bertindak_atas_nama' => $validated['bertindak_atas_nama'],
                 'alamat' => $validated['alamat'],
+                'lokasi' => $validated['lokasi'],
                 'kabupaten' => $validated['kabupaten'],
                 'kecamatan' => $validated['kecamatan'],
+                'tujuanSurat' => $validated['tujuanSurat'],
+                'jenisKegiatan' => $validated['jenisKegiatan'],
+                'izin_mendirikan_bangunan_atas_nama' => $validated['izin_mendirikan_bangunan_atas_nama'],
                 'kelurahan' => $validated['kelurahan'],
+                'provinsiPemohon' => $validated['provinsiPemohon'],
+                'kabupatenPemohon' => $validated['kabupatenPemohon'],
+                'kecamatanPemohon' => $validated['kecamatanPemohon'],
+                'kelurahanPemohon' => $validated['kelurahanPemohon'],
                 'kepalaDinas' => $validated['kepalaDinas'],
-                'keterangan' => json_encode($validated['keterangan'] ?? []),
-                'details' => json_encode($validated['details'] ?? []),
-                'details2' => json_encode($validated['details2'] ?? []),
+                'pangkat' => $validated['pangkat'],
+                'jabatan' => $validated['jabatan'],
+                'font_surat' => $validated['font_surat'],
+                'keterangan' => json_encode($validated['ket'] ),
+                'details' => json_encode($validated['details']),
+                'details2' => json_encode($validated['details2']),
                 'file' => $namaFile,
             ]);
 
@@ -1620,7 +1653,8 @@ class SuratController extends Controller
             'file' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
-        $scanSuratPath = $request->file('file')->store('file-surat');
+        $scanSuratPath = $request->file('file')->store('file-surat', 'public');
+
 
         \DB::table('surat')
             ->where('id', $id)
@@ -2001,8 +2035,11 @@ class SuratController extends Controller
 
     public function download($id)
     {
-        $surat = \DB::table('surat')->where('id', $id)->first()->file;
-        return response()->download(storage_path('app/public/surat/' . $surat));
+        $surat = \DB::table('surat')->where('id', $id)->first()->upload;
+        if($surat == null) {
+            return redirect()->back()->with(['status' => 'error', 'message' => 'Surat belum diupload']);
+        }
+        return response()->download(storage_path('app/public/' . $surat));
     }
 
 

@@ -1475,7 +1475,7 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
                             <ul class="treeview-menu " style="display: none;">
                                 <!-- IMB Rekap unit dan fungsi  -->
                                 <li class="nav-item">
-                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapUnitDanFungsi') }}">
+                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapUnitDanFungsiPertahun') }}">
                                         <i class="fa fa-square-o"></i>
                                         <span class="title menu-text">Unit dan Fungsi</span>
                                         <span></span>
@@ -1483,7 +1483,7 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
                                 </li>
                                 <!-- IMB Rekap Lokasi  -->
                                 <li class="nav-item">
-                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapLokasi') }}">
+                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapLokasiPertahun') }}">
                                         <i class="fa fa-square-o"></i>
                                         <span class="title menu-text">Lokasi</span>
                                         <span></span>
@@ -1491,7 +1491,7 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
                                 </li>
                                 <!-- IMB Rekap unit fungsi dan Lokasi  -->
                                 <li class="nav-item">
-                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapUnitFungsiDanLokasi') }}">
+                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapUnitFungsiDanLokasiPertahun') }}">
                                         <i class="fa fa-square-o"></i>
                                         <span class="title menu-text">Unit Fungsi dan Lokasi</span>
                                         <span></span>
@@ -1550,14 +1550,14 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
                                       <span></span>
                                   </a>
                               </li>
-                              <!-- IMB Rekap -->
+                              {{-- <!-- IMB Rekap -->
                               <li class="nav-item">
                                   <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.DetailIMBPerluasanList') }}">
                                       <i class="fa fa-square-o"></i>
                                       <span class="title menu-text">IMB Perluasan List</span>
                                       <span></span>
                                   </a>
-                              </li>
+                              </li> --}}
                             </ul>
                           </li>
 
@@ -2079,20 +2079,6 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
     <!-- General JS Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <script>
-      function redirectToCategory(type) {
-        if (type === "rekap-imb") {
-            window.location.href = "/rekap/" + type + "/rekap-penerbitan"
-        } else if (type === "rekap-imb-pertahun") {
-            window.location.href = "/rekap/" + type + "/rekap-unit-dan-fungsi"
-        } else if (type === "register-imb-pertahun") {
-            window.location.href = "/rekap/" + type + "/detail-imb-induk"
-        } else if (type === "rekap-sk-imbg") {
-            window.location.href = "/rekap/" + type + "/perbulan"
-        }
-      }
-    </script>
 
     @if (!is_null(Session::get('message')))
         <script>

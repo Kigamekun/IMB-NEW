@@ -45,8 +45,7 @@
                         <div class="filters py-3 row mb-5" style="margin-bottom: 20px">
                             <div class="mb-3 col-md-3">
                                 {{-- <label for="filter-atas_nama" class="form-label">Atas Nama:</label> --}}
-                                <input type="text" class="form-control" id="filter-atas_nama"
-                                    placeholder="Atas Nama">
+                                <input type="text" class="form-control" id="filter-atas_nama" placeholder="Atas Nama">
                             </div>
                             <div class="mb-3 col-md-3">
                                 {{-- <label for="filter-lokasi" class="form-label">Lokasi Perumahan:</label> --}}
@@ -55,16 +54,14 @@
                             </div>
                             <div class="mb-3 col-md-3">
                                 {{-- <label for="filter-kecamatan" class="form-label">Kecamatan:</label> --}}
-                                <input type="text" class="form-control" id="filter-kecamatan"
-                                    placeholder="Kecamatan">
+                                <input type="text" class="form-control" id="filter-kecamatan" placeholder="Kecamatan">
                             </div>
                             <div class="mb-3 col-md-3">
                                 {{-- <label for="filter-kelurahan" class="form-label">Kelurahan:</label> --}}
-                                <input type="text" class="form-control" id="filter-kelurahan"
-                                    placeholder="Kelurahan">
+                                <input type="text" class="form-control" id="filter-kelurahan" placeholder="Kelurahan">
                             </div>
                         </div>
-                        <table id="IMBTable" class="table table-bordered" >
+                        <table id="IMBTable" class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th>No.</th>
@@ -100,8 +97,7 @@
             ajax: {
                 url: "{{ route('IMBIndukPerum.index') }}",
             },
-            columns: [
-                {
+            columns: [{
                     data: 'DT_RowIndex',
                     orderable: false,
                     searchable: false
@@ -191,7 +187,11 @@
                             <td>${item.luas_bangunan}</td>
                             <td>${item.jumlah_unit}</td>
                             <td>${item.keterangan}</td>
-                            <td>${item.scan_imb}</td>
+                            <td>
+                              ${item.scan_imb ?
+                                `<a href="/imb/storage/${item.scan_imb}" download="${item.scan_imb}">${item.scan_imb}</a>`
+                                : '-'}
+                            </td>
                         </tr>`;
                     });
                     var newRow = `

@@ -66,7 +66,7 @@ class ListSuratController extends Controller
     {
         if ($request->ajax()) {
             // Query with join to get district and subdistrict names
-            $query = \DB::table('surat')
+            $query = DB::table('surat')
                 ->leftJoin('master_regency', 'surat.kabupaten', '=', 'master_regency.code') // Join to master_regency
                 ->leftJoin('master_district', 'surat.kecamatan', '=', 'master_district.code') // Join to master_district
                 ->leftJoin('master_subdistrict', 'surat.kelurahan', '=', 'master_subdistrict.code') // Join to master_subdistrict
@@ -99,6 +99,7 @@ class ListSuratController extends Controller
             if ($request->has('kelurahan_pemohon')) {
                 $query->where('master_subdistrict.name', 'like', '%' . $request->input('kelurahan_pemohon') . '%');
             }
+          
 
             // Get data and return as JSON for DataTables
             $data = $query->get();

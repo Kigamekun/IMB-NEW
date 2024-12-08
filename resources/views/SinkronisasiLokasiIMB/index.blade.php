@@ -49,19 +49,19 @@
                                 @break
 
                                 @case('pecahan')
-                                    <a href="{{ route('SinkronisasiLokasiIMB.hubungkan') }}?type=pecahan" type="button">
+                                    <a href="{{ route('SinkronisasiLokasiIMB.hubungkan') }}?type=pecahan" class="btn btn-primary" type="button">
                                         Hubungkan Data
                                     </a>
                                 @break
 
                                 @case('perluasan')
-                                    <a href="{{ route('SinkronisasiLokasiIMB.hubungkan') }}?type=perluasan" type="button">
+                                    <a href="{{ route('SinkronisasiLokasiIMB.hubungkan') }}?type=perluasan" class="btn btn-primary" type="button">
                                         Hubungkan Data
                                     </a>
                                 @break
 
                                 @case('non_perum')
-                                    <a href="{{ route('SinkronisasiLokasiIMB.hubungkan') }}?type=non_perum" type="button">
+                                    <a href="{{ route('SinkronisasiLokasiIMB.hubungkan') }}?type=non_perum" class="btn btn-primary" type="button">
                                         Hubungkan Data
                                     </a>
                                 @break

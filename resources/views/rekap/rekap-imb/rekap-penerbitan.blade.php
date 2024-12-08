@@ -136,11 +136,11 @@
             });
 
             // Update footer with totals
-            $('#totalJumlahIMB').text(totalJumlahIMB.toFixed(2));
-            $('#totalIndukPerumahan').text(totalIndukPerumahan.toFixed(2));
-            $('#totalPecahan').text(totalPecahan.toFixed(2));
-            $('#totalPerluasan').text(totalPerluasan.toFixed(2));
-            $('#totalIndukNonPerumahan').text(totalIndukNonPerumahan.toFixed(2));
+            $('#totalJumlahIMB').text(totalJumlahIMB);
+            $('#totalIndukPerumahan').text(totalIndukPerumahan);
+            $('#totalPecahan').text(totalPecahan);
+            $('#totalPerluasan').text(totalPerluasan);
+            $('#totalIndukNonPerumahan').text(totalIndukNonPerumahan);
         }
     });
 

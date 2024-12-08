@@ -10,7 +10,39 @@
         <div style="width: 90%;margin:auto">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5 rounded">
                 <div class="p-6 text-gray-900">
-                    <h3 class="text-3xl font-bold">Data Rekap</h3>
+                    <h3 class="text-3xl font-bold">REGISTER SK IMBG PERBULAN</h3>
+                    <div class="mb-4">
+                        <form id="filterForm" class="form-inline">
+                            <div style="display:flex;flex-wrap:wrap;gap:10px;">
+                                <div>
+                                    <input type="number" id="startYear" class="form-control" placeholder="Tahun Awal" />
+                                </div>
+                                <div>
+                                    <input type="number" id="endYear" class="form-control" placeholder="Tahun Akhir" />
+                                </div>
+                                <div>
+                                    <select value="" class="form-control" id="kecamatan">
+                                        <option value="" hidden>Pilih kecamatan</option>
+                                        {{-- @foreach ($data as $index => $row)
+                                        <option value="{{ DB::table('master_district')->where('code',$row->kecamatan)->first()->name }}">{{ DB::table('master_district')->where('code',$row->kecamatan)->first()->name }}</option>
+                                      @endforeach --}}
+                                    </select>
+                                </div>
+                                <div>
+                                    <select name="" value="" class="form-control" id="kelurahan">
+                                        <option value="" hidden>Pilih kelurahan</option>
+                                        {{-- @foreach ($data as $index => $row)
+                                        <option value="{{ DB::table('master_subdistrict')->where('code',$row->desa_kelurahan)->first()->name }}">{{ DB::table('master_subdistrict')->where('code',$row->desa_kelurahan)->first()->name }}</option>
+                                      @endforeach --}}
+                                    </select>
+                                </div>
+                                <div>
+                                    <button type="button" id="filterButton" class="btn btn-primary">Filter</button>
+                                    <button type="button" id="resetButton" class="btn btn-secondary">Reset</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                     <br />
 
                     <div class="table-responsive py-3">
@@ -76,9 +108,21 @@
     <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
 
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <script>
         $(document).ready(function() {
-            $('#SuratTable').DataTable({
+            $('#kecamatan').select2()
+            $('#kelurahan').select2()
+            $.get("{{ route('rekap.ListSurat') }}", function(data) {
+             $.each(data.data, function(key, val) {
+               // alert(val.nama_kecamatan)
+               $("#kecamatan").append("<option value='" + val.nama_kecamatan + "'>" + val.nama_kecamatan + "</option>");
+               $("#kelurahan").append("<option value='" + val.nama_kelurahan + "'>" + val.nama_kelurahan + "</option>");
+              })
+            })
+            const table = $('#SuratTable').DataTable({
 
                 dom: 'Bfrtip',
                 buttons: [{
@@ -155,6 +199,31 @@
                 order: [
                     [2, 'desc']
                 ]
+            });
+
+
+            // Filter button functionality
+            $('#filterButton').on('click', function() {
+                table.draw(); // Trigger DataTable redraw with filter
+            });
+
+            // Reset button functionality
+            $('#resetButton').on('click', function() {
+                $('#kecamatan').val('');
+                $('#kelurahan').val('');
+                table.draw();
+            });
+
+            // DataTable custom search function for year filtering
+            $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+             const tableKec = data[10] || "";
+             const tableKel = data[11] || "";
+             const kec = $('#kecamatan').val() ? $('#kecamatan').val() : "";
+             const kel = $('#kelurahan').val() ? $('#kelurahan').val() : "";
+             if ((!kec || kec === tableKec) && (!kel || kel === tableKel)) {
+               return true;
+            }
+           return false;
             });
         });
     </script>

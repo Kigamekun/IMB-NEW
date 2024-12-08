@@ -206,7 +206,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title fs-5" id="uploadSuratModalLabel">Upload Surat </h5>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="upload-data" action="" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -230,7 +229,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title fs-5" id="updateNomorModalLabel">Update Nomor Surat</h5>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="update-nomor-form" action="" method="POST">
                     @csrf

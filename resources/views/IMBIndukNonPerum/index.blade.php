@@ -205,7 +205,11 @@
                             <td>${item.luas_bangunan}</td>
                             <td>${item.jumlah_unit}</td>
                             <td>${item.keterangan}</td>
-                            <td>${item.scan_imb}</td>
+                           <td>
+                              ${item.scan_imb ?
+                                `<a href="/imb/storage/${item.scan_imb}" download="${item.scan_imb}">${item.scan_imb}</a>`
+                                : '-'}
+                            </td>
                         </tr>`;
                     });
                     var newRow = `

@@ -36,16 +36,22 @@
                                     <select name="" value="" class="form-control" id="kecamatan">
                                         <option value="" hidden>Pilih kecamatan</option>
                                         @foreach ($data as $index => $row)
-                                        <option value="{{ DB::table('master_district')->where('code',$row->kecamatan)->first()->name }}">{{ DB::table('master_district')->where('code',$row->kecamatan)->first()->name }}</option>
-                                      @endforeach
+                                            <option
+                                                value="{{ DB::table('master_district')->where('code', $row->kecamatan)->first()->name }}">
+                                                {{ DB::table('master_district')->where('code', $row->kecamatan)->first()->name }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div>
                                     <select name="" value="" class="form-control" id="kelurahan">
                                         <option value="" hidden>Pilih kelurahan</option>
                                         @foreach ($data as $index => $row)
-                                        <option value="{{ DB::table('master_subdistrict')->where('code',$row->desa_kelurahan)->first()->name }}">{{ DB::table('master_subdistrict')->where('code',$row->desa_kelurahan)->first()->name }}</option>
-                                      @endforeach
+                                            <option
+                                                value="{{ DB::table('master_subdistrict')->where('code', $row->desa_kelurahan)->first()->name }}">
+                                                {{ DB::table('master_subdistrict')->where('code', $row->desa_kelurahan)->first()->name }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div>
@@ -85,12 +91,12 @@
                                     <th>INDUK PERUMAHAN</th>
                                     <th>PECAHAN</th>
                                     <th>PERLUASAN</th>
-                                    <th >INDUK NON PERUMAHAN (PERUSAHAAN)</th>
-                                    <th >INDUK NON PERUMAHAN (PERORANGAN)</th>
-                                    <th >INDUK NON PERUMAHAN (SOSIAL DAN BUDAYA)</th>
-                                    <th >PEMUTIHAN</th>
-                                    <th >BERSYARAT</th>
-                                    <th >LAINNYA</th>
+                                    <th>INDUK NON PERUMAHAN (PERUSAHAAN)</th>
+                                    <th>INDUK NON PERUMAHAN (PERORANGAN)</th>
+                                    <th>INDUK NON PERUMAHAN (SOSIAL DAN BUDAYA)</th>
+                                    <th>PEMUTIHAN</th>
+                                    <th>BERSYARAT</th>
+                                    <th>LAINNYA</th>
                                     <th>IMB</th>
                                     <th>UNIT</th>
                                     <th>IMB</th>
@@ -123,7 +129,7 @@
                                                 $item->imb_non_perumahan_sosbud,
                                                 $item->imb_pemutihan,
                                                 $item->imb_bersyarat,
-                                                $item->imb_lainnya
+                                                $item->imb_lainnya,
                                             ])->sum() }}
                                         </td>
                                         <td>
@@ -136,7 +142,7 @@
                                                 $item->unit_non_perumahan_sosbud,
                                                 $item->unit_pemutihan,
                                                 $item->unit_bersyarat,
-                                                $item->unit_lainnya
+                                                $item->unit_lainnya,
                                             ])->sum() }}
                                         </td>
                                         <td>{{ $item->imb_induk_perumahan }}</td>
@@ -162,6 +168,32 @@
                                 @endforeach
 
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="5">Total</th>
+                                    <th id="totalJumlahIMB"></th>
+                                    <th id="totalJumlahUnit"></th>
+                                    <th id="totalIndukPerumahan"></th>
+                                    <th id="totalPecahan"></th>
+                                    <th id="totalPerluasan"></th>
+                                    <th id="totalIndukNonPerumahanPerusahaan"></th>
+                                    <th id="totalIndukNonPerumahanPerorangan"></th>
+                                    <th id="totalIndukNonPerumahanSosbud"></th>
+                                    <th id="totalPemutihan"></th>
+                                    <th id="totalBersyarat"></th>
+                                    <th id="totalLainnya"></th>
+                                    <th id="totalHunianIMB"></th>
+                                    <th id="totalHunianUnit"></th>
+                                    <th id="totalUsahaIMB"></th>
+                                    <th id="totalUsahaUnit"></th>
+                                    <th id="totalSosbudIMB"></th>
+                                    <th id="totalSosbudUnit"></th>
+                                    <th id="totalKhususIMB"></th>
+                                    <th id="totalKhususUnit"></th>
+                                    <th id="totalCampuranIMB"></th>
+                                    <th id="totalCampuranUnit"></th>
+                                </tr>
+                            </tfoot>
 
                         </table>
                     </div>
@@ -225,7 +257,85 @@
                         extend: 'print',
                         title: '',
                     }
-                ]
+                ],
+                footerCallback: function(row, data, start, end, display) {
+                    // Initialize totals
+                    let totalJumlahIMB = 0;
+                    let totalJumlahUnit = 0;
+                    let totalIndukPerumahan = 0;
+                    let totalPecahan = 0;
+                    let totalPerluasan = 0;
+                    let totalIndukNonPerumahanPerusahaan = 0;
+                    let totalIndukNonPerumahanPerorangan = 0;
+                    let totalIndukNonPerumahanSosbud = 0;
+                    let totalPemutihan = 0;
+                    let totalBersyarat = 0;
+                    let totalLainnya = 0;
+                    let totalHunianIMB = 0;
+                    let totalHunianUnit = 0;
+                    let totalUsahaIMB = 0;
+                    let totalUsahaUnit = 0;
+                    let totalSosbudIMB = 0;
+                    let totalSosbudUnit = 0;
+                    let totalKhususIMB = 0;
+                    let totalKhususUnit = 0;
+                    let totalCampuranIMB = 0;
+                    let totalCampuranUnit = 0;
+
+                    // Iterate through visible rows to calculate totals
+                    display.forEach(function(idx) {
+                        const rowData = data[idx];
+                        totalJumlahIMB += parseInt(rowData[5]) || 0; // 'JUMLAH IMB'
+                        totalJumlahUnit += parseInt(rowData[6]) || 0; // 'JUMLAH UNIT'
+                        totalIndukPerumahan += parseInt(rowData[7]) ||
+                        0; // 'IMB INDUK PERUMAHAN'
+                        totalPecahan += parseInt(rowData[8]) || 0; // 'IMB PECAHAN'
+                        totalPerluasan += parseInt(rowData[9]) || 0; // 'IMB PERLUASAN'
+                        totalIndukNonPerumahanPerusahaan += parseInt(rowData[10]) ||
+                        0; // 'IMB NON-PERUMAHAN (PERUSAHAAN)'
+                        totalIndukNonPerumahanPerorangan += parseInt(rowData[11]) ||
+                        0; // 'IMB NON-PERUMAHAN (PERORANGAN)'
+                        totalIndukNonPerumahanSosbud += parseInt(rowData[12]) ||
+                        0; // 'IMB NON-PERUMAHAN (SOSIAL BUDAYA)'
+                        totalPemutihan += parseInt(rowData[13]) || 0; // 'PEMUTIHAN'
+                        totalBersyarat += parseInt(rowData[14]) || 0; // 'BERSYARAT'
+                        totalLainnya += parseInt(rowData[15]) || 0; // 'LAINNYA'
+                        totalHunianIMB += parseInt(rowData[16]) || 0; // 'HUNIAN IMB'
+                        totalHunianUnit += parseInt(rowData[17]) || 0; // 'HUNIAN UNIT'
+                        totalUsahaIMB += parseInt(rowData[18]) || 0; // 'USAHA IMB'
+                        totalUsahaUnit += parseInt(rowData[19]) || 0; // 'USAHA UNIT'
+                        totalSosbudIMB += parseInt(rowData[20]) || 0; // 'SOSIAL BUDAYA IMB'
+                        totalSosbudUnit += parseInt(rowData[21]) || 0; // 'SOSIAL BUDAYA UNIT'
+                        totalKhususIMB += parseInt(rowData[22]) || 0; // 'KHUSUS IMB'
+                        totalKhususUnit += parseInt(rowData[23]) || 0; // 'KHUSUS UNIT'
+                        totalCampuranIMB += parseInt(rowData[24]) || 0; // 'CAMPURAN IMB'
+                        totalCampuranUnit += parseInt(rowData[25]) || 0; // 'CAMPURAN UNIT'
+                    });
+
+                    // Update footer with totals
+                    $('#totalJumlahIMB').text(totalJumlahIMB);
+                    $('#totalJumlahUnit').text(totalJumlahUnit);
+                    $('#totalIndukPerumahan').text(totalIndukPerumahan);
+                    $('#totalPecahan').text(totalPecahan);
+                    $('#totalPerluasan').text(totalPerluasan);
+                    $('#totalIndukNonPerumahanPerusahaan').text(totalIndukNonPerumahanPerusahaan);
+                    $('#totalIndukNonPerumahanPerorangan').text(totalIndukNonPerumahanPerorangan);
+                    $('#totalIndukNonPerumahanSosbud').text(totalIndukNonPerumahanSosbud);
+                    $('#totalPemutihan').text(totalPemutihan);
+                    $('#totalBersyarat').text(totalBersyarat);
+                    $('#totalLainnya').text(totalLainnya);
+                    $('#totalHunianIMB').text(totalHunianIMB);
+                    $('#totalHunianUnit').text(totalHunianUnit);
+                    $('#totalUsahaIMB').text(totalUsahaIMB);
+                    $('#totalUsahaUnit').text(totalUsahaUnit);
+                    $('#totalSosbudIMB').text(totalSosbudIMB);
+                    $('#totalSosbudUnit').text(totalSosbudUnit);
+                    $('#totalKhususIMB').text(totalKhususIMB);
+                    $('#totalKhususUnit').text(totalKhususUnit);
+                    $('#totalCampuranIMB').text(totalCampuranIMB);
+                    $('#totalCampuranUnit').text(totalCampuranUnit);
+                }
+
             });
             // Filter button functionality
             $('#filterButton').on('click', function() {

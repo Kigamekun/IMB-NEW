@@ -74,7 +74,7 @@
                                 <label for="jenis_kegiatan" class="form-label">Jenis Kegiatan:</label>
                                 <select class="form-control form-select select-jenis-kegiatan " name="jenis_kegiatan" id="jenis_kegiatan" required>
                                     @foreach (DB::table('app_md_jeniskeg')->get() as $jenis_keg)
-                                        <option value="{{ $jenis_keg->name_jeniskeg }}" selected>
+                                        <option value="{{ $jenis_keg->name_jeniskeg }}" >
                                             {{ $jenis_keg->name_jeniskeg }}
                                         </option>
                                     @endforeach

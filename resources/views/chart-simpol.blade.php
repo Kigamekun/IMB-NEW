@@ -14,7 +14,7 @@
 <body>
   <h1>Data IMB</h1>
  <center>
-    <div style="width:100%;">
+    <div style="width:90%;">
        <div class="row">
         <div class="col-md-6">
             <select class="form-control" id="jenis">

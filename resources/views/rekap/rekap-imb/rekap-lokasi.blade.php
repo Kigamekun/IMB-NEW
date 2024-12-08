@@ -83,9 +83,10 @@
                                 </tr>
                             @endforeach
 
-                            </tbody><tfoot>
+                            </tbody>
+                            <tfoot>
                                 <tr>
-                                    <th colspan="5" style="text-align: right;">Total:</th>
+                                    <th colspan="5" style="text-align: left;">Total:</th>
                                     <th id="totalJumlahIMB">0</th>
                                     <th id="totalIndukPerumahan">0</th>
                                     <th id="totalPecahan">0</th>
@@ -93,7 +94,6 @@
                                     <th id="totalNonPerumahan">0</th>
                                 </tr>
                             </tfoot>
-
                         </table>
                     </div>
                 </div>
@@ -145,7 +145,8 @@
                     let totalNonPerumahan = 0;
 
                     // Iterasi melalui data untuk menghitung total
-                    data.forEach(function(rowData) {
+                    display.forEach(function(idx) {
+                        const rowData = data[idx]
                         totalJumlahIMB += parseFloat(rowData[5]) || 0; // Kolom Jumlah IMB
                         totalIndukPerumahan += parseFloat(rowData[6]) || 0; // Kolom Induk Perumahan
                         totalPecahan += parseFloat(rowData[7]) || 0; // Kolom Pecahan
@@ -154,11 +155,11 @@
                     });
 
                     // Update elemen footer dengan total nilai
-                    $('#totalJumlahIMB').text(totalJumlahIMB.toFixed(2));
-                    $('#totalIndukPerumahan').text(totalIndukPerumahan.toFixed(2));
-                    $('#totalPecahan').text(totalPecahan.toFixed(2));
-                    $('#totalPerluasan').text(totalPerluasan.toFixed(2));
-                    $('#totalNonPerumahan').text(totalNonPerumahan.toFixed(2));
+                    $('#totalJumlahIMB').text(totalJumlahIMB);
+                    $('#totalIndukPerumahan').text(totalIndukPerumahan);
+                    $('#totalPecahan').text(totalPecahan);
+                    $('#totalPerluasan').text(totalPerluasan);
+                    $('#totalNonPerumahan').text(totalNonPerumahan);
                 }
             });
 

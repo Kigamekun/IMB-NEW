@@ -128,9 +128,9 @@
         .info-table td {
             border:none;
             text-align: left;
-            padding: 4px 8px;
+            padding: 2px 2px 2px;
             vertical-align: top;
-            line-height: 1 !important;
+            line-height: .8 !important;
         }
 
         .info-table td:first-child {
@@ -160,9 +160,9 @@
         .info-tables td {
             text-align: left;
             border: none;
-            padding: 4px 8px;
+            padding: 2px 2px 2px ;
             vertical-align: top;
-            line-height: 1;
+            line-height: .8;
         }
 
         .signature-section {
@@ -195,7 +195,7 @@
     </style>
 </head>
 
-<body style="width: 750px">
+<body style="width: 700px">
     <div style="float: right;margin-right: 100px">
         <p>Cibinong,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2024
         </p>
@@ -219,7 +219,7 @@
         <tr>
             <td>Hal</td>
             <td>:</td>
-            <td style="line-height: normal">{{ $perihal }}</td>
+            <td style="line-height: 16px !important;">{{ $perihal }}</td>
         </tr>
     </table>
     <div style="line-height:5px;margin-left:10px">
@@ -227,19 +227,23 @@
         <p><b>{{ $pemohon['sapaanPemohon'] }} {{ $pemohon['nama'] }}</b></p>
         <p>di</p>
         @php
-        if (str_contains($pemohon['kabupatenPemohon'], 'Kabupaten')) {
-            $pemohon['kabupatenPemohon'] = trim(str_replace('Kabupaten', '', $pemohon['kabupatenPemohon']));
-        }
+            // Cek apakah 'Kabupaten' ada di kabupatenPemohon
+            $kabupaten = $pemohon['kabupatenPemohon'];
+
+            // Hanya hapus 'Kabupaten' jika kabupatenPemohon tidak ada di pemohon_alamat
+            if (!str_contains($pemohon['alamat'], 'Kabupaten') && str_contains($kabupaten, 'Kabupaten')) {
+                $kabupaten = trim(str_replace('Kabupaten', '', $kabupaten));
+            }
         @endphp
 
-        <p>{{$pemohon['kabupatenPemohon'] }}</p>
+        <p>{{ $kabupaten }}</p>
     </div>
     <br>
-    <div style="margin-left: -15px">
-        <p style="margin-top:-5px; text-indent: 50px;">Sehubungan permohonan Surat Keterangan Izin Mendirikan Bangunan
+    <div style="margin-left: 10px">
+        <p style="margin-top:-5px; margin-left:0p; text-indent: 25px; line-height: 16px !important;">Sehubungan permohonan Surat Keterangan Izin Mendirikan Bangunan
             Gedung (IMBG) {{ $referensi['jenisKegiatan'] }}, tanggal {{ $tanggalSurat }} dari:</p>
 
-        <table class="info-tables" style="margin-left: 16px; margin-top: -10px; width: 100%; border-collapse: collapse; ">
+        <table class="info-tables" style="margin-left: -3px; margin-top: -15px; width: 100%; border-collapse: collapse; ">
             <!-- Bagian Pemohon -->
             <tr style="margin-left: 100px">
                 <td style="width: 200px;">Nama</td>
@@ -264,7 +268,7 @@
             <!-- Baris Kosong untuk Pemisah -->
             <tr>
                 <td colspan="3"
-                    style="text-align: justify; padding-top: 10px; padding-bottom: 10px; line-height: 1.5 !important; word-wrap: break-word; white-space: normal; text-indent: 25px;">
+                    style="text-align: justify; padding-top: 10px; padding-bottom: 10px; line-height: 16px !important; word-wrap: break-word; white-space: normal; text-indent: 25px;">
                     Setelah dilakukan pengecekan pada buku Izin Mendirikan Bangunan yang ada pada Dinas Perumahan Kawasan
                     Permukiman dan Pertanahan Kabupaten Bogor, dengan ini dapat disampaikan:
                 </td>
@@ -279,7 +283,7 @@
             <tr>
                 <td>Lokasi</td>
                 <td>:</td>
-                <td style=" line-height: 1 !important;">
+                <td style=" line-height: 15px !important;">
                     {{ $referensi['lokasi'] != null || $referensi['lokasi'] != '' ? $referensi['lokasi'] . ',' : '' }}
                     Desa/Kelurahan {{ $referensi['kelurahan'] }}
                     @if (isset($referensi['kelurahan-terdahulu']) && $referensi['kelurahan-terdahulu'] != null)
@@ -329,11 +333,13 @@
         </table>
 
         <br>
-        <p style="text-align: justify; padding-top: 10px; padding-bottom: 10px; line-height: 1.5 !important; word-wrap: break-word; white-space: normal; text-indent: 25px; margin-left:25px">{{ $keterangan[0] }}</p>
-        <p style="text-align: justify; padding-top: 10px; padding-bottom: 10px; line-height: 1.5 !important; word-wrap: break-word; white-space: normal; text-indent: 25px; margin-left:25px">
+        <p style="text-align: justify;padding-top: 0px; padding-bottom: 0px; line-height: 1.5 !important; word-wrap: break-word; white-space: normal; text-indent: 25px; margin-left:0px">
+            {{ $keterangan[0] }}
+        </p>
+        <p style="text-align: justify;  padding-top: 0px; padding-bottom: 0px; line-height: 1.5 !important; word-wrap: break-word; white-space: normal; text-indent: 25px; margin-left:0px">
             {{ $keterangan[1] }}
         </p>
-        <p style="text-align: justify; padding-top: 10px; padding-bottom: 10px; line-height: 1.5 !important; word-wrap: break-word; white-space: normal; text-indent: 25px; margin-left:25px">
+        <p style="text-align: justify; padding-top: 0px; padding-bottom: 0px; line-height: 1.5 !important; word-wrap: break-word; white-space: normal; text-indent: 25px; margin-left:0px">
             {{ $keterangan[2] }}
         </p>
         @if (count($keterangan) > 3)

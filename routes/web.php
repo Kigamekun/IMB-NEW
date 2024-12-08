@@ -366,11 +366,11 @@ Route::middleware(['auth'])->group(function () {
         });
 
         Route::prefix('rekap-imb-pertahun')->group(function () {
-            Route::match(['GET', 'POST'], '/rekap-unit-dan-fungsi', [RekapController::class, 'RekapUnitDanFungsi'])->name('rekap.RekapUnitDanFungsi');
+            Route::match(['GET', 'POST'], '/rekap-unit-dan-fungsi', [RekapController::class, 'RekapUnitDanFungsiPertahun'])->name('rekap.RekapUnitDanFungsiPertahun');
 
-            Route::match(['GET', 'POST'], '/rekap-lokasi', [RekapController::class, 'RekapLokasi'])->name('rekap.RekapLokasi');
+            Route::match(['GET', 'POST'], '/rekap-lokasi', [RekapController::class, 'RekapLokasiPertahun'])->name('rekap.RekapLokasiPertahun');
 
-            Route::match(['GET', 'POST'], '/rekap-unit-fungsi-dan-lokasi', [RekapController::class, 'RekapUnitFungsiDanLokasi'])->name('rekap.RekapUnitFungsiDanLokasi');
+            Route::match(['GET', 'POST'], '/rekap-unit-fungsi-dan-lokasi', [RekapController::class, 'RekapUnitFungsiDanLokasiPertahun'])->name('rekap.RekapUnitFungsiDanLokasiPertahun');
         });
 
         Route::prefix('rekap-sk-imbg')->group(function () {

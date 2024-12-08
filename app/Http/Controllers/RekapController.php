@@ -604,6 +604,41 @@ class RekapController extends Controller
                         SUM(CASE WHEN fungsi_bangunan = 3 THEN 1 ELSE 0 END) as campuran_unit
                     ')
                         ->groupByRaw('YEAR(tgl_imb_perluasan), imb_perluasan.kecamatan, imb_perluasan.desa_kelurahan')
+                )
+                ->unionAll(
+                    DB::table('imb_induk_non_perum')
+                        ->selectRaw('
+                        YEAR(tgl_imb_induk) as tahun,
+                        imb_induk_non_perum.kecamatan,
+                        imb_induk_non_perum.desa_kelurahan,
+                        0 as imb_induk_perumahan, 0 as unit_induk_perumahan,
+                        0 as imb_pecahan, 0 as unit_pecahan,
+                        0 as imb_perluasan, 0 as unit_perluasan,
+                        SUM(CASE WHEN imb_induk_non_perum.jenis = 1 THEN 1 ELSE 0 END) as imb_non_perumahan_perusahaan,
+                        SUM(CASE WHEN imb_induk_non_perum.jenis = 1 THEN item_imb_induk_non_perum.jumlah_unit ELSE 0 END) as unit_non_perumahan_perusahaan,
+                        SUM(CASE WHEN imb_induk_non_perum.jenis = 2 THEN 1 ELSE 0 END) as imb_non_perumahan_perorangan,
+                        SUM(CASE WHEN imb_induk_non_perum.jenis = 2 THEN item_imb_induk_non_perum.jumlah_unit ELSE 0 END) as unit_non_perumahan_perorangan,
+                        SUM(CASE WHEN imb_induk_non_perum.jenis = 3 THEN 1 ELSE 0 END) as imb_non_perumahan_sosbud,
+                        SUM(CASE WHEN imb_induk_non_perum.jenis = 3 THEN item_imb_induk_non_perum.jumlah_unit ELSE 0 END) as unit_non_perumahan_sosbud,
+                        SUM(CASE WHEN imb_induk_non_perum.jenis = 4 THEN 1 ELSE 0 END) as imb_pemutihan,
+                        SUM(CASE WHEN imb_induk_non_perum.jenis = 4 THEN item_imb_induk_non_perum.jumlah_unit ELSE 0 END) as unit_pemutihan,
+                        SUM(CASE WHEN imb_induk_non_perum.jenis = 5 THEN 1 ELSE 0 END) as imb_bersyarat,
+                        SUM(CASE WHEN imb_induk_non_perum.jenis = 5 THEN item_imb_induk_non_perum.jumlah_unit ELSE 0 END) as unit_bersyarat,
+                        SUM(CASE WHEN imb_induk_non_perum.jenis NOT IN (1, 2, 3, 4, 5) THEN 1 ELSE 0 END) as imb_lainnya,
+                        SUM(CASE WHEN imb_induk_non_perum.jenis NOT IN (1, 2, 3, 4, 5) THEN item_imb_induk_non_perum.jumlah_unit ELSE 0 END) as unit_lainnya,
+                        SUM(CASE WHEN item_imb_induk_non_perum.fungsi_bangunan IN (1, 6) THEN 1 ELSE 0 END) as hunian_imb,
+                        SUM(CASE WHEN item_imb_induk_non_perum.fungsi_bangunan IN (1, 6) THEN item_imb_induk_non_perum.jumlah_unit ELSE 0 END) as hunian_unit,
+                        SUM(CASE WHEN item_imb_induk_non_perum.fungsi_bangunan = 2 THEN 1 ELSE 0 END) as usaha_imb,
+                        SUM(CASE WHEN item_imb_induk_non_perum.fungsi_bangunan = 2 THEN item_imb_induk_non_perum.jumlah_unit ELSE 0 END) as usaha_unit,
+                        SUM(CASE WHEN item_imb_induk_non_perum.fungsi_bangunan IN (4, 5, 7, 8) THEN 1 ELSE 0 END) as sosbud_imb,
+                        SUM(CASE WHEN item_imb_induk_non_perum.fungsi_bangunan IN (4, 5, 7, 8) THEN item_imb_induk_non_perum.jumlah_unit ELSE 0 END) as sosbud_unit,
+                        SUM(CASE WHEN item_imb_induk_non_perum.fungsi_bangunan = 9 THEN 1 ELSE 0 END) as khusus_imb,
+                        SUM(CASE WHEN item_imb_induk_non_perum.fungsi_bangunan = 9 THEN item_imb_induk_non_perum.jumlah_unit ELSE 0 END) as khusus_unit,
+                        SUM(CASE WHEN item_imb_induk_non_perum.fungsi_bangunan = 3 THEN 1 ELSE 0 END) as campuran_imb,
+                        SUM(CASE WHEN item_imb_induk_non_perum.fungsi_bangunan = 3 THEN item_imb_induk_non_perum.jumlah_unit ELSE 0 END) as campuran_unit
+                    ')
+                        ->leftJoin('item_imb_induk_non_perum', 'imb_induk_non_perum.id', '=', 'item_imb_induk_non_perum.induk_perum_id')
+                        ->groupByRaw('YEAR(tgl_imb_induk), imb_induk_non_perum.kecamatan, imb_induk_non_perum.desa_kelurahan')
                 );
         })
             ->selectRaw('
@@ -914,7 +949,7 @@ class RekapController extends Controller
     {
         if ($request->ajax()) {
             $imbIndukQuery = DB::table('imb_induk_perum')
-            ->selectRaw("
+                ->selectRaw("
                 ROW_NUMBER() OVER (ORDER BY imb_induk_perum.tgl_imb_induk) AS NO,
                 'INDUK PERUMAHAN' AS JENIS_IMB,
                 imb_induk_perum.nama AS NAMA,
@@ -930,13 +965,13 @@ class RekapController extends Controller
                 ) AS FUNGSI_BANGUNAN,
                 COALESCE(SUM(item_imb_induk_perum.jumlah_unit), 0) AS JUMLAH_UNIT
             ")
-            ->leftJoin('master_district AS kecamatan_induk', 'kecamatan_induk.code', '=', 'imb_induk_perum.kecamatan')
-            ->leftJoin('master_subdistrict AS kelurahan_induk', 'kelurahan_induk.code', '=', 'imb_induk_perum.desa_kelurahan')
-            ->leftJoin('app_md_jeniskeg AS jenis_kegiatan_induk', 'jenis_kegiatan_induk.id_jeniskeg', '=', 'imb_induk_perum.jenis_kegiatan')
-            ->leftJoin('item_imb_induk_perum', 'item_imb_induk_perum.induk_perum_id', '=', 'imb_induk_perum.id')
-            ->leftJoin('app_md_fungsibang', 'app_md_fungsibang.id_fungsibang', '=', 'item_imb_induk_perum.fungsi_bangunan')
-            ->where('imb_induk_perum.nama', $nama_pemohon)
-            ->groupByRaw("
+                ->leftJoin('master_district AS kecamatan_induk', 'kecamatan_induk.code', '=', 'imb_induk_perum.kecamatan')
+                ->leftJoin('master_subdistrict AS kelurahan_induk', 'kelurahan_induk.code', '=', 'imb_induk_perum.desa_kelurahan')
+                ->leftJoin('app_md_jeniskeg AS jenis_kegiatan_induk', 'jenis_kegiatan_induk.id_jeniskeg', '=', 'imb_induk_perum.jenis_kegiatan')
+                ->leftJoin('item_imb_induk_perum', 'item_imb_induk_perum.induk_perum_id', '=', 'imb_induk_perum.id')
+                ->leftJoin('app_md_fungsibang', 'app_md_fungsibang.id_fungsibang', '=', 'item_imb_induk_perum.fungsi_bangunan')
+                ->where('imb_induk_perum.nama', $nama_pemohon)
+                ->groupByRaw("
                 imb_induk_perum.nama,
                 imb_induk_perum.imb_induk,
                 imb_induk_perum.tgl_imb_induk,
@@ -1005,7 +1040,7 @@ class RekapController extends Controller
                 ->leftJoin('master_district AS kecamatan_non_perum', 'kecamatan_non_perum.code', '=', 'imb_induk_non_perum.kecamatan')
                 ->leftJoin('master_subdistrict AS kelurahan_non_perum', 'kelurahan_non_perum.code', '=', 'imb_induk_non_perum.desa_kelurahan')
                 ->leftJoin('app_md_jeniskeg AS jenis_kegiatan_non_perum', 'jenis_kegiatan_non_perum.id_jeniskeg', '=', 'imb_induk_non_perum.jenis_kegiatan')
-                 ->leftJoin('item_imb_induk_non_perum', 'item_imb_induk_non_perum.induk_perum_id', '=', 'imb_induk_non_perum.id')
+                ->leftJoin('item_imb_induk_non_perum', 'item_imb_induk_non_perum.induk_perum_id', '=', 'imb_induk_non_perum.id')
                 ->leftJoin('app_md_fungsibang', 'app_md_fungsibang.id_fungsibang', '=', 'item_imb_induk_non_perum.fungsi_bangunan')
                 ->where('imb_induk_non_perum.nama', $nama_pemohon)
                 ->groupByRaw("
@@ -1167,13 +1202,345 @@ class RekapController extends Controller
         return view('rekap.detail-imb-perluasan-list');
     }
 
+    // REKAP 2.2
+    public function RekapUnitDanFungsiPertahun(Request $request)
+    {
+        $year = $request->input('year');
 
+        $data = [];
 
+        if ($year) {
 
+            $startDate = "{$year}-01-01";
+            $endDate = "{$year}-12-31";
 
+            $data = DB::table(DB::raw("
+        (
+            SELECT
+                'IMB INDUK PERUMAHAN' AS jenis_imb,
+                COUNT(DISTINCT imb.id) AS jumlah_imb,
+                SUM(item.jumlah_unit) AS jumlah_unit,
+                SUM(CASE WHEN item.fungsi_bangunan IN (1, 6) THEN 1 ELSE 0 END) AS hunian_imb,
+                SUM(CASE WHEN item.fungsi_bangunan IN (1, 6) THEN item.jumlah_unit ELSE 0 END) AS hunian_unit,
+                SUM(CASE WHEN item.fungsi_bangunan = 2 THEN 1 ELSE 0 END) AS usaha_imb,
+                SUM(CASE WHEN item.fungsi_bangunan = 2 THEN item.jumlah_unit ELSE 0 END) AS usaha_unit,
+                SUM(CASE WHEN item.fungsi_bangunan IN (4, 5, 7, 8) THEN 1 ELSE 0 END) AS sosial_budaya_imb,
+                SUM(CASE WHEN item.fungsi_bangunan IN (4, 5, 7, 8) THEN item.jumlah_unit ELSE 0 END) AS sosial_budaya_unit,
+                SUM(CASE WHEN item.fungsi_bangunan = 9 THEN 1 ELSE 0 END) AS khusus_imb,
+                SUM(CASE WHEN item.fungsi_bangunan = 9 THEN item.jumlah_unit ELSE 0 END) AS khusus_unit,
+                SUM(CASE WHEN item.fungsi_bangunan = 3 THEN 1 ELSE 0 END) AS campuran_imb,
+                SUM(CASE WHEN item.fungsi_bangunan = 3 THEN item.jumlah_unit ELSE 0 END) AS campuran_unit
+            FROM imb_induk_perum imb
+            LEFT JOIN item_imb_induk_perum item ON item.induk_perum_id = imb.id
+            WHERE imb.tgl_imb_induk BETWEEN '$startDate' AND '$endDate'
+            GROUP BY jenis_imb
+            UNION ALL
+            SELECT
+                'IMB PECAHAN' AS jenis_imb,
+                COUNT(DISTINCT pecahan.id) AS jumlah_imb,
+                COUNT(pecahan.id) AS jumlah_unit,
+                SUM(CASE WHEN pecahan.fungsi_bangunan IN (1, 6) THEN 1 ELSE 0 END) AS hunian_imb,
+                SUM(CASE WHEN pecahan.fungsi_bangunan IN (1, 6) THEN 1 ELSE 0 END) AS hunian_unit,
+                SUM(CASE WHEN pecahan.fungsi_bangunan = 2 THEN 1 ELSE 0 END) AS usaha_imb,
+                SUM(CASE WHEN pecahan.fungsi_bangunan = 2 THEN 1 ELSE 0 END) AS usaha_unit,
+                SUM(CASE WHEN pecahan.fungsi_bangunan IN (4, 5, 7, 8) THEN 1 ELSE 0 END) AS sosial_budaya_imb,
+                SUM(CASE WHEN pecahan.fungsi_bangunan IN (4, 5, 7, 8) THEN 1 ELSE 0 END) AS sosial_budaya_unit,
+                SUM(CASE WHEN pecahan.fungsi_bangunan = 9 THEN 1 ELSE 0 END) AS khusus_imb,
+                SUM(CASE WHEN pecahan.fungsi_bangunan = 9 THEN 1 ELSE 0 END) AS khusus_unit,
+                SUM(CASE WHEN pecahan.fungsi_bangunan = 3 THEN 1 ELSE 0 END) AS campuran_imb,
+                SUM(CASE WHEN pecahan.fungsi_bangunan = 3 THEN 1 ELSE 0 END) AS campuran_unit
+            FROM imb_pecahan pecahan
+            WHERE pecahan.tgl_imb_induk BETWEEN '$startDate' AND '$endDate'
+            GROUP BY jenis_imb
+            UNION ALL
+           SELECT
+            'IMB PERLUASAN' AS jenis_imb,
+                COUNT(DISTINCT perluasan.id) AS jumlah_imb,
+                COUNT(perluasan.id) AS jumlah_unit, -- Jumlah record = Jumlah unit
+                SUM(CASE WHEN perluasan.fungsi_bangunan IN (1, 6) THEN 1 ELSE 0 END) AS hunian_imb,
+                SUM(CASE WHEN perluasan.fungsi_bangunan IN (1, 6) THEN 1 ELSE 0 END) AS hunian_unit, -- Sama dengan jumlah hunian IMB
+                SUM(CASE WHEN perluasan.fungsi_bangunan = 2 THEN 1 ELSE 0 END) AS usaha_imb,
+                SUM(CASE WHEN perluasan.fungsi_bangunan = 2 THEN 1 ELSE 0 END) AS usaha_unit,
+                SUM(CASE WHEN perluasan.fungsi_bangunan IN (4, 5, 7, 8) THEN 1 ELSE 0 END) AS sosial_budaya_imb,
+                SUM(CASE WHEN perluasan.fungsi_bangunan IN (4, 5, 7, 8) THEN 1 ELSE 0 END) AS sosial_budaya_unit,
+                SUM(CASE WHEN perluasan.fungsi_bangunan = 9 THEN 1 ELSE 0 END) AS khusus_imb,
+                SUM(CASE WHEN perluasan.fungsi_bangunan = 9 THEN 1 ELSE 0 END) AS khusus_unit,
+                SUM(CASE WHEN perluasan.fungsi_bangunan = 3 THEN 1 ELSE 0 END) AS campuran_imb,
+                SUM(CASE WHEN perluasan.fungsi_bangunan = 3 THEN 1 ELSE 0 END) AS campuran_unit
+            FROM imb_perluasan perluasan
+            WHERE perluasan.tgl_imb_pecahan BETWEEN '$startDate' AND '$endDate'
+            GROUP BY jenis_imb
+            UNION ALL
+            SELECT
+                CASE
+                    WHEN non_perum.jenis = '1' THEN 'IMB INDUK NON PERUMAHAN (PERUSAHAAN)'
+                    WHEN non_perum.jenis = '2' THEN 'IMB INDUK NON PERUMAHAN (PERORANGAN)'
+                    WHEN non_perum.jenis = '3' THEN 'IMB INDUK NON PERUMAHAN (SOSIAL DAN BUDAYA)'
+                    WHEN non_perum.jenis = '4' THEN 'IMB PEMUTIHAN'
+                    WHEN non_perum.jenis = '5' THEN 'IMB BERSYARAT'
+                    ELSE 'IMB LAINNYA'
+                END AS jenis_imb,
+                COUNT(DISTINCT non_perum.id) AS jumlah_imb,
+                 SUM(item.jumlah_unit) AS jumlah_unit,
+                SUM(CASE WHEN item.fungsi_bangunan IN (1, 6) THEN 1 ELSE 0 END) AS hunian_imb,
+                SUM(CASE WHEN item.fungsi_bangunan IN (1, 6) THEN item.jumlah_unit ELSE 0 END) AS hunian_unit,
+                SUM(CASE WHEN item.fungsi_bangunan = 2 THEN 1 ELSE 0 END) AS usaha_imb,
+                SUM(CASE WHEN item.fungsi_bangunan = 2 THEN item.jumlah_unit ELSE 0 END) AS usaha_unit,
+                SUM(CASE WHEN item.fungsi_bangunan IN (4, 5, 7, 8) THEN 1 ELSE 0 END) AS sosial_budaya_imb,
+                SUM(CASE WHEN item.fungsi_bangunan IN (4, 5, 7, 8) THEN item.jumlah_unit ELSE 0 END) AS sosial_budaya_unit,
+                SUM(CASE WHEN item.fungsi_bangunan = 9 THEN 1 ELSE 0 END) AS khusus_imb,
+                SUM(CASE WHEN item.fungsi_bangunan = 9 THEN item.jumlah_unit ELSE 0 END) AS khusus_unit,
+                SUM(CASE WHEN item.fungsi_bangunan = 3 THEN 1 ELSE 0 END) AS campuran_imb,
+                SUM(CASE WHEN item.fungsi_bangunan = 3 THEN item.jumlah_unit ELSE 0 END) AS campuran_unit
+            FROM imb_induk_non_perum non_perum
+            LEFT JOIN item_imb_induk_non_perum item ON item.induk_perum_id = non_perum.id
+            WHERE non_perum.tgl_imb_induk BETWEEN '$startDate' AND '$endDate'
+            GROUP BY jenis_imb
+        ) AS data
+    "))
+                ->get();
+        }
 
+        return view('rekap.rekap-imb-pertahun.rekap-unit-dan-fungsi', compact('data'));
 
+    }
 
+    // Rekap 3.2
+    public function RekapLokasiPertahun(Request $request)
+    {
+        $year = $request->input('year');
+        $data = [];
+
+        if ($year) {
+            $startDate = "{$year}-01-01";
+            $endDate = "{$year}-12-31";
+
+            $data = DB::select("
+                SELECT
+                    base.kecamatan,
+                    base.desa_kelurahan,
+                    YEAR(base.tgl_register) AS tahun,
+                    COUNT(DISTINCT imb_induk_perum.id) AS imb_induk_perum,
+                    COUNT(DISTINCT imb_pecahan.id) AS imb_pecahan,
+                    COUNT(DISTINCT imb_perluasan.id) AS imb_perluasan,
+                    -- IMB Non Perumahan dengan klasifikasi berdasarkan jenis
+                    COUNT(DISTINCT CASE WHEN imb_induk_non_perum.jenis = 1 THEN imb_induk_non_perum.id END) AS imb_non_perusahaan,
+                    COUNT(DISTINCT CASE WHEN imb_induk_non_perum.jenis = 2 THEN imb_induk_non_perum.id END) AS imb_non_perorangan,
+                    COUNT(DISTINCT CASE WHEN imb_induk_non_perum.jenis = 3 THEN imb_induk_non_perum.id END) AS imb_non_sosial_budaya,
+                    COUNT(DISTINCT CASE WHEN imb_induk_non_perum.jenis = 4 THEN imb_induk_non_perum.id END) AS imb_pemutihan,
+                    COUNT(DISTINCT CASE WHEN imb_induk_non_perum.jenis = 5 THEN imb_induk_non_perum.id END) AS imb_bersyarat,
+                    COUNT(DISTINCT CASE WHEN imb_induk_non_perum.jenis = 6 THEN imb_induk_non_perum.id END) AS imb_lainnya,
+                    (
+                        COUNT(DISTINCT imb_induk_perum.id) +
+                        COUNT(DISTINCT imb_pecahan.id) +
+                        COUNT(DISTINCT imb_perluasan.id) +
+                        COUNT(DISTINCT imb_induk_non_perum.id)
+                    ) AS jumlah_imb
+                FROM
+                    (
+                        SELECT kecamatan, desa_kelurahan, tgl_register FROM imb_induk_perum WHERE tgl_register BETWEEN ? AND ?
+                        UNION ALL
+                        SELECT kecamatan, desa_kelurahan, tgl_register FROM imb_pecahan WHERE tgl_register BETWEEN ? AND ?
+                        UNION ALL
+                        SELECT kecamatan, desa_kelurahan, tgl_register FROM imb_perluasan WHERE tgl_register BETWEEN ? AND ?
+                        UNION ALL
+                        SELECT kecamatan, desa_kelurahan, tgl_register FROM imb_induk_non_perum WHERE tgl_register BETWEEN ? AND ?
+                    ) AS base
+                LEFT JOIN imb_induk_perum ON base.kecamatan = imb_induk_perum.kecamatan AND base.desa_kelurahan = imb_induk_perum.desa_kelurahan
+                LEFT JOIN imb_pecahan ON base.kecamatan = imb_pecahan.kecamatan AND base.desa_kelurahan = imb_pecahan.desa_kelurahan
+                LEFT JOIN imb_perluasan ON base.kecamatan = imb_perluasan.kecamatan AND base.desa_kelurahan = imb_perluasan.desa_kelurahan
+                LEFT JOIN imb_induk_non_perum ON base.kecamatan = imb_induk_non_perum.kecamatan AND base.desa_kelurahan = imb_induk_non_perum.desa_kelurahan
+                GROUP BY base.kecamatan, base.desa_kelurahan, YEAR(base.tgl_register)
+                ORDER BY base.kecamatan, base.desa_kelurahan, tahun;
+            ", [$startDate, $endDate, $startDate, $endDate, $startDate, $endDate, $startDate, $endDate]);
+        }
+
+        return view('rekap.rekap-imb-pertahun.rekap-lokasi', compact('data', 'year'));
+    }
+
+    // Rekap 4.2
+    public function RekapUnitFungsiDanLokasiPertahun(Request $request)
+    {
+        $year = $request->input('year');
+        $data = [];
+
+        if ($year) {
+            $startDate = "{$year}-01-01";
+            $endDate = "{$year}-12-31";
+
+            $data = DB::table(function ($query) use ($startDate, $endDate) {
+                $query->selectRaw('
+                    YEAR(tgl_imb_induk) as tahun,
+                    imb_induk_perum.kecamatan,
+                    imb_induk_perum.desa_kelurahan,
+                    COUNT(DISTINCT imb_induk_perum.id) as imb_induk_perumahan,
+                    SUM(item_imb_induk_perum.jumlah_unit) as unit_induk_perumahan,
+                    0 as imb_pecahan, 0 as unit_pecahan,
+                    0 as imb_perluasan, 0 as unit_perluasan,
+                    0 as imb_non_perumahan_perusahaan,
+                    0 as unit_non_perumahan_perusahaan,
+                    0 as imb_non_perumahan_perorangan,
+                    0 as unit_non_perumahan_perorangan,
+                    0 as imb_non_perumahan_sosbud,
+                    0 as unit_non_perumahan_sosbud,
+                    0 as imb_pemutihan,
+                    0 as unit_pemutihan,
+                    0 as imb_bersyarat,
+                    0 as unit_bersyarat,
+                    0 as imb_lainnya,
+                    0 as unit_lainnya,
+                    SUM(CASE WHEN item_imb_induk_perum.fungsi_bangunan IN (1, 6) THEN 1 ELSE 0 END) as hunian_imb,
+                    SUM(CASE WHEN item_imb_induk_perum.fungsi_bangunan IN (1, 6) THEN item_imb_induk_perum.jumlah_unit ELSE 0 END) as hunian_unit,
+                    SUM(CASE WHEN item_imb_induk_perum.fungsi_bangunan = 2 THEN 1 ELSE 0 END) as usaha_imb,
+                    SUM(CASE WHEN item_imb_induk_perum.fungsi_bangunan = 2 THEN item_imb_induk_perum.jumlah_unit ELSE 0 END) as usaha_unit,
+                    SUM(CASE WHEN item_imb_induk_perum.fungsi_bangunan IN (4, 5, 7, 8) THEN 1 ELSE 0 END) as sosbud_imb,
+                    SUM(CASE WHEN item_imb_induk_perum.fungsi_bangunan IN (4, 5, 7, 8) THEN item_imb_induk_perum.jumlah_unit ELSE 0 END) as sosbud_unit,
+                    SUM(CASE WHEN item_imb_induk_perum.fungsi_bangunan = 9 THEN 1 ELSE 0 END) as khusus_imb,
+                    SUM(CASE WHEN item_imb_induk_perum.fungsi_bangunan = 9 THEN item_imb_induk_perum.jumlah_unit ELSE 0 END) as khusus_unit,
+                    SUM(CASE WHEN item_imb_induk_perum.fungsi_bangunan = 3 THEN 1 ELSE 0 END) as campuran_imb,
+                    SUM(CASE WHEN item_imb_induk_perum.fungsi_bangunan = 3 THEN item_imb_induk_perum.jumlah_unit ELSE 0 END) as campuran_unit
+                ')
+                    ->from('imb_induk_perum')
+                    ->leftJoin('item_imb_induk_perum', 'imb_induk_perum.id', '=', 'item_imb_induk_perum.induk_perum_id')
+                    ->whereBetween('tgl_imb_induk', [$startDate, $endDate])
+                    ->groupByRaw('YEAR(tgl_imb_induk), imb_induk_perum.kecamatan, imb_induk_perum.desa_kelurahan')
+                    ->unionAll(
+                        DB::table('imb_pecahan')
+                            ->selectRaw('
+                            YEAR(tgl_imb_induk) as tahun,
+                            imb_pecahan.kecamatan,
+                            imb_pecahan.desa_kelurahan,
+                            0 as imb_induk_perumahan, 0 as unit_induk_perumahan,
+                            COUNT(*) as imb_pecahan, COUNT(*) as unit_pecahan,
+                            0 as imb_perluasan, 0 as unit_perluasan,
+                            0 as imb_non_perumahan_perusahaan, 0 as unit_non_perumahan_perusahaan,
+                            0 as imb_non_perumahan_perorangan, 0 as unit_non_perumahan_perorangan,
+                            0 as imb_non_perumahan_sosbud, 0 as unit_non_perumahan_sosbud,
+                            0 as imb_pemutihan, 0 as unit_pemutihan,
+                            0 as imb_bersyarat, 0 as unit_bersyarat,
+                            0 as imb_lainnya, 0 as unit_lainnya,
+                            SUM(CASE WHEN fungsi_bangunan IN (1, 6) THEN 1 ELSE 0 END) as hunian_imb,
+                            SUM(CASE WHEN fungsi_bangunan IN (1, 6) THEN 1 ELSE 0 END) as hunian_unit,
+                            SUM(CASE WHEN fungsi_bangunan = 2 THEN 1 ELSE 0 END) as usaha_imb,
+                            SUM(CASE WHEN fungsi_bangunan = 2 THEN 1 ELSE 0 END) as usaha_unit,
+                            SUM(CASE WHEN fungsi_bangunan IN (4, 5, 7, 8) THEN 1 ELSE 0 END) as sosbud_imb,
+                            SUM(CASE WHEN fungsi_bangunan IN (4, 5, 7, 8) THEN 1 ELSE 0 END) as sosbud_unit,
+                            SUM(CASE WHEN fungsi_bangunan = 9 THEN 1 ELSE 0 END) as khusus_imb,
+                            SUM(CASE WHEN fungsi_bangunan = 9 THEN 1 ELSE 0 END) as khusus_unit,
+                            SUM(CASE WHEN fungsi_bangunan = 3 THEN 1 ELSE 0 END) as campuran_imb,
+                            SUM(CASE WHEN fungsi_bangunan = 3 THEN 1 ELSE 0 END) as campuran_unit
+                        ')
+                        ->whereBetween('tgl_imb_pecahan', [$startDate, $endDate])
+                            ->groupByRaw('YEAR(tgl_imb_induk), imb_pecahan.kecamatan, imb_pecahan.desa_kelurahan')
+                    )
+                    ->unionAll(
+                        DB::table('imb_perluasan')
+                            ->selectRaw('
+                            YEAR(tgl_imb_perluasan) as tahun,
+                            imb_perluasan.kecamatan,
+                            imb_perluasan.desa_kelurahan,
+                            0 as imb_induk_perumahan, 0 as unit_induk_perumahan,
+                            0 as imb_pecahan, 0 as unit_pecahan,
+                            COUNT(*) as imb_perluasan, COUNT(*) as unit_perluasan,
+                            0 as imb_non_perumahan_perusahaan, 0 as unit_non_perumahan_perusahaan,
+                            0 as imb_non_perumahan_perorangan, 0 as unit_non_perumahan_perorangan,
+                            0 as imb_non_perumahan_sosbud, 0 as unit_non_perumahan_sosbud,
+                            0 as imb_pemutihan, 0 as unit_pemutihan,
+                            0 as imb_bersyarat, 0 as unit_bersyarat,
+                            0 as imb_lainnya, 0 as unit_lainnya,
+                            SUM(CASE WHEN fungsi_bangunan IN (1, 6) THEN 1 ELSE 0 END) as hunian_imb,
+                            SUM(CASE WHEN fungsi_bangunan IN (1, 6) THEN 1 ELSE 0 END) as hunian_unit,
+                            SUM(CASE WHEN fungsi_bangunan = 2 THEN 1 ELSE 0 END) as usaha_imb,
+                            SUM(CASE WHEN fungsi_bangunan = 2 THEN 1 ELSE 0 END) as usaha_unit,
+                            SUM(CASE WHEN fungsi_bangunan IN (4, 5, 7, 8) THEN 1 ELSE 0 END) as sosbud_imb,
+                            SUM(CASE WHEN fungsi_bangunan IN (4, 5, 7, 8) THEN 1 ELSE 0 END) as sosbud_unit,
+                            SUM(CASE WHEN fungsi_bangunan = 9 THEN 1 ELSE 0 END) as khusus_imb,
+                            SUM(CASE WHEN fungsi_bangunan = 9 THEN 1 ELSE 0 END) as khusus_unit,
+                            SUM(CASE WHEN fungsi_bangunan = 3 THEN 1 ELSE 0 END) as campuran_imb,
+                            SUM(CASE WHEN fungsi_bangunan = 3 THEN 1 ELSE 0 END) as campuran_unit
+                        ')
+                        ->whereBetween('tgl_imb_perluasan', [$startDate, $endDate])
+
+                            ->groupByRaw('YEAR(tgl_imb_perluasan), imb_perluasan.kecamatan, imb_perluasan.desa_kelurahan')
+                    )
+                    ->unionAll(
+                        DB::table('imb_induk_non_perum')
+                            ->selectRaw('
+                            YEAR(tgl_imb_induk) as tahun,
+                            imb_induk_non_perum.kecamatan,
+                            imb_induk_non_perum.desa_kelurahan,
+                            0 as imb_induk_perumahan, 0 as unit_induk_perumahan,
+                            0 as imb_pecahan, 0 as unit_pecahan,
+                            0 as imb_perluasan, 0 as unit_perluasan,
+                            SUM(CASE WHEN imb_induk_non_perum.jenis = 1 THEN 1 ELSE 0 END) as imb_non_perumahan_perusahaan,
+                            SUM(CASE WHEN imb_induk_non_perum.jenis = 1 THEN item_imb_induk_non_perum.jumlah_unit ELSE 0 END) as unit_non_perumahan_perusahaan,
+                            SUM(CASE WHEN imb_induk_non_perum.jenis = 2 THEN 1 ELSE 0 END) as imb_non_perumahan_perorangan,
+                            SUM(CASE WHEN imb_induk_non_perum.jenis = 2 THEN item_imb_induk_non_perum.jumlah_unit ELSE 0 END) as unit_non_perumahan_perorangan,
+                            SUM(CASE WHEN imb_induk_non_perum.jenis = 3 THEN 1 ELSE 0 END) as imb_non_perumahan_sosbud,
+                            SUM(CASE WHEN imb_induk_non_perum.jenis = 3 THEN item_imb_induk_non_perum.jumlah_unit ELSE 0 END) as unit_non_perumahan_sosbud,
+                            SUM(CASE WHEN imb_induk_non_perum.jenis = 4 THEN 1 ELSE 0 END) as imb_pemutihan,
+                            SUM(CASE WHEN imb_induk_non_perum.jenis = 4 THEN item_imb_induk_non_perum.jumlah_unit ELSE 0 END) as unit_pemutihan,
+                            SUM(CASE WHEN imb_induk_non_perum.jenis = 5 THEN 1 ELSE 0 END) as imb_bersyarat,
+                            SUM(CASE WHEN imb_induk_non_perum.jenis = 5 THEN item_imb_induk_non_perum.jumlah_unit ELSE 0 END) as unit_bersyarat,
+                            SUM(CASE WHEN imb_induk_non_perum.jenis NOT IN (1, 2, 3, 4, 5) THEN 1 ELSE 0 END) as imb_lainnya,
+                            SUM(CASE WHEN imb_induk_non_perum.jenis NOT IN (1, 2, 3, 4, 5) THEN item_imb_induk_non_perum.jumlah_unit ELSE 0 END) as unit_lainnya,
+                            SUM(CASE WHEN item_imb_induk_non_perum.fungsi_bangunan IN (1, 6) THEN 1 ELSE 0 END) as hunian_imb,
+                            SUM(CASE WHEN item_imb_induk_non_perum.fungsi_bangunan IN (1, 6) THEN item_imb_induk_non_perum.jumlah_unit ELSE 0 END) as hunian_unit,
+                            SUM(CASE WHEN item_imb_induk_non_perum.fungsi_bangunan = 2 THEN 1 ELSE 0 END) as usaha_imb,
+                            SUM(CASE WHEN item_imb_induk_non_perum.fungsi_bangunan = 2 THEN item_imb_induk_non_perum.jumlah_unit ELSE 0 END) as usaha_unit,
+                            SUM(CASE WHEN item_imb_induk_non_perum.fungsi_bangunan IN (4, 5, 7, 8) THEN 1 ELSE 0 END) as sosbud_imb,
+                            SUM(CASE WHEN item_imb_induk_non_perum.fungsi_bangunan IN (4, 5, 7, 8) THEN item_imb_induk_non_perum.jumlah_unit ELSE 0 END) as sosbud_unit,
+                            SUM(CASE WHEN item_imb_induk_non_perum.fungsi_bangunan = 9 THEN 1 ELSE 0 END) as khusus_imb,
+                            SUM(CASE WHEN item_imb_induk_non_perum.fungsi_bangunan = 9 THEN item_imb_induk_non_perum.jumlah_unit ELSE 0 END) as khusus_unit,
+                            SUM(CASE WHEN item_imb_induk_non_perum.fungsi_bangunan = 3 THEN 1 ELSE 0 END) as campuran_imb,
+                            SUM(CASE WHEN item_imb_induk_non_perum.fungsi_bangunan = 3 THEN item_imb_induk_non_perum.jumlah_unit ELSE 0 END) as campuran_unit
+                        ')
+                            ->leftJoin('item_imb_induk_non_perum', 'imb_induk_non_perum.id', '=', 'item_imb_induk_non_perum.induk_perum_id')
+                        ->whereBetween('tgl_imb_induk', [$startDate, $endDate])
+
+                            ->groupByRaw('YEAR(tgl_imb_induk), imb_induk_non_perum.kecamatan, imb_induk_non_perum.desa_kelurahan')
+                    );
+            })
+                ->selectRaw('
+                tahun,
+                kecamatan,
+                desa_kelurahan,
+                SUM(imb_induk_perumahan) as imb_induk_perumahan,
+                SUM(unit_induk_perumahan) as unit_induk_perumahan,
+                SUM(imb_pecahan) as imb_pecahan,
+                SUM(unit_pecahan) as unit_pecahan,
+                SUM(imb_perluasan) as imb_perluasan,
+                SUM(unit_perluasan) as unit_perluasan,
+                SUM(imb_non_perumahan_perusahaan) as imb_non_perumahan_perusahaan,
+                SUM(unit_non_perumahan_perusahaan) as unit_non_perumahan_perusahaan,
+                SUM(imb_non_perumahan_perorangan) as imb_non_perumahan_perorangan,
+                SUM(unit_non_perumahan_perorangan) as unit_non_perumahan_perorangan,
+                SUM(imb_non_perumahan_sosbud) as imb_non_perumahan_sosbud,
+                SUM(unit_non_perumahan_sosbud) as unit_non_perumahan_sosbud,
+                SUM(imb_pemutihan) as imb_pemutihan,
+                SUM(unit_pemutihan) as unit_pemutihan,
+                SUM(imb_bersyarat) as imb_bersyarat,
+                SUM(unit_bersyarat) as unit_bersyarat,
+                SUM(imb_lainnya) as imb_lainnya,
+                SUM(unit_lainnya) as unit_lainnya,
+                SUM(hunian_imb) as hunian_imb,
+                SUM(hunian_unit) as hunian_unit,
+                SUM(usaha_imb) as usaha_imb,
+                SUM(usaha_unit) as usaha_unit,
+                SUM(sosbud_imb) as sosbud_imb,
+                SUM(sosbud_unit) as sosbud_unit,
+                SUM(khusus_imb) as khusus_imb,
+                SUM(khusus_unit) as khusus_unit,
+                SUM(campuran_imb) as campuran_imb,
+                SUM(campuran_unit) as campuran_unit
+            ')
+                ->groupBy('tahun', 'kecamatan', 'desa_kelurahan')
+                ->orderBy('tahun', 'DESC')
+                ->get();
+
+    }
+        return view('rekap.rekap-imb-pertahun.rekap-unit-fungsi-dan-lokasi', compact('data'));
+    }
 
 
 
@@ -1622,7 +1989,7 @@ class RekapController extends Controller
     public function RekapSuratPertahun()
     {
         $data = DB::table('dbsimpol.surat')
-        ->selectRaw('
+            ->selectRaw('
             tahun AS TAHUN,
             COUNT(*) AS BERKAS_MASUK,
             COUNT(*) AS JUMLAH_SURAT,
@@ -1651,9 +2018,9 @@ class RekapController extends Controller
                 WHEN jenisSurat = "format-4" AND kabupaten != "1104" THEN 1 ELSE 0
             END) AS LINTAS
         ')
-        ->groupBy('tahun')
-        ->orderBy('tahun')
-        ->get();
+            ->groupBy('tahun')
+            ->orderBy('tahun')
+            ->get();
 
         return view('rekap.rekap-sk-imbg.rekap-sk-imbg-pertahun', compact('data'));
     }

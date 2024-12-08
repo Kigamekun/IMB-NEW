@@ -105,7 +105,7 @@
         .info-table td {
             text-align: left;
             border: none;
-            padding: 4px 8px;
+            padding: 2px 2px 2px ;
             vertical-align: top;
             line-height: .8;
         }
@@ -141,7 +141,7 @@
         .info-tables td {
             text-align: left;
             border: none;
-            padding: 4px 8px;
+            padding: 2px 2px 2px ;
             vertical-align: top;
             line-height: .8;
         }
@@ -190,6 +190,13 @@
 
         table td {
             line-height:1 !important;
+        }
+        ul.custom-list {
+        list-style-type: none;
+        }
+        ul.custom-list li::before {
+            content: "-";
+            margin-left: 10px;
         }
     </style>
 </head>
@@ -242,12 +249,13 @@
 
     <div class="content" style="margin-left: 65px">
         <h3>A. DASAR</h3>
-        <ol style="margin-top:-15px">
-            <li>Peraturan Bupati Nomor 63 tahun 2013 Tentang Izin Mendirikan Bangunan Gedung BAB VII
-                Penggantian IMBG Hilang
-                Atau Rusak, Legalisasi dan Pemutakhiran.
+        <ul style="margin-top:-15px; margin-left:10px;" class="custom-list">
+            <li>
+                <p style="margin-top:-15px; margin-left:27px">Peraturan Bupati Nomor 63 tahun 2013 Tentang Izin Mendirikan Bangunan Gedung BAB VII
+                    Penggantian IMBG Hilang
+                    Atau Rusak, Legalisasi dan Pemutakhiran.</p>
             </li>
-        </ol>
+        </ul>
         <h3>B. MEMPERHATIKAN</h3>
         <ol style="margin-top:-15px">
             <li>
@@ -256,7 +264,7 @@
                     dari:
                     <table class="info-tables">
                         <tr>
-                            <td style="width: 200px">Nama &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td style="width: 200px">Nama &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                             <td style="width: 5px">:</td>
                             <td class="bold-text"><b>{{ $pemohon['nama'] }}</b></td>
                         </tr>
@@ -268,7 +276,7 @@
                         <tr>
                             <td>Alamat</td>
                             <td>:</td>
-                            <td style="line-height:100%;">
+                            <td style="line-height:16px !important;  " >
                                 {{ $pemohon['alamat'] }}, Desa/Kelurahan
                                 {{ $pemohon['kelurahanPemohon'] }}, Kecamatan
                                 {{ $pemohon['kecamatanPemohon'] }},
@@ -283,15 +291,15 @@
             </li>
 
 
-            <li>Hasil pengecekan pada buku Izin Mendirikan Bangunan yang ada pada Dinas Perumahan Kawasan Permukiman dan
+            <li style="margin-top:10px !important; margin-bottom:15px !important;">Hasil pengecekan pada buku Izin Mendirikan Bangunan yang ada pada Dinas Perumahan Kawasan Permukiman dan
                 Pertanahan Kabupaten Bogor, dengan ini dapat disampaikan:</li>
 
 
             <div>
                 <table class="info-tables">
                     <tr>
-                        <td style="width: 200px">Izin Mendirikan Bangunan Atas Nama</td>
-                        <td style="width: 5px">:</td>
+                        <td style="width: 200px">Izin Mendirikan Bangunan Atas Nama &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td style="width: 1px">:</td>
                         <td class="bold-text">
                             <b>{{ $referensi['izin_mendirikan_bangunan_atas_nama'] }}</b>
                         </td>
@@ -304,7 +312,7 @@
                     <tr>
                         <td>Lokasi</td>
                         <td>:</td>
-                        <td style="line-height:18px;">
+                        <td style="line-height:16px !important; " >
                             {{ $referensi['lokasi'] != null || $referensi['lokasi'] != '' ? $referensi['lokasi'] . ',' : '' }}
 
 
@@ -321,6 +329,21 @@
                                 (d/h. {{ $referensi['kabupaten-terdahulu'] }})
                             @endif
                         </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
 
                     <tr>
@@ -393,13 +416,13 @@
                 </table>
             </div>
         </ol>
-        <ol start="3">
+        <ol start="3" >
             <li>{{ $keterangan[0] }}</li>
         </ol>
         <p>
             {{ $keterangan[1] }}
         </p>
-        <p>
+        <p style="margin-top:20px; margin-bottom:20px">
             {{ $keterangan[2] }}
         </p>
         @if (count($keterangan) > 3)
@@ -411,7 +434,7 @@
         @endif
         <p>Demikian disampaikan untuk diketahui dan dipergunakan sebagaimana mestinya.</p>
     </div>
-    <div style="float: right">
+    <div style="float: right; margin-top:-15px">
         <div class="signature-section" style="width: 250px;text-align:left">
             <p class="signature-title" style="text-align:left">{{ $penandatangan['jabatan'] }} Perumahan, Kawasan
                 Permukiman dan

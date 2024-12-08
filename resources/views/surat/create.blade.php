@@ -181,7 +181,7 @@
                                 <div style="display: none" id="format-4-tujuan">
                                     <label for="jenisKegiatan" class="form-label">Jenis Kegiatan:</label>
                                     <select id="jenisKegiatan" name="jenisKegiatan"
-                                        class="form-select form-control select2">
+                                        class="form-select form-control select2" style="width:100%;">
                                         <option value="">--- PILIH ---</option>
                                         @foreach (DB::table('app_md_jeniskeg')->get() as $jenis_keg)
                                             <option value="{{ $jenis_keg->name_jeniskeg }}">{{ $jenis_keg->name_jeniskeg }}
@@ -386,7 +386,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div class="d-flex justify-content-end">
+                                <div class="d-flex justify-content-end" >
                                     <button type="button" id="add-detail" class="btn btn-success">Tambah Detail</button>
                                 </div>
                             </div>
@@ -420,10 +420,11 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div class="d-flex justify-content-end">
+                                <div class="d-flex justify-content-end"  >
                                     <button type="button" id="add-detail-2" class="btn btn-success">Tambah
                                         Detail</button>
                                 </div>
+                                <br />
                             </div>
                             <button type="button" id="preview-surat" class="btn btn-primary">Preview Surat</button>
                             <button type="button" id="submit-surat" class="btn btn-success" style="margin-left: 10px; margin-right:10px" >Simpan dan Cetak</button>

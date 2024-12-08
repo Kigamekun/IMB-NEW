@@ -39,20 +39,7 @@
                     </div>
                     <br />
                     <div class="table-responsive py-3">
-                        @php
-                        $totalJumlahIMB = 0;
-                        $totalIndukPerumahan = 0;
-                        $totalPecahan = 0;
-                        $totalPerluasan = 0;
-                        $totalNonPerusahaan = 0;
-                        $totalPerorangan = 0;
-                        $totalSosbud = 0;
-                        $totalPemutihan = 0;
-                        $totalBersyarat = 0;
-                        $totalLainnya = 0;
-                    @endphp
-
-                    <table class="table table-bordered" style="width: 100% !important;border-bottom:none !important;"
+                                <table class="table table-bordered" style="width: 100% !important;border-bottom:none !important;"
                     id="IMBTable">
                         <thead>
                             <tr>
@@ -86,34 +73,22 @@
                                     <td>{{ $row->imb_bersyarat }}</td>
                                     <td>{{ $row->imb_lainnya }}</td>
                                 </tr>
-                                @php
-                                    $totalJumlahIMB += $row->jumlah_imb;
-                                    $totalIndukPerumahan += $row->imb_induk_perumahan;
-                                    $totalPecahan += $row->imb_pecahan;
-                                    $totalPerluasan += $row->imb_perluasan;
-                                    $totalNonPerusahaan += $row->imb_non_perusahaan;
-                                    $totalPerorangan += $row->imb_perorangan;
-                                    $totalSosbud += $row->imb_sosbud;
-                                    $totalPemutihan += $row->imb_pemutihan;
-                                    $totalBersyarat += $row->imb_bersyarat;
-                                    $totalLainnya += $row->imb_lainnya;
-                                @endphp
                             @endforeach
                         </tbody>
                         <tfoot>
                             <tr>
                                 <td><strong>Total</strong></td>
                                 <td></td>
-                                <td><strong>{{ $totalJumlahIMB }}</strong></td>
-                                <td><strong>{{ $totalIndukPerumahan }}</strong></td>
-                                <td><strong>{{ $totalPecahan }}</strong></td>
-                                <td><strong>{{ $totalPerluasan }}</strong></td>
-                                <td><strong>{{ $totalNonPerusahaan }}</strong></td>
-                                <td><strong>{{ $totalPerorangan }}</strong></td>
-                                <td><strong>{{ $totalSosbud }}</strong></td>
-                                <td><strong>{{ $totalPemutihan }}</strong></td>
-                                <td><strong>{{ $totalBersyarat }}</strong></td>
-                                <td><strong>{{ $totalLainnya }}</strong></td>
+                                <td></td>
+                                <td></td>
+                                <td><strong></strong></td>
+                                <td><strong></strong></td>
+                                <td><strong></strong></td>
+                                <td><strong></strong></td>
+                                <td><strong></strong></td>
+                                <td><strong></strong></td>
+                                <td><strong></strong></td>
+                                <td><strong></strong></td>
                             </tr>
                         </tfoot>
                     </table>
@@ -175,7 +150,47 @@
                         extend: 'print',
                         title: '',
                     }
-                ]
+                ],
+            footerCallback: function(row, data, start, end, display) {
+                // Initialize totals for each column
+                let totalJumlahIMB = 0;
+                let totalIndukPerumahan = 0;
+                let totalPecahan = 0;
+                let totalPerluasan = 0;
+                let totalNonPerusahaan = 0;
+                let totalPerorangan = 0;
+                let totalSosbud = 0;
+                let totalPemutihan = 0;
+                let totalBersyarat = 0;
+                let totalLainnya = 0;
+
+                // Iterate through visible rows to calculate totals
+                display.forEach(function(idx) {
+                    const rowData = data[idx];
+                    totalJumlahIMB += parseFloat(rowData[2]) || 0;
+                    totalIndukPerumahan += parseFloat(rowData[3]) || 0;
+                    totalPecahan += parseFloat(rowData[4]) || 0;
+                    totalPerluasan += parseFloat(rowData[5]) || 0;
+                    totalNonPerusahaan += parseFloat(rowData[6]) || 0;
+                    totalPerorangan += parseFloat(rowData[7]) || 0;
+                    totalSosbud += parseFloat(rowData[8]) || 0;
+                    totalPemutihan += parseFloat(rowData[9]) || 0;
+                    totalBersyarat += parseFloat(rowData[10]) || 0;
+                    totalLainnya += parseFloat(rowData[11]) || 0;
+                });
+
+                // Update footer with totals
+                $(row).find('td').eq(2).html(`<strong>${totalJumlahIMB.toLocaleString()}</strong>`);
+                $(row).find('td').eq(3).html(`<strong>${totalIndukPerumahan.toLocaleString()}</strong>`);
+                $(row).find('td').eq(4).html(`<strong>${totalPecahan.toLocaleString()}</strong>`);
+                $(row).find('td').eq(5).html(`<strong>${totalPerluasan.toLocaleString()}</strong>`);
+                $(row).find('td').eq(6).html(`<strong>${totalNonPerusahaan.toLocaleString()}</strong>`);
+                $(row).find('td').eq(7).html(`<strong>${totalPerorangan.toLocaleString()}</strong>`);
+                $(row).find('td').eq(8).html(`<strong>${totalSosbud.toLocaleString()}</strong>`);
+                $(row).find('td').eq(9).html(`<strong>${totalPemutihan.toLocaleString()}</strong>`);
+                $(row).find('td').eq(10).html(`<strong>${totalBersyarat.toLocaleString()}</strong>`);
+                $(row).find('td').eq(11).html(`<strong>${totalLainnya.toLocaleString()}</strong>`);
+            }
             });
         });
 

@@ -16,99 +16,75 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.bootstrap5.css">
 
 
-    <div class="py-12">
-        <div style="width: 90%;margin:auto">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5 rounded">
-                <div class="p-6 text-gray-900">
-                    <h3 class="text-3xl font-bold">REKAP LOKASI DETAIL</h3>
-                    <br />
-                    <div class="mb-4">
-                        <form id="filterForm" class="form-inline">
-                            <div style="display:flex;flex-wrap:wrap;gap:10px;">
-                                <div>
-                                    <input type="number" id="startYear" class="form-control" placeholder="Tahun Awal" />
-                                </div>
-                                <div>
-                                    <input type="number" id="endYear" class="form-control" placeholder="Tahun Akhir" />
-                                </div>
-                                <div>
-                                    <select name="" value="" class="form-control" id="kecamatan">
-                                        <option value="" hidden>Pilih kecamatan</option>
-                                        @foreach ($data as $index => $row)
-                                        <option value="{{ DB::table('master_district')->where('code',$row->kecamatan)->first()->name }}">{{ DB::table('master_district')->where('code',$row->kecamatan)->first()->name }}</option>
-                                      @endforeach
-                                    </select>
-                                </div>
-                                <div>
-                                    <select name="" value="" class="form-control" id="kelurahan">
-                                        <option value="" hidden>Pilih kelurahan</option>
-                                        @foreach ($data as $index => $row)
-                                        <option value="{{ DB::table('master_subdistrict')->where('code',$row->desa_kelurahan)->first()->name }}">{{ DB::table('master_subdistrict')->where('code',$row->desa_kelurahan)->first()->name }}</option>
-                                      @endforeach
-                                    </select>
-                                </div>
-                                <div>
-                                    <button type="button" id="filterButton" class="btn btn-primary">Filter</button>
-                                    <button type="button" id="resetButton" class="btn btn-secondary">Reset</button>
-                                </div>
+
+<div class="py-12">
+    <div style="width: 90%;margin:auto">
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5 rounded">
+            <div class="p-6 text-gray-900">
+                <h3 class="text-3xl font-bold">REKAP LOKASI PERTAHUN</h3>
+                <br />
+                <div class="mb-4">
+                    <form method="GET" action="{{ route('rekap.RekapLokasiPertahun') }}">
+                        <div style="display:flex;gap:10px;">
+                            <div>
+                                <input type="number" name="year" id="year" class="form-control" placeholder="Tahun" value="{{ request('year') }}" />
                             </div>
-                        </form>
-                    </div>
-                    <br />
+                            <div>
+                                <button type="submit" class="btn btn-primary">Filter</button>
+                                <a href="{{ route('rekap.RekapLokasiPertahun') }}" class="btn btn-secondary">Reset</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <br />
+
+                @if (!empty($data) && count($data) > 0)
                     <div class="table-responsive py-3">
-                        <table class="table table-bordered" style="width: 100% !important;border-bottom:none !important;"
-                            id="IMBTable">
+                        <table class="table table-bordered" style="width: 100% !important;" id="IMBTable">
                             <thead>
                                 <tr>
                                     <th rowspan="2">NO</th>
                                     <th rowspan="2">KAB/KOTA</th>
                                     <th rowspan="2">KECAMATAN</th>
                                     <th rowspan="2">DESA/KEL</th>
-                                    <th rowspan="2">TAHUN</th>
                                     <th rowspan="2">JUMLAH IMB</th>
                                     <th colspan="9" style="text-align: center">JENIS IMB</th>
                                 </tr>
                                 <tr>
-                                    <th >INDUK PERUMAHAN</th>
-                                    <th >PECAHAN</th>
-                                    <th >PERLUASAN</th>
-                                    <th >INDUK NON PERUMAHAN (PERUSAHAAN)</th>
-                                    <th >INDUK NON PERUMAHAN (PERORANGAN)</th>
-                                    <th >INDUK NON PERUMAHAN (SOSIAL DAN BUDAYA)</th>
-                                    <th >PEMUTIHAN</th>
-                                    <th >BERSYARAT</th>
-                                    <th >LAINNYA</th>
-
+                                    <th>INDUK PERUMAHAN</th>
+                                    <th>PECAHAN</th>
+                                    <th>PERLUASAN</th>
+                                    <th>INDUK NON PERUMAHAN (PERUSAHAAN)</th>
+                                    <th>INDUK NON PERUMAHAN (PERORANGAN)</th>
+                                    <th>INDUK NON PERUMAHAN (SOSIAL DAN BUDAYA)</th>
+                                    <th>PEMUTIHAN</th>
+                                    <th>BERSYARAT</th>
+                                    <th>LAINNYA</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($data as $index => $row)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ 'BOGOR' }}</td> {{-- Sesuaikan jika data kabupaten tersedia --}}
+                                        <td>{{ DB::table('master_district')->where('code', $row->kecamatan)->value('name') }}</td>
+                                        <td>{{ DB::table('master_subdistrict')->where('code', $row->desa_kelurahan)->value('name') }}</td>
+                                        <td>{{ $row->jumlah_imb }}</td>
+                                        <td>{{ $row->imb_induk_perum }}</td>
+                                        <td>{{ $row->imb_pecahan }}</td>
+                                        <td>{{ $row->imb_perluasan }}</td>
+                                        <td>{{ $row->imb_non_perusahaan }}</td>
+                                        <td>{{ $row->imb_non_perorangan }}</td>
+                                        <td>{{ $row->imb_non_sosial_budaya }}</td>
+                                        <td>{{ $row->imb_pemutihan }}</td>
+                                        <td>{{ $row->imb_bersyarat }}</td>
+                                        <td>{{ $row->imb_lainnya }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                            <tfoot>
                                 <tr>
-                                    <td>{{ $index + 1 }}</td>
-                                    <td>{{ 'BOGOR' }}</td> {{-- Sesuaikan jika data kabupaten tersedia --}}
-                                    <td>{{
-                                        DB::table('master_district')->where('code',$row->kecamatan)->first()->name
-                                        }}</td>
-                                        <td>{{
-                                        DB::table('master_subdistrict')->where('code',$row->desa_kelurahan)->first()->name
-
-                                        }}</td>
-                                    <td>{{ $row->tahun }}</td>
-                                    <td>{{ $row->jumlah_imb }}</td>
-                                    <td>{{ $row->imb_induk_perum }}</td>
-                                    <td>{{ $row->imb_pecahan }}</td>
-                                    <td>{{ $row->imb_perluasan }}</td>
-                                    <td>{{ $row->imb_non_perusahaan }}</td>
-                                    <td>{{ $row->imb_non_perorangan }}</td>
-                                    <td>{{ $row->imb_non_sosial_budaya }}</td>
-                                    <td>{{ $row->imb_pemutihan }}</td>
-                                    <td>{{ $row->imb_bersyarat }}</td>
-                                    <td>{{ $row->imb_lainnya }}</td>
-                                </tr>
-                            @endforeach
-                            </tbody><tfoot>
-                                <tr>
-                                    <th colspan="5" style="text-align: left;">Total:</th>
+                                    <th colspan="4" style="text-align: left;">Total:</th>
                                     <th id="totalJumlahIMB">0</th>
                                     <th id="totalIndukPerumahan">0</th>
                                     <th id="totalPecahan">0</th>
@@ -123,11 +99,13 @@
                             </tfoot>
                         </table>
                     </div>
-                </div>
-
+                @else
+                    <p class="text-center">Silakan pilih tahun untuk melihat data.</p>
+                @endif
             </div>
         </div>
     </div>
+</div>
 @endsection
 
 
@@ -177,8 +155,7 @@
                     let totalLainnya = 0;
 
                     // Hitung total dari kolom tertentu
-                    display.forEach(function(idx) {
-                        const rowData = data[idx]
+                    data.forEach(function(rowData) {
                         totalJumlahIMB += parseFloat(rowData[5]) || 0;
                         totalIndukPerumahan += parseFloat(rowData[6]) || 0;
                         totalPecahan += parseFloat(rowData[7]) || 0;

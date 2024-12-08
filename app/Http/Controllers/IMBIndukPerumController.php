@@ -22,6 +22,7 @@ class IMBIndukPerumController extends Controller
                 ->join('master_district', 'imb_induk_perum.kecamatan', '=', 'master_district.code')
                 ->join('master_subdistrict', 'imb_induk_perum.desa_kelurahan', '=', 'master_subdistrict.code')
                 ->select('imb_induk_perum.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan', 'master_district.name as kecamatan', 'master_subdistrict.name as kelurahan')
+                ->orderBy('imb_induk_perum.created_at', 'desc')
                 ->get();
             return Datatables::of($data)
                 ->addColumn('action', function ($row) {
@@ -254,7 +255,7 @@ class IMBIndukPerumController extends Controller
             for ($i = 0; $i < $entryCount; $i++) {
                 $scanImbPath = null;
                 if ($request->hasFile("scan_imb_$i")) {
-                    $scanImbPath = $request->file("scan_imb_$i")->store('scans');
+                    $scanImbPath = $request->file("scan_imb_$i")->store('scans', 'public');
                 }
 
                 $jenisKegiatan = $request->input("jenis_kegiatan_$i");
@@ -340,7 +341,7 @@ class IMBIndukPerumController extends Controller
             for ($i = 0; $i < $entryCount; $i++) {
                 $scanImbPath = null;
                 if ($request->hasFile("scan_imb_$i")) {
-                    $scanImbPath = $request->file("scan_imb_$i")->store('scans');
+                    $scanImbPath = $request->file("scan_imb_$i")->store('scans', 'public');
                     $jenisKegiatan = $request->input("jenis_kegiatan_$i");
                     $jenisKegiatanArray[] = $jenisKegiatan;
 
@@ -422,7 +423,7 @@ class IMBIndukPerumController extends Controller
 
     public function downloadTemplate()
     {
-        $template = public_path('template/IMBIndukPerum.xlsx');
+        $template = public_path('template/imb_induk_perum_contoh.xlsx');
         return response()->download($template);
     }
 

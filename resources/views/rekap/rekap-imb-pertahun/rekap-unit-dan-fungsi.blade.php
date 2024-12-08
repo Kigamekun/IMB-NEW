@@ -15,44 +15,39 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.bootstrap5.css">
 
 
-    <div class="py-12">
-        <div style="width: 90%;margin:auto">
 
 
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5 rounded">
-                <div class="p-6 text-gray-900">
-                    <h3 class="text-3xl font-bold">REKAP UNIT DAN FUNGSI</h3>
-                    <br />
-                    <div class="mb-4">
-                        <form id="filterForm" class="form-inline">
-                            <div style="display:flex;gap:10px;">
-                                <div>
-                                    <input type="number" id="startYear" class="form-control" placeholder="Tahun Awal" />
-                                </div>
-                                <div>
-                                    <input type="number" id="endYear" class="form-control" placeholder="Tahun Akhir" />
-                                </div>
-                                <div>
-                                    <button type="button" id="filterButton" class="btn btn-primary">Filter</button>
-                                    <button type="button" id="resetButton" class="btn btn-secondary">Reset</button>
-                                </div>
+
+<div class="py-12">
+    <div style="width: 90%;margin:auto">
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5 rounded">
+            <div class="p-6 text-gray-900">
+                <h3 class="text-3xl font-bold">REKAP UNIT DAN FUNGSI PERTAHUN</h3>
+                <br />
+                <div class="mb-4">
+                    <form method="GET" action="{{ route('rekap.RekapUnitDanFungsiPertahun') }}">
+                        <div style="display:flex;gap:10px;">
+                            <div>
+                                <input type="number" name="year" id="year" class="form-control" placeholder="Tahun" value="{{ request('year') }}" />
                             </div>
-                        </form>
-                    </div>
-                    <br />
+                            <div>
+                                <button type="submit" class="btn btn-primary">Filter</button>
+                                <a href="{{ route('rekap.RekapUnitDanFungsiPertahun') }}" class="btn btn-secondary">Reset</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <br />
 
+                @if (!empty($data) && count($data) > 0)
                     <div class="table-responsive py-3">
-
-                        <table class="table table-bordered" style="width: 100% !important;border-bottom:none !important;"
-                            id="IMBTable">
-
+                        <table class="table table-bordered" style="width: 100% !important;" id="IMBTable">
                             <thead>
                                 <tr>
                                     <th rowspan="3">NO</th>
-                                    <th rowspan="3">TAHUN</th>
+                                    <th rowspan="3">JENIS IMB</th>
                                     <th rowspan="3">JUMLAH IMB</th>
                                     <th rowspan="3">JUMLAH UNIT</th>
-                                    <th colspan="4" rowspan="2" style="text-align: center;">JENIS IMB</th>
                                     <th colspan="10" style="text-align: center">FUNGSI BANGUNAN</th>
                                 </tr>
                                 <tr>
@@ -63,10 +58,6 @@
                                     <th colspan="2">CAMPURAN</th>
                                 </tr>
                                 <tr>
-                                    <th>INDUK PERUMAHAN</th>
-                                    <th>PECAHAN</th>
-                                    <th>PERLUASAN</th>
-                                    <th>INDUK NON PERUMAHAN</th>
                                     <th>ITEM IMB</th>
                                     <th>UNIT</th>
                                     <th>ITEM IMB</th>
@@ -83,58 +74,49 @@
                                 @foreach ($data as $index => $row)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $row->tahun }}</td>
-                                        <td>{{ $row->imb_induk_perumahan + $row->imb_pecahan + $row->imb_perluasan + $row->imb_non_perumahan }}
-                                        </td>
-                                        <td>
-                                            {{ $row->hunian_unit + $row->usaha_unit + $row->sosbud_unit + $row->khusus_unit + $row->campuran_unit }}
-                                        </td>
-
-                                        <td>{{ $row->imb_induk_perumahan }}</td>
-                                        <td>{{ $row->imb_pecahan }}</td>
-                                        <td>{{ $row->imb_perluasan }} </td>
-                                        <td>{{ $row->imb_non_perumahan }}</td>
-                                        <td>{{ $row->hunian_imb }} </td>
-                                        <td> {{ $row->hunian_unit }}</td>
-                                        <td>{{ $row->usaha_imb }} </td>
-                                        <td> {{ $row->usaha_unit }}</td>
-                                        <td>{{ $row->sosbud_imb }} </td>
-                                        <td> {{ $row->sosbud_unit }}</td>
-                                        <td>{{ $row->khusus_imb }} </td>
-                                        <td> {{ $row->khusus_unit }}</td>
-                                        <td>{{ $row->campuran_imb }} </td>
-                                        <td> {{ $row->campuran_unit }}</td>
+                                        <td>{{ $row->jenis_imb }}</td>
+                                        <td>{{ $row->jumlah_imb }}</td>
+                                        <td>{{ $row->jumlah_unit }}</td>
+                                        <td>{{ $row->hunian_imb }}</td>
+                                        <td>{{ $row->hunian_unit }}</td>
+                                        <td>{{ $row->usaha_imb }}</td>
+                                        <td>{{ $row->usaha_unit }}</td>
+                                        <td>{{ $row->sosial_budaya_imb }}</td>
+                                        <td>{{ $row->sosial_budaya_unit }}</td>
+                                        <td>{{ $row->khusus_imb }}</td>
+                                        <td>{{ $row->khusus_unit }}</td>
+                                        <td>{{ $row->campuran_imb }}</td>
+                                        <td>{{ $row->campuran_unit }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th colspan="2">Total</th>
-                                    <th id="totalJumlahIMB">0</th>
-                                    <th id="totalJumlahUnit">0</th>
-                                    <th id="totalIndukPerumahan">0</th>
-                                    <th id="totalPecahan">0</th>
-                                    <th id="totalPerluasan">0</th>
-                                    <th id="totalIndukNonPerumahan">0</th>
-                                    <th id="totalHunianIMB">0</th>
-                                    <th id="totalHunianUnit">0</th>
-                                    <th id="totalUsahaIMB">0</th>
-                                    <th id="totalUsahaUnit">0</th>
-                                    <th id="totalSosBudIMB">0</th>
-                                    <th id="totalSosBudUnit">0</th>
-                                    <th id="totalKhususIMB">0</th>
-                                    <th id="totalKhususUnit">0</th>
-                                    <th id="totalCampuranIMB">0</th>
-                                    <th id="totalCampuranUnit">0</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                    <th id="totalJumlahIMB"></th>
+                                    <th id="totalJumlahUnit"></th>
+                                    <th id="totalHunianIMB"></th>
+                                    <th id="totalHunianUnit"></th>
+                                    <th id="totalUsahaIMB"></th>
+                                    <th id="totalUsahaUnit"></th>
+                                    <th id="totalSosBudIMB"></th>
+                                    <th id="totalSosBudUnit"></th>
+                                    <th id="totalKhususIMB"></th>
+                                    <th id="totalKhususUnit"></th>
+                                    <th id="totalCampuranIMB"></th>
+                                    <th id="totalCampuranUnit"></th>
                                 </tr>
                             </tfoot>
                         </table>
                     </div>
-                </div>
-
+                @else
+                    <p class="text-center">Silakan pilih tahun untuk melihat data.</p>
+                @endif
             </div>
         </div>
     </div>
+</div>
 @endsection
 
 
@@ -157,34 +139,6 @@
     <script>
         $(document).ready(function() {
            const table = $('#IMBTable').DataTable({
-                dom: 'Bfrtip',
-                buttons: [{
-                        extend: 'copy',
-                        filename: 'Copy_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-')
-                    },
-                    {
-                        extend: 'csv',
-                        filename: 'CSVExport_' + new Date().toISOString().slice(0, 19).replace(/:/g,
-                            '-'),
-                        title: null
-                    },
-                    {
-                        extend: 'excel',
-                        filename: 'ExcelExport_' + new Date().toISOString().slice(0, 19).replace(/:/g,
-                            '-'),
-                        title: null,
-                    },
-                    {
-                        extend: 'pdf',
-                        filename: 'PDFExport_' + new Date().toISOString().slice(0, 19).replace(/:/g,
-                            '-'),
-                        title: null,
-                    },
-                    {
-                        extend: 'print',
-                        title: '',
-                    }
-                ],
                  footerCallback: function(row, data, start, end, display) {
                     // Inisialisasi total untuk setiap kolom
                     let totals = {
@@ -207,8 +161,7 @@
                     };
 
                     // Iterasi melalui data untuk menghitung total
-                    display.forEach(function(idx) {
-                const rowData = data[idx];
+                    data.forEach(function(rowData) {
                         totals.jumlahIMB += parseInt(rowData[2]) || 0;
                         totals.jumlahUnit += parseInt(rowData[3]) || 0;
                         totals.indukPerumahan += parseInt(rowData[4]) || 0;
@@ -244,7 +197,35 @@
                     $('#totalKhususUnit').text(totals.khususUnit);
                     $('#totalCampuranIMB').text(totals.campuranIMB);
                     $('#totalCampuranUnit').text(totals.campuranUnit);
-                }
+                },
+                dom: 'Bfrtip',
+                buttons: [{
+                        extend: 'copy',
+                        filename: 'Copy_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-')
+                    },
+                    {
+                        extend: 'csv',
+                        filename: 'CSVExport_' + new Date().toISOString().slice(0, 19).replace(/:/g,
+                            '-'),
+                        title: null
+                    },
+                    {
+                        extend: 'excel',
+                        filename: 'ExcelExport_' + new Date().toISOString().slice(0, 19).replace(/:/g,
+                            '-'),
+                        title: null,
+                    },
+                    {
+                        extend: 'pdf',
+                        filename: 'PDFExport_' + new Date().toISOString().slice(0, 19).replace(/:/g,
+                            '-'),
+                        title: null,
+                    },
+                    {
+                        extend: 'print',
+                        title: '',
+                    }
+                ]
             });
 
             // Filter button functionality

@@ -147,7 +147,7 @@
         .info-tables td {
             text-align: left;
             border: none;
-            padding: 4px 8px;
+            padding: 2px 2px 2px ;
             vertical-align: top;
             line-height: .8;
         }
@@ -256,15 +256,15 @@
         </ul>
 
         <h3>B. MEMPERHATIKAN</h3>
-        <ol style="margin-top:-10px;">
+        <ol style="margin-top:-15px;">
             <li >
                 <div>
                     Permohonan Surat Keterangan Penerbitan Izin Mendirikan Bangunan (IMB) tanggal {{ $tanggalSurat }},
                     dari:
-                    <table class="info-tables" style="width: 100%; margin-left:-7px; gap:-10px">
+                    <table class="info-tables" style="width: 100%; margin-left:-1px;">
                         <tr>
-                            <td style="width: 250px;">Nama &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                            <td style="width: 5px">:</td>
+                            <td style="width: 250px;">Nama &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td style="width: 2px;">:</td>
                             <td class="bold-text"><b>{{ $pemohon['nama'] }}</b></td>
                         </tr>
                         <tr >
@@ -290,14 +290,14 @@
             </li>
 
 
-            <li>Hasil pengecekan pada buku Izin Mendirikan Bangunan yang ada pada Dinas Perumahan Kawasan Permukiman dan
+            <li style="margin-top: 10px !important">Hasil pengecekan pada buku Izin Mendirikan Bangunan yang ada pada Dinas Perumahan Kawasan Permukiman dan
                 Pertanahan Kabupaten Bogor, dengan ini dapat disampaikan:</li>
 
 
             <div>
-                <table class="info-tables" style="width: 100%; margin-left:-7px">
+                <table class="info-tables" style="width: 100%; margin-left:-1px">
                     <tr>
-                        <td style="width: 200px">Izin Mendirikan Bangunan Atas Nama</td>
+                        <td style="width: 200px">Izin Mendirikan Bangunan Atas Nama &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                         <td style="width: 5px">:</td>
                         <td class="bold-text">
                             <b>{{ $referensi['izin_mendirikan_bangunan_atas_nama'] }}</b>
@@ -372,25 +372,25 @@
                 </table>
             </div>
         </ol>
-        {{-- <ol start="3" style="list-style-type:none">
+        <ol start="3" style="">
             <li>{{ $keterangan[0] }}</li>
-        </ol> --}}
-        <p style="margin-left: 45px; text-indent: 25px">{{ $keterangan[0] }}</p>
-        <p style="margin-left: 45px; text-indent: 25px">
+        </ol>
+        {{-- <p style=" margin-top:10px;">{{ $keterangan[0] }}</p> --}}
+        <p style="margin-left: 28px; ">
             {{ $keterangan[1] }}
         </p>
-        <p style="margin-left: 45px; text-indent: 25px">
+        <p style="margin-left: 28px; line-height:40px !important;">
             {{ $keterangan[2] }}
         </p>
         @if (count($keterangan) > 3)
             @foreach ($keterangan as $index => $ket)
                 @if ($index > 2)
-                    <p style="margin-left: 30px; text-indent: 25px">{{ $ket }}</p>
+                    <p style="margin-left: 28px;">{{ $ket }}</p>
                 @endif
             @endforeach
         @endif
 
-        <p style="margin-left: 45px; text-indent:25px">Demikian disampaikan untuk diketahui dan dipergunakan sebagaimana mestinya.</p>
+        <p style="margin-left: 28px;">Demikian disampaikan untuk diketahui dan dipergunakan sebagaimana mestinya.</p>
     </div>
     <div style="float: right">
         <div class="signature-section" style="width: 250px;text-align:left">

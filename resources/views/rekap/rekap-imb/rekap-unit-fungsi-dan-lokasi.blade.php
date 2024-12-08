@@ -140,7 +140,33 @@
                                 @endforeach
 
                             </tbody>
-
+                            <tfoot>
+                                <tr>
+                                    <th>Total</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th id="total-jumlah-imb"></th>
+                                    <th id="total-jumlah-unit"></th>
+                                    <th id="total-imb-induk-perumahan"></th>
+                                    <th id="total-imb-pecahan"></th>
+                                    <th id="total-imb-perluasan"></th>
+                                    <th id="total-imb-non-perumahan"></th>
+                                    <th id="total-hunian-imb"></th>
+                                    <th id="total-hunian-unit"></th>
+                                    <th id="total-usaha-imb"></th>
+                                    <th id="total-usaha-unit"></th>
+                                    <th id="total-sosbud-imb"></th>
+                                    <th id="total-sosbud-unit"></th>
+                                    <th id="total-khusus-imb"></th>
+                                    <th id="total-khusus-unit"></th>
+                                    <th id="total-campuran-imb"></th>
+                                    <th id="total-campuran-unit"></th>
+                                    <th id="total-imb-khusus"></th>
+                                    <th id="total-unit-khusus"></th>
+                                    <th id="total-imb-campuran"></th>
+                                    <th id="total-unit-campuran"></th>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -177,34 +203,92 @@
             $('#kelurahan').select2()
             const table = $('#IMBTable').DataTable({
                 dom: 'Bfrtip',
-                buttons: [{
+                buttons: [
+                    {
                         extend: 'copy',
                         filename: 'Copy_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-')
                     },
                     {
                         extend: 'csv',
-                        filename: 'CSVExport_' + new Date().toISOString().slice(0, 19).replace(/:/g,
-                            '-'),
+                        filename: 'CSVExport_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-'),
                         title: null
                     },
                     {
                         extend: 'excel',
-                        filename: 'ExcelExport_' + new Date().toISOString().slice(0, 19).replace(/:/g,
-                            '-'),
-                        title: null,
+                        filename: 'ExcelExport_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-'),
+                        title: null
                     },
                     {
                         extend: 'pdf',
-                        filename: 'PDFExport_' + new Date().toISOString().slice(0, 19).replace(/:/g,
-                            '-'),
-                        title: null,
+                        filename: 'PDFExport_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-'),
+                        title: null
                     },
                     {
                         extend: 'print',
-                        title: '',
+                        title: ''
                     }
-                ]
+                ],
+               footerCallback: function(row, data, start, end, display) {
+    // Inisialisasi total untuk setiap kolom
+    let totalJumlahIMB = 0;
+    let totalJumlahUnit = 0;
+    let totalIndukPerumahan = 0;
+    let totalPecahan = 0;
+    let totalPerluasan = 0;
+    let totalNonPerumahan = 0;
+    let totalHunianIMB = 0;
+    let totalHunianUnit = 0;
+    let totalUsahaIMB = 0;
+    let totalUsahaUnit = 0;
+    let totalSosbudIMB = 0;
+    let totalSosbudUnit = 0;
+    let totalKhususIMB = 0;
+    let totalKhususUnit = 0;
+    let totalCampuranIMB = 0;
+    let totalCampuranUnit = 0;
+
+    // Iterasi melalui data untuk menghitung total
+    display.forEach(function(idx) {
+        const rowData = data[idx];
+        totalJumlahIMB += parseFloat(rowData[5]) || 0; // Kolom Jumlah IMB
+        totalJumlahUnit += parseFloat(rowData[6]) || 0; // Kolom Jumlah Unit
+        totalIndukPerumahan += parseFloat(rowData[7]) || 0; // Kolom Induk Perumahan
+        totalPecahan += parseFloat(rowData[8]) || 0; // Kolom Pecahan
+        totalPerluasan += parseFloat(rowData[9]) || 0; // Kolom Perluasan
+        totalNonPerumahan += parseFloat(rowData[10]) || 0; // Kolom Non Perumahan
+        totalHunianIMB += parseFloat(rowData[11]) || 0; // Kolom Hunian IMB
+        totalHunianUnit += parseFloat(rowData[12]) || 0; // Kolom Hunian Unit
+        totalUsahaIMB += parseFloat(rowData[13]) || 0; // Kolom Usaha IMB
+        totalUsahaUnit += parseFloat(rowData[14]) || 0; // Kolom Usaha Unit
+        totalSosbudIMB += parseFloat(rowData[15]) || 0; // Kolom Sosial dan Budaya IMB
+        totalSosbudUnit += parseFloat(rowData[16]) || 0; // Kolom Sosial dan Budaya Unit
+        totalKhususIMB += parseFloat(rowData[17]) || 0; // Kolom Khusus IMB
+        totalKhususUnit += parseFloat(rowData[18]) || 0; // Kolom Khusus Unit
+        totalCampuranIMB += parseFloat(rowData[19]) || 0; // Kolom Campuran IMB
+        totalCampuranUnit += parseFloat(rowData[20]) || 0; // Kolom Campuran Unit
+    });
+
+    // Update elemen footer dengan total nilai
+    $('#total-jumlah-imb').text(totalJumlahIMB);
+    $('#total-jumlah-unit').text(totalJumlahUnit);
+    $('#total-imb-induk-perumahan').text(totalIndukPerumahan);
+    $('#total-imb-pecahan').text(totalPecahan);
+    $('#total-imb-perluasan').text(totalPerluasan);
+    $('#total-imb-non-perumahan').text(totalNonPerumahan);
+    $('#total-hunian-imb').text(totalHunianIMB);
+    $('#total-hunian-unit').text(totalHunianUnit);
+    $('#total-usaha-imb').text(totalUsahaIMB);
+    $('#total-usaha-unit').text(totalUsahaUnit);
+    $('#total-sosbud-imb').text(totalSosbudIMB);
+    $('#total-sosbud-unit').text(totalSosbudUnit);
+    $('#total-khusus-imb').text(totalKhususIMB);
+    $('#total-khusus-unit').text(totalKhususUnit);
+    $('#total-campuran-imb').text(totalCampuranIMB);
+    $('#total-campuran-unit').text(totalCampuranUnit);
+}
+
             });
+
             // Filter button functionality
             $('#filterButton').on('click', function() {
                 const startYear = parseInt($('#startYear').val(), 10);

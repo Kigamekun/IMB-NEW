@@ -12,7 +12,7 @@
                 <div class="p-6 text-gray-900">
                     <h3 class="text-3xl font-bold">Data Rekap</h3>
                     <br />
-                    <div class="mb-4">
+                   <!-- <div class="mb-4">
                         <form id="filterForm" class="form-inline">
                             <div style="display:flex;flex-wrap:wrap;gap:10px;">
                                 <div>
@@ -43,7 +43,7 @@
                                 </div>
                             </div>
                         </form>
-                    </div>
+                    </div> -->
                     <br />
                     <div class="table-responsive py-3">
                         <table class="table table-bordered" style="width: 100% !important;border-bottom:none !important;"

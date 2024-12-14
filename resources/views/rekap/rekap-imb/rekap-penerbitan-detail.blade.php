@@ -49,12 +49,24 @@
                                 <th>Induk Perumahan</th>
                                 <th>Pecahan</th>
                                 <th>Perluasan</th>
+                                <th>Induk Non Perumahan (Perusahaan)</th>
+                                <th>Induk Non Perumahan (Perorangan)</th>
+                                <th>Induk Non Perumahan (Sosial dan Budaya)</th>
+                                <th>Pemutihan</th>
+                                <th>Bersyarat</th>
+                                <th>Lainnya</th>
+                                {{-- <th>No</th>
+                                <th>Tahun</th>
+                                <th>Jumlah IMB</th>
+                                <th>Induk Perumahan</th>
+                                <th>Pecahan</th>
+                                <th>Perluasan</th>
                                 <th>Non Perusahaan</th>
                                 <th>Perorangan</th>
                                 <th>Sosbud</th>
                                 <th>Pemutihan</th>
                                 <th>Bersyarat</th>
-                                <th>Lainnya</th>
+                                <th>Lainnya</th> --}}
                             </tr>
                         </thead>
                         <tbody>

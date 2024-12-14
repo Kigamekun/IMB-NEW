@@ -186,8 +186,9 @@
                     let totalLintas = 0;
 
                     // Iterasi data untuk menghitung total
-                    data.forEach(function(rowData) {
-                        totalBerkasMasuk += parseInt(rowData[2].replace(/,/g, '') || 0);
+                    display.forEach(function(idx) {
+                        const rowData = data[idx]
+                        totalBerkasMasuk += parseInt(rowData[2] || 0);
                         totalJumlahSurat += parseInt(rowData[3].replace(/,/g, '') || 0);
                         totalPemutakhiranData += parseInt(rowData[4].replace(/,/g, '') || 0);
                         totalBalikNama += parseInt(rowData[5].replace(/,/g, '') || 0);
@@ -229,6 +230,8 @@
             $('#resetButton').on('click', function() {
                 $('#startYear').val('');
                 $('#endYear').val('');
+                $('#kecamatan').val('').trigger("change");
+                $('#kelurahan').val('').trigger("change");
                 table.draw(); // Reset and redraw table
             });
 

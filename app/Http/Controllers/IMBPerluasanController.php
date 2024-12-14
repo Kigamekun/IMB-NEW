@@ -36,12 +36,12 @@ class IMBPerluasanController extends Controller
                 })
                 ->editColumn('scan_imb', function ($row) {
                     if ($row->scan_imb) {
-                        return '<a href="' . asset('storage/' . $row->scan_imb) . '" download>'.$row->scan_imb .'</a>';
+                        return '<a href="' . asset('storage/' . $row->scan_imb) . '" download>' . $row->scan_imb . '</a>';
                     } else {
                         return '-';
                     }
                 })
-                ->rawColumns(['action','scan_imb'])
+                ->rawColumns(['action', 'scan_imb'])
                 ->addIndexColumn()
                 ->make(true);
         }

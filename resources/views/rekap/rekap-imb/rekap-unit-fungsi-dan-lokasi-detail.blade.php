@@ -70,7 +70,7 @@
 
                             <thead>
                                 <tr>
-                                    <th rowspan="3">NO</th>
+                                    {{-- <th rowspan="3">NO</th>
                                     <th rowspan="3">KAB/KOTA</th>
                                     <th rowspan="3">KECAMATAN</th>
                                     <th rowspan="3">DESA/KEL</th>
@@ -78,17 +78,31 @@
                                     <th rowspan="3">JUMLAH IMB</th>
                                     <th rowspan="3">JUMLAH UNIT</th>
                                     <th colspan="9" rowspan="2">JENIS IMB</th>
-                                    <th colspan="10">FUNGSI BANGUNAN</th>
+                                    <th colspan="10">FUNGSI BANGUNAN</th> --}}
+                                    <th rowspan="3">No</th>
+                                    <th rowspan="3">Kab/Kota</th>
+                                    <th rowspan="3">Kecamatan</th>
+                                    <th rowspan="3">Desa/Kel</th>
+                                    <th rowspan="3">Tahun</th>
+                                    <th rowspan="3">Jumlah IMB</th>
+                                    <th rowspan="3">Jumlah Unit</th>
+                                    <th colspan="9" rowspan="2">Jenis IMB</th>
+                                    <th colspan="10">Fungsi Bangunan</th>
                                 </tr>
                                 <tr>
-                                    <th colspan="2">HUNIAN</th>
+                                    {{-- <th colspan="2">HUNIAN</th>
                                     <th colspan="2">USAHA</th>
                                     <th colspan="2">SOSIAL DAN BUDAYA</th>
                                     <th colspan="2">KHUSUS</th>
-                                    <th colspan="2">CAMPURAN</th>
+                                    <th colspan="2">CAMPURAN</th> --}}
+                                    <th colspan="2">Hunian</th>
+                                    <th colspan="2">Usaha</th>
+                                    <th colspan="2">Sosial dan Budaya</th>
+                                    <th colspan="2">Khusus</th>
+                                    <th colspan="2">Campuran</th>
                                 </tr>
                                 <tr>
-                                    <th>INDUK PERUMAHAN</th>
+                                    {{-- <th>INDUK PERUMAHAN</th>
                                     <th>PECAHAN</th>
                                     <th>PERLUASAN</th>
                                     <th>INDUK NON PERUMAHAN (PERUSAHAAN)</th>
@@ -97,28 +111,48 @@
                                     <th>PEMUTIHAN</th>
                                     <th>BERSYARAT</th>
                                     <th>LAINNYA</th>
-                                    <th>IMB</th>
+                                    <th>ITEM IMB</th>
                                     <th>UNIT</th>
-                                    <th>IMB</th>
+                                    <th>ITEM IMB</th>
                                     <th>UNIT</th>
-                                    <th>IMB</th>
+                                    <th>ITEM IMB</th>
                                     <th>UNIT</th>
-                                    <th>IMB</th>
+                                    <th>ITEM IMB</th>
                                     <th>UNIT</th>
-                                    <th>IMB</th>
-                                    <th>UNIT</th>
+                                    <th>ITEM IMB</th>
+                                    <th>UNIT</th> --}}
+                                    <th>Induk Perumahan</th>
+                                    <th>Pecahan</th>
+                                    <th>Perluasan</th>
+                                    <th>Induk Non Perumahan (Perusahaan)</th>
+                                    <th>Induk Non Perumahan (Perorangan)</th>
+                                    <th>Induk Non Perumahan (Sosial dan Budaya)</th>
+                                    <th>Pemutihan</th>
+                                    <th>Bersyarat</th>
+                                    <th>Lainnya</th>
+                                    <th>Item IMB</th>
+                                    <th>Unit</th>
+                                    <th>Item IMB</th>
+                                    <th>Unit</th>
+                                    <th>Item IMB</th>
+                                    <th>Unit</th>
+                                    <th>Item IMB</th>
+                                    <th>Unit</th>
+                                    <th>Item IMB</th>
+                                    <th>Unit</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($data as $key => $item)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
-                                        <td>{{ $item->tahun }}</td>
+                                       {{-- <td>{{ $item->tahun }}</td>--}}
                                         <td>{{ 'BOGOR' }}</td> {{-- Sesuaikan jika ada data kabupaten --}}
-                                        <td>{{ DB::table('master_district')->where('code', $row->kecamatan)->first()->name }}
+                                        <td>{{ DB::table('master_district')->where('code', $item->kecamatan)->first()->name }}
                                         </td>
-                                        <td>{{ DB::table('master_subdistrict')->where('code', $row->desa_kelurahan)->first()->name }}
+                                        <td>{{ DB::table('master_subdistrict')->where('code', $item->desa_kelurahan)->first()->name }}
                                         </td>
+                                        <td>{{ $item->tahun }}</td>
                                         <td>
                                             {{ collect([
                                                 $item->imb_induk_perumahan,
@@ -222,6 +256,19 @@
     <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
 
+
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.js"></script>
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/dataTables.buttons.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
@@ -241,11 +288,99 @@
                             '-'),
                         title: null
                     },
-                    {
-                        extend: 'excel',
-                        filename: 'ExcelExport_' + new Date().toISOString().slice(0, 19).replace(/:/g,
-                            '-'),
-                        title: null,
+                {
+                        text: 'Excel',
+                        action: function(e, dt, button, config) {
+                            const workbook = XLSX.utils.book_new();
+                            const sheetData = [
+                                ['NO', 'KAB/KOTA', 'KECAMATAN', 'DESA/KEL', 'TAHUN', 'JUMLAH IMB', 'JUMLAH UNIT', 'JENIS IMB','', '', '', '', '', '', '', '', 'FUNGSI BANGUNAN',]
+                            ];
+                            sheetData.push(['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'HUNIAN', '', 'USAHA', '', 'SOSIAL DAN BUDAYA', '', 'KHUSUS', '', 'CAMPURAN']);
+                            sheetData.push(['', '', '', '', '', '', '', 'INDUK PERUMAHAN', 'PECAHAN', 'PERLUASAN', 'INDUK NON PERUMAHAN (PERUSAHAAN)', 'INDUK NON PERUMAHAN (PERORANGAN)', 'INDUK NON PERUMAHAN (SOSIAL DAN BUDAYA)', 'PEMUTIHAN', 'BERSYARAT', 'LAINNYA', 'ITEM IMB', 'UNIT', 'ITEM IMB', 'UNIT', 'ITEM IMB', 'UNIT', 'ITEM IMB', 'UNIT', 'ITEM IMB', 'UNIT']);
+
+                            const totals = Array(26).fill(0)
+                            dt.rows({
+                                search: 'applied'
+                            }).every(function(rowIdx, tableLoop, rowLoop) {
+                                const rowData = this.data();
+                                sheetData.push([
+                                    rowData[0], // NO
+                                    rowData[1], // KAB/KOTA
+                                    rowData[2], // KECAMATAN
+                                    rowData[3], // DESA/KEL
+                                    rowData[4], // TAHUN
+                                    rowData[5], // JUMLAH IMB
+                                    rowData[6], // JUMLAH UNIT
+                                    rowData[7], // INDUK PERUMAHAN
+                                    rowData[8], // PECAHAN
+                                    rowData[9], // PERLUASAN
+                                    rowData[10], // INDUK NON PERUMAHAN
+                                    rowData[11], // HUNIAN IMB
+                                    rowData[12], // HUNIAN UNIT
+                                    rowData[13], // USAHA IMB
+                                    rowData[14], // USAHA UNIT
+                                    rowData[15], // SOSIAL IMB
+                                    rowData[16], // SOSIAL UNIT
+                                    rowData[17], // KHUSUS IMB
+                                    rowData[18], // KHUSUS UNIT
+                                    rowData[19], // CAMPURAN IMB
+                                    rowData[20], // CAMPURAN UNIT
+                                    rowData[21], // CAMPURAN UNIT
+                                    rowData[22], // CAMPURAN UNIT
+                                    rowData[23], // CAMPURAN UNIT
+                                    rowData[24], // CAMPURAN UNIT
+                                    rowData[25], // CAMPURAN UNIT
+                                ]);
+
+                                // Accumulate totals for numerical columns (from index 2 to 17)
+                                for (let i = 5; i <= 25; i++) {
+                                    totals[i] += parseFloat(rowData[i]) || 0; // Convert to number or default to 0
+                                }
+                            });
+
+                        // Push total row
+                        const totalRow = ['TOTAL', '', "", "", "", ...totals.slice(5)];
+                        sheetData.push(totalRow);
+
+                            const worksheet = XLSX.utils.aoa_to_sheet(sheetData);
+
+                            // Add merge configuration (merging header rows for JENIS IMB and FUNGSI BANGUNAN)
+                            worksheet['!merges'] = [
+                                {
+                                    s: { r: 0, c: 0 }, e: { r: 2, c: 0 }  // Merge NO
+                                },
+                                {
+                                    s: { r: 0, c: 1 }, e: { r: 2, c: 1 }  // Merge KAB/KOTA
+                                },
+                                {
+                                    s: { r: 0, c: 2 }, e: { r: 2, c: 2 }  // Merge KECAMATAN
+                                },
+                                {
+                                    s: { r: 0, c: 3 }, e: { r: 2, c: 3 }  // Merge DESA/KEL
+                                },
+                                {
+                                    s: { r: 0, c: 4 }, e: { r: 2, c: 4 }  // Merge TAHUN
+                                },
+                                {
+                                    s: { r: 0, c: 5 }, e: { r: 2, c: 5 }  // Merge JUMLAH IMB
+                                },
+                                {
+                                    s: { r: 0, c: 6 }, e: { r: 2, c: 6 }  // Merge JUMLAH UNIT
+                                },
+                                {
+                                    s: { r: 0, c: 7 }, e: { r: 1, c: 15 }  // Merge INDUK PERUMAHAN and PECAHAN
+                                },
+                                {
+                                    s: { r: 0, c: 16 }, e: { r: 0, c: 25 } // Merge FUNGSI BANGUNAN (columns 11 to 20)
+                                }
+                            ];
+
+                            // Add worksheet to workbook
+                            XLSX.utils.book_append_sheet(workbook, worksheet, 'REKAP DATA');
+
+                            // Save file
+                            XLSX.writeFile(workbook, 'Export_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-') + '.xlsx');
+                        }
                     },
                     {
                         extend: 'pdf',
@@ -350,11 +485,35 @@
             $('#resetButton').on('click', function() {
                 $('#startYear').val('');
                 $('#endYear').val('');
-                $('#kecamatan').val('');
-                $('#kelurahan').val('');
+                $('#kecamatan').val('').trigger('change');
+                $('#kelurahan').val('').trigger('change');
                 table.draw();
             });
+            // DataTable custom search function for year filtering
+           /* $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                const tahun = parseInt(data[4]) || 0;
+                const tableKec = data[2] || "";
+                const tableKel = data[3] || "";
+                const startYear = parseInt($('#startYear').val(), 10);
+                const endYear = parseInt($('#endYear').val(), 10);
+                const kec = $('#kecamatan').val();
+                const kel = $('#kelurahan').val();
 
+                if (
+                    ((!startYear || tahun >= startYear) &&
+                    (!endYear || tahun <= endYear)) || (kec === tableKec && kel === tableKel)
+                ) {
+                    return true;
+                }
+                 const inYearRange = (!startYear || tahun >= startYear) && (!endYear || tahun <= endYear);
+                 const matchesKecKel = kec === tableKec && kel === tableKel;
+                 if (inYearRange) {
+                   return true; // Data sesuai rentang tahun
+                 } else if (kec && kel && tahun >= (startYear || 0) && tahun <= (endYear || Infinity)) {
+                 return matchesKecKel;
+                }
+                return false;
+            }); */
             // DataTable custom search function for year filtering
             $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
                 const tahun = parseInt(data[4]) || 0;
@@ -365,13 +524,15 @@
                 const kec = $('#kecamatan').val();
                 const kel = $('#kelurahan').val();
 
-                if (
-                    (!startYear || tahun >= startYear) &&
-                    (!endYear || tahun <= endYear) || (kec === tableKec || kel === tableKel)
-                ) {
-                    return true;
-                }
-                return false;
+                // Filter berdasarkan tahun
+                const inYearRange = (!startYear || tahun >= startYear) && (!endYear || tahun <= endYear);
+
+                // Filter berdasarkan kecamatan dan kelurahan
+                const matchesKec = !kec || kec === tableKec; // Jika tidak ada filter kecamatan, maka cocok
+                const matchesKel = !kel || kel === tableKel; // Jika tidak ada filter kelurahan, maka cocok
+
+                // Kembalikan true jika memenuhi salah satu filter
+                return inYearRange && matchesKec && matchesKel;
             });
         });
     </script>

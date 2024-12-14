@@ -85,7 +85,7 @@ class IMBPecahanExport implements ShouldAutoSize,FromCollection, WithCustomStart
         ->get();
 
         $numberedData = $data->map(function ($item, $index) {
-            $item->no = $index + 1; // Start from 1
+            // $item->no = $index + 1; // Start from 1
             return (array) $item;
         });
 

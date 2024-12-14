@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            font-size: {{ $referensi['font_surat'] }}px !important;
+            font-size: {{ $referensi['font_surat'] }}pt !important;
             line-height: 1.5;
             text-align: justify
         }
@@ -68,7 +68,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
-            font-size: {{ $referensi['font_surat'] }}px !important;
+            font-size: {{ $referensi['font_surat'] }}pt !important;
         }
 
         table,
@@ -105,7 +105,9 @@
         .info-table td {
             text-align: left;
             border: none;
-            padding: 2px 2px 2px ;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            padding-left: 8px;
             vertical-align: top;
             line-height: .8;
         }
@@ -202,11 +204,11 @@
 </head>
 
 <body style="width: 700px">
-    <div style="float: right; margin-right:125px">
+    <div style="float: right; margin-right:125px; margin-top:-25px" >
         <p>Cibinong,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2024
         </p>
     </div>
-    <table class="info-table">
+    <table class="info-table" style="  width:250px;">
         <tr>
             <td>Nomor</td>
             <td>:</td>
@@ -225,11 +227,11 @@
         <tr>
             <td>Perihal</td>
             <td>:</td>
-            <td style="line-height: normal">{{ $perihal }}</td>
+            <td style="line-height: 1 !important;">{{ $perihal }}</td>
         </tr>
     </table>
     <!-- Address Section -->
-    <div style="line-height:5px;margin-left:10px">
+    <div style="line-height:5px;margin-left:8px">
         <p>Yth,</p>
         <p><b>{{ $pemohon['sapaanPemohon'] }} {{ $pemohon['nama'] }}</b></p>
         <p>di</p>

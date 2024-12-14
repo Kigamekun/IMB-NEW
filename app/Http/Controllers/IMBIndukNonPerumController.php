@@ -42,7 +42,7 @@ class IMBIndukNonPerumController extends Controller
                             </form>
                         </div>';
                 })
-                ->rawColumns(['action','jenis'])
+                ->rawColumns(['action', 'jenis'])
                 ->addIndexColumn()
                 ->make(true);
         }

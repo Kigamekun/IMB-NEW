@@ -688,7 +688,7 @@ class RekapController extends Controller
         return view('rekap.detail-imb-induk');
     }
 
-   /* public function DetailIMBIndukList(Request $request)
+    public function DetailIMBIndukList(Request $request)
     {
         if ($request->ajax()) {
             // $nama_pengembang = $_GET['nama_pengembang'] ?? null;
@@ -833,158 +833,72 @@ class RekapController extends Controller
         ]);
 
         return view('rekap.detail-imb-induk-list');
-    } */
-    
-    
-    // new function
-    public function DetailIMBIndukList(Request $request)
-    {
-        if ($request->ajax()) {
-            $nama_pengembang = $request->input('nama_pengembang');
-            $nama_perumahan = $request->input('nama_perumahan');
-            $startYear = $request->input('startYear');
-            $endYear = $request->input('endYear');
-    
-            $data = DB::table(function ($query) use ($nama_pengembang, $nama_perumahan, $startYear, $endYear) {
-                $baseQuery = $query->selectRaw('
-                    YEAR(tgl_imb_induk) AS tahun,
-                    nama,
-                    COUNT(*) AS imb_induk_perumahan,
-                    0 AS imb_pecahan,
-                    0 AS imb_perluasan,
-                    0 AS imb_non_perusahaan,
-                    0 AS imb_perorangan,
-                    0 AS imb_sosbud,
-                    0 AS imb_pemutihan,
-                    0 AS imb_bersyarat,
-                    0 AS imb_lainnya
-                ')
-                    ->from('imb_induk_perum');
-    
-                if ($nama_pengembang) {
-                    $baseQuery->where('nama', '=', $nama_pengembang);
-                }
-                if ($nama_perumahan) {
-                    $baseQuery->where('lokasi_perumahan', '=', $nama_perumahan);
-                }
-                if ($startYear && $endYear) {
-                    $baseQuery->whereBetween(DB::raw('YEAR(tgl_imb_induk)'), [$startYear, $endYear]);
-                }
-    
-                $baseQuery->groupByRaw('YEAR(tgl_imb_induk), nama')
-                    ->unionAll(
-                        DB::table('imb_pecahan')
-                            ->selectRaw('
-                                YEAR(tgl_imb_pecahan) AS tahun,
-                                nama,
-                                0 AS imb_induk_perumahan,
-                                COUNT(*) AS imb_pecahan,
-                                0 AS imb_perluasan,
-                                0 AS imb_non_perusahaan,
-                                0 AS imb_perorangan,
-                                0 AS imb_sosbud,
-                                0 AS imb_pemutihan,
-                                0 AS imb_bersyarat,
-                                0 AS imb_lainnya
-                            ')
-                            ->when($nama_pengembang, function ($query) use ($nama_pengembang) {
-                                $query->where('nama', '=', $nama_pengembang);
-                            })
-                            ->when($nama_perumahan, function ($query) use ($nama_perumahan) {
-                                $query->where('lokasi_perumahan', '=', $nama_perumahan);
-                            })
-                            ->when($startYear && $endYear, function ($query) use ($startYear, $endYear) {
-                                $query->whereBetween(DB::raw('YEAR(tgl_imb_pecahan)'), [$startYear, $endYear]);
-                            })
-                            ->groupByRaw('YEAR(tgl_imb_pecahan), nama')
-                    )
-                    ->unionAll(
-                        DB::table('imb_perluasan')
-                            ->selectRaw('
-                                YEAR(tgl_imb_perluasan) AS tahun,
-                                nama,
-                                0 AS imb_induk_perumahan,
-                                0 AS imb_pecahan,
-                                COUNT(*) AS imb_perluasan,
-                                0 AS imb_non_perusahaan,
-                                0 AS imb_perorangan,
-                                0 AS imb_sosbud,
-                                0 AS imb_pemutihan,
-                                0 AS imb_bersyarat,
-                                0 AS imb_lainnya
-                            ')
-                            ->when($nama_pengembang, function ($query) use ($nama_pengembang) {
-                                $query->where('nama', '=', $nama_pengembang);
-                            })
-                            ->when($nama_perumahan, function ($query) use ($nama_perumahan) {
-                                $query->where('lokasi_perumahan', '=', $nama_perumahan);
-                            })
-                            ->when($startYear && $endYear, function ($query) use ($startYear, $endYear) {
-                                $query->whereBetween(DB::raw('YEAR(tgl_imb_perluasan)'), [$startYear, $endYear]);
-                            })
-                            ->groupByRaw('YEAR(tgl_imb_perluasan), nama')
-                    )
-                    ->unionAll(
-                        DB::table('imb_induk_non_perum')
-                            ->selectRaw('
-                                YEAR(tgl_imb_induk) AS tahun,
-                                nama,
-                                0 AS imb_induk_perumahan,
-                                0 AS imb_pecahan,
-                                0 AS imb_perluasan,
-                                COUNT(CASE WHEN jenis = 1 THEN 1 END) AS imb_non_perusahaan,
-                                COUNT(CASE WHEN jenis = 2 THEN 1 END) AS imb_perorangan,
-                                COUNT(CASE WHEN jenis = 3 THEN 1 END) AS imb_sosbud,
-                                COUNT(CASE WHEN jenis = 4 THEN 1 END) AS imb_pemutihan,
-                                COUNT(CASE WHEN jenis = 5 THEN 1 END) AS imb_bersyarat,
-                                COUNT(CASE WHEN jenis NOT IN (1, 2, 3, 4, 5) THEN 1 END) AS imb_lainnya
-                            ')
-                            ->when($nama_pengembang, function ($query) use ($nama_pengembang) {
-                                $query->where('nama', '=', $nama_pengembang);
-                            })
-                            ->when($nama_perumahan, function ($query) use ($nama_perumahan) {
-                                $query->where('lokasi_perumahan', '=', $nama_perumahan);
-                            })
-                            ->when($startYear && $endYear, function ($query) use ($startYear, $endYear) {
-                                $query->whereBetween(DB::raw('YEAR(tgl_imb_induk)'), [$startYear, $endYear]);
-                            })
-                            ->groupByRaw('YEAR(tgl_imb_induk), nama')
-                    );
-            })
-                ->selectRaw('tahun, nama')
-                ->selectRaw('SUM(imb_induk_perumahan) AS imb_induk_perumahan')
-                ->selectRaw('SUM(imb_pecahan) AS imb_pecahan')
-                ->selectRaw('SUM(imb_perluasan) AS imb_perluasan')
-                ->selectRaw('SUM(imb_non_perusahaan) AS imb_non_perusahaan')
-                ->selectRaw('SUM(imb_perorangan) AS imb_perorangan')
-                ->selectRaw('SUM(imb_sosbud) AS imb_sosbud')
-                ->selectRaw('SUM(imb_pemutihan) AS imb_pemutihan')
-                ->selectRaw('SUM(imb_bersyarat) AS imb_bersyarat')
-                ->selectRaw('SUM(imb_lainnya) AS imb_lainnya')
-                ->selectRaw('SUM(imb_induk_perumahan + imb_pecahan + imb_perluasan + imb_non_perusahaan + imb_perorangan + imb_sosbud + imb_pemutihan + imb_bersyarat + imb_lainnya) AS jumlah_imb')
-                ->groupBy('tahun', 'nama')
-                ->orderBy('tahun', 'DESC')
-                ->get();
-    
-            return Datatables::of($data)
-                ->addColumn('NAMA_PENGEMBANG', function ($row) {
-                    return '<a href="' . route('rekap.DetailIMBIndukListNamaPemohon', $row->nama) . '">' . $row->nama . '</a>';
-                })
-                ->rawColumns(['NAMA_PENGEMBANG'])
-                ->addIndexColumn()
-                ->make(true);
-        }
-    
-        $submitType = $request->input('submit_type');
-        $filters = $request->only([
-            'nama_pengembang',
-            'nama_perumahan',
-            'tahun',
-        ]);
-    
-        return view('rekap.detail-imb-induk-list');
     }
 
+    //  public function DetailIMBIndukList(Request $request) {
+    //     if ($request->ajax()) {
+    //         $nama_pengembang = $request->input('nama_pengembang');
+    //         $nama_perumahan = $request->input('nama_perumahan');
+    //         $startYear = $request->input('startYear');
+    //         $endYear = $request->input('endYear');
+
+    //         $data = DB::table(function ($query) use ($nama_pengembang, $nama_perumahan, $startYear, $endYear) {
+    //             $baseQuery = $query->selectRaw('
+    //                 YEAR(tgl_imb_induk) AS tahun,
+    //                 nama,
+    //                 COUNT(*) AS imb_induk_perumahan,
+    //                 0 AS imb_pecahan,
+    //                 0 AS imb_perluasan,
+    //                 0 AS imb_non_perusahaan,
+    //                 0 AS imb_perorangan,
+    //                 0 AS imb_sosbud,
+    //                 0 AS imb_pemutihan,
+    //                 0 AS imb_bersyarat,
+    //                 0 AS imb_lainnya
+    //             ')
+    //             ->from('imb_induk_perum');
+
+    //             if ($nama_pengembang) {
+    //                 $baseQuery->where('nama', '=', $nama_pengembang);
+    //             }
+    //             if ($nama_perumahan) {
+    //                 $baseQuery->where('nama_perumahan', '=', $nama_perumahan);
+    //             }
+    //             if ($startYear) {
+    //                 $baseQuery->whereYear('tgl_imb_induk', '>=', $startYear);
+    //             }
+    //             if ($endYear) {
+    //                 $baseQuery->whereYear('tgl_imb_induk', '<=', $endYear);
+    //             }
+
+    //             $baseQuery->groupByRaw('YEAR(tgl_imb_induk), nama');
+    //         })
+    //         ->selectRaw('tahun, nama')
+    //         ->selectRaw('SUM(imb_induk_perumahan) AS imb_induk_perumahan')
+    //         ->selectRaw('SUM(imb_pecahan) AS imb_pecahan')
+    //         ->selectRaw('SUM(imb_perluasan) AS imb_perluasan')
+    //         ->selectRaw('SUM(imb_non_perusahaan) AS imb_non_perusahaan')
+    //         ->selectRaw('SUM(imb_perorangan) AS imb_perorangan')
+    //         ->selectRaw('SUM(imb_sosbud) AS imb_sosbud')
+    //         ->selectRaw('SUM(imb_pemutihan) AS imb_pemutihan')
+    //         ->selectRaw('SUM(imb_bersyarat) AS imb_bersyarat')
+    //         ->selectRaw('SUM(imb_lainnya) AS imb_lainnya')
+    //         ->selectRaw('SUM(imb_induk_perumahan + imb_pecahan + imb_perluasan + imb_non_perusahaan + imb_perorangan + imb_sosbud + imb_pemutihan + imb_bersyarat + imb_lainnya) AS jumlah_imb')
+    //         ->groupBy('tahun', 'nama')
+    //         ->orderBy('tahun', 'DESC')
+    //         ->get();
+
+    //         return Datatables::of($data)
+    //             ->addColumn('NAMA_PENGEMBANG', function ($row) {
+    //                 return '<a href="' . route('rekap.DetailIMBIndukListNamaPemohon', $row->nama) . '">' . $row->nama . '</a>';
+    //             })
+    //             ->rawColumns(['action', 'NAMA_PENGEMBANG'])
+    //             ->addIndexColumn()
+    //             ->make(true);
+    //     }
+
+    //     return view('rekap.detail-imb-induk-list');
+    // }
 
 
     public function DetailIMBIndukListNamaPemohon(Request $request, $nama_pemohon)

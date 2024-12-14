@@ -52,9 +52,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($data as $item)
+                                @foreach ($data as $key=>$item)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $key+1 }}</td>
                                         <td>
                                             {{ $item->BULAN }}
                                         </td>

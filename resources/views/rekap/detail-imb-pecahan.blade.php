@@ -33,17 +33,25 @@
                                             placeholder="Masukkan IMB Induk...">
                                     </div>
                                 </div>
-
-
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="tahun">Tahun</label>
-                                        <select id="tahun" name="tahun" class="form-control">
+                                        <label for="startYear">Tahun Awal</label>
+                                        <select id="startYear" name="startYear" class="form-control">
                                             <option value="">Pilih Tahun...</option>
                                             <?php
                                             $currentYear = date('Y'); // Tahun sekarang
                                             $startYear = $currentYear - 50; // 50 tahun ke belakang
-
+                                            for ($year = $currentYear; $year >= $startYear; $year--) {
+                                                echo "<option value='$year'>$year</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="endYear">Tahun Akhir</label>
+                                        <select id="endYear" name="endYear" class="form-control">
+                                            <option value="">Pilih Tahun...</option>
+                                            <?php
                                             for ($year = $currentYear; $year >= $startYear; $year--) {
                                                 echo "<option value='$year'>$year</option>";
                                             }
@@ -85,8 +93,15 @@
 
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.js"></script>
     <script>
-        $(document).ready(function() {
+       $(document).ready(function() {
             $('#IMBTable').DataTable();
+            const yearRange = $('#tahun');
+            const yearValue = $('#yearValue');
+
+            // Update nilai di span ketika slider digerakkan
+            yearRange.on('input', function() {
+                yearValue.text($(this).val());
+            });
         });
     </script>
 

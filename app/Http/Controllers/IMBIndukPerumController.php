@@ -446,6 +446,10 @@ class IMBIndukPerumController extends Controller
                     'imb_induk_perum.lokasi_perumahan as lokasi',
                     'master_district.name as kecamatan',
                     'master_subdistrict.name as kelurahan',
+
+
+                    DB::raw("'-' as blok"),
+                    DB::raw("'-' as no_blok"),
                     DB::raw("'induk' as jenis"),
                     // DB::raw("COALESCE(imb_pecahan.blok, imb_perluasan.blok) as blok"),
                     // DB::raw("COALESCE(imb_pecahan.no_blok, imb_perluasan.no_blok) as no_blok")
@@ -473,18 +477,7 @@ class IMBIndukPerumController extends Controller
             if ($request->desa_kelurahan) {
                 $query->where('master_subdistrict.name', 'like', '%' . $request->desa_kelurahan . '%');
             }
-            if ($request->blok) {
-                $query->where(function($query) use ($request) {
-                    $query->where('imb_pecahan.blok', 'like', '%' . $request->blok . '%')
-                          ->orWhere('imb_perluasan.blok', 'like', '%' . $request->blok . '%');
-                });
-            }
-            if ($request->no_blok) {
-                $query->where(function($query) use ($request) {
-                    $query->where('imb_pecahan.no_blok', 'like', '%' . $request->no_blok . '%')
-                          ->orWhere('imb_perluasan.no_blok', 'like', '%' . $request->no_blok . '%');
-                });
-            }
+
             $data = $query->get();
 
             // Fetch IMB Pecahan
@@ -522,10 +515,10 @@ class IMBIndukPerumController extends Controller
                 $imbPecahan->where('imb_pecahan.lokasi_perumahan', 'like', '%' . $request->lokasi . '%');
             }
             if ($request->blok) {
-                $imbPecahan->where('imb_pecahan.blok', 'like', '%' . $request->blok . '%');
+                $imbPecahan->where('blok', 'like', '%' . $request->blok . '%');
             }
             if ($request->no_blok) {
-                $imbPecahan->where('imb_pecahan.no_blok', 'like', '%' . $request->no_blok . '%');
+                $imbPecahan->where('no_blok', 'like', '%' . $request->no_blok . '%');
             }
             if ($request->kecamatan) {
                 $imbPecahan->where('master_district.name', 'like', '%' . $request->kecamatan . '%');
@@ -599,6 +592,8 @@ class IMBIndukPerumController extends Controller
                     'imb_induk_non_perum.lokasi_perumahan as lokasi',
                     'master_district.name as kecamatan',
                     'master_subdistrict.name as kelurahan',
+                    DB::raw("'-' as blok"),
+                    DB::raw("'-' as no_blok"),
                     DB::raw("'non_perum' as jenis")
                 );
 
@@ -726,7 +721,7 @@ class IMBIndukPerumController extends Controller
     //     }
     // }
 
-// public function cariIMB(Request $request)
+    // public function cariIMB(Request $request)
 // {
 //     if ($request->ajax()) {
 //         $filters = [
@@ -741,9 +736,9 @@ class IMBIndukPerumController extends Controller
 //             'desa_kelurahan' => $request->input('desa_kelurahan'),
 //         ];
 
-//         $data = collect();
+    //         $data = collect();
 
-//         // Fetch IMB Induk
+    //         // Fetch IMB Induk
 //         $imbInduk = DB::table('imb_induk_perum')
 //             ->join('app_md_jeniskeg', 'imb_induk_perum.jenis_kegiatan', '=', 'app_md_jeniskeg.id_jeniskeg')
 //             ->join('master_district', 'imb_induk_perum.kecamatan', '=', 'master_district.code')
@@ -765,7 +760,7 @@ class IMBIndukPerumController extends Controller
 //             );
 //             $data = $data->merge($filteredInduk->get());
 
-//         // Fetch IMB Pecahan
+    //         // Fetch IMB Pecahan
 //         $imbPecahan = DB::table('imb_pecahan')
 //             ->join('master_district', 'imb_pecahan.kecamatan', '=', 'master_district.code')
 //             ->join('master_subdistrict', 'imb_pecahan.desa_kelurahan', '=', 'master_subdistrict.code')
@@ -785,7 +780,7 @@ class IMBIndukPerumController extends Controller
 //         $imbPecahan = $this->applyFilters($imbPecahan, $filters);
 //         $data = $data->merge($imbPecahan->get());
 
-//         // Fetch IMB Perluasan
+    //         // Fetch IMB Perluasan
 //         $imbPerluasan = DB::table('imb_perluasan')
 //             ->join('master_district', 'imb_perluasan.kecamatan', '=', 'master_district.code')
 //             ->join('master_subdistrict', 'imb_perluasan.desa_kelurahan', '=', 'master_subdistrict.code')
@@ -805,7 +800,7 @@ class IMBIndukPerumController extends Controller
 //         $imbPerluasan = $this->applyFilters($imbPerluasan, $filters);
 //         $data = $data->merge($imbPerluasan->get());
 
-//         // Fetch IMB Non Perum
+    //         // Fetch IMB Non Perum
 //         $imbNonPerum = DB::table('imb_induk_non_perum')
 //             ->join('app_md_jeniskeg', 'imb_induk_non_perum.jenis_kegiatan', '=', 'app_md_jeniskeg.id_jeniskeg')
 //             ->join('master_district', 'imb_induk_non_perum.kecamatan', '=', 'master_district.code')
@@ -829,7 +824,7 @@ class IMBIndukPerumController extends Controller
 //             );
 //             $data = $data->merge($filteredIndukNonPerum->get());
 
-//         return Datatables::of($data)
+    //         return Datatables::of($data)
 //             ->addColumn('action', function ($row) {
 //                 return '<button class="btn btn-info btn-sm view-details" data-id="' . $row->id . '" data-type="' . $row->jenis . '">Detail</button>';
 //             })
@@ -840,7 +835,7 @@ class IMBIndukPerumController extends Controller
 // }
 
 
-// /**
+    // /**
 //  * Helper function to apply filters to query
 //  */
 // private function applyFilters($query, $filters)
@@ -1138,7 +1133,8 @@ class IMBIndukPerumController extends Controller
                 $items = DB::table('item_imb_induk_perum')
                     ->where('induk_perum_id', $id)
                     ->join('app_md_jeniskeg', 'item_imb_induk_perum.jenis_kegiatan', '=', 'app_md_jeniskeg.id_jeniskeg')
-                    ->select('app_md_jeniskeg.name_jeniskeg as jenis_kegiatan', 'item_imb_induk_perum.fungsi_bangunan', 'item_imb_induk_perum.luas_bangunan', 'item_imb_induk_perum.jumlah_unit', 'item_imb_induk_perum.keterangan', 'item_imb_induk_perum.scan_imb')
+                    ->join('app_md_fungsibang', 'item_imb_induk_perum.jenis_kegiatan', '=', 'app_md_fungsibang.id_fungsibang')
+                    ->select('app_md_jeniskeg.name_jeniskeg as jenis_kegiatan', 'app_md_fungsibang.name_fungsibang as fungsi_bangunan', 'item_imb_induk_perum.luas_bangunan', 'item_imb_induk_perum.jumlah_unit', 'item_imb_induk_perum.keterangan', 'item_imb_induk_perum.scan_imb')
                     ->get();
                 break;
 

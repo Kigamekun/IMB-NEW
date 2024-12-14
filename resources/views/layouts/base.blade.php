@@ -5,6 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>SIMPOL</title>
+    <link rel="icon" href="{{ url('public/assets/img/logo-dpkpp.png') }}">
+
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -1514,7 +1516,7 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
                               <li class="nav-item">
                                   <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.DetailIMBInduk') }}">
                                       <i class="fa fa-square-o"></i>
-                                      <span class="title menu-text">IMB Induk</span>
+                                      <span class="title menu-text">IMB</span>
                                       <span></span>
                                   </a>
                               </li>
@@ -1834,8 +1836,8 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
             <!-- Main content -->
-            <section class="content" style="padding: 40px">
-                <div style="background: white;border-radius:5px;padding:10px;">
+            <section class="content" style="padding: 40px;">
+                <div style="background: white;border-radius:5px;padding:10px; width:100%">
                     @yield('content')
                 </div>
             </section>

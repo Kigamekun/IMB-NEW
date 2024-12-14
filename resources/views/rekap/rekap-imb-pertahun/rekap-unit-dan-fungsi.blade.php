@@ -136,6 +136,19 @@
     <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
 
+
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.js"></script>
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/dataTables.buttons.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
     <script>
         $(document).ready(function() {
            const table = $('#IMBTable').DataTable({
@@ -168,16 +181,16 @@
                         totals.pecahan += parseInt(rowData[5]) || 0;
                         totals.perluasan += parseInt(rowData[6]) || 0;
                         totals.indukNonPerumahan += parseInt(rowData[7]) || 0;
-                        totals.hunianIMB += parseInt(rowData[8]) || 0;
-                        totals.hunianUnit += parseInt(rowData[9]) || 0;
-                        totals.usahaIMB += parseInt(rowData[10]) || 0;
-                        totals.usahaUnit += parseInt(rowData[11]) || 0;
-                        totals.sosBudIMB += parseInt(rowData[12]) || 0;
-                        totals.sosBudUnit += parseInt(rowData[13]) || 0;
-                        totals.khususIMB += parseInt(rowData[14]) || 0;
-                        totals.khususUnit += parseInt(rowData[15]) || 0;
-                        totals.campuranIMB += parseInt(rowData[16]) || 0;
-                        totals.campuranUnit += parseInt(rowData[17]) || 0;
+                        totals.hunianIMB += parseInt(rowData[4]) || 0;
+                        totals.hunianUnit += parseInt(rowData[5]) || 0;
+                        totals.usahaIMB += parseInt(rowData[6]) || 0;
+                        totals.usahaUnit += parseInt(rowData[7]) || 0;
+                        totals.sosBudIMB += parseInt(rowData[8]) || 0;
+                        totals.sosBudUnit += parseInt(rowData[9]) || 0;
+                        totals.khususIMB += parseInt(rowData[10]) || 0;
+                        totals.khususUnit += parseInt(rowData[11]) || 0;
+                        totals.campuranIMB += parseInt(rowData[12]) || 0;
+                        totals.campuranUnit += parseInt(rowData[13]) || 0;
                     });
 
                     // Perbarui elemen footer
@@ -210,10 +223,69 @@
                         title: null
                     },
                     {
-                        extend: 'excel',
-                        filename: 'ExcelExport_' + new Date().toISOString().slice(0, 19).replace(/:/g,
-                            '-'),
-                        title: null,
+                        text: 'Excel',
+                        action: function(e, dt, button, config) {
+                            const workbook = XLSX.utils.book_new();
+                            const sheetData = [
+                                ['NO', 'JENIS IMB', 'JUMLAH IMB', 'JUMLAH UNIT', 'FUNGSI BANGUNAN']
+                            ];
+                            sheetData.push(['', '', '', '', 'HUNIAN', '', 'USAHA', '', 'SOSIAL DAN BUDAYA', '', 'KHUSUS', '', 'CAMPURAN']);
+                            sheetData.push(['', '', '', '', 'ITEM IMB', 'UNIT', 'ITEM IMB', 'UNIT', 'ITEM IMB', 'UNIT', 'ITEM IMB', 'UNIT', 'ITEM IMB', 'UNIT']);
+
+                            const totals = Array(14).fill(0)
+                            dt.rows({
+                                search: 'applied'
+                            }).every(function(rowIdx, tableLoop, rowLoop) {
+                                const rowData = this.data();
+                                sheetData.push([
+                                    rowData[0], // NO
+                                    rowData[1], // KAB/KOTA
+                                    rowData[2], // KECAMATAN
+                                    rowData[3], // DESA/KEL
+                                    rowData[4], // TAHUN
+                                    rowData[5], // JUMLAH IMB
+                                    rowData[6], // JUMLAH UNIT
+                                    rowData[7], // INDUK PERUMAHAN
+                                    rowData[8], // PECAHAN
+                                    rowData[9], // PERLUASAN
+                                    rowData[10], // INDUK NON PERUMAHAN
+                                    rowData[11], // HUNIAN IMB
+                                    rowData[12],
+                                    rowData[13],
+                                ]);
+                    
+                                // Accumulate totals for numerical columns (from index 2 to 17)
+                                for (let i = 2; i <= 13; i++) {
+                                    totals[i] += parseFloat(rowData[i]) || 0; // Convert to number or default to 0
+                                }
+                            });
+                    
+                        // Push total row
+                        const totalRow = ['TOTAL', '', ...totals.slice(2)];
+                        sheetData.push(totalRow);
+
+                            const worksheet = XLSX.utils.aoa_to_sheet(sheetData);
+
+                            // Add merge configuration (merging header rows for JENIS IMB and FUNGSI BANGUNAN)
+                               worksheet['!merges'] = [
+                                { s: { r: 0, c: 0 }, e: { r: 2, c: 0 } }, // Merge NO
+                                { s: { r: 0, c: 1 }, e: { r: 2, c: 1 } }, // Merge JENIS IMB
+                                { s: { r: 0, c: 2 }, e: { r: 2, c: 2 } }, // Merge JUMLAH IMB
+                                { s: { r: 0, c: 3 }, e: { r: 2, c: 3 } }, // Merge JUMLAH UNIT
+                                { s: { r: 0, c: 4 }, e: { r: 0, c: 13 } }, // Merge "FUNGSI BANGUNAN" (columns 4 to 13)
+                                { s: { r: 1, c: 4 }, e: { r: 1, c: 5 } }, // Merge "HUNIAN"
+                                { s: { r: 1, c: 6 }, e: { r: 1, c: 7 } }, // Merge "USAHA"
+                                { s: { r: 1, c: 8 }, e: { r: 1, c: 9 } }, // Merge "SOSIAL DAN BUDAYA"
+                                { s: { r: 1, c: 10 }, e: { r: 1, c: 11 } }, // Merge "KHUSUS"
+                                { s: { r: 1, c: 12 }, e: { r: 1, c: 13 } }  // Merge "CAMPURAN"
+                            ];
+
+                            // Add worksheet to workbook
+                            XLSX.utils.book_append_sheet(workbook, worksheet, 'REKAP DATA');
+
+                            // Save file
+                            XLSX.writeFile(workbook, 'Export_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-') + '.xlsx');
+                        }
                     },
                     {
                         extend: 'pdf',

@@ -11,7 +11,7 @@ class JenisNonPerumController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = \DB::table('master_jenis_non_perum') ->get();
+            $data = \DB::table('master_jenis_non_perum')->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {

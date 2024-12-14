@@ -48,22 +48,33 @@
 
                             <thead>
                                 <tr>
-                                    <th rowspan="3">NO</th>
+                                    <th rowspan="3">No</th>
+                                    <th rowspan="3">Tahun</th>
+                                    <th rowspan="3">Jumlah IMB</th>
+                                    <th rowspan="3">Jumlah Unit</th>
+                                    <th colspan="4" rowspan="2" style="text-align: center;">Jenis IMB</th>
+                                    <th colspan="10" style="text-align: center">Fungsi Bangunan</th>
+                                    {{-- <th rowspan="3">NO</th>
                                     <th rowspan="3">TAHUN</th>
                                     <th rowspan="3">JUMLAH IMB</th>
                                     <th rowspan="3">JUMLAH UNIT</th>
                                     <th colspan="4" rowspan="2" style="text-align: center;">JENIS IMB</th>
-                                    <th colspan="10" style="text-align: center">FUNGSI BANGUNAN</th>
+                                    <th colspan="10" style="text-align: center">FUNGSI BANGUNAN</th> --}}
                                 </tr>
                                 <tr>
-                                    <th colspan="2">HUNIAN</th>
+                                    {{-- <th colspan="2">HUNIAN</th>
                                     <th colspan="2">USAHA</th>
                                     <th colspan="2">SOSIAL DAN BUDAYA</th>
                                     <th colspan="2">KHUSUS</th>
-                                    <th colspan="2">CAMPURAN</th>
+                                    <th colspan="2">CAMPURAN</th> --}}
+                                    <th colspan="2">Hunian</th>
+                                    <th colspan="2">Usaha</th>
+                                    <th colspan="2">Sosial dan Budaya</th>
+                                    <th colspan="2">Khusus</th>
+                                    <th colspan="2">Campuran</th>
                                 </tr>
                                 <tr>
-                                    <th>INDUK PERUMAHAN</th>
+                                    {{-- <th>INDUK PERUMAHAN</th>
                                     <th>PECAHAN</th>
                                     <th>PERLUASAN</th>
                                     <th>INDUK NON PERUMAHAN</th>
@@ -76,7 +87,21 @@
                                     <th>ITEM IMB</th>
                                     <th>UNIT</th>
                                     <th>ITEM IMB</th>
-                                    <th>UNIT</th>
+                                    <th>UNIT</th> --}}
+                                    <th>Induk Perumahan</th>
+                                    <th>Pecahan</th>
+                                    <th>Perluasan</th>
+                                    <th>Induk Non Perumahan</th>
+                                    <th>Item IMB</th>
+                                    <th>Unit</th>
+                                    <th>Item IMB</th>
+                                    <th>Unit</th>
+                                    <th>Item IMB</th>
+                                    <th>Unit</th>
+                                    <th>Item IMB</th>
+                                    <th>Unit</th>
+                                    <th>Item IMB</th>
+                                    <th>Unit</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -153,10 +178,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <script>
         $(document).ready(function() {
-           const table = $('#IMBTable').DataTable({
+            const table = $('#IMBTable').DataTable({
                 dom: 'Bfrtip',
                 buttons: [{
                         extend: 'copy',
@@ -168,11 +195,233 @@
                             '-'),
                         title: null
                     },
+                 /*   {
+                        text: 'Excel',
+                        action: function(e, dt, button, config) {
+                            const workbook = XLSX.utils.book_new();
+                            const sheetData = [
+                                ['NO', 'TAHUN', 'JUMLAH IMB', 'JUMLAH UNIT', 'JENIS IMB', '',
+                                    '', '', 'FUNGSI BANGUNAN',
+                                ]
+                            ];
+                            sheetData.push(['', '', '', '', '', '', '', '', 'HUNIAN', '', 'USAHA',
+                                '', 'SOSIAL DAN BUDAYA', '', 'KHUSUS', '', 'CAMPURAN'
+                            ]);
+                            sheetData.push(['', '', '', '', 'INDUK PERUMAHAN', 'PECAHAN',
+                                'PERLUASAN', 'INDUK NON PERUMAHAN', 'ITEM IMB', 'UNIT',
+                                'ITEM IMB', 'UNIT', 'ITEM IMB', 'UNIT', 'ITEM IMB', 'UNIT',
+                                'ITEM IMB', 'UNIT'
+                            ]);
+
+                            dt.rows({
+                                search: 'applied'
+                            }).every(function(rowIdx, tableLoop, rowLoop) {
+                                const rowData = this.data();
+                                sheetData.push([
+                                    rowData[0], // NO
+                                    rowData[1], // TAHUN
+                                    rowData[2], // JUMLAH IMB
+                                    rowData[3], // JUMLAH UNIT
+                                    rowData[4], // INDUK PERUMAHAN
+                                    rowData[5], // PECAHAN
+                                    rowData[6], // PERLUASAN
+                                    rowData[7], // INDUK NON PERUMAHAN
+                                    rowData[8], // HUNIAN IMB
+                                    rowData[9], // HUNIAN UNIT
+                                    rowData[10], // USAHA IMB
+                                    rowData[11], // USAHA UNIT
+                                    rowData[12], // SOSIAL IMB
+                                    rowData[13], // SOSIAL UNIT
+                                    rowData[14], // KHUSUS IMB
+                                    rowData[15], // KHUSUS UNIT
+                                    rowData[16], // CAMPURAN IMB
+                                    rowData[17], // CAMPURAN UNIT
+                                ]);
+                            });
+
+                            sheetData.push([ 'TOTAL','', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '' ]);
+
+                            const worksheet = XLSX.utils.aoa_to_sheet(sheetData);
+
+                            // Add merge configuration (merging header rows)
+                            worksheet['!merges'] = [{
+                                    s: {
+                                        r: 0,
+                                        c: 0
+                                    },
+                                    e: {
+                                        r: 2,
+                                        c: 0
+                                    }
+                                }, // Merge NO
+                                {
+                                    s: {
+                                        r: 0,
+                                        c: 1
+                                    },
+                                    e: {
+                                        r: 2,
+                                        c: 1
+                                    }
+                                }, // Merge TAHUN
+                                {
+                                    s: {
+                                        r: 0,
+                                        c: 2
+                                    },
+                                    e: {
+                                        r: 2,
+                                        c: 2
+                                    }
+                                }, // Merge JUMLAH IMB
+                                {
+                                    s: {
+                                        r: 0,
+                                        c: 3
+                                    },
+                                    e: {
+                                        r: 2,
+                                        c: 3
+                                    }
+                                }, // Merge JUMLAH UNIT
+                                {
+                                    s: {
+                                        r: 0,
+                                        c: 4
+                                    },
+                                    e: {
+                                        r: 1,
+                                        c: 7
+                                    }
+                                }, // Merge JENIS IMB
+                                {
+                                    s: {
+                                        r: 0,
+                                        c: 8
+                                    },
+                                    e: {
+                                        r: 0,
+                                        c: 17
+                                    }
+                                }, // Merge FUNGSI BANGUNAN
+                            ];
+
+                            // Optional: Adjust column widths
+                            worksheet['!cols'] = [{
+                                    wpx: 50
+                                }, // NO
+                                {
+                                    wpx: 60
+                                }, // TAHUN
+                                {
+                                    wpx: 100
+                                }, // JUMLAH IMB
+                                {
+                                    wpx: 100
+                                }, // JUMLAH UNIT
+                                {
+                                    wpx: 120
+                                }, // INDUK PERUMAHAN
+                                {
+                                    wpx: 120
+                                }, // PECAHAN
+                                {
+                                    wpx: 120
+                                }, // PERLUASAN
+                                {
+                                    wpx: 120
+                                }, // INDUK NON PERUMAHAN
+                                {
+                                    wpx: 80
+                                }, // FUNGSI BANGUNAN
+                            ];
+
+                            // Add worksheet to workbook
+                            XLSX.utils.book_append_sheet(workbook, worksheet, 'REKAP DATA');
+
+                            // Save file
+                            XLSX.writeFile(workbook, 'Export_' + new Date().toISOString().slice(0,
+                                19).replace(/:/g, '-') + '.xlsx');
+                        }
+                    },*/
                     {
-                        extend: 'excel',
-                        filename: 'ExcelExport_' + new Date().toISOString().slice(0, 19).replace(/:/g,
-                            '-'),
-                        title: null,
+                        text: 'Excel',
+                        action: function(e, dt, button, config) {
+                            const workbook = XLSX.utils.book_new();
+                            const sheetData = [
+                                ['NO', 'TAHUN', 'JUMLAH IMB', 'JUMLAH UNIT', 'JENIS IMB', '', '', '', 'FUNGSI BANGUNAN'],
+                                ['', '', '', '', '', '', '', '', 'HUNIAN', '', 'USAHA', '', 'SOSIAL DAN BUDAYA', '', 'KHUSUS', '', 'CAMPURAN'],
+                                ['', '', '', '', 'INDUK PERUMAHAN', 'PECAHAN', 'PERLUASAN', 'INDUK NON PERUMAHAN', 'ITEM IMB', 'UNIT',
+                                    'ITEM IMB', 'UNIT', 'ITEM IMB', 'UNIT', 'ITEM IMB', 'UNIT', 'ITEM IMB', 'UNIT']
+                            ];
+
+                            // Process rows
+                            const totals = Array(18).fill(0); // Initialize totals array
+                            dt.rows({ search: 'applied' }).every(function(rowIdx, tableLoop, rowLoop) {
+                                const rowData = this.data();
+                                const rowToPush = [
+                                    rowData[0], // NO
+                                    rowData[1], // TAHUN
+                                    rowData[2], // JUMLAH IMB
+                                    rowData[3], // JUMLAH UNIT
+                                    rowData[4], // INDUK PERUMAHAN
+                                    rowData[5], // PECAHAN
+                                    rowData[6], // PERLUASAN
+                                    rowData[7], // INDUK NON PERUMAHAN
+                                    rowData[8], // HUNIAN IMB
+                                    rowData[9], // HUNIAN UNIT
+                                    rowData[10], // USAHA IMB
+                                    rowData[11], // USAHA UNIT
+                                    rowData[12], // SOSIAL IMB
+                                    rowData[13], // SOSIAL UNIT
+                                    rowData[14], // KHUSUS IMB
+                                    rowData[15], // KHUSUS UNIT
+                                    rowData[16], // CAMPURAN IMB
+                                    rowData[17]  // CAMPURAN UNIT
+                                ];
+                                sheetData.push(rowToPush);
+
+                                // Accumulate totals for numerical columns (from index 2 to 17)
+                                for (let i = 2; i <= 17; i++) {
+                                    totals[i] += parseFloat(rowData[i]) || 0; // Convert to number or default to 0
+                                }
+                            });
+
+                            // Push total row
+                            const totalRow = ['TOTAL', '', ...totals.slice(2)];
+                            sheetData.push(totalRow);
+
+                            const worksheet = XLSX.utils.aoa_to_sheet(sheetData);
+
+                            // Add merge configuration (merging header rows)
+                            worksheet['!merges'] = [
+                                { s: { r: 0, c: 0 }, e: { r: 2, c: 0 } }, // Merge NO
+                                { s: { r: 0, c: 1 }, e: { r: 2, c: 1 } }, // Merge TAHUN
+                                { s: { r: 0, c: 2 }, e: { r: 2, c: 2 } }, // Merge JUMLAH IMB
+                                { s: { r: 0, c: 3 }, e: { r: 2, c: 3 } }, // Merge JUMLAH UNIT
+                                { s: { r: 0, c: 4 }, e: { r: 1, c: 7 } }, // Merge JENIS IMB
+                                { s: { r: 0, c: 8 }, e: { r: 0, c: 17 } }  // Merge FUNGSI BANGUNAN
+                            ];
+
+                            // Optional: Adjust column widths
+                            worksheet['!cols'] = [
+                                { wpx: 50 }, // NO
+                                { wpx: 60 }, // TAHUN
+                                { wpx: 100 }, // JUMLAH IMB
+                                { wpx: 100 }, // JUMLAH UNIT
+                                { wpx: 120 }, // INDUK PERUMAHAN
+                                { wpx: 120 }, // PECAHAN
+                                { wpx: 120 }, // PERLUASAN
+                                { wpx: 120 }, // INDUK NON PERUMAHAN
+                                { wpx: 80 }  // FUNGSI BANGUNAN
+                            ];
+
+                            // Add worksheet to workbook
+                            XLSX.utils.book_append_sheet(workbook, worksheet, 'REKAP DATA');
+
+                            // Save file
+                            XLSX.writeFile(workbook, 'Export_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-') + '.xlsx');
+                        }
                     },
                     {
                         extend: 'pdf',
@@ -185,7 +434,7 @@
                         title: '',
                     }
                 ],
-                 footerCallback: function(row, data, start, end, display) {
+                footerCallback: function(row, data, start, end, display) {
                     // Inisialisasi total untuk setiap kolom
                     let totals = {
                         jumlahIMB: 0,
@@ -208,7 +457,7 @@
 
                     // Iterasi melalui data untuk menghitung total
                     display.forEach(function(idx) {
-                const rowData = data[idx];
+                        const rowData = data[idx];
                         totals.jumlahIMB += parseInt(rowData[2]) || 0;
                         totals.jumlahUnit += parseInt(rowData[3]) || 0;
                         totals.indukPerumahan += parseInt(rowData[4]) || 0;
@@ -278,6 +527,5 @@
                 return false;
             });
         });
-
     </script>
 @endsection

@@ -34,13 +34,20 @@
                         <table class="table table-bordered" style="width: 100% !important;border-bottom:none !important;" id="IMBTable">
                             <thead>
                                 <tr>
-                                    <th>NO</th>
+                                    <th>No</th>
+                                    <th>Tahun</th>
+                                    <th>Jumlah IMB</th>
+                                    <th>IMB Induk Perumahan</th>
+                                    <th>IMB Pecahan</th>
+                                    <th>IMB Perluasan</th>
+                                    <th>IMB Induk Non Perumahan</th>
+                                    {{-- <th>NO</th>
                                     <th>TAHUN</th>
                                     <th>JUMLAH IMB</th>
                                     <th>IMB INDUK PERUMAHAN</th>
                                     <th>IMB PECAHAN</th>
                                     <th>IMB PERLUASAN</th>
-                                    <th>IMB INDUK NON PERUMAHAN</th>
+                                    <th>IMB INDUK NON PERUMAHAN</th> --}}
                                 </tr>
                             </thead>
                             <tbody>

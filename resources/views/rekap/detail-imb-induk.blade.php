@@ -20,7 +20,7 @@
                 <div class="p-6 text-gray-900">
                     <div class="container">
                         <h1 class="text-left">Rekap Register IMB Per Tahun</h1>
-                        <h4 class="text-left">Detail IMB Induk</h4>
+                        <h4 class="text-left">Detail IMB </h4>
                         <br>
                         <form id="rekapForm" method="GET" action="{{ route('rekap.DetailIMBIndukList') }}">
                             <div class="row">
@@ -31,7 +31,7 @@
                                             class="form-control" placeholder="Masukkan nama pengembang...">
                                     </div>
                                 </div>
-                                <div class="col-md-6 ">
+                                <div class="col-md-6">
 
                                     <div class="form-group">
                                         <label for="nama_perumahan">Nama Perumahan</label>
@@ -39,23 +39,34 @@
                                             placeholder="Masukkan nama perumahan...">
                                     </div>
                                 </div>
-
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="tahun">Tahun</label>
-                                        <select id="tahun" name="tahun" class="form-control">
+                                        <label for="startYear">Tahun Awal</label>
+                                        <select id="startYear" name="startYear" class="form-control">
                                             <option value="">Pilih Tahun...</option>
                                             <?php
                                             $currentYear = date('Y'); // Tahun sekarang
                                             $startYear = $currentYear - 50; // 50 tahun ke belakang
-
                                             for ($year = $currentYear; $year >= $startYear; $year--) {
                                                 echo "<option value='$year'>$year</option>";
                                             }
                                             ?>
                                         </select>
                                     </div>
-                                </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="endYear">Tahun Akhir</label>
+                                        <select id="endYear" name="endYear" class="form-control">
+                                            <option value="">Pilih Tahun...</option>
+                                            <?php
+                                            for ($year = $currentYear; $year >= $startYear; $year--) {
+                                                echo "<option value='$year'>$year</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                   </div>
 
                             </div>
                             <br>
@@ -65,7 +76,7 @@
                                 <div class="col-md-12">
                                     <button type="submit" name="submit_type" value="induk"
                                         class="btn btn-primary btn-block">
-                                        Detail IMB Induk
+                                        Detail IMB
                                     </button>
                                 </div>
                             </div>
@@ -92,8 +103,41 @@
     <script>
         $(document).ready(function() {
             $('#IMBTable').DataTable();
+            const yearRange = $('#tahun');
+            const yearValue = $('#yearValue');
+
+            // Update nilai di span ketika slider digerakkan
+            yearRange.on('input', function() {
+                yearValue.text($(this).val());
+            });
         });
     </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const startYearSelect = document.getElementById('startYear');
+            const endYearSelect = document.getElementById('endYear');
+
+            startYearSelect.addEventListener('change', function () {
+                const startYear = parseInt(startYearSelect.value);
+                const options = endYearSelect.options;
+
+                // Reset endYear options
+                for (let i = 0; i < options.length; i++) {
+                    const optionYear = parseInt(options[i].value);
+                    if (!isNaN(optionYear)) {
+                        options[i].disabled = optionYear < startYear;
+                    }
+                }
+
+                // Reset selected value if it no longer matches
+                if (parseInt(endYearSelect.value) < startYear) {
+                    endYearSelect.value = '';
+                }
+            });
+        });
+    </script>
+
 
     <script>
         function sendAction(type) {

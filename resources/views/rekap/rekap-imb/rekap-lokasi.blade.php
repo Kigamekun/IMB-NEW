@@ -176,13 +176,12 @@
             $('#resetButton').on('click', function() {
                 $('#startYear').val('');
                 $('#endYear').val('');
-                $('#kecamatan').val('');
-                $('#kelurahan').val('');
+                $('#kecamatan').val('').trigger('change');
+                $('#kelurahan').val('').trigger('change');
                 table.draw();
             });
-
             // DataTable custom search function for year filtering
-            $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+            /*$.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
                 const tahun = parseInt(data[4]) || 0;
                 const tableKec = data[2] || "";
                 const tableKel = data[3] || "";
@@ -192,12 +191,37 @@
                 const kel = $('#kelurahan').val();
 
                 if (
-                    (!startYear || tahun >= startYear) &&
-                    (!endYear || tahun <= endYear) || (kec === tableKec || kel === tableKel)
+                    ((!startYear || tahun >= startYear) &&
+                    (!endYear || tahun <= endYear)) || (kec === tableKec && kel === tableKel)
                 ) {
                     return true;
                 }
+                 const inYearRange = (!startYear || tahun >= startYear) && (!endYear || tahun <= endYear);
+                 const matchesKecKel = kec === tableKec && kel === tableKel;
+                 if (inYearRange && (kec === tableKec && kel === tableKel)) {
+                   return true; // Data sesuai rentang tahun
+                 }
                 return false;
+            });*/
+            // DataTable custom search function for year filtering
+            $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                const tahun = parseInt(data[4]) || 0;
+                const tableKec = data[2] || "";
+                const tableKel = data[3] || "";
+                const startYear = parseInt($('#startYear').val(), 10);
+                const endYear = parseInt($('#endYear').val(), 10);
+                const kec = $('#kecamatan').val();
+                const kel = $('#kelurahan').val();
+            
+                // Filter berdasarkan tahun
+                const inYearRange = (!startYear || tahun >= startYear) && (!endYear || tahun <= endYear);
+                
+                // Filter berdasarkan kecamatan dan kelurahan
+                const matchesKec = !kec || kec === tableKec; // Jika tidak ada filter kecamatan, maka cocok
+                const matchesKel = !kel || kel === tableKel; // Jika tidak ada filter kelurahan, maka cocok
+            
+                // Kembalikan true jika memenuhi salah satu filter
+                return inYearRange && matchesKec && matchesKel;
             });
         });
 

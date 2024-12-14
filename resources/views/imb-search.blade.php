@@ -115,11 +115,12 @@
     </style>
     <div class="container">
         <div class="header-logo">
-            <img style="width: 300px" src="{{ asset('assets/img/logo-dpkpp.png') }}" alt="">
+            <img style="width: 300px" src="{{ asset('assets/img/logo-dpkpp.png') }}" alt="Logo DPKPP">
         </div>
         <div class="card">
             <div class="card-header text-center">
-                <h5>Pencarian Surat & IMB</h5>
+                {{-- <h5>Pencarian Surat & IMB</h5> --}}
+                <h5>Pencarian {{ request()->get('tab') === 'imb' ? 'IMB' : 'Surat' }}</h5>
             </div>
             <div class="card-body">
                 <nav>
@@ -162,6 +163,7 @@
                                     placeholder="Masukkan Kelurahan Pemohon">
                             </div>
                             <button type="submit" class="btn btn-custom">Cari Surat</button>
+                            <button id="previous-page-surat" class="btn btn-warning">Kembali</button>
                         </form>
                     </div>
                     <div class="tab-pane fade" id="nav-imb" role="tabpanel" aria-labelledby="nav-imb-tab">
@@ -217,6 +219,7 @@
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-custom">Cari IMB</button>
+                            <button id="previous-page-imb" class="btn btn-warning">Kembali</button>
                         </form>
 
                     </div>
@@ -241,6 +244,7 @@
                             <th>No Register</th>
                             <th>No IMBG</th>
                             <th>Lokasi Bangunan</th>
+
                             <th>Kecamatan</th>
                             <th>Kelurahan</th>
                             <th>Jenis</th>
@@ -263,9 +267,9 @@
                             <th>Atas Nama</th>
                             <th>No. IMB</th>
                             <th>Tgl IMB</th>
-                            {{-- <th>Blok</th>
-                            <th>No. Blok</th> --}}
                             <th>Lokasi</th>
+                            <th>Blok</th>
+                            <th>No. Blok</th>
                             <th>Kecamatan</th>
                             <th>Desa/Kelurahan</th>
                             <th>Aksi</th>
@@ -300,11 +304,11 @@
                                         </tr>
                                         <tr>
                                             <th>Blok</th>
-                                            <td id="blok"></td>
+                                            <td id="blokPreview"></td>
                                         </tr>
                                         <tr>
                                             <th>No. Blok</th>
-                                            <td id="noBlok"></td>
+                                            <td id="noBlokPreview"></td>
                                         </tr>
                                         <tr>
                                             <th>Jenis Kegiatan</th>
@@ -336,6 +340,15 @@
 
 
     <script>
+        document.getElementById('previous-page-surat').addEventListener('click', function(event) {
+            event.preventDefault();
+                window.history.back();
+            });
+
+            document.getElementById('previous-page-imb').addEventListener('click', function(event) {
+                event.preventDefault();
+                window.history.back();
+        });
         $(document).ready(function() {
             // Tampilkan card surat secara default
             // $('#cardSurat').show();
@@ -434,8 +447,8 @@
                     { data: 'no_imb' },
                     { data: 'tgl_imb' },
                     { data: 'lokasi' },
-                    // { data: 'blok' },
-                    // { data: 'noBlok' },
+                    { data: 'blok' },
+                    { data: 'no_blok' },
                     // { data: 'pecahan_blok', name: 'imb_pecahan.blok' }, // Updated to match the new field
                     // { data: 'pecahan_no_blok', name: 'imb_pecahan.no_blok' }, // Updated to match the new field
                     // { data: 'perluasan_blok', name: 'imb_perluasan.blok' }, // Updated to match the new field
@@ -491,8 +504,8 @@
                         $('#nomorImb').text(data.imb.nomor_imb || '-');
                         $('#noRegister').text(data.imb.no_register || '-');
                         $('#tglRegister').text(data.imb.tgl_register || '-');
-                        $('#blok').text(data.imb.blok || '-');
-                        $('#noBlok').text(data.imb.no_blok || '-');
+                        $('#blokPreview').text(data.imb.blok || '-');
+                        $('#noBlokPreview').text(data.imb.no_blok || '-');
                         $('#jenisKegiatan').text(data.imb.jenis_kegiatan || '-');
                         $('#jenisImb').text(data.imb.jenis_imb || '-');
 

@@ -19,14 +19,61 @@ class SuratController extends Controller
     {
         if ($request->ajax()) {
 
-            $query = \DB::table('surat');
-        if ($request->has('nomor_surat')) {
-            $query->where('nomorSurat', 'like', '%' . $request->input('nomor_surat') . '%');
-        }
+            // $query = \DB::table('surat');
+            $query = \DB::table('surat')
+                ->leftJoin('master_regency', 'surat.kabupaten', '=', 'master_regency.code') // Join ke master_regency
+                ->leftJoin('master_district', 'surat.kecamatan', '=', 'master_district.code') // Join ke master_district
+                ->leftJoin('master_subdistrict', 'surat.kelurahan', '=', 'master_subdistrict.code') // Join ke master_subdistrict
+                ->select(
+                    'surat.*',
+                    'master_regency.name as nama_kabupaten',
+                    'master_district.name as nama_kecamatan',
+                    'master_subdistrict.name as nama_kelurahan'
+                );
+            // if ($request->has('nomor_surat')) {
+            //     $query->where('nomorSurat', 'like', '%' . $request->input('nomor_surat') . '%');
+            // }
 
-        if ($request->has('nama_pemohon')) {
-            $query->where('nama', 'like', '%' . $request->input('nama_pemohon') . '%');
-        }
+            // if ($request->has('nama_pemohon')) {
+            //     $query->where('nama', 'like', '%' . $request->input('nama_pemohon') . '%');
+            // }
+
+            // $query = \DB::table('surat')
+            //     ->leftJoin('master_district', 'surat.kecamatan', '=', 'master_district.code') // Join ke master_district
+            //     ->leftJoin('master_subdistrict', 'surat.kelurahan', '=', 'master_subdistrict.code') // Join ke master_subdistrict
+            //     ->select(
+            //         'surat.*',
+            //         'master_district.name as nama_kecamatan',
+            //         'master_subdistrict.name as nama_kelurahan'
+            //     );
+
+            // Filter berdasarkan input dari request
+            if ($request->has('nomor_surat')) {
+                $query->where('surat.nomorSurat', 'like', '%' . $request->input('nomor_surat') . '%');
+            }
+
+            if ($request->has('nama_pemohon')) {
+                $query->where('surat.nama', 'like', '%' . $request->input('nama_pemohon') . '%');
+            }
+
+            if ($request->has('nomor_imbg')) {
+                $query->where('surat.imbgNomor', 'like', '%' . $request->input('nomor_imbg') . '%');
+            }
+
+            if ($request->has('lokasi_bangunan')) {
+                $query->where('surat.lokasi', 'like', '%' . $request->input('lokasi_bangunan') . '%');
+            }
+            if ($request->has('kabupaten_pemohon')) {
+                $query->where('master_regency.name', 'like', '%' . $request->input('kabupaten_pemohon') . '%');
+            }
+
+            if ($request->has('kecamatan_pemohon')) {
+                $query->where('master_district.name', 'like', '%' . $request->input('kecamatan_pemohon') . '%');
+            }
+
+            if ($request->has('kelurahan_pemohon')) {
+                $query->where('master_subdistrict.name', 'like', '%' . $request->input('kelurahan_pemohon') . '%');
+            }
 
 
             $query = $query->orderBy('id', 'desc')->get();
@@ -46,40 +93,51 @@ class SuratController extends Controller
                                     data-toggle="modal" data-target="#uploadSuratModal">
                                     <i class="fas fa-upload"></i>
                                 </button>
-                            </div>
-                            <div class="d-flex align-items-center" style="display:flex;gap:5px; width: 50%;">
-                                <a href="' . route('surat.lihat', $row->id) . '" onclick="window.open(this.href, \'_blank\', \'width=800,height=600\'); return false;" class="btn btn-primary btn-sm" title="Lihat">
+                                 <a href="' . route('surat.lihat', $row->id) . '" onclick="window.open(this.href, \'_blank\', \'width=800,height=600\'); return false;" class="btn btn-primary btn-sm" title="Lihat">
                                     <i class="fas fa-eye"></i>
-                                </a>
+                                </a>';
 
+                                // Tombol Lihat Table hanya akan muncul jika jenisSurat bukan format-1 dan format-4
+                                if ($showLihatTable) {
+                                    $actions .= '
+
+                                            <a href="' . route('surat.lihatTable', $row->id) . '" onclick="window.open(this.href, \'_blank\', \'width=800,height=600\'); return false;" class="btn btn-primary btn-sm" title="Lihat Table">
+                                                <i class="fa fa-table"></i>
+                                            </a>
+                                     ';
+                                }
+                            $actions .= '
                                 <button type="button" data-url="' . route('surat.update_nomor', $row->id) . '" class="btn btn-warning btn-sm text-white updateNomorModal" title="Update Nomor"
                                     data-toggle="modal" data-target="#updateNomorModal">
                                     <i class="fas fa-envelope"></i>
                                 </button>
-                            </div>
-                            <div class="d-flex align-items-center" style="display:flex;gap:5px; width: 50%;">
                                 <a class="btn btn-warning btn-sm text-white" href="' . route('surat.edit', $row->id) . '">
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 <form action="' . route('surat.destroy', $row->id) . '" method="POST" style="display:inline;">
                                     ' . csrf_field() . method_field('DELETE') . '
-                                    <button type="submit" class="btn btn-danger btn-sm" title="Hapus" onclick="confirmDelete(event)">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
+                                        <button type="submit" class="btn btn-danger btn-sm" title="Hapus" onclick="confirmDelete(event)">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
                                 </form>
-                            </div>';
+                                </div>'
+
+                                ;
+
+
+                            ;
 
                     // Tombol Lihat Table hanya akan muncul jika jenisSurat bukan format-1 dan format-4
-                    if ($showLihatTable) {
-                        $actions .= '
-                            <div class="d-flex align-items-center" style="gap:5px; width: 50%;">
-                                <a href="' . route('surat.lihatTable', $row->id) . '" onclick="window.open(this.href, \'_blank\', \'width=800,height=600\'); return false;" class="btn btn-primary btn-sm" title="Lihat Table">
-                                    <i class="fa fa-table"></i>
-                                </a>
-                            </div>';
-                    }
+                    // if ($showLihatTable) {
+                    //     $actions .= '
+                    //         <div class="d-flex align-items-center" style="gap:5px; width: 50%;">
+                    //             <a href="' . route('surat.lihatTable', $row->id) . '" onclick="window.open(this.href, \'_blank\', \'width=800,height=600\'); return false;" class="btn btn-primary btn-sm" title="Lihat Table">
+                    //                 <i class="fa fa-table"></i>
+                    //             </a>
+                    //         </div>';
+                    // }
 
-                    $actions .= '</div>'; // Menutup div utama actions
+                    // $actions .= '</div>'; // Menutup div utama actions
 
                     return $actions;
                 })
@@ -87,6 +145,15 @@ class SuratController extends Controller
                     return $row->upload ?
                         '<span class="badge badge-success">Sudah</span>' :
                         '<span class="badge badge-danger">Belum</span>';
+                })
+                ->editColumn('nama_kecamatan', function ($row) {
+                    return ucwords(strtolower($row->nama_kecamatan));
+                })
+                ->editColumn('nama_kecamatan', function ($row) {
+                    return ucwords(strtolower($row->nama_kecamatan));
+                })
+                ->editColumn('nama_kelurahan', function ($row) {
+                    return ucwords(strtolower($row->nama_kelurahan));
                 })
                 ->rawColumns(['action', 'sudah_upload'])
                 ->addIndexColumn()
@@ -211,8 +278,8 @@ class SuratController extends Controller
             'jenisSurat' => 'required',
             'tahun' => 'required',
             'nomorSurat' => 'nullable',
-            'tanggalSurat' => 'required',
-            'lampiran' => 'required',
+            'tanggalSurat' => 'nullable',
+            'lampiran' => 'nullable',
             'sifat' => 'required',
             'perihal' => 'required',
             'permohonanTanggal' => 'required',
@@ -1147,6 +1214,8 @@ class SuratController extends Controller
             'details' => 'nullable|array',
             'details2' => 'nullable|array',
             'registerNomor' => 'required',
+            'imbgNomor' => 'required',
+            'imbgTanggal' => 'required',
             'registerTanggal' => 'required',
             'provinsiPemohon' => 'required',
             'kabupatenPemohon' => 'required',
@@ -1172,6 +1241,8 @@ class SuratController extends Controller
                 'sifat' => $validated['sifat'],
                 'perihal' => $validated['perihal'],
                 'registerNomor' => $validated['registerNomor'],
+                'imbgNomor' => $validated['imbgNomor'],
+                'imbgTanggal' => $validated['imbgTanggal'],
                 'registerTanggal' => $validated['registerTanggal'],
                 'permohonanTanggal' => $validated['permohonanTanggal'],
                 'nama' => $validated['nama'],
@@ -1318,8 +1389,10 @@ class SuratController extends Controller
         $tahun = $data['tahun'];
         $nomorSurat = $data['nomorSurat'];
         $tanggalSurat = "$day $month $year";
-        $imbgTanggalConvert = "$dayImb $monthImb $yearImb";
-        $registerTanggalConvert = "$dayRegister $monthRegister $yearRegister";
+        // $imbgTanggalConvert = "$dayImb $monthImb $yearImb";
+        // $registerTanggalConvert = "$dayRegister $monthRegister $yearRegister";
+        $imbgTanggalConvert = ($dayImb == '01' && $monthImb == 'Januari') ? '-' : "$dayImb $monthImb $yearImb";
+        $registerTanggalConvert = ($dayRegister == '01' && $monthRegister == 'Januari') ? '-' : "$dayRegister $monthRegister $yearRegister";
         $lampiran = $data['lampiran'];
         $sifat = $data['sifat'];
         $perihal = $data['perihal'];
@@ -1789,8 +1862,10 @@ class SuratController extends Controller
         $tahun = $data['tahun'];
         $nomorSurat = $data['nomorSurat'];
         $tanggalSurat = "$day $month $year";
-        $imbgTanggalConvert = "$dayImb $monthImb $yearImb";
-        $registerTanggalConvert = "$dayRegister $monthRegister $yearRegister";
+        // $imbgTanggalConvert = "$dayImb $monthImb $yearImb";
+        // $registerTanggalConvert = "$dayRegister $monthRegister $yearRegister";
+        $imbgTanggalConvert = ($dayImb == '01' && $monthImb == 'Januari') ? '-' : "$dayImb $monthImb $yearImb";
+        $registerTanggalConvert = ($dayRegister == '01' && $monthRegister == 'Januari') ? '-' : "$dayRegister $monthRegister $yearRegister";
         $lampiran = $data['lampiran'];
         $sifat = $data['sifat'];
         $perihal = $data['perihal'];

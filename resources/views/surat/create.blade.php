@@ -6,10 +6,10 @@
 @endsection
 
 @section('content')
-    <div class="py-12">
-        <div style="width: 100%;margin:auto">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5 rounded">
-                <div class="container">
+    <div class="py-12" style="width: 100%;">
+        <div style="width: 100%; margin:auto;">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5 rounded" style="width: 100%; ">
+                <div class="container" style="width: 100%; ">
                     <form id="suratForm" action="{{ route('surat.store') }}" method="POST" class="form-container">
                         @csrf
                         <div class="section-title"><h3>JENIS SURAT</h3></div>
@@ -25,32 +25,32 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="tahun" class="form-label">Tahun:</label>
-                                <input type="text" id="tahun" name="tahun" class="form-control" value="2024"
+                                <input type="text" id="tahun" name="tahun" class="form-control" value="{{ date('Y') }}"
                                     readonly>
                             </div>
                             <div class="col-md-4">
                                 <label for="nomorSurat" class="form-label">Nomor Surat:</label>
-                                <input type="text" id="nomorSurat" name="nomorSurat" class="form-control" value="-"
+                                <input type="text" id="nomorSurat" name="nomorSurat" class="form-control" value=""
                                     readonly>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-4">
                                 <label for="tanggalSurat" class="form-label">Tanggal Surat:</label>
                                 <input type="date" id="tanggalSurat" name="tanggalSurat" class="form-control"
-                                    value="2024-10-29">
+                                    value="" readonly>
                             </div>
                             <div class="col-md-4">
                                 <label for="lampiran" class="form-label">Lampiran:</label>
-                                <input type="text" id="lampiran" name="lampiran" class="form-control" value="-">
+                                <input type="text" id="lampiran" name="lampiran" class="form-control" value="">
                             </div>
                             <div class="col-md-4">
                                 <label for="sifat" class="form-label">Sifat:</label>
                                 <input type="text" id="sifat" name="sifat" class="form-control" value="Biasa">
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="perihal" class="form-label">Perihal:</label>
+                        <div class="mb-3" style="margin-top: 10px">
+                            <label for="perihal" class="form-label">hal:</label>
                             <textarea id="perihal" name="perihal" class="form-control" style="height: 100px" rows="2">Keterangan Izin Mendirikan Bangunan (IMBG)</textarea>
                         </div>
                         <div class="section-title"><h3>PEMOHON</h3></div>
@@ -181,7 +181,7 @@
                                 <div style="display: none" id="format-4-tujuan">
                                     <label for="jenisKegiatan" class="form-label">Jenis Kegiatan:</label>
                                     <select id="jenisKegiatan" name="jenisKegiatan"
-                                        class="form-select form-control select2" style="width:100%;">
+                                        class="form-select form-control select2" style="width: 100%" >
                                         <option value="">--- PILIH ---</option>
                                         @foreach (DB::table('app_md_jeniskeg')->get() as $jenis_keg)
                                             <option value="{{ $jenis_keg->name_jeniskeg }}">{{ $jenis_keg->name_jeniskeg }}
@@ -329,7 +329,9 @@
                         <div class="section-title"><h3>SETTING SURAT</h3></div>
                         <label for="fontSize" class="form-label">Font Size:</label>
 
-                        <input type="text" id="font_surat" name="font_surat" value="11" class="form-control">
+                        {{-- <input type="text" id="font_surat" name="font_surat" onchange="updateFontSize()" class="form-control"> --}}
+                        <input type="text" id="font_surat" name="font_surat" class="form-control">
+
 
 
                         <br>
@@ -464,6 +466,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
 
     <script>
+        function updateFontSize() {
+            const jenisSurat = document.getElementById('jenisSurat').value;
+            const fontSurat = document.getElementById('font_surat');
+            if (jenisSurat === 'format-1' || jenisSurat === 'format-4') {
+                fontSurat.value = '11';
+            } else if (jenisSurat === 'format-2' || jenisSurat === 'format-3') {
+                fontSurat.value = '8';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateFontSize(); // Set initial value based on the default selected option
+            document.getElementById('jenisSurat').addEventListener('change', updateFontSize); // Update value when jenisSurat changes
+        });
         // Function to add a new "Keterangan"
         document.getElementById('addKeteranganButton').addEventListener('click', function() {
             const container = document.getElementById('keteranganContainer');

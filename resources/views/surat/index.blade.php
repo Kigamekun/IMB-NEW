@@ -26,18 +26,41 @@
                         </a>
 
                     </div>
-                    <div class="mt-6" style="display: flex; gap:25px; margin-top:20px" id="form-search">
+                    <div class="mt-6" style="display: grid; gap:25px; margin-top:20px; grid-template-columns: repeat(4, minmax(0, 1fr));" id="form-search">
                         {{-- <button type="submit" class="btn btn-primary" style="height: 35px">Cari Surat</button> --}}
                         <div class="mb-3">
                             {{-- <label for="nomorSurat" class="form-label">Nomor Surat</label> --}}
                             <input type="text" class="form-control" id="nomorSurat" placeholder="Masukkan Nomor Surat">
                         </div>
                         <div class="mb-3">
+                            {{-- <label for="nomorSurat" class="form-label">Nomor Surat</label> --}}
+                            <input type="text" class="form-control" id="nomorIMBG" placeholder="Masukkan Nomor IMB">
+                        </div>
+                        <div class="mb-3">
                             {{-- <label for="namaPemohonSurat" class="form-label">Nama Pemohon</label> --}}
                             <input type="text" class="form-control" id="namaPemohonSurat"
                                 placeholder="Masukkan Nama Pemohon">
                         </div>
-
+                        <div class="mb-3">
+                            {{-- <label for="namaPemohonSurat" class="form-label">Nama Pemohon</label> --}}
+                            <input type="text" class="form-control" id="lokasiPemohonSurat"
+                                placeholder="Masukkan Lokasi Pembangunan ">
+                        </div>
+                        <div class="mb-3">
+                            {{-- <label for="namaPemohonSurat" class="form-label">Nama Pemohon</label> --}}
+                            <input type="text" class="form-control" id="kabupatenPemohonSurat"
+                                placeholder="Masukkan Kabupaten Pemohon">
+                        </div>
+                        <div class="mb-3">
+                            {{-- <label for="namaPemohonSurat" class="form-label">Nama Pemohon</label> --}}
+                            <input type="text" class="form-control" id="kecamatanPemohonSurat"
+                                placeholder="Masukkan Kecamatan Pemohon">
+                        </div>
+                        <div class="mb-3">
+                            {{-- <label for="namaPemohonSurat" class="form-label">Nama Pemohon</label> --}}
+                            <input type="text" class="form-control" id="kelurahanPemohonSurat"
+                                placeholder="Masukkan Kelurahan Pemohon">
+                        </div>
                     </div>
 
                     <br />
@@ -69,7 +92,11 @@
                                     <th>No Register</th>
                                     <th>No IMBG</th>
                                     <th>Lokasi Bangunan</th>
+                                    <th>Kabupaten</th>
+                                    <th>Kecamatan</th>
+                                    <th>Kelurahan</th>
                                     <th>Jenis</th>
+                                    {{-- <th>Status</th> --}}
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -116,6 +143,11 @@
                 data: function(d) {
                     d.nomor_surat = $('#nomorSurat').val();
                     d.nama_pemohon = $('#namaPemohonSurat').val();
+                    d.nomor_imbg = $('#nomorIMBG').val();
+                    d.lokasi_bangunan = $('#lokasiPemohonSurat').val();
+                    d.kabupaten_pemohon = $('#kabupatenPemohonSurat').val();
+                    d.kecamatan_pemohon = $('#kecamatanPemohonSurat').val();
+                    d.kelurahan_pemohon = $('#kelurahanPemohonSurat').val();
                 },
                 dataSrc: function(res) {
                     if (res.code == 5500) {
@@ -177,9 +209,25 @@
                     title: 'Lokasi Bangunan'
                 },
                 {
+                    data: 'nama_kabupaten',
+                    title: 'Kabupaten / Kota'
+                },
+                {
+                    data: 'nama_kecamatan',
+                    title: 'Kecamatan'
+                },
+                {
+                    data: 'nama_kelurahan',
+                    title: 'Kelurahan'
+                },
+                {
                     data: 'jenisSurat',
                     title: 'Jenis'
                 },
+                // {
+                //     data: '#',
+                //     title: 'Status'
+                // },
                 {
                     data: 'action',
                     title: 'Action'

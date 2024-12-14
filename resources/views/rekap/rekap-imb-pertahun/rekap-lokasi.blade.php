@@ -126,6 +126,19 @@
     <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
 
+
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.js"></script>
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/dataTables.buttons.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
@@ -138,7 +151,66 @@
                 buttons: [
                     { extend: 'copy', filename: 'Copy_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-') },
                     { extend: 'csv', filename: 'CSVExport_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-') },
-                    { extend: 'excel', filename: 'ExcelExport_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-') },
+                    {
+                        text: 'Excel',
+                        action: function(e, dt, button, config) {
+                            const workbook = XLSX.utils.book_new();
+                            const sheetData = [
+                                ['NO', 'KAB/KOTA', 'KECAMATAN', 'DESA/KEL', 'JUMLAH IMB', 'JENIS IMB']
+                            ];
+                            sheetData.push(['', '', '', '', '', 'INDUK PERUMAHAN', 'PECAHAN', 'PERLUASAN', 'INDUK NON PERUMAHAN (PERUSAHAAN)', 'INDUK NON PERUMAHAN (PERORANGAN)', 'INDUK NON PERUMAHAN (SOSIAL DAN BUDAYA)', 'PEMUTIHAN', 'BERSYARAT', 'LAINNYA']);
+
+                            const totals = Array(14).fill(0)
+                            dt.rows({
+                                search: 'applied'
+                            }).every(function(rowIdx, tableLoop, rowLoop) {
+                                const rowData = this.data();
+                                sheetData.push([
+                                    rowData[0], // NO
+                                    rowData[1], // KAB/KOTA
+                                    rowData[2], // KECAMATAN
+                                    rowData[3], // DESA/KEL
+                                    rowData[4], // TAHUN
+                                    rowData[5], // JUMLAH IMB
+                                    rowData[6], // JUMLAH UNIT
+                                    rowData[7], // INDUK PERUMAHAN
+                                    rowData[8], // PECAHAN
+                                    rowData[9], // PERLUASAN
+                                    rowData[10], // INDUK NON PERUMAHAN
+                                    rowData[11], // HUNIAN IMB
+                                    rowData[12],
+                                    rowData[13],
+                                ]);
+                    
+                                // Accumulate totals for numerical columns (from index 2 to 17)
+                                for (let i = 4; i <= 13; i++) {
+                                    totals[i] += parseFloat(rowData[i]) || 0; // Convert to number or default to 0
+                                }
+                            });
+                    
+                        // Push total row
+                        const totalRow = ['TOTAL', '', "", "", ...totals.slice(4)];
+                        sheetData.push(totalRow);
+
+                            const worksheet = XLSX.utils.aoa_to_sheet(sheetData);
+
+                            // Add merge configuration (merging header rows for JENIS IMB and FUNGSI BANGUNAN)
+                               worksheet['!merges'] = [
+                                { s: { r: 0, c: 0 }, e: { r: 1, c: 0 } }, // Merge NO
+                                { s: { r: 0, c: 1 }, e: { r: 1, c: 1 } }, // Merge KAB KOTA
+                                { s: { r: 0, c: 2 }, e: { r: 1, c: 2 } }, // Merge JUMLAH IMB
+                                { s: { r: 0, c: 3 }, e: { r: 1, c: 3 } }, // Merge JUMLAH UNIT
+                                { s: { r: 0, c: 4 }, e: { r: 1, c: 4 } }, // Merge JUMLAH UNIT
+                                { s: { r: 0, c: 5 }, e: { r: 0, c: 13 } }, // Merge "FUNGSI BANGUNAN" (columns 4 to 13)
+                               ];
+
+                            // Add worksheet to workbook
+                            XLSX.utils.book_append_sheet(workbook, worksheet, 'REKAP DATA');
+
+                            // Save file
+                            XLSX.writeFile(workbook, 'Export_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-') + '.xlsx');
+                        }
+                    },
                     { extend: 'pdf', filename: 'PDFExport_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-') },
                     { extend: 'print', title: '' },
                 ],
@@ -156,16 +228,16 @@
 
                     // Hitung total dari kolom tertentu
                     data.forEach(function(rowData) {
-                        totalJumlahIMB += parseFloat(rowData[5]) || 0;
-                        totalIndukPerumahan += parseFloat(rowData[6]) || 0;
-                        totalPecahan += parseFloat(rowData[7]) || 0;
-                        totalPerluasan += parseFloat(rowData[8]) || 0;
-                        totalNonPerusahaan += parseFloat(rowData[9]) || 0;
-                        totalNonPerorangan += parseFloat(rowData[10]) || 0;
-                        totalNonSosialBudaya += parseFloat(rowData[11]) || 0;
-                        totalPemutihan += parseFloat(rowData[12]) || 0;
-                        totalBersyarat += parseFloat(rowData[13]) || 0;
-                        totalLainnya += parseFloat(rowData[14]) || 0;
+                        totalJumlahIMB += parseFloat(rowData[4]) || 0;
+                        totalIndukPerumahan += parseFloat(rowData[5]) || 0;
+                        totalPecahan += parseFloat(rowData[6]) || 0;
+                        totalPerluasan += parseFloat(rowData[7]) || 0;
+                        totalNonPerusahaan += parseFloat(rowData[8]) || 0;
+                        totalNonPerorangan += parseFloat(rowData[9]) || 0;
+                        totalNonSosialBudaya += parseFloat(rowData[10]) || 0;
+                        totalPemutihan += parseFloat(rowData[11]) || 0;
+                        totalBersyarat += parseFloat(rowData[12]) || 0;
+                        totalLainnya += parseFloat(rowData[13]) || 0;
                     });
 
                     // Update nilai di footer

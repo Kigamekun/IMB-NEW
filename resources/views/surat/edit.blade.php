@@ -8,7 +8,7 @@
     <div class="py-12">
         <div style="width: 100%;margin:auto">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5 rounded">
-                <div class="container">
+                <div class="container" style="width: 100%; ">
                     <form id="suratForm" action="{{ route('surat.update', $data['id']) }}" method="POST" class="form-container">
                         @csrf
                         @method('POST')
@@ -287,7 +287,7 @@
 
                                 <div id="format-4-tujuan" style="{{ $data['jenisSurat'] == 'format-4' ? 'display: block;' : 'display: none;' }}">
                                     <label for="jenisKegiatan" class="form-label">Jenis Kegiatan:</label>
-                                    <select id="jenisKegiatan" name="jenisKegiatan" class="form-select form-control select2">
+                                    <select id="jenisKegiatan" name="jenisKegiatan" class="form-select form-control select2" style="width:100%">
                                         <option value="">--- PILIH ---</option>
                                         @foreach (DB::table('app_md_jeniskeg')->get() as $jenis_keg)
                                             <option value="{{ $jenis_keg->name_jeniskeg }}"
@@ -301,7 +301,7 @@
                             <div class="col-md-6">
                                 <label for="registerNomor" class="form-label">Register Nomor:</label>
                                 <input type="text" id="registerNomor" name="registerNomor" class="form-control"
-                                    value="-">
+                                    value="{{ $data['registerNomor'] }}">
                             </div>
                         </div>
                         {{-- <div class="row mb-3">
@@ -503,7 +503,7 @@
                         <div class="section-title"><h3>SETTING SURAT</h3></div>
                         <label for="fontSize" class="form-label">Font Size:</label>
 
-                        <input type="text" id="font_surat" name="font_surat" value="11" class="form-control">
+                        <input type="text" id="font_surat" name="font_surat" value="{{$data['font_surat']}}" class="form-control" placeholder="Dalam Ukuran pt">
 
 
                         <br>
@@ -615,7 +615,7 @@
                             </div>
                             <button type="button" id="preview-surat" class="btn btn-primary">Preview Surat</button>
                             <button type="button" id="submit-surat" class="btn btn-success">Update dan Cetak</button>
-                            <button type="button" id="preview-table" class="btn btn-primary">Preview Table</button>
+                            <button type="button" id="preview-table" class="btn btn-primary hidden">Preview Table</button>
                         </div>
                     </form>
                 </div>
@@ -953,10 +953,10 @@
 
         $('#jenisSurat').on('change', function() {
 
-            if ($(this).val()  === 'format-1' || $(this).val()  === 'format-4') {
-                $('#preview-table').addClass('hidden');
+            if ($(this).val() === 'format-2' || $(this).val() === 'format-3') {
+                $('#preview-table').removeClass('hidden').addClass('block');
             } else {
-                $('#preview-table').removeClass('hidden');
+                $('#preview-table').removeClass('block').addClass('hidden');
             }
 
             if ($(this).val() === 'format-1' || $(this).val() === 'format-4') {
@@ -1017,6 +1017,7 @@
                 $('#format-biasa-tujuan').show(); // Show format-biasa-tujuan
             }
         });
+        $('#jenisSurat').trigger('change');
 
 
     </script>

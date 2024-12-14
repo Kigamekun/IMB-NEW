@@ -14,7 +14,7 @@
             }
         </style>
     </head>
-    <body>
+    <body style="width: 700px;">
         {{-- <h1>Preview Format 3</h1> --}}
 
         <h2>Details data IMBG</h2>
@@ -38,7 +38,7 @@
                     <td style="text-align:center">Type {{ $item['belum_rincik_type'] }} = {{ $item['belum_rincik_jumlah'] }} Unit</td>
                     <td style="text-align:center">
                         @if ($item['sudah_dimohon_jumlah'] > 0)
-                            Type {{ $item['sudah_dimohon_type'] }} = {{ $item['sudah_dimohon_jumlah'] }} Unit,
+                            Type {{ $item['sudah_dimohon_type'] }} = {{ $item['sudah_dimohon_jumlah'] }} Unit, <br>
                             {{ $item['sudah_dimohon_keterangan'] }}
                         @else
                             ---
@@ -64,21 +64,21 @@
         <table>
             <thead>
                 <tr>
-                    <th>No</th>
-                    <th>Type</th>
-                    <th>Blok</th>
-                    <th>Nomor</th>
-                    <th>Jumlah</th>
+                    <th style="text-align:center">No</th>
+                    <th style="text-align:center">Type</th>
+                    <th style="text-align:center">Blok</th>
+                    <th style="text-align:center">Nomor</th>
+                    <th style="text-align:center">Jumlah</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($details2 as $index => $detail)
                     <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $detail['type'] }}</td>
-                        <td>{{ $detail['blok'] }}</td>
-                        <td>{{ $detail['nomor'] }}</td>
-                        <td>{{ $detail['jumlah'] }}</td>
+                        <td style="text-align:center">{{ $index + 1 }}</td>
+                        <td style="text-align:center">{{ $detail['type'] }}</td>
+                        <td style="text-align:center">{{ $detail['blok'] }}</td>
+                        <td style="text-align:center">{{ $detail['nomor'] }}</td>
+                        <td style="text-align:center">{{ $detail['jumlah'] }}</td>
                     </tr>
                 @endforeach
             </tbody>

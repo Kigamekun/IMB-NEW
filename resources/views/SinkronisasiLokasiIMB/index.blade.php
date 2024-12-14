@@ -125,7 +125,7 @@
                                                 <th>No Blok</th>
                                                 <th>Keterangan</th>
                                                 <th>Scan IMB</th>
-                                                <th>Action</th>
+                                                {{-- <th>Action</th> --}}
                                             </tr>
                                         @break
 
@@ -149,7 +149,7 @@
                                                 <th>No Blok</th>
                                                 <th>Keterangan</th>
                                                 <th>Scan IMB</th>
-                                                <th>Action</th>
+                                                {{-- <th>Action</th> --}}
 
                                             </tr>
                                         @break
@@ -165,7 +165,7 @@
                                                 <th>Lokasi / Perumahan</th>
                                                 <th>Kecamatan</th>
                                                 <th>Desa / Kelurahan</th>
-                                                <th>Action</th>
+                                                {{-- <th>Action</th> --}}
                                             </tr>
                                         @break
 
@@ -182,7 +182,7 @@
                                         <th>Lokasi / Perumahan</th>
                                         <th>Kecamatan</th>
                                         <th>Desa / Kelurahan</th>
-                                        <th>Action</th>
+                                        {{-- <th>Action</th> --}}
                                     </tr>
                                 @endisset
 
@@ -271,10 +271,10 @@
                         {
                             data: 'kelurahan_lama'
                         },
-                        {
-                            data: 'action',
-                            title: 'Action'
-                        }
+                        // {
+                        //     data: 'action',
+                        //     title: 'Action'
+                        // }
                     ],
                     order: [
                         [2, 'desc']
@@ -372,10 +372,10 @@
                             data: 'scan_imb',
                             title: 'Scan IMB'
                         },
-                        {
-                            data: 'action',
-                            title: 'Action'
-                        }
+                        // {
+                        //     data: 'action',
+                        //     title: 'Action'
+                        // }
                     ],
                     order: [
                         [2, 'desc']
@@ -473,10 +473,10 @@
                             data: 'scan_imb',
                             title: 'Scan IMB'
                         },
-                        {
-                            data: 'action',
-                            title: 'Action'
-                        }
+                        // {
+                        //     data: 'action',
+                        //     title: 'Action'
+                        // }
                     ],
                     order: [
                         [2, 'desc']
@@ -529,10 +529,10 @@
                         {
                             data: 'kelurahan_lama'
                         },
-                        {
-                            data: 'action',
-                            title: 'Action'
-                        }
+                        // {
+                        //     data: 'action',
+                        //     title: 'Action'
+                        // }
                     ],
                     order: [
                         [2, 'desc']

@@ -202,6 +202,19 @@
     <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
 
+
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.js"></script>
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/dataTables.buttons.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
@@ -222,10 +235,98 @@
                         title: null
                     },
                     {
-                        extend: 'excel',
-                        filename: 'ExcelExport_' + new Date().toISOString().slice(0, 19).replace(/:/g,
-                            '-'),
-                        title: null,
+                        text: 'Excel',
+                        action: function(e, dt, button, config) {
+                            const workbook = XLSX.utils.book_new();
+                            const sheetData = [
+                                ['NO', 'KAB/KOTA', 'KECAMATAN', 'DESA/KEL', 'TAHUN', 'JUMLAH IMB', 'JUMLAH UNIT', 'JENIS IMB','', '', '', '', '', '', '', '', 'FUNGSI BANGUNAN',]
+                            ];
+                            sheetData.push(['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'HUNIAN', '', 'USAHA', '', 'SOSIAL DAN BUDAYA', '', 'KHUSUS', '', 'CAMPURAN']);
+                            sheetData.push(['', '', '', '', '', '', '', 'INDUK PERUMAHAN', 'PECAHAN', 'PERLUASAN', 'INDUK NON PERUMAHAN (PERUSAHAAN)', 'INDUK NON PERUMAHAN (PERORANGAN)', 'INDUK NON PERUMAHAN (SOSIAL DAN BUDAYA)', 'PEMUTIHAN', 'BERSYARAT', 'LAINNYA', 'ITEM IMB', 'UNIT', 'ITEM IMB', 'UNIT', 'ITEM IMB', 'UNIT', 'ITEM IMB', 'UNIT', 'ITEM IMB', 'UNIT']);
+
+                            const totals = Array(26).fill(0)
+                            dt.rows({
+                                search: 'applied'
+                            }).every(function(rowIdx, tableLoop, rowLoop) {
+                                const rowData = this.data();
+                                sheetData.push([
+                                    rowData[0], // NO
+                                    rowData[1], // KAB/KOTA
+                                    rowData[2], // KECAMATAN
+                                    rowData[3], // DESA/KEL
+                                    rowData[4], // TAHUN
+                                    rowData[5], // JUMLAH IMB
+                                    rowData[6], // JUMLAH UNIT
+                                    rowData[7], // INDUK PERUMAHAN
+                                    rowData[8], // PECAHAN
+                                    rowData[9], // PERLUASAN
+                                    rowData[10], // INDUK NON PERUMAHAN
+                                    rowData[11], // HUNIAN IMB
+                                    rowData[12], // HUNIAN UNIT
+                                    rowData[13], // USAHA IMB
+                                    rowData[14], // USAHA UNIT
+                                    rowData[15], // SOSIAL IMB
+                                    rowData[16], // SOSIAL UNIT
+                                    rowData[17], // KHUSUS IMB
+                                    rowData[18], // KHUSUS UNIT
+                                    rowData[19], // CAMPURAN IMB
+                                    rowData[20], // CAMPURAN UNIT
+                                    rowData[21], // CAMPURAN UNIT
+                                    rowData[22], // CAMPURAN UNIT
+                                    rowData[23], // CAMPURAN UNIT
+                                    rowData[24], // CAMPURAN UNIT
+                                    rowData[25], // CAMPURAN UNIT
+                                ]);
+                    
+                                // Accumulate totals for numerical columns (from index 2 to 17)
+                                for (let i = 5; i <= 25; i++) {
+                                    totals[i] += parseFloat(rowData[i]) || 0; // Convert to number or default to 0
+                                }
+                            });
+                    
+                        // Push total row
+                        const totalRow = ['TOTAL', '', "", "", "", ...totals.slice(5)];
+                        sheetData.push(totalRow);
+
+                            const worksheet = XLSX.utils.aoa_to_sheet(sheetData);
+
+                            // Add merge configuration (merging header rows for JENIS IMB and FUNGSI BANGUNAN)
+                            worksheet['!merges'] = [
+                                {
+                                    s: { r: 0, c: 0 }, e: { r: 2, c: 0 }  // Merge NO
+                                },
+                                {
+                                    s: { r: 0, c: 1 }, e: { r: 2, c: 1 }  // Merge KAB/KOTA
+                                },
+                                {
+                                    s: { r: 0, c: 2 }, e: { r: 2, c: 2 }  // Merge KECAMATAN
+                                },
+                                {
+                                    s: { r: 0, c: 3 }, e: { r: 2, c: 3 }  // Merge DESA/KEL
+                                },
+                                {
+                                    s: { r: 0, c: 4 }, e: { r: 2, c: 4 }  // Merge TAHUN
+                                },
+                                {
+                                    s: { r: 0, c: 5 }, e: { r: 2, c: 5 }  // Merge JUMLAH IMB
+                                },
+                                {
+                                    s: { r: 0, c: 6 }, e: { r: 2, c: 6 }  // Merge JUMLAH UNIT
+                                },
+                                {
+                                    s: { r: 0, c: 7 }, e: { r: 1, c: 15 }  // Merge INDUK PERUMAHAN and PECAHAN
+                                },
+                                {
+                                    s: { r: 0, c: 16 }, e: { r: 0, c: 25 } // Merge FUNGSI BANGUNAN (columns 11 to 20)
+                                }
+                            ];
+
+                            // Add worksheet to workbook
+                            XLSX.utils.book_append_sheet(workbook, worksheet, 'REKAP DATA');
+
+                            // Save file
+                            XLSX.writeFile(workbook, 'Export_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-') + '.xlsx');
+                        }
                     },
                     {
                         extend: 'pdf',
@@ -274,17 +375,16 @@
                         totalPemutihan += parseFloat(rowData[13]) || 0;
                         totalBersyarat += parseFloat(rowData[14]) || 0;
                         totalLainnya += parseFloat(rowData[15]) || 0;
-                        totalLainnya += parseFloat(rowData[16]) || 0;
-                        hunianImb += parseFloat(rowData[17]) || 0;
-                        hunianUnit += parseFloat(rowData[18]) || 0;
-                        usahaImb += parseFloat(rowData[19]) || 0;
-                        usahaUnit += parseFloat(rowData[20]) || 0;
-                        sosbudImb += parseFloat(rowData[21]) || 0;
-                        sosbudUnit += parseFloat(rowData[22]) || 0;
-                        khususImb += parseFloat(rowData[23]) || 0;
-                        khususUnit += parseFloat(rowData[24]) || 0;
-                        campuranImb += parseFloat(rowData[25]) || 0;
-                        campuranUnit += parseFloat(rowData[26]) || 0;
+                        hunianImb += parseFloat(rowData[16]) || 0;
+                        hunianUnit += parseFloat(rowData[17]) || 0;
+                        usahaImb += parseFloat(rowData[18]) || 0;
+                        usahaUnit += parseFloat(rowData[19]) || 0;
+                        sosbudImb += parseFloat(rowData[20]) || 0;
+                        sosbudUnit += parseFloat(rowData[21]) || 0;
+                        khususImb += parseFloat(rowData[22]) || 0;
+                        khususUnit += parseFloat(rowData[23]) || 0;
+                        campuranImb += parseFloat(rowData[24]) || 0;
+                        campuranUnit += parseFloat(rowData[25]) || 0;
                     });
 
                     // Update nilai di footer

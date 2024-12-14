@@ -85,7 +85,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="pairImbModalLabel">Pair IMB Pecahan with Existing IMB Induk</h5>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="pairImbForm" method="POST" action="{{ route('DataIMBTidakLengkap.pair-pecahan') }}">
                     @csrf

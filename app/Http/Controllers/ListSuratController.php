@@ -58,7 +58,7 @@ class ListSuratController extends Controller
 
         // Return the view when not an AJAX request
         $tahun = '2024';
-        return view('rekap.10-1', compact('tahun'));
+        return view('rekap.rekap-register.register-pertahun', compact('tahun'));
     }
 
     // Data 10
@@ -99,7 +99,7 @@ class ListSuratController extends Controller
             if ($request->has('kelurahan_pemohon')) {
                 $query->where('master_subdistrict.name', 'like', '%' . $request->input('kelurahan_pemohon') . '%');
             }
-          
+
 
             // Get data and return as JSON for DataTables
             $data = $query->get();
@@ -111,7 +111,7 @@ class ListSuratController extends Controller
 
         // Return the view when not an AJAX request
         $tahun = '2024';
-        return view('rekap.10', compact('tahun'));
+        return view('rekap.rekap-register.register-perbulan', compact('tahun'));
     }
     // public function ListSurat(Reque
 

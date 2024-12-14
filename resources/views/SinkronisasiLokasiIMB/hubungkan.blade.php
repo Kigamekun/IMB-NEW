@@ -46,7 +46,7 @@
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <label for="no_imb_induk" class="form-label">Kecamatans Lama:</label>
-                                            <select name="kecamatan_lama" id="kecamatan_lama" class="form-control select2-kecamatan">
+                                            <select name="kecamatan_lama" id="kecamatan_lama" class="form-control select-kecamatan">
                                                 <option value="">Pilih Kecamatan</option>
                                                 @foreach (DB::table('imb_pecahan')->groupBy('kecamatan_lama')->where('kecamatan_lama', '!=', '')->select('kecamatan_lama')->get() as $kecamatan)
                                                     <option value="{{ $kecamatan->kecamatan_lama }}">{{ $kecamatan->kecamatan_lama }}
@@ -56,7 +56,7 @@
                                         </div>
                                         <div class="col-md-6 " >
                                             <label for="tgl_imb_induk" class="form-label">Kelurahan Lama:</label>
-                                            <select name="kelurahan_lama" id="kelurahan_lama" class="form-control select2-kelurahan">
+                                            <select name="kelurahan_lama" id="kelurahan_lama" class="form-control select-kelurahan">
                                                 <option value="">Pilih Kelurahan</option>
                                                 @foreach (DB::table('imb_induk_perum')->groupBy('kelurahan_lama')->where('kelurahan_lama', '!=', '')->select('kelurahan_lama')->get() as $kelurahan)
                                                     <option value="{{ $kelurahan->kelurahan_lama }}">{{ $kelurahan->kelurahan_lama }}
@@ -98,7 +98,7 @@
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <label for="no_imb_induk" class="form-label">Kecamatan Lama:</label>
-                                            <select name="kecamatan_lama" id="kecamatan_lama" class="form-control select2-kecamatan">
+                                            <select name="kecamatan_lama" id="kecamatan_lama" class="form-control select-kecamatan">
                                                 <option value="">Pilih Kecamatan</option>
                                                 @foreach (DB::table('imb_pecahan')->groupBy('kecamatan_lama')->where('kecamatan_lama', '!=', '')->select('kecamatan_lama')->get() as $kecamatan)
                                                     <option value="{{ $kecamatan->kecamatan_lama }}">{{ $kecamatan->kecamatan_lama }}
@@ -108,7 +108,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <label for="tgl_imb_induk" class="form-label">Kelurahan Lama:</label>
-                                            <select name="kelurahan_lama" id="kelurahan_lama" class="form-control select2-kelurahan">
+                                            <select name="kelurahan_lama" id="kelurahan_lama" class="form-control select-kelurahan">
                                                 <option value="">Pilih Kelurahan</option>
                                                 @foreach (DB::table('imb_pecahan')->groupBy('kelurahan_lama')->where('kelurahan_lama', '!=', '')->select('kelurahan_lama')->get() as $kelurahan)
                                                     <option value="{{ $kelurahan->kelurahan_lama }}">{{ $kelurahan->kelurahan_lama }}
@@ -143,7 +143,7 @@
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <label for="no_imb_induk" class="form-label">Kecamatan Lama:</label>
-                                            <select name="kecamatan_lama" id="kecamatan_lama" class="form-control select2-kecamatan">
+                                            <select name="kecamatan_lama" id="kecamatan_lama" class="form-control select-kecamatan">
                                                 <option value="">Pilih Kecamatan</option>
                                                 @foreach (DB::table('imb_perluasan')->groupBy('kecamatan_lama')->where('kecamatan_lama', '!=', '')->select('kecamatan_lama')->get() as $kecamatan)
                                                     <option value="{{ $kecamatan->kecamatan_lama }}">{{ $kecamatan->kecamatan_lama }}
@@ -153,7 +153,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <label for="tgl_imb_induk" class="form-label">Kelurahan Lama:</label>
-                                            <select name="kelurahan_lama" id="kelurahan_lama" class="form-control select2-kelurahan">
+                                            <select name="kelurahan_lama" id="kelurahan_lama" class="form-control select-kelurahan">
                                                 <option value="">Pilih Kelurahan</option>
                                                 @foreach (DB::table('imb_perluasan')->groupBy('kelurahan_lama')->where('kelurahan_lama', '!=', '')->select('kelurahan_lama')->get() as $kelurahan)
                                                     <option value="{{ $kelurahan->kelurahan_lama }}">{{ $kelurahan->kelurahan_lama }}
@@ -297,7 +297,7 @@
             $('.select2-kecamatan').select2({
                 width: '100%',
                 placeholder: 'Pilih Kecamatan',
-                minimumInputLength: 2,
+                minimumInputLength: 0,
                 ajax: {
                     url: "{{ route('master.kecamatan') }}", // URL to fetch kecamatan data
                     dataType: 'json',
@@ -331,7 +331,7 @@
                 $('.select2-kelurahan').select2({
                     width: '100%',
                     placeholder: 'Pilih Kelurahan',
-                    minimumInputLength: 2,
+                    minimumInputLength: 0,
                     ajax: {
                         url: "{{ route('master.kelurahan') }}", // URL to fetch kelurahan data
                         dataType: 'json',

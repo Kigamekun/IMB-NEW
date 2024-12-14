@@ -6,8 +6,8 @@
     <title>Surat Izin Mendirikan Bangunan</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            font-size: {{ $referensi['font_surat'] }}px !important;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: {{ $referensi['font_surat'] }}pt !important;
             line-height: 1.5;
             text-align: justify
         }
@@ -43,7 +43,7 @@
         }
         ul.custom-list li::before {
             content: "-";
-            margin-left: 10px
+            margin-left: 5px
         }
 
         .content {}
@@ -74,7 +74,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
-            font-size: {{ $referensi['font_surat'] }}px !important;
+            font-size: {{ $referensi['font_surat'] }}pt !important;
         }
 
         table,
@@ -111,7 +111,9 @@
         .info-table td {
             text-align: left;
             border: none;
-            padding: 4px 8px;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            padding-left: 8px;
             vertical-align: top;
             line-height: .8;
         }
@@ -175,8 +177,8 @@
         }
 
         .signature-title {
-            font-weight: bold;
-            text-align: center;
+            /* font-weight: bold; */
+            text-align: justify;
             margin-bottom: 10px;
         }
 
@@ -187,6 +189,7 @@
         .signature-name {
             font-weight: bold;
             text-align: center;
+            text-decoration: underline;
         }
 
         .signature-nip {
@@ -201,20 +204,15 @@
 </head>
 
 <body style="width: 700px">
-    <div style="float: right; margin-right:100px">
+    <div style="float: right; margin-right:100px;  margin-top:-25px">
         <p>Cibinong,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2024
         </p>
     </div>
-    <table class="info-table" style=" width:250px; font-weight:bold">
+    <table class="info-table" style="  width:300px;">
         <tr>
             <td>Nomor</td>
             <td>:</td>
             <td>{{ $nomorSurat }}</td>
-        </tr>
-        <tr>
-            <td>Sifat</td>
-            <td>:</td>
-            <td>{{ $sifat }}</td>
         </tr>
         <tr>
             <td>Lampiran</td>
@@ -222,17 +220,26 @@
             <td>{{ $lampiran }}</td>
         </tr>
         <tr>
-            <td>Perihal</td>
+            <td>Sifat</td>
             <td>:</td>
-            <td style="line-height: normal">{{ $perihal }}</td>
+            <td>{{ $sifat }}</td>
+        </tr>
+        {{-- <tr>
+            <td>Lampiran</td>
+            <td>:</td>
+            <td>{{ $lampiran }}</td>
+        </tr> --}}
+        <tr style="">
+            <td>Hal</td>
+            <td>:</td>
+            <td style="line-height: 1.15; text-align:justify; font-weight:bold; ">{{ $perihal }}</td>
         </tr>
     </table>
     <!-- Address Section -->
-    <div style="line-height:5px;margin-left:10px">
+    <div style="line-height:3px;margin-left:8px; padding">
         <p>Yth,</p>
         <p><b>{{ $pemohon['sapaanPemohon'] }} {{ $pemohon['nama'] }}</b></p>
         <p>di</p>
-
         @php
             // Cek apakah 'Kabupaten' ada di kabupatenPemohon
             $kabupaten = $pemohon['kabupatenPemohon'];
@@ -242,28 +249,27 @@
                 $kabupaten = trim(str_replace('Kabupaten', '', $kabupaten));
             }
         @endphp
-
         <p>{{ $kabupaten }}</p>
     </div>
     <br>
 
     <div class="content" style="margin-left: 65px">
         <h3>A. DASAR</h3>
-        <ul class="custom-list" style="margin-top:-15px; ">
-            <li ><p style="margin-top:-15px;">Peraturan Bupati Nomor 63 tahun 2013 Tentang Izin Mendirikan Bangunan Gedung BAB VII
+        <ul class="custom-list" style="margin-top:-16px; ">
+            <li ><p style="margin-top:-12px; line-height:1.15 !important; margin-left: 15px">Peraturan Bupati Nomor 63 tahun 2013 Tentang Izin Mendirikan Bangunan Gedung BAB VII
                 Penggantian IMBG Hilang
                 atau Rusak, Legalisasi dan Pemutakhiran.</p></li>
         </ul>
 
         <h3>B. MEMPERHATIKAN</h3>
-        <ol style="margin-top:-15px;">
+        <ol style="margin-top:-15px; margin-left:-5px">
             <li >
                 <div>
                     Permohonan Surat Keterangan Penerbitan Izin Mendirikan Bangunan (IMB) tanggal {{ $tanggalSurat }},
                     dari:
                     <table class="info-tables" style="width: 100%; margin-left:-1px;">
                         <tr>
-                            <td style="width: 250px;">Nama &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td style="width: 250px;">Nama &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                             <td style="width: 2px;">:</td>
                             <td class="bold-text"><b>{{ $pemohon['nama'] }}</b></td>
                         </tr>
@@ -275,7 +281,7 @@
                         <tr>
                             <td>Alamat</td>
                             <td>:</td>
-                            <td style="line-height:16px !important; " id="pemohon_alamat">
+                            <td style="line-height:1.15 !important; " id="pemohon_alamat">
                                 {{ $pemohon['alamat'] }}, Desa/Kelurahan
                                 {{ $pemohon['kelurahanPemohon'] }}, Kecamatan
                                 {{ $pemohon['kecamatanPemohon'] }},
@@ -290,7 +296,7 @@
             </li>
 
 
-            <li style="margin-top: 10px !important">Hasil pengecekan pada buku Izin Mendirikan Bangunan yang ada pada Dinas Perumahan Kawasan Permukiman dan
+            <li style="margin-top: 15px !important; margin-bottom: 15px !important; line-height:1.15 !important;">Hasil pengecekan pada buku Izin Mendirikan Bangunan yang ada pada Dinas Perumahan Kawasan Permukiman dan
                 Pertanahan Kabupaten Bogor, dengan ini dapat disampaikan:</li>
 
 
@@ -311,7 +317,7 @@
                     <tr>
                         <td>Lokasi</td>
                         <td>:</td>
-                        <td style="line-height:16px !important;">
+                        <td style="line-height:1.15 !important;">
                             {{ $referensi['lokasi'] != null || $referensi['lokasi'] != '' ? $referensi['lokasi'] . ',' : '' }}
 
                             Desa/Kelurahan {{ $referensi['kelurahan'] }}
@@ -372,29 +378,30 @@
                 </table>
             </div>
         </ol>
-        <ol start="3" style="">
+        <ol start="3" style="line-height:1.15">
             <li>{{ $keterangan[0] }}</li>
         </ol>
         {{-- <p style=" margin-top:10px;">{{ $keterangan[0] }}</p> --}}
-        <p style="margin-left: 28px; ">
+        <p style="margin-left: 25px; line-height:1.15" >
             {{ $keterangan[1] }}
         </p>
-        <p style="margin-left: 28px; line-height:40px !important;">
+
+        <p style="margin-left: 25px; line-height:40px !important;">
             {{ $keterangan[2] }}
         </p>
         @if (count($keterangan) > 3)
             @foreach ($keterangan as $index => $ket)
                 @if ($index > 2)
-                    <p style="margin-left: 28px;">{{ $ket }}</p>
+                    <p style="margin-left: 25px; line-height:1.15">{{ $ket }}</p>
                 @endif
             @endforeach
         @endif
 
-        <p style="margin-left: 28px;">Demikian disampaikan untuk diketahui dan dipergunakan sebagaimana mestinya.</p>
+        <p style="margin-left: 25px; line-height:1.15">Demikian disampaikan untuk diketahui dan dipergunakan sebagaimana mestinya.</p>
     </div>
     <div style="float: right">
         <div class="signature-section" style="width: 250px;text-align:left">
-            <p class="signature-title" style="text-align:left">{{ $penandatangan['jabatan'] }} Perumahan, Kawasan
+            <p class="signature-title" style="text-align:left; line-height: 1.5">{{ $penandatangan['jabatan'] }} Perumahan, Kawasan
                 Permukiman dan
                 Pertanahan,</p>
             <br>
@@ -405,6 +412,12 @@
             <p class="signature-role" style="text-align:left;line-height:5px">{{ $penandatangan['pangkat'] }}</p>
             <p class="signature-nip" style="text-align:left;line-height:5px">NIP. {{ $penandatangan['nip'] }}</p>
         </div>
+    </div>
+    <div style="margin-top:200px;">
+        <h4 style="margin-left: 25px; line-height:1">Tembusan :</h4>
+        <ol style="margin-top: -15px">
+            <li>Yth. Kepala DPMPTSP Kabupaten Bogor.</li>
+        </ol>
     </div>
 </body>
 

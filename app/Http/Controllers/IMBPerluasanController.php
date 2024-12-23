@@ -17,13 +17,31 @@ class IMBPerluasanController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = IMBPerluasan::join('app_md_jeniskeg', 'imb_perluasan.jenis_kegiatan', '=', 'app_md_jeniskeg.id_jeniskeg')
+            $query = IMBPerluasan::join('app_md_jeniskeg', 'imb_perluasan.jenis_kegiatan', '=', 'app_md_jeniskeg.id_jeniskeg')
+                ->join('master_regency', 'imb_perluasan.kabupaten', '=', 'master_regency.code')
                 ->join('master_district', 'imb_perluasan.kecamatan', '=', 'master_district.code')
                 ->join('master_subdistrict', 'imb_perluasan.desa_kelurahan', '=', 'master_subdistrict.code')
-                ->select('imb_perluasan.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan', 'master_district.name as kecamatan', 'master_district.code as kecamatan_code', 'master_subdistrict.name as kelurahan', 'master_subdistrict.code as kelurahan_code')
-                ->orderBy('imb_perluasan.created_at', 'desc')
-                ->get();
-            return Datatables::of($data)
+                ->select('imb_perluasan.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan','master_regency.name as kabupaten','master_regency.code as kabupaten_code', 'master_district.name as kecamatan', 'master_district.code as kecamatan_code', 'master_subdistrict.name as kelurahan', 'master_subdistrict.code as kelurahan_code');
+
+
+                if ($request->has('kabupaten') && $request->kabupaten) {
+                    $query->where('imb_perluasan.kabupaten', $request->kabupaten);
+                }
+
+                // Filter berdasarkan kecamatan
+                if ($request->has('kecamatan') && $request->kecamatan) {
+                    $query->where('imb_perluasan.kecamatan', $request->kecamatan);
+                }
+
+                // Filter berdasarkan kelurahan
+                if ($request->has('kelurahan') && $request->kelurahan) {
+                    $query->where('imb_perluasan.desa_kelurahan', $request->kelurahan);
+                }
+
+                $query = $query->orderBy('imb_perluasan.created_at', 'desc')->get();
+
+
+            return Datatables::of($query)
                 ->addColumn('action', function ($row) {
                     return '
                     <div class="d-flex" style="gap:10px;display:flex">
@@ -67,6 +85,7 @@ class IMBPerluasanController extends Controller
             'jenis_kegiatan' => 'required|string|max:50',
             'fungsi_bangunan' => 'nullable|string|max:50',
             'lokasi_perumahan' => 'required|string|max:100',
+            'kabupaten' => 'required|string|max:50',
             'kecamatan' => 'required|string|max:50',
             'desa_kelurahan' => 'required|string|max:50',
             'type' => 'nullable|string|max:50',
@@ -109,6 +128,7 @@ class IMBPerluasanController extends Controller
             'jenis_kegiatan' => $jenisKegiatanId,
             'fungsi_bangunan' => $validatedData['fungsi_bangunan'],
             'lokasi_perumahan' => $validatedData['lokasi_perumahan'],
+            'kabupaten' => $validatedData['kabupaten'],
             'kecamatan' => $validatedData['kecamatan'],
             'desa_kelurahan' => $validatedData['desa_kelurahan'],
             'type' => $validatedData['type'],
@@ -126,9 +146,10 @@ class IMBPerluasanController extends Controller
     public function edit($id)
     {
         $data = IMBPerluasan::join('app_md_jeniskeg', 'imb_perluasan.jenis_kegiatan', '=', 'app_md_jeniskeg.id_jeniskeg')
+            ->join('master_regency', 'imb_perluasan.kabupaten', '=', 'master_regency.code')
             ->join('master_district', 'imb_perluasan.kecamatan', '=', 'master_district.code')
             ->join('master_subdistrict', 'imb_perluasan.desa_kelurahan', '=', 'master_subdistrict.code')
-            ->select('imb_perluasan.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan', 'master_district.name as kecamatan', 'master_district.code as kecamatan_code', 'master_subdistrict.name as kelurahan', 'master_subdistrict.code as kelurahan_code')
+            ->select('imb_perluasan.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan', 'master_regency.name as kabupaten' , 'master_regency.code as kabupaten_code', 'master_district.name as kecamatan', 'master_district.code as kecamatan_code', 'master_subdistrict.name as kelurahan', 'master_subdistrict.code as kelurahan_code')
             ->where('imb_perluasan.id', $id)->first();
 
         $imbPecahan = IMBPecahan::where('imb_pecahan', $data->imb_pecahan)->first();
@@ -150,6 +171,7 @@ class IMBPerluasanController extends Controller
             'atas_nama' => 'required|string|max:50',
             'jenis_kegiatan' => 'required|string|max:50',
             'lokasi_perumahan' => 'required|string|max:100',
+            'kabupaten' => 'required|string|max:50',
             'kecamatan' => 'required|string|max:50',
             'desa_kelurahan' => 'required|string|max:50',
             'type' => 'nullable|string|max:50',
@@ -192,6 +214,7 @@ class IMBPerluasanController extends Controller
                 'atas_nama' => $validatedData['atas_nama'],
                 'jenis_kegiatan' => $jenisKegiatanId,
                 'lokasi_perumahan' => $validatedData['lokasi_perumahan'],
+                'kabupaten' => $validatedData['kabupaten'],
                 'kecamatan' => $validatedData['kecamatan'],
                 'desa_kelurahan' => $validatedData['desa_kelurahan'],
                 'type' => $validatedData['type'],
@@ -214,6 +237,7 @@ class IMBPerluasanController extends Controller
                 'atas_nama' => $validatedData['atas_nama'],
                 'jenis_kegiatan' => $jenisKegiatanId,
                 'lokasi_perumahan' => $validatedData['lokasi_perumahan'],
+                'kabupaten' => $validatedData['kabupaten'],
                 'kecamatan' => $validatedData['kecamatan'],
                 'desa_kelurahan' => $validatedData['desa_kelurahan'],
                 'type' => $validatedData['type'],
@@ -225,7 +249,7 @@ class IMBPerluasanController extends Controller
             ]);
         }
 
-        return redirect()->back()->with(['status' => 'success', 'message' => 'Data berhasil diupdate']);
+        return redirect()->route('IMBPerluasan.index')->with(['status' => 'success', 'message' => 'Data berhasil diupdate']);
 
     }
 

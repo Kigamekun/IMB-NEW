@@ -21,6 +21,15 @@
                                     <input type="number" id="endYear" class="form-control" placeholder="Tahun Akhir" />
                                 </div>
                                 <div>
+                                    <select value="" class="form-control" id="kabupaten">
+                                        <option value="" hidden>Pilih kabupaten</option>
+                                      {{--  @foreach ($data as $index => $row)
+                                        <option value="{{ DB::table('master_district')->where('code',$row->kecamatan)->first()->name }}">{{ DB::table('master_district')->where('code',$row->kecamatan)->first()->name }}</option>
+                                      @endforeach
+                                      --}}
+                                    </select>
+                                </div>
+                                <div>
                                     <select value="" class="form-control" id="kecamatan">
                                         <option value="" hidden>Pilih kecamatan</option>
                                         {{-- @foreach ($data as $index => $row)
@@ -113,6 +122,7 @@
 
     <script>
         $(document).ready(function() {
+            $('#kabupaten').select2()
             $('#kecamatan').select2()
             $('#kelurahan').select2()
             $.get("{{ route('rekap.ListSurat') }}", function(data) {

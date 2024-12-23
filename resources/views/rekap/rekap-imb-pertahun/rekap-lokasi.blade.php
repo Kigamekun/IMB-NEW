@@ -181,13 +181,13 @@
                                     rowData[12],
                                     rowData[13],
                                 ]);
-                    
+
                                 // Accumulate totals for numerical columns (from index 2 to 17)
                                 for (let i = 4; i <= 13; i++) {
                                     totals[i] += parseFloat(rowData[i]) || 0; // Convert to number or default to 0
                                 }
                             });
-                    
+
                         // Push total row
                         const totalRow = ['TOTAL', '', "", "", ...totals.slice(4)];
                         sheetData.push(totalRow);

@@ -18,16 +18,32 @@ class IMBIndukNonPerumController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = IMBIndukNonPerum::join('app_md_jeniskeg', 'imb_induk_non_perum.jenis_kegiatan', '=', 'app_md_jeniskeg.id_jeniskeg')
+            $query = IMBIndukNonPerum::join('app_md_jeniskeg', 'imb_induk_non_perum.jenis_kegiatan', '=', 'app_md_jeniskeg.id_jeniskeg')
+                ->join('master_regency', 'imb_induk_non_perum.kabupaten', '=', 'master_regency.code')
                 ->join('master_district', 'imb_induk_non_perum.kecamatan', '=', 'master_district.code')
                 ->join('master_subdistrict', 'imb_induk_non_perum.desa_kelurahan', '=', 'master_subdistrict.code')
                 ->join('master_jenis_non_perum', 'imb_induk_non_perum.jenis', '=', 'master_jenis_non_perum.id')
-                ->select('imb_induk_non_perum.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan', 'master_district.name as kecamatan', 'master_subdistrict.name as kelurahan', 'master_jenis_non_perum.name as jenis')
-                ->orderBy('imb_induk_non_perum.created_at', 'desc')
-                ->get();
+                ->select('imb_induk_non_perum.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan', 'master_regency.name as kabupaten','master_regency.code as kabupaten_code', 'master_district.name as kecamatan', 'master_subdistrict.name as kelurahan', 'master_jenis_non_perum.name as jenis');
+
+               // Filter berdasarkan kabupaten
+            if ($request->has('kabupaten') && $request->kabupaten) {
+                $query->where('imb_induk_non_perum.kabupaten', $request->kabupaten);
+            }
+
+            // Filter berdasarkan kecamatan
+            if ($request->has('kecamatan') && $request->kecamatan) {
+                $query->where('imb_induk_non_perum.kecamatan', $request->kecamatan);
+            }
+
+            // Filter berdasarkan kelurahan
+            if ($request->has('kelurahan') && $request->kelurahan) {
+                $query->where('imb_induk_non_perum.desa_kelurahan', $request->kelurahan);
+            }
+
+            $query = $query->orderBy('imb_induk_non_perum.created_at', 'desc')->get();
 
 
-            return Datatables::of($data)
+            return Datatables::of($query)
                 // ->addColumn('jenis', function ($row) {
                 //     $master = DB::table('master_jenis_non_perum')->where('id', $row->jenis)->first();
                 //     return '<span class="badge badge-primary">' . $master->name . '</span>';
@@ -85,10 +101,35 @@ class IMBIndukNonPerumController extends Controller
         $totalRows = (new FastExcel)->import($file)->count();
         $users = (new FastExcel)->import($file, function ($line) use ($jenisKegiatanList, $fungsiBangunanList, &$failures, &$baris, &$imbInduk, &$jenis_kegiatan_array, $totalRows, $jenisIMBList) {
             if ($line["IMB Induk"] != null) {
+                $rowRegency = strtolower($line["Kabupaten / Kota"]);
                 $rowDistrict = strtolower($line["Kecamatan"]);
                 $rowSubdistrict = strtolower($line["Desa / Kelurahan"]);
                 $jenis = strtolower($line["Jenis"]);
                 $jenis = $jenisIMBList[$jenis] ?? null;
+                $regency = DB::table('master_regency')
+                ->where(DB::raw('LOWER(name)'), $rowRegency)
+                ->pluck('code')
+                ->first();
+                if (!$regency) {
+                    $failures[] = [
+                        'message' => 'Kabupaten/Kota ' . $line["Kabupaten / Kota"] . ' tidak ditemukan',
+                        'baris' => $baris,
+                    ];
+                    $imbInduk = IMBIndukNonPerum::create([
+                        'jenis' => $jenis,
+                        'imb_induk' => $line["IMB Induk"],
+                        'tgl_imb_induk' => date('Y-m-d', strtotime($line["Tgl. IMB Induk"])),
+                        'no_register' => $line["No. Register"],
+                        'tgl_register' => $line["Tgl. Register"] != '' ? date('Y-m-d', strtotime($line["Tgl. Register"])) : null,
+                        'nama' => $line["Nama"],
+                        'atas_nama' => $line["Atas Nama"],
+                        'lokasi_perumahan' => $line["Lokasi / Perumahan"],
+                        'kabupaten_lama' => $line["Kabupaten / Kota"],
+                        'kecamatan_lama' => $line["Kecamatan"],
+                        'kelurahan_lama' => $line["Desa / Kelurahan"],
+                    ]);
+                    return;
+                }
                 $districts = DB::table('master_district')
                     ->where(DB::raw('LOWER(name)'), $rowDistrict)
                     ->pluck('code')
@@ -107,6 +148,7 @@ class IMBIndukNonPerumController extends Controller
                         'nama' => $line["Nama"],
                         'atas_nama' => $line["Atas Nama"],
                         'lokasi_perumahan' => $line["Lokasi / Perumahan"],
+                        'kabupaten_lama' => $line["Kabupaten / Kota"],
                         'kecamatan_lama' => $line["Kecamatan"],
                         'kelurahan_lama' => $line["Desa / Kelurahan"],
                     ]);
@@ -130,6 +172,7 @@ class IMBIndukNonPerumController extends Controller
                         'nama' => $line["Nama"],
                         'atas_nama' => $line["Atas Nama"],
                         'lokasi_perumahan' => $line["Lokasi / Perumahan"],
+                        'kabupaten_lama' => $line["Kabupaten / Kota"],
                         'kecamatan_lama' => $line["Kecamatan"],
                         'kelurahan_lama' => $line["Desa / Kelurahan"],
                     ]);
@@ -156,6 +199,8 @@ class IMBIndukNonPerumController extends Controller
                         ->update(['jenis_kegiatan' => $jenisKegiatanId]);
                     $jenis_kegiatan_array = [];
                 }
+               // dd($regency);
+               // dd($line["Tgl. Register"]);
                 $imbInduk = IMBIndukNonPerum::create([
                     'jenis' => $jenis,
                     'imb_induk' => $line["IMB Induk"],
@@ -165,6 +210,7 @@ class IMBIndukNonPerumController extends Controller
                     'nama' => $line["Nama"],
                     'atas_nama' => $line["Atas Nama"],
                     'lokasi_perumahan' => $line["Lokasi / Perumahan"],
+                    'kabupaten' => $regency,
                     'kecamatan' => $village->district_code,
                     'desa_kelurahan' => $village->code,
                 ]);
@@ -261,6 +307,7 @@ class IMBIndukNonPerumController extends Controller
                 'nama' => $request->input('nama'),
                 'atas_nama' => $request->input('atas_nama'),
                 'lokasi_perumahan' => $request->input('lokasi_perumahan'),
+                'kabupaten' => $request->input('kabupaten'),
                 'kecamatan' => $request->input('kecamatan'),
                 'desa_kelurahan' => $request->input('kelurahan'),
             ]);
@@ -312,9 +359,11 @@ class IMBIndukNonPerumController extends Controller
                 ->update(['jenis_kegiatan' => $jenisKegiatanId]);
 
             DB::commit();
+
+            // dd($request->all());
             return redirect()->route('IMBIndukNonPerum.index')->with(['status' => 'success', 'message' => 'Data berhasil disimpan']);
         } catch (\Exception $e) {
-            dd($e);
+            // dd($e);
             DB::rollBack();
             return redirect()->back()->withErrors(['error' => 'Failed to save data: ' . $e->getMessage()]);
         }
@@ -322,9 +371,10 @@ class IMBIndukNonPerumController extends Controller
     public function edit($id)
     {
         $data = IMBIndukNonPerum::join('app_md_jeniskeg', 'imb_induk_non_perum.jenis_kegiatan', '=', 'app_md_jeniskeg.id_jeniskeg')
+            ->join('master_regency', 'imb_induk_non_perum.kabupaten', '=', 'master_regency.code')
             ->join('master_district', 'imb_induk_non_perum.kecamatan', '=', 'master_district.code')
             ->join('master_subdistrict', 'imb_induk_non_perum.desa_kelurahan', '=', 'master_subdistrict.code')
-            ->select('imb_induk_non_perum.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan', 'master_district.name as kecamatan', 'master_district.code as kecamatan_code', 'master_subdistrict.name as kelurahan', 'master_subdistrict.code as kelurahan_code')
+            ->select('imb_induk_non_perum.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan', 'master_regency.name as kabupaten' , 'master_regency.code as kabupaten_code', 'master_district.name as kecamatan', 'master_district.code as kecamatan_code', 'master_subdistrict.name as kelurahan', 'master_subdistrict.code as kelurahan_code')
             ->where('imb_induk_non_perum.id', $id)->first();
         $item = IMBItemNon::where('induk_perum_id', $id)->get();
         return view('IMBIndukNonPerum.edit', compact('data', 'item'));
@@ -344,6 +394,7 @@ class IMBIndukNonPerumController extends Controller
                 'nama' => $request->input('nama'),
                 'atas_nama' => $request->input('atas_nama'),
                 'lokasi_perumahan' => $request->input('lokasi_perumahan'),
+                'kabupaten' => $request->input('kabupaten'),
                 'kecamatan' => $request->input('kecamatan'),
                 'desa_kelurahan' => $request->input('kelurahan'),
             ]);
@@ -416,7 +467,7 @@ class IMBIndukNonPerumController extends Controller
             DB::commit();
             return redirect()->route('IMBIndukNonPerum.index')->with(['status' => 'success', 'message' => 'Data berhasil diupdate']);
         } catch (\Exception $e) {
-            dd($e);
+            //dd($e);
             DB::rollBack();
             return redirect()->back()->withErrors(['error' => 'Failed to update data: ' . $e->getMessage()]);
         }

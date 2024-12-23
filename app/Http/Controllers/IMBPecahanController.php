@@ -23,13 +23,32 @@ class IMBPecahanController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = IMBPecahan::join('app_md_jeniskeg', 'imb_pecahan.jenis_kegiatan', '=', 'app_md_jeniskeg.id_jeniskeg')
+            $query = IMBPecahan::join('app_md_jeniskeg', 'imb_pecahan.jenis_kegiatan', '=', 'app_md_jeniskeg.id_jeniskeg')
+                ->join('master_regency', 'imb_pecahan.kabupaten', '=', 'master_regency.code')
                 ->join('master_district', 'imb_pecahan.kecamatan', '=', 'master_district.code')
                 ->join('master_subdistrict', 'imb_pecahan.desa_kelurahan', '=', 'master_subdistrict.code')
-                ->select('imb_pecahan.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan', 'master_district.name as kecamatan', 'master_district.code as kecamatan_code', 'master_subdistrict.name as kelurahan', 'master_subdistrict.code as kelurahan_code')
-                ->orderBy('imb_pecahan.created_at', 'desc')
-                ->get();
-            return Datatables::of($data)
+                ->select('imb_pecahan.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan','master_regency.name as kabupaten','master_regency.code as kabupaten_code', 'master_district.name as kecamatan', 'master_district.code as kecamatan_code', 'master_subdistrict.name as kelurahan', 'master_subdistrict.code as kelurahan_code');
+
+
+                if ($request->has('kabupaten') && $request->kabupaten) {
+                    $query->where('imb_pecahan.kabupaten', $request->kabupaten);
+                }
+
+                // Filter berdasarkan kecamatan
+                if ($request->has('kecamatan') && $request->kecamatan) {
+                    $query->where('imb_pecahan.kecamatan', $request->kecamatan);
+                }
+
+                // Filter berdasarkan kelurahan
+                if ($request->has('kelurahan') && $request->kelurahan) {
+                    $query->where('imb_pecahan.desa_kelurahan', $request->kelurahan);
+                }
+
+                $query = $query->orderBy('imb_pecahan.created_at', 'desc')->get();
+
+
+
+            return Datatables::of($query)
                 ->addColumn('action', function ($row) {
                     return '
                     <div class="d-flex" style="gap:10px;display:flex;">
@@ -79,42 +98,12 @@ class IMBPecahanController extends Controller
             $fungsi_bangunan = $fungsiBangunanList[$rowFungsiBangunan] ?? null;
             $rowDistrict = strtolower($line['Kecamatan']);
             $rowSubdistrict = strtolower($line['Desa / Kelurahan']);
-            $districts = DB::table('master_district')
-                ->where(DB::raw('LOWER(name)'), $rowDistrict)
-                ->pluck('code')
-                ->toArray();
-            if (empty($districts)) {
-                $fail = 1;
-                IMBPecahan::create([
-                    'imb_induk_id' => $line['No. IMB Induk'],
-                    'tgl_imb_induk' => null,
-                    'imb_pecahan' => $line['No. IMB Pecahan / Rincikan'],
-                    'tgl_imb_pecahan' => null,
-                    'no_register' => $line['No. Register'],
-                    'tgl_register' => null,
-                    'nama' => $line['Nama'],
-                    'atas_nama' => $line['Atas Nama'],
-                    'jenis_kegiatan' => $jenis_kegiatan,
-                    'fungsi_bangunan' => $fungsi_bangunan,
-                    'lokasi_perumahan' => $line['Lokasi / Perumahan'],
-                    'kecamatan_lama' => $line['Kecamatan'],
-                    'kelurahan_lama' => $line['Desa / Kelurahan'],
-                    'type' => $line['Type'],
-                    'luas' => $line['Luas'] == '' ? null : $line['Luas'],
-                    'blok' => $line['Blok'],
-                    'no_blok' => $line['NO BLOK'],
-                    'keterangan' => $line['Keterangan']
-                ]);
-                $failures[] = [
-                    'message' => 'Kecamatan ' . $line['Kecamatan'] . ' tidak ditemukan',
-                    'baris' => $baris,
-                ];
-            } else {
-                $village = DB::table('master_subdistrict')
-                    ->where(DB::raw('LOWER(name)'), $rowSubdistrict)
-                    ->whereIn('district_code', $districts)
-                    ->first();
-                if (!$village) {
+            $rowRegency = strtolower($line["Kabupaten / Kota"]);
+            $regency = DB::table('master_regency')
+            ->where(DB::raw('LOWER(name)'), $rowRegency)
+            ->pluck('code')
+            ->first();
+            if (!$regency) {
                     $fail = 1;
                     IMBPecahan::create([
                         'imb_induk_id' => $line['No. IMB Induk'],
@@ -128,22 +117,29 @@ class IMBPecahanController extends Controller
                         'jenis_kegiatan' => $jenis_kegiatan,
                         'fungsi_bangunan' => $fungsi_bangunan,
                         'lokasi_perumahan' => $line['Lokasi / Perumahan'],
+                        'kabupaten_lama' => $line['Kabupaten / Kota'],
                         'kecamatan_lama' => $line['Kecamatan'],
                         'kelurahan_lama' => $line['Desa / Kelurahan'],
                         'type' => $line['Type'],
                         'luas' => $line['Luas'] == '' ? null : $line['Luas'],
                         'blok' => $line['Blok'],
-                        'no_blok' => $line['NO BLOK'],
+                        'no_blok' => $line['No Blok'],
                         'keterangan' => $line['Keterangan']
                     ]);
                     $failures[] = [
-                        'message' => 'Desa/Kelurahan ' . $line['Desa / Kelurahan'] . ' tidak ditemukan di kecamatan ' . $line['Kecamatan'],
+                        'message' => 'Kabupaten ' . $line["Kabupaten / Kota"] . ' tidak ditemukan',
                         'baris' => $baris,
                     ];
-                }
+                    return;
             }
-            $baris++;
-            if ($fail == 0) {
+            $errorDistricts = 0;
+            $districts = DB::table('master_district')
+                ->where(DB::raw('LOWER(name)'), $rowDistrict)
+                ->pluck('code')
+                ->toArray();
+            if (empty($districts)) {
+                $fail = 1;
+                $errorDistricts = 1;
                 IMBPecahan::create([
                     'imb_induk_id' => $line['No. IMB Induk'],
                     'tgl_imb_induk' => null,
@@ -156,17 +152,89 @@ class IMBPecahanController extends Controller
                     'jenis_kegiatan' => $jenis_kegiatan,
                     'fungsi_bangunan' => $fungsi_bangunan,
                     'lokasi_perumahan' => $line['Lokasi / Perumahan'],
+                    'kabupaten_lama' => $line['Kabupaten / Kota'],
+                    'kecamatan_lama' => $line['Kecamatan'],
+                    'kelurahan_lama' => $line['Desa / Kelurahan'],
+                    'type' => $line['Type'],
+                    'luas' => $line['Luas'] == '' ? null : $line['Luas'],
+                    'blok' => $line['Blok'],
+                    'no_blok' => $line['No Blok'],
+                    'keterangan' => $line['Keterangan']
+                ]);
+                $failures[] = [
+                    'message' => 'Kecamatan ' . $line['Kecamatan'] . ' tidak ditemukan',
+                    'baris' => $baris,
+                ];
+            }
+
+            $village = DB::table('master_subdistrict')
+                ->where(DB::raw('LOWER(name)'), $rowSubdistrict)
+                ->whereIn('district_code', $districts)
+                ->first();
+            if (!$village) {
+                if ($errorDistricts == 1) {
+                    $failures[] = [
+                        'message' => 'Desa/Kelurahan ' . $line['Desa / Kelurahan'] . ' tidak ditemukan di kecamatan ' . $line['Kecamatan'],
+                        'baris' => $baris,
+                    ];
+                    return;
+                }
+                $fail = 1;
+                IMBPecahan::create([
+                    'imb_induk_id' => $line['No. IMB Induk'],
+                    'tgl_imb_induk' => null,
+                    'imb_pecahan' => $line['No. IMB Pecahan / Rincikan'],
+                    'tgl_imb_pecahan' => null,
+                    'no_register' => $line['No. Register'],
+                    'tgl_register' => null,
+                    'nama' => $line['Nama'],
+                    'atas_nama' => $line['Atas Nama'],
+                    'jenis_kegiatan' => $jenis_kegiatan,
+                    'fungsi_bangunan' => $fungsi_bangunan,
+                    'lokasi_perumahan' => $line['Lokasi / Perumahan'],
+                    'kabupaten_lama' => $line['Kabupaten / Kota'],
+                    'kecamatan_lama' => $line['Kecamatan'],
+                    'kelurahan_lama' => $line['Desa / Kelurahan'],
+                    'type' => $line['Type'],
+                    'luas' => $line['Luas'] == '' ? null : $line['Luas'],
+                    'blok' => $line['Blok'],
+                    'no_blok' => $line['No Blok'],
+                    'keterangan' => $line['Keterangan']
+                ]);
+                $failures[] = [
+                    'message' => 'Desa/Kelurahan ' . $line['Desa / Kelurahan'] . ' tidak ditemukan di kecamatan ' . $line['Kecamatan'],
+                    'baris' => $baris,
+                ];
+            }
+
+            $baris++;
+            if ($fail == 0) {
+                //dd($regency);
+                IMBPecahan::create([
+                    'imb_induk_id' => $line['No. IMB Induk'],
+                    'tgl_imb_induk' => null,
+                    'imb_pecahan' => $line['No. IMB Pecahan / Rincikan'],
+                    'tgl_imb_pecahan' => null,
+                    'no_register' => $line['No. Register'],
+                    'tgl_register' => null,
+                    'nama' => $line['Nama'],
+                    'atas_nama' => $line['Atas Nama'],
+                    'jenis_kegiatan' => $jenis_kegiatan,
+                    'fungsi_bangunan' => $fungsi_bangunan,
+                    'lokasi_perumahan' => $line['Lokasi / Perumahan'],
+                    'kabupaten' => $regency,
                     'kecamatan' => $village->district_code,
                     'desa_kelurahan' => $village->code,
                     'type' => $line['Type'],
                     'luas' => $line['Luas'] == '' ? null : $line['Luas'],
                     'blok' => $line['Blok'],
-                    'no_blok' => $line['NO BLOK'],
+                    'no_blok' => $line['No Blok'],
                     'keterangan' => $line['Keterangan']
                 ]);
             }
         });
         if (count($failures) > 0) {
+            //dd($failures);
             return redirect()->back()->with(['status' => 'error', 'message' => 'Import data selesai, namun terdapat kesalahan. Silahkan download file log untuk melihat detail kesalahan.'])->with('failures', $failures);
         } else {
             return redirect()->back()->with(['status' => 'success', 'message' => 'Import data berhasil']);
@@ -192,6 +260,7 @@ class IMBPecahanController extends Controller
             'jenis_kegiatan' => 'required|string',
             'fungsi_bangunan' => 'required|string',
             'lokasi_perumahan' => 'nullable|string',
+            'kabupaten' => 'nullable|string',
             'kecamatan' => 'nullable|string',
             'desa_kelurahan' => 'nullable|string',
             'type' => 'nullable|string',
@@ -229,6 +298,7 @@ class IMBPecahanController extends Controller
             'jenis_kegiatan' => $jenisKegiatanId,
             'fungsi_bangunan' => $validatedData['fungsi_bangunan'],
             'lokasi_perumahan' => $validatedData['lokasi_perumahan'],
+            'kabupaten' => $validatedData['kabupaten'],
             'kecamatan' => $validatedData['kecamatan'],
             'desa_kelurahan' => $validatedData['desa_kelurahan'],
             'type' => $validatedData['type'],
@@ -244,9 +314,10 @@ class IMBPecahanController extends Controller
     public function edit($id)
     {
         $data = IMBPecahan::join('app_md_jeniskeg', 'imb_pecahan.jenis_kegiatan', '=', 'app_md_jeniskeg.id_jeniskeg')
+            ->join('master_regency', 'imb_pecahan.kabupaten', '=', 'master_regency.code')
             ->join('master_district', 'imb_pecahan.kecamatan', '=', 'master_district.code')
             ->join('master_subdistrict', 'imb_pecahan.desa_kelurahan', '=', 'master_subdistrict.code')
-            ->select('imb_pecahan.*', 'master_district.name as kecamatan', 'master_district.code as kecamatan_code', 'master_subdistrict.name as kelurahan', 'master_subdistrict.code as kelurahan_code')
+            ->select('imb_pecahan.*', 'master_regency.name as kabupaten' , 'master_regency.code as kabupaten_code', 'master_district.name as kecamatan', 'master_district.code as kecamatan_code', 'master_subdistrict.name as kelurahan', 'master_subdistrict.code as kelurahan_code')
             ->where('imb_pecahan.id', $id)->first();
 
         $imbInduk = IMBIndukPerum::where('imb_induk', $data->imb_induk_id)->first();
@@ -267,6 +338,7 @@ class IMBPecahanController extends Controller
             'jenis_kegiatan' => 'required|string',
             'fungsi_bangunan' => 'required|string',
             'lokasi_perumahan' => 'nullable|string',
+            'kabupaten' => 'nullable|string',
             'kecamatan' => 'nullable|string',
             'desa_kelurahan' => 'nullable|string',
             'type' => 'nullable|string',
@@ -312,6 +384,7 @@ class IMBPecahanController extends Controller
                 'jenis_kegiatan' => $jenisKegiatanId,
                 'fungsi_bangunan' => $validatedData['fungsi_bangunan'],
                 'lokasi_perumahan' => $validatedData['lokasi_perumahan'],
+                'kabupaten' => $validatedData['kabupaten'],
                 'kecamatan' => $validatedData['kecamatan'],
                 'desa_kelurahan' => $validatedData['desa_kelurahan'],
                 'type' => $validatedData['type'],
@@ -334,6 +407,7 @@ class IMBPecahanController extends Controller
                 'jenis_kegiatan' => $jenisKegiatanId,
                 'fungsi_bangunan' => $validatedData['fungsi_bangunan'],
                 'lokasi_perumahan' => $validatedData['lokasi_perumahan'],
+                'kabupaten' => $validatedData['kabupaten'],
                 'kecamatan' => $validatedData['kecamatan'],
                 'desa_kelurahan' => $validatedData['desa_kelurahan'],
                 'type' => $validatedData['type'],
@@ -343,7 +417,7 @@ class IMBPecahanController extends Controller
                 'keterangan' => $validatedData['keterangan'],
             ]);
         }
-        return redirect()->back()->with(['status' => 'success', 'message' => 'Data berhasil diubah']);
+        return redirect()->route('IMBPecahan.index')->with(['status' => 'success', 'message' => 'Data berhasil diubah']);
     }
 
     public function destroy($id)

@@ -42,13 +42,14 @@ class IMBPecahanExport implements ShouldAutoSize,FromCollection, WithCustomStart
                 $sheet->setCellValue('J1', 'Jenis Kegiatan');
                 $sheet->setCellValue('K1', 'Fungsi Bangunan');
                 $sheet->setCellValue('L1', 'Lokasi Perumahan');
-                $sheet->setCellValue('M1', 'Kecamatan');
-                $sheet->setCellValue('N1', 'Desa Kelurahan');
-                $sheet->setCellValue('O1', 'Type');
-                $sheet->setCellValue('P1', 'Luas');
-                $sheet->setCellValue('Q1', 'Blok');
-                $sheet->setCellValue('R1', 'No Blok');
-                $sheet->setCellValue('S1', 'Keterangan');
+                $sheet->setCellValue('M1', 'Kabupaten/Kota');
+                $sheet->setCellValue('N1', 'Kecamatan');
+                $sheet->setCellValue('O1', 'Desa Kelurahan');
+                $sheet->setCellValue('P1', 'Type');
+                $sheet->setCellValue('Q1', 'Luas');
+                $sheet->setCellValue('R1', 'Blok');
+                $sheet->setCellValue('S1', 'No Blok');
+                $sheet->setCellValue('T1', 'Keterangan');
 
             },
         ];
@@ -57,6 +58,7 @@ class IMBPecahanExport implements ShouldAutoSize,FromCollection, WithCustomStart
     public function collection()
     {
         $data = \DB::table('imb_pecahan')
+        ->join('master_regency', 'imb_pecahan.kabupaten', '=', 'master_regency.code')
         ->join('master_district', 'imb_pecahan.kecamatan', '=', 'master_district.code')
         ->join('master_subdistrict', 'imb_pecahan.desa_kelurahan', '=', 'master_subdistrict.code')
         ->join('app_md_jeniskeg', 'imb_pecahan.jenis_kegiatan', '=', 'app_md_jeniskeg.id_jeniskeg')
@@ -74,6 +76,7 @@ class IMBPecahanExport implements ShouldAutoSize,FromCollection, WithCustomStart
             'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan',
             'app_md_fungsibang.name_fungsibang as fungsi_bangunan',
             'imb_pecahan.lokasi_perumahan',
+            'master_regency.name as kabupaten',
             'master_district.name as kecamatan',
             'master_subdistrict.name as desa_kelurahan',
             'imb_pecahan.type',

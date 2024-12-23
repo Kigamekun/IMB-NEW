@@ -258,7 +258,7 @@
             <tr style="margin-left: 100px">
                 <td>Alamat</td>
                 <td>:</td>
-                <td style=" line-height: 1.15!important;">
+                <td style=" line-height: 1.15!important; text-align:justify;">
                     {{ $pemohon['alamat'] }}, Desa/Kelurahan
                     {{ $pemohon['kelurahanPemohon'] }}, Kecamatan
                     {{ $pemohon['kecamatanPemohon'] }}, {{ $pemohon['kabupatenPemohon'] }}
@@ -288,14 +288,20 @@
                     Desa/Kelurahan {{ $referensi['kelurahan'] }}
                     @if (isset($referensi['kelurahan-terdahulu']) && $referensi['kelurahan-terdahulu'] != null)
                         (d/h. {{ $referensi['kelurahan-terdahulu'] }}),
+                    @else
+                        ,
                     @endif
                     Kecamatan {{ $referensi['kecamatan'] }}
                     @if (isset($referensi['kecamatan-terdahulu']) && $referensi['kecamatan-terdahulu'] != null)
                         (d/h. {{ $referensi['kecamatan-terdahulu'] }}),
+                    @else
+                        ,
                     @endif
                      {{ $referensi['kabupaten'] }}
                     @if (isset($referensi['kabupaten-terdahulu']) && $referensi['kabupaten-terdahulu'] != null)
                         (d/h. {{ $referensi['kabupaten-terdahulu'] }}).
+                    @else
+                        .
                     @endif
                 </td>
             </tr>

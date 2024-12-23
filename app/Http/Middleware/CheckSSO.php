@@ -17,7 +17,7 @@ class CheckSSO
     {
         $secretKey = env('SHARED_SECRET_KEY');
         $cookie = $request->cookie('sso');
-
+       // dd($secretKey);
         if ($cookie) {
             list($payload, $signature) = explode('::', base64_decode($cookie), 2);
 

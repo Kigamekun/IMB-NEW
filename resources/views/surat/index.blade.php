@@ -20,12 +20,29 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5 rounded">
                 <div class="p-6 text-gray-900">
                     <h3 class="text-3xl font-bold">Data Surat</h3>
-                    <div style="margin-top:20px">
+                    <div style="margin-top:20px;">
                         <a href="{{ route('surat.create') }}" type="button" class="btn btn-primary">
                             Tambah Data
                         </a>
-
+                        {{-- <a type="button" href="{{ route('surat.cetakHalaman', ['page' => request()->get('page', 1)]) }}" onclick="window.open(this.href, '_blank', 'width=800,height=600'); return false;" class="btn btn-primary">
+                            Cetak Halaman
+                        </a> --}}
+                        <a type="button" id="cetakHalamanBtn" class="btn btn-primary">
+                            Cetak Halaman
+                        </a>
+                        <a type="button" href="{{ route('surat.previewIndex') }}" onclick="window.open(this.href, '_blank', 'width=800,height=600'); return false;" class="btn btn-primary">
+                            Cetak Data
+                        </a>
+                        {{-- <a href="{{ route('surat.create') }}" type="button" class="btn btn-primary">
+                            Copy Data
+                        </a> --}}
+                        <a type="button" data-url="' . route('surat.copyData', $row->id) . '" class="btn btn-primary text-white copyDataModal"
+                            data-toggle="modal" data-target="#copyDataModal">
+                            {{-- <i class="fas fa-upload"></i> --}}
+                            Copy Data
+                        </a>
                     </div>
+
                     <div class="mt-6" style="display: grid; gap:25px; margin-top:20px; grid-template-columns: repeat(4, minmax(0, 1fr));" id="form-search">
                         {{-- <button type="submit" class="btn btn-primary" style="height: 35px">Cari Surat</button> --}}
                         <div class="mb-3">
@@ -139,8 +156,9 @@
             serverSide: true,
 
             ajax: {
-                url: "{{ route('surat.index') }}",
+                url: window.location.href,
                 data: function(d) {
+                    // d.perPage = $('#IMBTable').DataTable().page.len(); // Ambil jumlah entri per halaman
                     d.nomor_surat = $('#nomorSurat').val();
                     d.nama_pemohon = $('#namaPemohonSurat').val();
                     d.nomor_imbg = $('#nomorIMBG').val();
@@ -243,6 +261,13 @@
         $('#form-search input').on('keyup change', function() {
             table.ajax.reload(null, false); // Reload DataTable dengan data baru tanpa mengubah halaman
         });
+
+        $('#cetakHalamanBtn').on('click', function() {
+            var page = table.page.info().page + 1; // Ambil halaman saat ini (DataTables menggunakan 0-based index)
+            var perPage = table.page.len(); // Ambil jumlah entri per halaman
+            var url = "{{ route('surat.cetakHalaman') }}" + "?page=" + page + "&perPage=" + perPage;
+            window.open(url, '_blank', 'width=800,height=600');
+        });
     </script>
 @endsection
 
@@ -271,6 +296,56 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="copyDataModal" tabindex="-1" aria-labelledby="copyDataModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="copyDataModalLabel">Copy Data</h5>
+                </div>
+                <form id="copy-data-form" action="{{ route('surat.copyData') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="tahun" class="form-label">Tahun</label>
+                            {{-- <select class="form-control" id="tahun" name="tahun">
+                                <option value="">-- PILIH --</option>
+                                @foreach ($years as $year)
+                                    <option value="{{ $year }}">{{ $year }}</option>
+                                @endforeach
+
+                            </select> --}}
+                            <select id="tahun" name="tahun" class="form-control">
+                                <option value="">Pilih Tahun...</option>
+                                <?php
+                                $currentYear = date('Y'); // Tahun sekarang
+                                $tahun = $currentYear - 50; // 50 tahun ke belakang
+                                for ($year = $currentYear; $year >= $tahun; $year--) {
+                                    echo "<option value='$year'>$year</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="mb-3" style="margin-top: 10px">
+                            <label for="nomor_surat" class="form-label">Nomor SK/Pemohon</label>
+                            <select id="nomorSK-Pemohon" name="nomorSK-Pemohon" class="form-select select2-copy">
+                                <option value="">-- PILIH --</option>
+                                {{-- @foreach ($nomorSKs as $nomorSK)
+                                    <option value="{{ $nomorSK->id }}">{{ $nomorSK->nomor_surat }}</option>
+                                @endforeach --}}
+                            </select>
+                        </div>
+                        <input type="hidden" id="namaPemohonId" name="namaPemohonId">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
     <div class="modal fade" id="updateNomorModal" tabindex="-1" aria-labelledby="updateNomorModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -324,6 +399,56 @@
 @endsection
 
 @section('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.select2-copy').select2();
+
+            $('#copyDataModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var id = button.data('id');
+                var modal = $(this);
+                modal.find('#namaPemohonId').val(id);
+            });
+        });
+        $(document).ready(function() {
+            $('.select2').select2();
+
+            $('#copyDataModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var nama = $('#namaPemohon').val(); // Ambil nilai dari input nama pemohon
+                var nomorSurat = $('#nomorSurat').val(); // Ambil nilai dari input nomor surat
+
+                // Kosongkan opsi sebelumnya
+                $('#nomorSK-Pemohon').empty().append('<option value="">-- PILIH --</option>');
+
+                $.ajax({
+                    url: "{{ route('surat.getNomorSuratPemohon') }}",
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        nama: nama,
+                        nomorSurat: nomorSurat
+                    },
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            $('#nomorSK-Pemohon').append('<option value="' + response.nomorSuratPemohon + '">' + response.nomorSuratPemohon + '</option>');
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function(xhr) {
+                        alert('Terjadi kesalahan saat mengambil data.');
+                    }
+                });
+            });
+
+            // Select2CopyData();
+        });
+    </script>
+
+
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous">
     </script>
@@ -362,6 +487,12 @@
                 const button = event.relatedTarget;
                 const url = button.getAttribute('data-url');
                 const form = document.getElementById('update-nomor-form');
+                form.setAttribute('action', url);
+            });
+            updateModal.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+                const url = button.getAttribute('data-url');
+                const form = document.getElementById('copy-data-form');
                 form.setAttribute('action', url);
             });
         });

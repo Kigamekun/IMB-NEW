@@ -44,59 +44,18 @@
                                     enctype="multipart/form-data">
                                     @csrf
                                     <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="no_imb_induk" class="form-label">Kecamatans Lama:</label>
-                                            <select name="kecamatan_lama" id="kecamatan_lama" class="form-control select-kecamatan">
-                                                <option value="">Pilih Kecamatan</option>
-                                                @foreach (DB::table('imb_pecahan')->groupBy('kecamatan_lama')->where('kecamatan_lama', '!=', '')->select('kecamatan_lama')->get() as $kecamatan)
-                                                    <option value="{{ $kecamatan->kecamatan_lama }}">{{ $kecamatan->kecamatan_lama }}
+                                        <div class="col-md-4">
+                                            <label for="no_imb_induk" class="form-label">Kabupaten Lama:</label>
+                                            <select name="kabupaten_lama" id="kabupaten_lama" class="form-control select-kabupaten">
+                                                <option value="">Pilih Kabupaten</option>
+                                                @foreach (DB::table('imb_pecahan')->groupBy('kabupaten_lama')->where('kabupaten_lama', '!=', '')->select('kabupaten_lama')->get() as $kabupaten)
+                                                    <option value="{{ $kabupaten->kabupaten_lama }}">{{ $kabupaten->kabupaten_lama }}
                                                     </option>
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div class="col-md-6 " >
-                                            <label for="tgl_imb_induk" class="form-label">Kelurahan Lama:</label>
-                                            <select name="kelurahan_lama" id="kelurahan_lama" class="form-control select-kelurahan">
-                                                <option value="">Pilih Kelurahan</option>
-                                                @foreach (DB::table('imb_induk_perum')->groupBy('kelurahan_lama')->where('kelurahan_lama', '!=', '')->select('kelurahan_lama')->get() as $kelurahan)
-                                                    <option value="{{ $kelurahan->kelurahan_lama }}">{{ $kelurahan->kelurahan_lama }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3 " >
-                                        <div class="col-md-6">
-                                            <label for="no_imb_pecahan" class="form-label">Kecamatans Baru:</label>
-                                            <select name="kecamatan" id="kecamatan" class="form-select select2-kecamatan" required>
-                                                <option value="">Pilih Kecamatan</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="tgl_pecahan" class="form-label">Kelurahan Baru:</label>
-                                            <select name="desa_kelurahan" id="desa_kelurahan"
-                                                class="form-select select2-kelurahan" required>
-                                                <option value="">Pilih Desa/Kelurahan</option>
-                                            </select>
-                                        </div>
 
-                                        {{-- <div class="col-md-6">
-                                            <label for="tgl_pecahan" class="form-label">Kelurahan Baru:</label>
-                                            <select name="desa_kelurahan" id="desa_kelurahan" class="form-select select2-kelurahan" required>
-                                                <option value="">Pilih Desa/Kelurahan</option>
-                                            </select>
-                                        </div> --}}
-                                    </div>
-                                    <button type="submit" class="btn btn-success mt-3">Submit</button>
-                                </form>
-                            @break
-
-                            @case('pecahan')
-                                <form id="mainForm" action="{{ route('SinkronisasiLokasiIMB.hubungkanStore') }}?type=pecahan" method="POST"
-                                    enctype="multipart/form-data">
-                                    @csrf
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <label for="no_imb_induk" class="form-label">Kecamatan Lama:</label>
                                             <select name="kecamatan_lama" id="kecamatan_lama" class="form-control select-kecamatan">
                                                 <option value="">Pilih Kecamatan</option>
@@ -106,7 +65,7 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <label for="tgl_imb_induk" class="form-label">Kelurahan Lama:</label>
                                             <select name="kelurahan_lama" id="kelurahan_lama" class="form-control select-kelurahan">
                                                 <option value="">Pilih Kelurahan</option>
@@ -118,13 +77,83 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3" style="margin-top: 10px">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
+                                            <label for="no_imb_pecahan" class="form-label">Kabupaten Baru:</label>
+                                            <select name="kabupaten" id="kabupaten" class="form-control select2-kabupaten" required>
+                                                <option value="">Pilih Kabupaten</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-4">
                                             <label for="no_imb_pecahan" class="form-label">Kecamatan Baru:</label>
                                             <select name="kecamatan" id="kecamatan" class="form-control select2-kecamatan" required>
                                                 <option value="">Pilih Kecamatan</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
+                                            <label for="tgl_pecahan" class="form-label">Kelurahan Baru:</label>
+                                            <select name="desa_kelurahan" id="desa_kelurahan"
+                                                class="form-control  select2-kelurahan" required>
+                                                <option value="">Pilih Desa/Kelurahan</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-success mt-3">Submit</button>
+                                </form>
+                            @break
+
+                            @case('pecahan')
+                                <form id="mainForm" action="{{ route('SinkronisasiLokasiIMB.hubungkanStore') }}?type=pecahan" method="POST"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label for="no_imb_induk" class="form-label">Kabupaten Lama:</label>
+                                            <select name="kabupaten_lama" id="kabupaten_lama" class="form-control select-kabupaten">
+                                                <option value="">Pilih Kabupaten</option>
+                                                @foreach (DB::table('imb_pecahan')->groupBy('kabupaten_lama')->where('kabupaten_lama', '!=', '')->select('kabupaten_lama')->get() as $kabupaten)
+                                                    <option value="{{ $kabupaten->kabupaten_lama }}">{{ $kabupaten->kabupaten_lama }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label for="no_imb_induk" class="form-label">Kecamatan Lama:</label>
+                                            <select name="kecamatan_lama" id="kecamatan_lama" class="form-control select-kecamatan">
+                                                <option value="">Pilih Kecamatan</option>
+                                                @foreach (DB::table('imb_pecahan')->groupBy('kecamatan_lama')->where('kecamatan_lama', '!=', '')->select('kecamatan_lama')->get() as $kecamatan)
+                                                    <option value="{{ $kecamatan->kecamatan_lama }}">{{ $kecamatan->kecamatan_lama }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="tgl_imb_induk" class="form-label">Kelurahan Lama:</label>
+                                            <select name="kelurahan_lama" id="kelurahan_lama" class="form-control select-kelurahan">
+                                                <option value="">Pilih Kelurahan</option>
+                                                @foreach (DB::table('imb_pecahan')->groupBy('kelurahan_lama')->where('kelurahan_lama', '!=', '')->select('kelurahan_lama')->get() as $kelurahan)
+                                                    <option value="{{ $kelurahan->kelurahan_lama }}">{{ $kelurahan->kelurahan_lama }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3" style="margin-top: 10px">
+                                        <div class="col-md-4">
+                                            <label for="no_imb_pecahan" class="form-label">Kabupaten Baru:</label>
+                                            <select name="kabupaten" id="kabupaten" class="form-control select2-kabupaten" required>
+                                                <option value="">Pilih Kabupaten</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label for="no_imb_pecahan" class="form-label">Kecamatan Baru:</label>
+                                            <select name="kecamatan" id="kecamatan" class="form-control select2-kecamatan" required>
+                                                <option value="">Pilih Kecamatan</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
                                             <label for="tgl_pecahan" class="form-label">Kelurahan Baru:</label>
                                             <select name="desa_kelurahan" id="desa_kelurahan"
                                                 class="form-control  select2-kelurahan" required>
@@ -141,38 +170,56 @@
                                     enctype="multipart/form-data">
                                     @csrf
                                     <div class="row mb-3">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
+                                            <label for="no_imb_induk" class="form-label">Kabupaten Lama:</label>
+                                            <select name="kabupaten_lama" id="kabupaten_lama" class="form-control select-kabupaten">
+                                                <option value="">Pilih Kabupaten</option>
+                                                @foreach (DB::table('imb_pecahan')->groupBy('kabupaten_lama')->where('kabupaten_lama', '!=', '')->select('kabupaten_lama')->get() as $kabupaten)
+                                                    <option value="{{ $kabupaten->kabupaten_lama }}">{{ $kabupaten->kabupaten_lama }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-4">
                                             <label for="no_imb_induk" class="form-label">Kecamatan Lama:</label>
                                             <select name="kecamatan_lama" id="kecamatan_lama" class="form-control select-kecamatan">
                                                 <option value="">Pilih Kecamatan</option>
-                                                @foreach (DB::table('imb_perluasan')->groupBy('kecamatan_lama')->where('kecamatan_lama', '!=', '')->select('kecamatan_lama')->get() as $kecamatan)
+                                                @foreach (DB::table('imb_pecahan')->groupBy('kecamatan_lama')->where('kecamatan_lama', '!=', '')->select('kecamatan_lama')->get() as $kecamatan)
                                                     <option value="{{ $kecamatan->kecamatan_lama }}">{{ $kecamatan->kecamatan_lama }}
                                                     </option>
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <label for="tgl_imb_induk" class="form-label">Kelurahan Lama:</label>
                                             <select name="kelurahan_lama" id="kelurahan_lama" class="form-control select-kelurahan">
                                                 <option value="">Pilih Kelurahan</option>
-                                                @foreach (DB::table('imb_perluasan')->groupBy('kelurahan_lama')->where('kelurahan_lama', '!=', '')->select('kelurahan_lama')->get() as $kelurahan)
+                                                @foreach (DB::table('imb_pecahan')->groupBy('kelurahan_lama')->where('kelurahan_lama', '!=', '')->select('kelurahan_lama')->get() as $kelurahan)
                                                     <option value="{{ $kelurahan->kelurahan_lama }}">{{ $kelurahan->kelurahan_lama }}
                                                     </option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="row mb-3" style="margin-top:10px !important;">
-                                        <div class="col-md-6">
+                                    <div class="row mb-3" style="margin-top: 10px">
+                                        <div class="col-md-4">
+                                            <label for="no_imb_pecahan" class="form-label">Kabupaten Baru:</label>
+                                            <select name="kabupaten" id="kabupaten" class="form-control select2-kabupaten" required>
+                                                <option value="">Pilih Kabupaten</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-4">
                                             <label for="no_imb_pecahan" class="form-label">Kecamatan Baru:</label>
-                                            <select name="kecamatan" id="kecamatan" class="form-select select2-kecamatan" required>
+                                            <select name="kecamatan" id="kecamatan" class="form-control select2-kecamatan" required>
                                                 <option value="">Pilih Kecamatan</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <label for="tgl_pecahan" class="form-label">Kelurahan Baru:</label>
                                             <select name="desa_kelurahan" id="desa_kelurahan"
-                                                class="form-select select2 select2-kelurahan" style="width:100%;" required>
+                                                class="form-control  select2-kelurahan" required>
                                                 <option value="">Pilih Desa/Kelurahan</option>
                                             </select>
                                         </div>
@@ -186,38 +233,56 @@
                                     enctype="multipart/form-data">
                                     @csrf
                                     <div class="row mb-3">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
+                                            <label for="no_imb_induk" class="form-label">Kabupaten Lama:</label>
+                                            <select name="kabupaten_lama" id="kabupaten_lama" class="form-control select-kabupaten">
+                                                <option value="">Pilih Kabupaten</option>
+                                                @foreach (DB::table('imb_pecahan')->groupBy('kabupaten_lama')->where('kabupaten_lama', '!=', '')->select('kabupaten_lama')->get() as $kabupaten)
+                                                    <option value="{{ $kabupaten->kabupaten_lama }}">{{ $kabupaten->kabupaten_lama }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-4">
                                             <label for="no_imb_induk" class="form-label">Kecamatan Lama:</label>
-                                            <select name="kecamatan_lama" id="kecamatan_lama" class="form-control">
+                                            <select name="kecamatan_lama" id="kecamatan_lama" class="form-control select-kecamatan">
                                                 <option value="">Pilih Kecamatan</option>
-                                                @foreach (DB::table('imb_induk_non_perum')->groupBy('kecamatan_lama')->where('kecamatan_lama', '!=', '')->select('kecamatan_lama')->get() as $kecamatan)
+                                                @foreach (DB::table('imb_pecahan')->groupBy('kecamatan_lama')->where('kecamatan_lama', '!=', '')->select('kecamatan_lama')->get() as $kecamatan)
                                                     <option value="{{ $kecamatan->kecamatan_lama }}">{{ $kecamatan->kecamatan_lama }}
                                                     </option>
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <label for="tgl_imb_induk" class="form-label">Kelurahan Lama:</label>
-                                            <select name="kelurahan_lama" id="kelurahan_lama" class="form-control">
+                                            <select name="kelurahan_lama" id="kelurahan_lama" class="form-control select-kelurahan">
                                                 <option value="">Pilih Kelurahan</option>
-                                                @foreach (DB::table('imb_induk_non_perum')->groupBy('kelurahan_lama')->where('kelurahan_lama', '!=', '')->select('kelurahan_lama')->get() as $kelurahan)
+                                                @foreach (DB::table('imb_pecahan')->groupBy('kelurahan_lama')->where('kelurahan_lama', '!=', '')->select('kelurahan_lama')->get() as $kelurahan)
                                                     <option value="{{ $kelurahan->kelurahan_lama }}">{{ $kelurahan->kelurahan_lama }}
                                                     </option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="row mb-3" style="margin-top: 10px;">
-                                        <div class="col-md-6">
+                                    <div class="row mb-3" style="margin-top: 10px">
+                                        <div class="col-md-4">
+                                            <label for="no_imb_pecahan" class="form-label">Kabupaten Baru:</label>
+                                            <select name="kabupaten" id="kabupaten" class="form-control select2-kabupaten" required>
+                                                <option value="">Pilih Kabupaten</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-4">
                                             <label for="no_imb_pecahan" class="form-label">Kecamatan Baru:</label>
-                                            <select name="kecamatan" id="kecamatan" class="form-select select2-kecamatan" required>
+                                            <select name="kecamatan" id="kecamatan" class="form-control select2-kecamatan" required>
                                                 <option value="">Pilih Kecamatan</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <label for="tgl_pecahan" class="form-label">Kelurahan Baru:</label>
                                             <select name="desa_kelurahan" id="desa_kelurahan"
-                                                class="form-select select2 select2-kelurahan" style="width:100%;" required>
+                                                class="form-control  select2-kelurahan" required>
                                                 <option value="">Pilih Desa/Kelurahan</option>
                                             </select>
                                         </div>
@@ -235,38 +300,56 @@
                             enctype="multipart/form-data">
                             @csrf
                             <div class="row mb-3">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
+                                    <label for="no_imb_induk" class="form-label">Kabupaten Lama:</label>
+                                    <select name="kabupaten_lama" id="kabupaten_lama" class="form-control select-kabupaten">
+                                        <option value="">Pilih Kabupaten</option>
+                                        @foreach (DB::table('imb_pecahan')->groupBy('kabupaten_lama')->where('kabupaten_lama', '!=', '')->select('kabupaten_lama')->get() as $kabupaten)
+                                            <option value="{{ $kabupaten->kabupaten_lama }}">{{ $kabupaten->kabupaten_lama }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4">
                                     <label for="no_imb_induk" class="form-label">Kecamatan Lama:</label>
-                                    <select name="kecamatan_lama" id="kecamatan_lama" class="form-control">
+                                    <select name="kecamatan_lama" id="kecamatan_lama" class="form-control select-kecamatan">
                                         <option value="">Pilih Kecamatan</option>
-                                        @foreach (DB::table('imb_induk_perum')->groupBy('kecamatan_lama')->where('kecamatan_lama', '!=', '')->select('kecamatan_lama')->get() as $kecamatan)
+                                        @foreach (DB::table('imb_pecahan')->groupBy('kecamatan_lama')->where('kecamatan_lama', '!=', '')->select('kecamatan_lama')->get() as $kecamatan)
                                             <option value="{{ $kecamatan->kecamatan_lama }}">{{ $kecamatan->kecamatan_lama }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <label for="tgl_imb_induk" class="form-label">Kelurahan Lama:</label>
-                                    <select name="kelurahan_lama" id="kelurahan_lama" class="form-control">
+                                    <select name="kelurahan_lama" id="kelurahan_lama" class="form-control select-kelurahan">
                                         <option value="">Pilih Kelurahan</option>
-                                        @foreach (DB::table('imb_induk_perum')->groupBy('kelurahan_lama')->where('kelurahan_lama', '!=', '')->select('kelurahan_lama')->get() as $kelurahan)
+                                        @foreach (DB::table('imb_pecahan')->groupBy('kelurahan_lama')->where('kelurahan_lama', '!=', '')->select('kelurahan_lama')->get() as $kelurahan)
                                             <option value="{{ $kelurahan->kelurahan_lama }}">{{ $kelurahan->kelurahan_lama }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
-                            <div class="row mb-3" style="margin-top:10px;">
-                                <div class="col-md-6">
+                            <div class="row mb-3" style="margin-top: 10px">
+                                <div class="col-md-4">
+                                    <label for="no_imb_pecahan" class="form-label">Kabupaten Baru:</label>
+                                    <select name="kabupaten" id="kabupaten" class="form-control select2-kabupaten" required>
+                                        <option value="">Pilih Kabupaten</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4">
                                     <label for="no_imb_pecahan" class="form-label">Kecamatan Baru:</label>
-                                    <select name="kecamatan" id="kecamatan" class="form-select select2-kecamatan" required>
+                                    <select name="kecamatan" id="kecamatan" class="form-control select2-kecamatan" required>
                                         <option value="">Pilih Kecamatan</option>
                                     </select>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <label for="tgl_pecahan" class="form-label">Kelurahan Baru:</label>
                                     <select name="desa_kelurahan" id="desa_kelurahan"
-                                        class="form-select select2 select2-kelurahan" style="width: 100%" required>
+                                        class="form-control  select2-kelurahan" required>
                                         <option value="">Pilih Desa/Kelurahan</option>
                                     </select>
                                 </div>
@@ -294,12 +377,12 @@
 
         function initializeSelect2WithAjax() {
             // Kecamatan Select2 with AJAX
-            $('.select2-kecamatan').select2({
+            $('.select2-kabupaten').select2({
                 width: '100%',
-                placeholder: 'Pilih Kecamatan',
+                placeholder: 'Pilih Kabupaten',
                 minimumInputLength: 0,
                 ajax: {
-                    url: "{{ route('master.kecamatan') }}", // URL to fetch kecamatan data
+                    url: "{{ route('master.kabupaten') }}", // URL to fetch kabupaten data
                     dataType: 'json',
                     delay: 250,
                     data: function(params) {
@@ -322,9 +405,46 @@
                     cache: true
                 }
             }).on('select2:select', function(e) {
-                console.log("Selected Kecamatan:", e.params.data);
-                loadKelurahan(e.params.data.id); // Load kelurahan based on selected kecamatan
+                console.log("Selected Kabupaten:", e.params.data);
+                loadKecamatan(e.params.data.id);
             });
+
+            // Kecamatan Select2 with AJAX
+           function loadKecamatan(kabupatenId) {
+                $('.select2-kecamatan').select2({
+                    width: '100%',
+                    placeholder: 'Pilih Kecamatan',
+                    minimumInputLength: 0,
+                    ajax: {
+                        url: "{{ route('master.kecamatan') }}", // URL to fetch kecamatan data
+                        dataType: 'json',
+                        delay: 250,
+                        data: function(params) {
+                            return {
+                                q: params.term,
+                                kabupaten_id: kabupatenId, // Pass the selected kabupaten ID
+                                page: params.page || 1
+                            };
+                        },
+                        processResults: function(data, params) {
+                            console.log("Fetched kecamatan data:", data); // Check kecamatan data structure
+                            return {
+                                results: data.items.map(function(item) {
+                                    return {
+                                        id: item.id,
+                                        text: item.text
+                                    };
+                                })
+                            };
+                        },
+                        cache: true
+                    }
+                }).on('select2:select', function(e) {
+                    console.log("Selected Kecamatan:", e.params.data);
+                    loadKelurahan(e.params.data.id);
+                });
+            }
+
 
             // Kelurahan Select2 with AJAX
             function loadKelurahan(kecamatanId) {

@@ -30,6 +30,23 @@ class SuratController extends Controller
                     'master_district.name as nama_kecamatan',
                     'master_subdistrict.name as nama_kelurahan'
                 );
+
+                if (isset($_GET['format'])) {
+                    switch ($_GET['format']) {
+                        case '1':
+                            $query->where('jenisSurat', 'format-1');
+                            break;
+                        case '2':
+                            $query->where('jenisSurat', 'format-2');
+                            break;
+                        case '3':
+                            $query->where('jenisSurat', 'format-3');
+                            break;
+                        case '4':
+                            $query->where('jenisSurat', 'format-4');
+                            break;
+                    }
+                }
             // if ($request->has('nomor_surat')) {
             //     $query->where('nomorSurat', 'like', '%' . $request->input('nomor_surat') . '%');
             // }
@@ -2118,7 +2135,249 @@ class SuratController extends Controller
     }
 
 
+    public function getNomorSuratPemohon(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'nomorSurat' => 'required|string|max:255',
+        ]);
 
+        // Ambil data berdasarkan nama dan nomorSurat
+        $data = \DB::table('surat')
+            ->where('nama', $request->nama)
+            ->where('nomorSurat', $request->nomorSurat)
+            ->first();
+
+        // Cek apakah data ditemukan
+        if (!$data) {
+            return response()->json(['status' => 'error', 'message' => 'Data tidak ditemukan.'], 404);
+        }
+
+        // Format nomorSuratPemohon
+        $nomorSuratPemohon = $data->nomorSurat . ' an. ' . $data->nama;
+
+        // Kembalikan response JSON
+        return response()->json(['status' => 'success', 'nomorSuratPemohon' => $nomorSuratPemohon]);
+    }
+
+    // Duplikasi Data
+    // public function copyData(Request $request)
+    // {
+    //     // Validasi input
+    //     $request->validate([
+    //         'nomorSurat' => 'required_without:namaPemohon|string|max:255',
+    //         'namaPemohon' => 'required_without:nomorSurat|string|max:255',
+    //         'tahun' => 'required|date',
+    //     ]);
+
+    //     // Ambil data berdasarkan nomorSurat atau namaPemohon
+    //     $query = \DB::table('surat');
+    //     if ($request->has('nomorSurat')) {
+    //         $query->where('nomorSurat', $request->input('nomorSurat'));
+    //     } elseif ($request->has('namaPemohon')) {
+    //         $query->where('nama', $request->input('namaPemohon'));
+    //     }
+
+    //     $data = $query->first();
+
+    //     if (!$data) {
+    //         return response()->json(['status' => 'error', 'message' => 'Data tidak ditemukan.'], 404);
+    //     }
+
+    //     // Ubah data menjadi array dan hapus ID untuk duplikasi
+    //     $data = (array) $data;
+    //     unset($data['id']);
+
+    //     // Tambahkan informasi tambahan jika diperlukan
+    //     $data['nomorSurat'] .= '-copy';
+    //     $data['tahun'] = $request->input('tahun');
+    //     $data['created_at'] = now();
+    //     $data['updated_at'] = now();
+
+    //     // Insert data baru ke database
+    //     $newId = \DB::table('surat')->insertGetId($data);
+
+    //     return response()->json(['status' => 'success', 'message' => 'Data berhasil diduplikasi.', 'new_id' => $newId]);
+    // }
+
+    public function copyData(Request $request)
+    {
+        $validated = $request->validate([
+            'tahun' => 'required',
+            'nomorSK-Pemohon' => 'required',
+        ]);
+
+        $dataId = $request->input('nomorSK-Pemohon');
+        $originalData = DB::table('surat')->where('id', $dataId)->first();
+
+        if ($originalData) {
+            $newData = (array) $originalData;
+            unset($newData['id']); // Remove the original ID
+            $newData['created_at'] = now();
+            $newData['updated_at'] = now();
+
+            $newId = DB::table('surat')->insertGetId($newData);
+
+            // Copy related items if any
+            $relatedItems = DB::table('related_table')->where('surat_id', $dataId)->get();
+            foreach ($relatedItems as $item) {
+                $newItem = (array) $item;
+                unset($newItem['id']);
+                $newItem['surat_id'] = $newId;
+                DB::table('related_table')->insert($newItem);
+            }
+
+            return redirect()->route('surat.index')->with('success', 'Data berhasil dicopy');
+        } else {
+            return redirect()->route('surat.index')->with('error', 'Data tidak ditemukan');
+        }
+    }
+    // Mendapatkan daftar tahun dari surat
+    public function getTahunSurat()
+    {
+        $tahun = \DB::table('surat')
+            ->select(\DB::raw('YEAR(tanggalSurat) as tahun'))
+            ->distinct()
+            ->orderBy('tahun', 'desc')
+            ->get();
+
+        return response()->json(['status' => 'success', 'data' => $tahun]);
+    }
+
+    public function LihatIndex(Request $request){
+        $query = \DB::table('surat')
+            ->leftJoin('master_regency', 'surat.kabupaten', '=', 'master_regency.code') // Join ke master_regency
+            ->leftJoin('master_district', 'surat.kecamatan', '=', 'master_district.code') // Join ke master_district
+            ->leftJoin('master_subdistrict', 'surat.kelurahan', '=', 'master_subdistrict.code') // Join ke master_subdistrict
+            ->select(
+                'surat.*',
+                'master_regency.name as nama_kabupaten',
+                'master_district.name as nama_kecamatan',
+                'master_subdistrict.name as nama_kelurahan'
+            )
+            ->orderBy('id', 'desc');
+
+        $data = $query->get();
+
+        if ($request->ajax()) {
+            return Datatables::of($query)
+                ->editColumn('nama_kecamatan', function ($row) {
+                    return ucwords(strtolower($row->nama_kecamatan));
+                })
+                ->editColumn('nama_kecamatan', function ($row) {
+                    return ucwords(strtolower($row->nama_kecamatan));
+                })
+                ->editColumn('nama_kelurahan', function ($row) {
+                    return ucwords(strtolower($row->nama_kelurahan));
+                })
+                // ->rawColumns(['action', 'sudah_upload'])
+                ->addIndexColumn()
+                ->make(true);
+        }
+
+        return view('surat.preview-index', compact('data'));
+    }
+
+    // public function cetakHalaman(Request $request)
+    // {
+    //     $query = \DB::table('surat')
+    //         ->leftJoin('master_regency', 'surat.kabupaten', '=', 'master_regency.code')
+    //         ->leftJoin('master_district', 'surat.kecamatan', '=', 'master_district.code')
+    //         ->leftJoin('master_subdistrict', 'surat.kelurahan', '=', 'master_subdistrict.code')
+    //         ->select(
+    //             'surat.*',
+    //             'master_regency.name as nama_kabupaten',
+    //             'master_district.name as nama_kecamatan',
+    //             'master_subdistrict.name as nama_kelurahan'
+    //         );
+
+    //     // Ambil data untuk halaman saat ini
+    //     $currentPage = $request->input('page', 1);
+    //     $perPage = 10;
+    //     $data = $query->paginate($perPage, ['*'], 'page', $currentPage);
+
+    //     return view('surat.preview-index', compact('data'));
+    // }
+
+    // public function cetakHalaman(Request $request)
+    // {
+    //     // Membuat query untuk mengambil data surat dengan informasi lokasi terkait
+    //     $query = \DB::table('surat')
+    //         ->leftJoin('master_regency', 'surat.kabupaten', '=', 'master_regency.code') // Join ke master_regency
+    //         ->leftJoin('master_district', 'surat.kecamatan', '=', 'master_district.code') // Join ke master_district
+    //         ->leftJoin('master_subdistrict', 'surat.kelurahan', '=', 'master_subdistrict.code') // Join ke master_subdistrict
+    //         ->select(
+    //             'surat.*',
+    //             'master_regency.name as nama_kabupaten',
+    //             'master_district.name as nama_kecamatan',
+    //             'master_subdistrict.name as nama_kelurahan'
+    //         )
+    //         ->orderBy('updated_at', 'desc'); // Urutkan berdasarkan tanggalSurat secara descending
+    //         // Pastikan data diurutkan secara konsisten, gunakan kolom unik seperti 'id'.
+
+    //     // Mendapatkan parameter halaman dan jumlah data per halaman
+    //     $currentPage = $request->input('page', 1);
+    //     $perPage = $request->input('perPage', 10);
+
+    //     // Ambil data yang ada di halaman saat ini
+    //     $data = $query->paginate($perPage, ['*'], 'page', $currentPage);
+
+    //     // Jika request berasal dari AJAX, kembalikan JSON
+    //     if ($request->ajax()) {
+    //         return response()->json($data);
+    //     }
+
+    //     // Kirim data ke tampilan
+    //     return view('surat.cetak-halaman', compact('data'));
+    // }
+    // public function cetakHalaman(Request $request)
+    // {
+    //     $query = \DB::table('surat')
+    //         ->leftJoin('master_regency', 'surat.kabupaten', '=', 'master_regency.code')
+    //         ->leftJoin('master_district', 'surat.kecamatan', '=', 'master_district.code')
+    //         ->leftJoin('master_subdistrict', 'surat.kelurahan', '=', 'master_subdistrict.code')
+    //         ->select(
+    //             'surat.*',
+    //             'master_regency.name as nama_kabupaten',
+    //             'master_district.name as nama_kecamatan',
+    //             'master_subdistrict.name as nama_kelurahan'
+    //         )
+    //         ->orderBy('id', 'desc');
+
+    //     // Ambil parameter jumlah entri per halaman
+    //     $perPage = $request->input('perPage', 10); // Default 10
+    //     $currentPage = $request->input('page', 1);
+
+    //     // Paginate data berdasarkan halaman saat ini
+    //     $data = $query->paginate($perPage, ['*'], 'page', $currentPage);
+
+    //     return view('surat.preview-index', compact('data'));
+    // }
+
+    public function cetakHalaman(Request $request)
+    {
+        $query = \DB::table('surat')
+            ->leftJoin('master_regency', 'surat.kabupaten', '=', 'master_regency.code')
+            ->leftJoin('master_district', 'surat.kecamatan', '=', 'master_district.code')
+            ->leftJoin('master_subdistrict', 'surat.kelurahan', '=', 'master_subdistrict.code')
+            ->select(
+                'surat.*',
+                'master_regency.name as nama_kabupaten',
+                'master_district.name as nama_kecamatan',
+                'master_subdistrict.name as nama_kelurahan'
+            )
+            ->orderBy('id', 'desc');
+
+        // Ambil parameter jumlah entri per halaman
+        $perPage = $request->input('perPage', 10); // Default 10
+        $currentPage = $request->input('page',1);
+
+        // Paginate data berdasarkan halaman saat ini
+        $data = $query->paginate($perPage, ['*'], 'page', $currentPage);
+
+        return view('surat.preview-index', compact('data'));
+    }
 
     // public function cariSurat(Request $request)
     // {

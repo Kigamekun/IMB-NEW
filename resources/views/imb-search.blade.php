@@ -120,7 +120,7 @@
         <div class="card">
             <div class="card-header text-center">
                 {{-- <h5>Pencarian Surat & IMB</h5> --}}
-                <h5>Pencarian {{ request()->get('tab') === 'imb' ? 'IMB' : 'Surat' }}</h5>
+                <h5 style="margin-top: 7px">PENCARIAN {{ request()->get('tab') === 'imb' ? 'IMB' : 'SURAT' }}</h5>
             </div>
             <div class="card-body">
                 <nav>

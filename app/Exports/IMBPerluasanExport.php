@@ -44,14 +44,15 @@ class IMBPerluasanExport implements ShouldAutoSize, FromCollection, WithCustomSt
                 $sheet->setCellValue('J1', 'Jenis Kegiatan');
                 $sheet->setCellValue('K1', 'Fungsi Bangunan');
                 $sheet->setCellValue('L1', 'Lokasi Perumahan');
-                $sheet->setCellValue('M1', 'Kecamatan');
-                $sheet->setCellValue('N1', 'Desa Kelurahan');
-                $sheet->setCellValue('O1', 'Type');
-                $sheet->setCellValue('P1', 'Luas Bangunan Lama');
-                $sheet->setCellValue('Q1', 'Luas Bangunan Perluasan');
-                $sheet->setCellValue('R1', 'Blok');
-                $sheet->setCellValue('S1', 'No Blok');
-                $sheet->setCellValue('T1', 'Keterangan');
+                $sheet->setCellValue('M1', 'Kabupaten/Kota');
+                $sheet->setCellValue('N1', 'Kecamatan');
+                $sheet->setCellValue('O1', 'Desa Kelurahan');
+                $sheet->setCellValue('P1', 'Type');
+                $sheet->setCellValue('Q1', 'Luas Bangunan Lama');
+                $sheet->setCellValue('R1', 'Luas Bangunan Perluasan');
+                $sheet->setCellValue('S1', 'Blok');
+                $sheet->setCellValue('T1', 'No Blok');
+                $sheet->setCellValue('U1', 'Keterangan');
 
             },
         ];
@@ -60,6 +61,7 @@ class IMBPerluasanExport implements ShouldAutoSize, FromCollection, WithCustomSt
     public function collection()
     {
         $data = \DB::table('imb_perluasan')
+            ->join('master_regency', 'imb_perluasan.kabupaten', '=', 'master_regency.code')
             ->join('master_district', 'imb_perluasan.kecamatan', '=', 'master_district.code')
             ->join('master_subdistrict', 'imb_perluasan.desa_kelurahan', '=', 'master_subdistrict.code')
             ->join('app_md_jeniskeg', 'imb_perluasan.jenis_kegiatan', '=', 'app_md_jeniskeg.id_jeniskeg')
@@ -77,6 +79,7 @@ class IMBPerluasanExport implements ShouldAutoSize, FromCollection, WithCustomSt
                 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan',
                 'app_md_fungsibang.name_fungsibang as fungsi_bangunan',
                 'imb_perluasan.lokasi_perumahan',
+                'master_regency.name as kabupaten',
                 'master_district.name as kecamatan',
                 'master_subdistrict.name as desa_kelurahan',
                 'imb_perluasan.type',

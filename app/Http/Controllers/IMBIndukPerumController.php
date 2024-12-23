@@ -18,12 +18,33 @@ class IMBIndukPerumController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = IMBIndukPerum::join('app_md_jeniskeg', 'imb_induk_perum.jenis_kegiatan', '=', 'app_md_jeniskeg.id_jeniskeg')
-                ->join('master_district', 'imb_induk_perum.kecamatan', '=', 'master_district.code')
-                ->join('master_subdistrict', 'imb_induk_perum.desa_kelurahan', '=', 'master_subdistrict.code')
-                ->select('imb_induk_perum.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan', 'master_district.name as kecamatan', 'master_subdistrict.name as kelurahan')
-                ->orderBy('imb_induk_perum.created_at', 'desc')
-                ->get();
+            $query = IMBIndukPerum::join('app_md_jeniskeg', 'imb_induk_perum.jenis_kegiatan', '=', 'app_md_jeniskeg.id_jeniskeg')
+            ->join('master_regency', 'imb_induk_perum.kabupaten', '=', 'master_regency.code')
+            ->join('master_district', 'imb_induk_perum.kecamatan', '=', 'master_district.code')
+            ->join('master_subdistrict', 'imb_induk_perum.desa_kelurahan', '=', 'master_subdistrict.code')
+            ->select('imb_induk_perum.*',
+                     'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan',
+                     'master_regency.name as kabupaten',
+                     'master_regency.code as kabupaten_code',
+                     'master_district.name as kecamatan',
+                     'master_subdistrict.name as kelurahan');
+
+            // Filter berdasarkan kabupaten
+            if ($request->has('kabupaten') && $request->kabupaten) {
+                $query->where('imb_induk_perum.kabupaten', $request->kabupaten);
+            }
+
+            // Filter berdasarkan kecamatan
+            if ($request->has('kecamatan') && $request->kecamatan) {
+                $query->where('imb_induk_perum.kecamatan', $request->kecamatan);
+            }
+
+            // Filter berdasarkan kelurahan
+            if ($request->has('kelurahan') && $request->kelurahan) {
+                $query->where('imb_induk_perum.desa_kelurahan', $request->kelurahan);
+            }
+
+            $data = $query->orderBy('imb_induk_perum.created_at', 'desc')->get();
             return Datatables::of($data)
                 ->addColumn('action', function ($row) {
                     return '
@@ -43,7 +64,11 @@ class IMBIndukPerumController extends Controller
     }
     public function create()
     {
-        return view('IMBIndukPerum.create');
+        $data = IMBIndukPerum::join('master_district', 'imb_induk_perum.kecamatan', '=', 'master_district.code')
+        ->select('imb_induk_perum.kabupaten', 'master_district.name as kecamatan', 'master_district.name as desa_kelurahan')
+        ->get();
+
+        return view('IMBIndukPerum.create', compact('data'));
     }
     public function items(Request $request)
     {
@@ -77,8 +102,34 @@ class IMBIndukPerumController extends Controller
         $totalRows = (new FastExcel)->import($file)->count();
         $users = (new FastExcel)->import($file, function ($line) use ($jenisKegiatanList, $fungsiBangunanList, &$failures, &$baris, &$imbInduk, &$jenis_kegiatan_array, $totalRows) {
             if ($line["IMB Induk"] != null) {
-                $rowDistrict = strtolower($line["Kecamatan"]);
                 $rowSubdistrict = strtolower($line["Desa / Kelurahan"]);
+                $rowDistrict = strtolower($line["Kecamatan"]);
+                $rowRegency = strtolower($line["Kabupaten / Kota"]);
+                $regency = DB::table('master_regency')
+                    ->where(DB::raw('LOWER(name)'), $rowRegency)
+                    ->pluck('code')
+                    ->first();
+                if (!$regency) {
+                        $failures[] = [
+                            'message' => 'Kabupaten ' . $line["Kabupaten / Kota"] . ' tidak ditemukan',
+                            'baris' => $baris,
+                        ];
+                        $imbInduk = IMBIndukPerum::create([
+                            'imb_induk' => $line["IMB Induk"],
+                            'tgl_imb_induk' => date('Y-m-d', strtotime($line["Tgl. IMB Induk"])),
+                            'no_register' => $line["No. Register"],
+                            'tgl_register' => $line["Tgl. Register"] != '' ? date('Y-m-d', strtotime($line["Tgl. Register"])) : null,
+                            'nama' => $line["Nama"],
+                            'atas_nama' => $line["Atas Nama"],
+                            'lokasi_perumahan' => $line["Lokasi / Perumahan"],
+                            'kabupaten_lama' => $line["Kabupaten / Kota"],
+                            'kecamatan_lama' => $line["Kecamatan"],
+                            'kelurahan_lama' => $line["Desa / Kelurahan"],
+                        ]);
+                        return;
+                }
+
+                // $rowSubdistrict = strtolower($line["Desa / Kelurahan"]);
                 $districts = DB::table('master_district')
                     ->where(DB::raw('LOWER(name)'), $rowDistrict)
                     ->pluck('code')
@@ -96,6 +147,7 @@ class IMBIndukPerumController extends Controller
                         'nama' => $line["Nama"],
                         'atas_nama' => $line["Atas Nama"],
                         'lokasi_perumahan' => $line["Lokasi / Perumahan"],
+                        'kabupaten_lama' => $line["Kabupaten / Kota"],
                         'kecamatan_lama' => $line["Kecamatan"],
                         'kelurahan_lama' => $line["Desa / Kelurahan"],
                     ]);
@@ -118,6 +170,7 @@ class IMBIndukPerumController extends Controller
                         'nama' => $line["Nama"],
                         'atas_nama' => $line["Atas Nama"],
                         'lokasi_perumahan' => $line["Lokasi / Perumahan"],
+                        'kabupaten_lama' => $line["Kabupaten / Kota"],
                         'kecamatan_lama' => $line["Kecamatan"],
                         'kelurahan_lama' => $line["Desa / Kelurahan"],
                     ]);
@@ -144,6 +197,9 @@ class IMBIndukPerumController extends Controller
                         ->update(['jenis_kegiatan' => $jenisKegiatanId]);
                     $jenis_kegiatan_array = [];
                 }
+
+              //  dd($regency);
+
                 $imbInduk = IMBIndukPerum::create([
                     'imb_induk' => $line["IMB Induk"],
                     'tgl_imb_induk' => date('Y-m-d', strtotime($line["Tgl. IMB Induk"])),
@@ -152,6 +208,7 @@ class IMBIndukPerumController extends Controller
                     'nama' => $line["Nama"],
                     'atas_nama' => $line["Atas Nama"],
                     'lokasi_perumahan' => $line["Lokasi / Perumahan"],
+                    'kabupaten' => $regency,
                     'kecamatan' => $village->district_code,
                     'desa_kelurahan' => $village->code,
                 ]);
@@ -233,6 +290,202 @@ class IMBIndukPerumController extends Controller
         }
     }
 
+    // public function importData(Request $request)
+    // {
+    //     ini_set('max_execution_time', 0); // Unlimited execution time
+    //     ini_set('memory_limit', '-1');
+    //     ini_set('display_errors', 1);
+    //     ini_set('display_startup_errors', 1);
+    //     error_reporting(E_ALL);
+    //     $file = $request->file('file');
+    //     $imbInduk = null;
+    //     $failures = [];
+    //     //$jenisKegiatanList = DB::table('app_md_jeniskeg')->pluck('id_jeniskeg', 'name_jeniskeg')->mapWithKeys(fn($item, $key) => [strtolower($key) => $item]);
+    //     $jenisKegiatanData = DB::table('app_md_jeniskeg')
+    //         ->pluck('id_jeniskeg', 'name_jeniskeg');
+
+    //     $jenisKegiatanList = $jenisKegiatanData->mapWithKeys(fn($item, $key) => [strtolower($key) => $item]);
+    //     $jenisKegiatanListReverse = $jenisKegiatanData->mapWithKeys(fn($item, $key) => [strtolower($item) => $key]);
+
+    //     $fungsiBangunanList = DB::table('app_md_fungsibang')->pluck('id_fungsibang', 'name_fungsibang')->mapWithKeys(fn($item, $key) => [strtolower($key) => $item]);
+    //     $jenis_kegiatan_array = [];
+    //     $baris = 1;
+    //     $totalRows = (new FastExcel)->import($file)->count();
+    //     $users = (new FastExcel)->import($file, function ($line) use ($jenisKegiatanList, $jenisKegiatanListReverse, $fungsiBangunanList, &$failures, &$baris, &$imbInduk, &$jenis_kegiatan_array, $totalRows) {
+    //         if ($line["IMB Induk"] != null) {
+    //             $rowRegency = strtolower($line["Kabupaten/Kota"]);
+    //             $rowDistrict = strtolower($line["Kecamatan"]);
+    //             $rowSubdistrict = strtolower($line["Desa / Kelurahan"]);
+    //             $regency = DB::table('master_regency')
+    //                 ->where(DB::raw('LOWER(name)'), $rowRegency)
+    //                 ->pluck('code')
+    //                 ->first();
+    //             $districts = DB::table('master_district')
+    //                 ->where(DB::raw('LOWER(name)'), $rowDistrict)
+    //                 ->pluck('code')
+    //                 ->toArray();
+    //             if (empty($districts)) {
+    //                 $failures[$baris] = [
+    //                     'message' => 'Kecamatan ' . $line["Kecamatan"] . ' tidak ditemukan',
+    //                     'baris' => $baris,
+    //                 ];
+    //                 $imbInduk = IMBIndukPerum::create([
+    //                     'imb_induk' => $line["IMB Induk"],
+    //                     'tgl_imb_induk' => date('Y-m-d', strtotime($line["Tgl. IMB Induk"])),
+    //                     'no_register' => $line["No Register"],
+    //                     'tgl_register' => $line["Tanggal Register"] != '' ? date('Y-m-d', strtotime($line["Tanggal Register"])) : null,
+    //                     'nama' => $line["Nama"],
+    //                     'atas_nama' => $line["Atas Nama"],
+    //                     'lokasi_perumahan' => $line["Lokasi Perumahan"],
+    //                     'kecamatan_lama' => $line["Kecamatan"],
+    //                     'kelurahan_lama' => $line["Desa / Kelurahan"],
+    //                 ]);
+    //                 return;
+    //             }
+    //             $village = DB::table('master_subdistrict')
+    //                 ->where(DB::raw('LOWER(name)'), $rowSubdistrict)
+    //                 ->whereIn('district_code', $districts)
+    //                 ->first();
+    //             if (!$village) {
+    //                 $failures[$baris] = [
+    //                     'message' => 'Desa/Kelurahan ' . $line["Desa / Kelurahan"] . ' tidak ditemukan di kecamatan ' . $line["Kecamatan"],
+    //                     'baris' => $baris,
+    //                 ];
+    //                 $imbInduk = IMBIndukPerum::create([
+    //                     'imb_induk' => $line["IMB Induk"],
+    //                     'tgl_imb_induk' => date('Y-m-d', strtotime($line["Tgl. IMB Induk"])),
+    //                     'no_register' => $line["No Register"],
+    //                     'tgl_register' => $line["Tanggal Register"] != '' ? date('Y-m-d', strtotime($line["Tanggal Register"])) : null,
+    //                     'nama' => $line["Nama"],
+    //                     'atas_nama' => $line["Atas Nama"],
+    //                     'lokasi_perumahan' => $line["Lokasi Perumahan"],
+    //                     'kecamatan_lama' => $line["Kecamatan"],
+    //                     'kelurahan_lama' => $line["Desa / Kelurahan"],
+    //                 ]);
+    //                 return;
+    //             }
+    //             $rowJenisKegiatan = $jenisKegiatanListReverse[($line["Jenis Kegiatan"])];
+    //             $jenis_kegiatan = $jenisKegiatanList[strtolower($rowJenisKegiatan)] ?? null;
+    //             $rowFungsiBangunan = strtolower($line["Fungsi Bangunan"]);
+    //             $fungsi_bangunan = $fungsiBangunanList[$rowFungsiBangunan] ?? null;
+
+    //             //dd($jenis_kegiatan);
+
+    //             if (!is_null($imbInduk)) {
+    //                 $jenisKegiatanGabungan = implode(' / ', array_unique($jenis_kegiatan_array));
+    //              //   dd($jenisKegiatanGabungan);
+    //                 $jenisKegiatanRecord = DB::table('app_md_jeniskeg')
+    //                     ->where('name_jeniskeg', $jenisKegiatanList[$jenisKegiatanGabungan])
+    //                     ->first();
+    //                 if (!$jenisKegiatanRecord) {
+    //                     $jenisKegiatanId = DB::table('app_md_jeniskeg')->insertGetId([
+    //                         'id_jeniskeg' => 218,
+    //                         'comt_jeniskeg' => '-',
+    //                         'id_user' => 1,
+    //                         'flag_del' => 0,
+    //                         'tgl_data' => date('Y-m-d', strtotime($line["Tanggal Register"])),
+    //                         'name_jeniskeg' => $jenisKegiatanGabungan
+    //                     ]);
+    //                 } else {
+    //                     $jenisKegiatanId = $jenisKegiatanRecord->id_jeniskeg;
+    //                 }
+    //                 DB::table('imb_induk_perum')
+    //                     ->where('id', $imbInduk->id)
+    //                     ->update(['jenis_kegiatan' => $jenisKegiatanId]);
+    //                 $jenis_kegiatan_array = [];
+    //             }
+    //             $imbInduk = IMBIndukPerum::create([
+    //                 'imb_induk' => $line["IMB Induk"],
+    //                 'tgl_imb_induk' => date('Y-m-d', strtotime($line["Tanggal Register"])),
+    //                 'no_register' => $line["No Register"],
+    //                 'tgl_register' => $line["Tanggal Register"] != '' ? date('Y-m-d', strtotime($line["Tanggal Register"])) : null,
+    //                 'nama' => $line["Nama"],
+    //                 'atas_nama' => $line["Atas Nama"],
+    //                 'lokasi_perumahan' => $line["Lokasi Perumahan"],
+    //                 'kabupaten' => $regency,
+    //                 'kecamatan' => $village->district_code,
+    //                 'desa_kelurahan' => $village->code,
+    //             ]);
+    //             if (!in_array($line["Jenis Kegiatan"], $jenis_kegiatan_array)) {
+    //                 $jenis_kegiatan_array[] = $line["Jenis Kegiatan"];
+    //             }
+
+    //             IMBItem::create([
+    //                 'induk_perum_id' => $imbInduk->id,
+    //                 'jenis_kegiatan' => $jenis_kegiatan,
+    //                 'fungsi_bangunan' => $fungsi_bangunan,
+    //                 'type' => $line["Type"],
+    //                 'luas_bangunan' => $line["Luas Bangunan"],
+    //                 'jumlah_unit' => $line["Jumlah Unit"],
+    //                 'keterangan' => $line["Keterangan"],
+    //                 'scan_imb' => $line["Scan IMB"],
+    //             ]);
+
+    //             if ($baris === $totalRows) {
+    //                 $jenisKegiatanGabungan = implode(' / ', array_unique($jenis_kegiatan_array));
+    //                 $jenisKegiatanRecord = DB::table('app_md_jeniskeg')
+    //                     ->where('name_jeniskeg', $jenisKegiatanGabungan)
+    //                     ->first();
+    //                 if (!$jenisKegiatanRecord) {
+    //                     // Jika belum ada, insert dan dapatkan ID baru
+    //                     $jenisKegiatanId = DB::table('app_md_jeniskeg')->insertGetId([
+    //                         'name_jeniskeg' => $jenisKegiatanGabungan
+    //                     ]);
+    //                 } else {
+    //                     // Jika sudah ada, gunakan ID yang ditemukan
+    //                     $jenisKegiatanId = $jenisKegiatanRecord->id_jeniskeg;
+    //                 }
+    //                 DB::table('imb_induk_perum')
+    //                     ->where('id', $imbInduk->id)
+    //                     ->update(['jenis_kegiatan' => $jenisKegiatanId]);
+    //             }
+    //         } else {
+    //             if (!is_null($imbInduk)) {
+    //                 $rowJenisKegiatan = strtolower($line["Jenis Kegiatan"]);
+    //                 $rowFungsiBangunan = strtolower($line["Fungsi Bangunan"]);
+    //                 $jenis_kegiatan = $jenisKegiatanList[$rowJenisKegiatan] ?? null;
+    //                 $fungsi_bangunan = $fungsiBangunanList[$rowFungsiBangunan] ?? null;
+    //                 if (!in_array($line["Jenis Kegiatan"], $jenis_kegiatan_array)) {
+    //                     $jenis_kegiatan_array[] = $line["Jenis Kegiatan"];
+    //                 }
+    //                 IMBItem::create([
+    //                     'induk_perum_id' => $imbInduk->id,
+    //                     'jenis_kegiatan' => $jenis_kegiatan,
+    //                     'fungsi_bangunan' => $fungsi_bangunan,
+    //                     'type' => $line["Type"],
+    //                     'luas_bangunan' => $line["Luas Bangunan"],
+    //                     'jumlah_unit' => $line["Jumlah Unit"],
+    //                     'keterangan' => $line["Keterangan"],
+    //                 ]);
+    //                 if ($baris === $totalRows) {
+    //                     $jenisKegiatanGabungan = implode(' / ', array_unique($jenis_kegiatan_array));
+    //                     $jenisKegiatanRecord = DB::table('app_md_jeniskeg')
+    //                         ->where('name_jeniskeg', $jenisKegiatanGabungan)
+    //                         ->first();
+    //                     if (!$jenisKegiatanRecord) {
+    //                         // Jika belum ada, insert dan dapatkan ID baru
+    //                         $jenisKegiatanId = DB::table('app_md_jeniskeg')->insertGetId([
+    //                             'name_jeniskeg' => $jenisKegiatanGabungan
+    //                         ]);
+    //                     } else {
+    //                         // Jika sudah ada, gunakan ID yang ditemukan
+    //                         $jenisKegiatanId = $jenisKegiatanRecord->id_jeniskeg;
+    //                     }
+    //                     DB::table('imb_induk_perum')
+    //                         ->where('id', $imbInduk->id)
+    //                         ->update(['jenis_kegiatan' => $jenisKegiatanId]);
+    //                 }
+    //             }
+    //         }
+    //         $baris++;
+    //     });
+    //     if (count($failures) > 0) {
+    //         return redirect()->back()->with(['status' => 'error', 'message' => 'Import data selesai, namun terdapat kesalahan. Silahkan download file log untuk melihat detail kesalahan.'])->with('failures', $failures);
+    //     } else {
+    //         return redirect()->back()->with(['status' => 'success', 'message' => 'Import data berhasil']);
+    //     }
+    // }
+
     public function store(Request $request)
     {
         DB::beginTransaction();
@@ -247,6 +500,7 @@ class IMBIndukPerumController extends Controller
                 'nama' => $request->input('nama'),
                 'atas_nama' => $request->input('atas_nama'),
                 'lokasi_perumahan' => $request->input('lokasi_perumahan'),
+                'kabupaten' => $request->input('kabupaten'),
                 'kecamatan' => $request->input('kecamatan'),
                 'desa_kelurahan' => $request->input('kelurahan'),
             ]);
@@ -298,9 +552,13 @@ class IMBIndukPerumController extends Controller
                 ->update(['jenis_kegiatan' => $jenisKegiatanId]);
 
             DB::commit();
+
+            // dd($request->all());
             return redirect()->route('IMBIndukPerum.index')->with(['status' => 'success', 'message' => 'Data berhasil disimpan']);
         } catch (\Exception $e) {
-            dd($e);
+            // dd($e);
+            // dd($request->input("type_0"));
+            // dd($request->all());
             DB::rollBack();
             return redirect()->back()->withErrors(['error' => 'Failed to save data: ' . $e->getMessage()]);
         }
@@ -308,9 +566,10 @@ class IMBIndukPerumController extends Controller
     public function edit($id)
     {
         $data = IMBIndukPerum::join('app_md_jeniskeg', 'imb_induk_perum.jenis_kegiatan', '=', 'app_md_jeniskeg.id_jeniskeg')
+            ->join('master_regency', 'imb_induk_perum.kabupaten', '=', 'master_regency.code')
             ->join('master_district', 'imb_induk_perum.kecamatan', '=', 'master_district.code')
             ->join('master_subdistrict', 'imb_induk_perum.desa_kelurahan', '=', 'master_subdistrict.code')
-            ->select('imb_induk_perum.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan', 'master_district.name as kecamatan', 'master_district.code as kecamatan_code', 'master_subdistrict.name as kelurahan', 'master_subdistrict.code as kelurahan_code')
+            ->select('imb_induk_perum.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan', 'master_regency.name as kabupaten' , 'master_regency.code as kabupaten_code' , 'master_district.name as kecamatan', 'master_district.code as kecamatan_code', 'master_subdistrict.name as kelurahan', 'master_subdistrict.code as kelurahan_code')
             ->where('imb_induk_perum.id', $id)->first();
         $item = IMBItem::where('induk_perum_id', $id)->get();
         return view('IMBIndukPerum.edit', compact('data', 'item'));
@@ -330,6 +589,7 @@ class IMBIndukPerumController extends Controller
                 'nama' => $request->input('nama'),
                 'atas_nama' => $request->input('atas_nama'),
                 'lokasi_perumahan' => $request->input('lokasi_perumahan'),
+                'kabupaten' => $request->input('kabupaten'),
                 'kecamatan' => $request->input('kecamatan'),
                 'desa_kelurahan' => $request->input('kelurahan'),
             ]);

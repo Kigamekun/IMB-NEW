@@ -6,6 +6,8 @@
         integrity="sha512-EZSUkJWTjzDlspOoPSpUFR0o0Xy7jdzW//6qhUkoZ9c4StFkVsp9fbbd0O06p9ELS3H486m4wmrCELjza4JEog=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.bootstrap5.css">
 
 
@@ -56,7 +58,7 @@
                         <div class="filters py-3 row">
                             <div class="mb-3 col-md-3">
                                 {{-- <label for="filter-atas_nama" class="form-label">Atas Nama:</label> --}}
-                                <input type="text" class="form-control" id="filter-atas_nama"
+                                <input type="text" class="form-control" id="filter-atas_nama" style="margin-bottom: 10px"
                                     placeholder="Atas Nama">
                             </div>
                             <div class="mb-3 col-md-3">
@@ -65,24 +67,41 @@
                                     placeholder="Lokasi Perumahan">
                             </div>
                             <div class="mb-3 col-md-3">
-                                {{-- <label for="filter-kecamatan" class="form-label">Kecamatan:</label> --}}
-                                <input type="text" class="form-control" id="filter-kecamatan"
-                                    placeholder="Kecamatan">
+                                {{-- <label for="filter-kabupaten" class="form-label">Kabupaten:</label> --}}
+                                <select class="form-control select2-kabupaten" id="filter-kabupaten"
+                                    placeholder="Kabupaten">
+                                    <option value="" disabled selected>Pilih Kabupaten</option>
+                                    <!-- Tambahkan opsi kabupaten di sini -->
+                                </select>
                             </div>
                             <div class="mb-3 col-md-3">
-                                {{-- <label for="filter-kelurahan" class="form-label">Kelurahan:</label> --}}
-                                <input type="text" class="form-control" id="filter-kelurahan"
-                                    placeholder="Kelurahan">
+                                {{-- <label for="filter-kecamatan" class="form-label">Kecamatan:</label> --}}
+                                <select class="form-control select2-kecamatan" id="filter-kecamatan"
+                                    placeholder="Kecamatan">
+                                    <option value="" disabled selected>Pilih Kecamatan</option>
+                                    <!-- Tambahkan opsi kecamatan di sini -->
+                                </select>
                             </div>
-                            <div class="mb-3 col-md-3" style="margin-top: 10px; margin-bottom:10px">
+
+                        </div>
+                        <div class="row">
+                            <div class="mb-3 col-md-3">
+                                {{-- <label for="filter-kelurahan" class="form-label">Kelurahan:</label> --}}
+                                <select class="form-control select2-kelurahan" id="filter-kelurahan"
+                                style="margin-top: 10px; margin-bottom:10px" placeholder="Kelurahan">
+                                    <option value="" disabled selected>Pilih Kelurahan</option>
+                                    <!-- Tambahkan opsi kelurahan di sini -->
+                                </select>
+                            </div>
+                            <div class="mb-3 col-md-3" style=" margin-bottom:10px">
                                 {{-- <label for="filter-blok" class="form-label">blok:</label> --}}
                                 <input type="text" class="form-control" id="filter-blok" placeholder="Blok">
                             </div>
-                            <div class="mb-3 col-md-3" style="margin-top: 10px">
+                            <div class="mb-3 col-md-3" style="">
                                 {{-- <label for="filter-no_blok" class="form-label">no_blok:</label> --}}
                                 <input type="text" class="form-control" id="filter-no_blok" placeholder="No Blok">
                             </div>
-                            <div class="mb-3 col-md-3" style="margin-top: 10px">
+                            <div class="mb-3 col-md-3" style="">
                                 {{-- <label for="filter-no_blok" class="form-label">no_blok:</label> --}}
                                 <input type="text" class="form-control" id="filter-imb_induk_id"
                                     placeholder="IMB Pecahan">
@@ -101,6 +120,7 @@
                                     <th>Atas Nama</th>
                                     <th>Jenis Kegiatan</th>
                                     <th>Lokasi Perumahan</th>
+                                    <th>Kabupaten/Kota</th>
                                     <th>Kecamatan</th>
                                     <th>Desa/Kelurahan</th>
                                     <th>Type</th>
@@ -154,6 +174,11 @@
 
             ajax: {
                 url: "{{ route('IMBPerluasan.index') }}",
+                data: function(d) {
+                    d.kabupaten = $('#filter-kabupaten').val(); // ID kabupaten dari select2
+                    d.kecamatan = $('#filter-kecamatan').val(); // ID kecamatan dari select2
+                    d.kelurahan = $('#filter-kelurahan').val(); // ID kelurahan dari select2
+                },
                 dataSrc: function(res) {
                     if (res.code == 5500) {
                         console.log(res.data);
@@ -208,6 +233,10 @@
                     title: 'Lokasi Perumahan'
                 },
                 {
+                    data: 'kabupaten',
+                    title: 'Kabupaten/Kota'
+                },
+                {
                     data: 'kecamatan',
                     title: 'Kecamatan'
                 },
@@ -259,20 +288,12 @@
             table.column(8).search(this.value).draw();
         });
 
-        $('#filter-kecamatan').keyup(function() {
-            table.column(9).search(this.value).draw();
-        });
-
-        $('#filter-kelurahan').keyup(function() {
-            table.column(10).search(this.value).draw();
-        });
-
         $('#filter-blok').keyup(function() {
-            table.column(14).search(this.value).draw();
+            table.column(15).search(this.value).draw();
         });
 
         $('#filter-no_blok').keyup(function() {
-            table.column(15).search(this.value).draw();
+            table.column(16).search(this.value).draw();
         });
 
         $('#filter-imb_pecahan_id').keyup(function() {
@@ -280,6 +301,128 @@
         });
 
 
+    </script>
+@endsection
+
+@section('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery and Select2 JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+
+
+    <script>
+        initializeSelect2WithAjax();
+
+        function initializeSelect2WithAjax() {
+            $('.select2-kabupaten').select2({
+                width: '100%',
+                placeholder: 'Pilih Kabupaten',
+                //minimumInputLength: 2,
+                ajax: {
+                    url: "{{ route('master.kabupaten') }}", // URL to fetch kabupaten data
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            q: params.term,
+                            page: params.page || 1
+                        };
+                    },
+                    processResults: function(data, params) {
+                        console.log("Fetched data:", data); // Check data structure here
+                        return {
+                            results: data.items.map(function(item) {
+                                return {
+                                    id: item.id,
+                                    text: item.text
+                                };
+                            })
+                        };
+                    },
+                    cache: true
+                }
+            }).on('select2:select', function(e) {
+                table.draw(); // Refresh the table when kabupaten is selected
+                loadKecamatan(e.params.data.id)
+            });
+
+            loadKecamatan(document.querySelector('.select2-kabupaten').value)
+            loadKelurahan(document.querySelector('.select2-kecamatan').value)
+
+            function loadKecamatan(kabId) {
+                // Kecamatan Select2 with AJAX
+                $('.select2-kecamatan').select2({
+                    width: '100%',
+                    placeholder: 'Pilih Kecamatan',
+                    // minimumInputLength: 2,
+                    ajax: {
+                        url: "{{ route('master.kecamatan') }}", // URL to fetch kecamatan data
+                        dataType: 'json',
+                        delay: 250,
+                        data: function(params) {
+                            return {
+                                q: params.term,
+                                kabupaten_id: kabId,
+                                page: params.page || 1
+                            };
+                        },
+                        processResults: function(data, params) {
+                            console.log("Fetched data:", data); // Check data structure here
+                            return {
+                                results: data.items.map(function(item) {
+                                    return {
+                                        id: item.id,
+                                        text: item.text
+                                    };
+                                })
+                            };
+                        },
+                        cache: true
+                    }
+                }).on('select2:select', function(e) {
+                    console.log("Selected Kecamatan:", e.params.data);
+                    table.draw(); // Refresh the table when kabupaten is selected
+
+                    loadKelurahan(e.params.data.id); // Load kelurahan based on selected kecamatan
+                });
+            }
+
+            // Kelurahan Select2 with AJAX
+            function loadKelurahan(kecamatanId) {
+                $('.select2-kelurahan').select2({
+                    width: '100%',
+                    placeholder: 'Pilih Kelurahan',
+                    //minimumInputLength: 2,
+                    ajax: {
+                        url: "{{ route('master.kelurahan') }}", // URL to fetch kelurahan data
+                        dataType: 'json',
+                        delay: 250,
+                        data: function(params) {
+                            return {
+                                q: params.term,
+                                kecamatan_id: kecamatanId, // Pass the selected kecamatan ID
+                                page: params.page || 1
+                            };
+                        },
+                        processResults: function(data, params) {
+                            console.log("Fetched kelurahan data:", data); // Check kelurahan data structure
+                            return {
+                                results: data.items.map(function(item) {
+                                    return {
+                                        id: item.id,
+                                        text: item.text
+                                    };
+                                })
+                            };
+                        },
+                        cache: true
+                    }
+                }).on('select2:select', function(e) {
+                    table.draw(); // Refresh the table when kabupaten is selected
+                });
+            }
+        }
     </script>
 @endsection
 

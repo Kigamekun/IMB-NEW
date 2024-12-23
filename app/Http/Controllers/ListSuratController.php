@@ -113,6 +113,7 @@ class ListSuratController extends Controller
         $tahun = '2024';
         return view('rekap.rekap-register.register-perbulan', compact('tahun'));
     }
+    
     // public function ListSurat(Reque
 
 

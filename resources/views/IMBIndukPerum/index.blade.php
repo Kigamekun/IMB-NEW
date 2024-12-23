@@ -4,6 +4,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css"
         integrity="sha512-EZSUkJWTjzDlspOoPSpUFR0o0Xy7jdzW//6qhUkoZ9c4StFkVsp9fbbd0O06p9ELS3H486m4wmrCELjza4JEog=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.bootstrap5.css">
     <style>
         th {
@@ -31,8 +33,9 @@
                         </a>
                     </div>
                     @if (!empty(Session::get('failures')))
-                        <div class="alert alert-danger">
-                            <h6>Import data gagal, berikut baris yang gagal diimport:</h6>
+                        <div class="alert alert-danger mt-2">
+                            <h6>Import data berhasil, namun terdapat kesalahan baris (data baris ini akan dimasukan ke
+                                _lama), berikut baris yang gagal diimport:</h6>
                             <ul>
                                 @foreach (Session::get('failures') as $failure)
                                     <li>Baris ke-{{ $failure['baris'] }}: {{ $failure['message'] }}</li>
@@ -42,7 +45,7 @@
                     @endif
                     <br>
                     <div class="table-responsive py-3 ">
-                        <div class="filters py-3 row mb-5" style="margin-bottom: 20px">
+                        <div class="filters py-3 row mb-5" style="margin-bottom: 10px">
                             <div class="mb-3 col-md-3">
                                 {{-- <label for="filter-atas_nama" class="form-label">Atas Nama:</label> --}}
                                 <input type="text" class="form-control" id="filter-atas_nama" placeholder="Atas Nama">
@@ -53,14 +56,35 @@
                                     placeholder="Lokasi Perumahan">
                             </div>
                             <div class="mb-3 col-md-3">
-                                {{-- <label for="filter-kecamatan" class="form-label">Kecamatan:</label> --}}
-                                <input type="text" class="form-control" id="filter-kecamatan" placeholder="Kecamatan">
+                                {{-- <label for="filter-kabupaten" class="form-label">Kabupaten:</label> --}}
+                                <select class="form-control select2-kabupaten" id="filter-kabupaten"
+                                    placeholder="Kabupaten">
+                                    <option value="" disabled selected>Pilih Kabupaten</option>
+                                    <!-- Tambahkan opsi kabupaten di sini -->
+                                </select>
                             </div>
                             <div class="mb-3 col-md-3">
+                                {{-- <label for="filter-kecamatan" class="form-label">Kecamatan:</label> --}}
+                                <select class="form-control select2-kecamatan" id="filter-kecamatan"
+                                    placeholder="Kecamatan">
+                                    <option value="" disabled selected>Pilih Kecamatan</option>
+                                    <!-- Tambahkan opsi kecamatan di sini -->
+                                </select>
+                            </div>
+
+
+                        </div>
+                        <div class="row">
+                            <div class="mb-3 col-md-3">
                                 {{-- <label for="filter-kelurahan" class="form-label">Kelurahan:</label> --}}
-                                <input type="text" class="form-control" id="filter-kelurahan" placeholder="Kelurahan">
+                                <select class="form-control select2-kelurahan" id="filter-kelurahan"
+                                    style="margin-bottom: 10px" placeholder="Kelurahan">
+                                    <option value="" disabled selected>Pilih Kelurahan</option>
+                                    <!-- Tambahkan opsi kelurahan di sini -->
+                                </select>
                             </div>
                         </div>
+                        <br>
                         <table id="IMBTable" class="table table-bordered">
                             <thead>
                                 <tr>
@@ -73,6 +97,7 @@
                                     <th>Nama</th>
                                     <th>Atas Nama</th>
                                     <th>Lokasi / Perumahan</th>
+                                    <th>Kabupaten/Kota</th>
                                     <th>Kecamatan</th>
                                     <th>Desa / Kelurahan</th>
                                     <th>Action</th>
@@ -90,12 +115,22 @@
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.js"></script>
     <script src="{{ url('assets/js/dataTables.rowsGroup.js') }}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+
+
+
     <script>
         var table = $('#IMBTable').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
                 url: "{{ route('IMBIndukPerum.index') }}",
+                data: function(d) {
+                    d.kabupaten = $('#filter-kabupaten').val(); // ID kabupaten dari select2
+                    d.kecamatan = $('#filter-kecamatan').val(); // ID kecamatan dari select2
+                    d.kelurahan = $('#filter-kelurahan').val(); // ID kelurahan dari select2
+                }
             },
             columns: [{
                     data: 'DT_RowIndex',
@@ -130,6 +165,9 @@
                     data: 'lokasi_perumahan'
                 },
                 {
+                    data: 'kabupaten'
+                },
+                {
                     data: 'kecamatan'
                 },
                 {
@@ -146,16 +184,6 @@
 
         $('#filter-lokasi').on('keyup', function() {
             table.column(8).search(this.value).draw(); // 8 is the index for 'lokasi_perumahan'
-        });
-
-        // Custom filtering for 'Kecamatan'
-        $('#filter-kecamatan').on('keyup', function() {
-            table.column(9).search(this.value).draw(); // 9 is the index for 'kecamatan'
-        });
-
-        // Custom filtering for 'Kelurahan'
-        $('#filter-kelurahan').on('keyup', function() {
-            table.column(10).search(this.value).draw(); // 10 is the index for 'kelurahan'
         });
 
         // Custom filtering for 'Atas Nama'
@@ -224,6 +252,130 @@
             });
         });
     </script>
+
+
+@endsection
+
+@section('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery and Select2 JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+
+
+    <script>
+        initializeSelect2WithAjax();
+
+        function initializeSelect2WithAjax() {
+            $('.select2-kabupaten').select2({
+                width: '100%',
+                placeholder: 'Pilih Kabupaten',
+                //minimumInputLength: 2,
+                ajax: {
+                    url: "{{ route('master.kabupaten') }}", // URL to fetch kabupaten data
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            q: params.term,
+                            page: params.page || 1
+                        };
+                    },
+                    processResults: function(data, params) {
+                        console.log("Fetched data:", data); // Check data structure here
+                        return {
+                            results: data.items.map(function(item) {
+                                return {
+                                    id: item.id,
+                                    text: item.text
+                                };
+                            })
+                        };
+                    },
+                    cache: true
+                }
+            }).on('select2:select', function(e) {
+                table.draw(); // Refresh the table when kabupaten is selected
+                loadKecamatan(e.params.data.id)
+            });
+
+            loadKecamatan(document.querySelector('.select2-kabupaten').value)
+            loadKelurahan(document.querySelector('.select2-kecamatan').value)
+
+            function loadKecamatan(kabId) {
+                // Kecamatan Select2 with AJAX
+                $('.select2-kecamatan').select2({
+                    width: '100%',
+                    placeholder: 'Pilih Kecamatan',
+                    // minimumInputLength: 2,
+                    ajax: {
+                        url: "{{ route('master.kecamatan') }}", // URL to fetch kecamatan data
+                        dataType: 'json',
+                        delay: 250,
+                        data: function(params) {
+                            return {
+                                q: params.term,
+                                kabupaten_id: kabId,
+                                page: params.page || 1
+                            };
+                        },
+                        processResults: function(data, params) {
+                            console.log("Fetched data:", data); // Check data structure here
+                            return {
+                                results: data.items.map(function(item) {
+                                    return {
+                                        id: item.id,
+                                        text: item.text
+                                    };
+                                })
+                            };
+                        },
+                        cache: true
+                    }
+                }).on('select2:select', function(e) {
+                    console.log("Selected Kecamatan:", e.params.data);
+                    table.draw(); // Refresh the table when kabupaten is selected
+
+                    loadKelurahan(e.params.data.id); // Load kelurahan based on selected kecamatan
+                });
+            }
+
+            // Kelurahan Select2 with AJAX
+            function loadKelurahan(kecamatanId) {
+                $('.select2-kelurahan').select2({
+                    width: '100%',
+                    placeholder: 'Pilih Kelurahan',
+                    //minimumInputLength: 2,
+                    ajax: {
+                        url: "{{ route('master.kelurahan') }}", // URL to fetch kelurahan data
+                        dataType: 'json',
+                        delay: 250,
+                        data: function(params) {
+                            return {
+                                q: params.term,
+                                kecamatan_id: kecamatanId, // Pass the selected kecamatan ID
+                                page: params.page || 1
+                            };
+                        },
+                        processResults: function(data, params) {
+                            console.log("Fetched kelurahan data:", data); // Check kelurahan data structure
+                            return {
+                                results: data.items.map(function(item) {
+                                    return {
+                                        id: item.id,
+                                        text: item.text
+                                    };
+                                })
+                            };
+                        },
+                        cache: true
+                    }
+                }).on('select2:select', function(e) {
+                    table.draw(); // Refresh the table when kabupaten is selected
+                });
+            }
+        }
+    </script>
 @endsection
 
 @section('modal')
@@ -232,7 +384,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title fs-5" id="importDataModalLabel">Import Data </h5>
-                   
+
                 </div>
                 <form action="{{ route('IMBIndukPerum.import') }}" method="POST" enctype="multipart/form-data">
                     @csrf

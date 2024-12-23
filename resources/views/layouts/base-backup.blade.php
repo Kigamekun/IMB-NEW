@@ -78,8 +78,7 @@
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
                         <!-- Messages: style can be found in dropdown.less-->
-                        {{--
-                        <li class="dropdown messages-menu">
+                        {{-- <li class="dropdown messages-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-envelope-o"></i>
                                 <span class="label label-success">4</span>
@@ -284,19 +283,21 @@
                                     <a href="#">View all tasks</a>
                                 </li>
                             </ul>
-                        </li>
-                        --}}
+                        </li> --}}
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <span class="hidden-xs"> {{-- Auth::user()->name_user --}}
+                                <span class="hidden-xs"> {{-- Auth::user()->name_user --}} 
                                 </span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header">
-                                     <p>
-                                      {{-- Auth::user()->name_user --}}
+
+                                    <p>
+                             
+  {{-- Auth::user()->name_user --}} 
+                                ?>                                       <small>DKPP</small>
                                     </p>
                                 </li>
                                 <!-- Menu Body -->
@@ -338,7 +339,7 @@
             <!-- sidebar: style can be found in sidebar.less -->
             <section class="sidebar">
                 <!-- Sidebar user panel -->
-                <!-- <div class="user-panel">
+                {{-- <div class="user-panel">
                     <div class="pull-left image">
                         <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                     </div>
@@ -346,7 +347,7 @@
                         <p>{{-- Auth::user()->name_user --}}</p>
                         <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                     </div>
-                </div> -->
+                </div> --}}
 
                 <!-- /.search form -->
                 <!-- sidebar menu: : style can be found in sidebar.less -->
@@ -1311,7 +1312,7 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
                           <li class="treeview " data-level="1">
                             <a style="padding-left:20px" class="nav-link">
                               <i class="fa fa-square-o"></i>
-                              <span class="title menu-text">Sinkronisasi Lokasi</span>
+                              <span class="title menu-text">Sinkronisasi Data IMB</span>
                               <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                               </span>
@@ -1375,7 +1376,7 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
                       >
                         <i class="fa fa-pie-chart"></i>
                         <span style="margin-left:-0px" class="title menu-text">
-                          SURAT KET. IMBG
+                          SURAT KETERANGAN IMBG
                         </span>
                       </a>
                     </li>
@@ -1517,7 +1518,7 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
                               <li class="nav-item">
                                   <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.DetailIMBInduk') }}">
                                       <i class="fa fa-square-o"></i>
-                                      <span class="title menu-text">IMB Induk</span>
+                                      <span class="title menu-text">IMB</span>
                                       <span></span>
                                   </a>
                               </li>

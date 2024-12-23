@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Events\AfterSheet;
 
-class IMBIndukPerumExport implements ShouldAutoSize, FromCollection, WithCustomStartCell, WithEvents
+class IMBIndukPerumExportBackup implements ShouldAutoSize, FromCollection, WithCustomStartCell, WithEvents
 {
     /**
      * Define the starting cell for the export.
@@ -37,16 +37,15 @@ class IMBIndukPerumExport implements ShouldAutoSize, FromCollection, WithCustomS
                 $sheet->setCellValue('F1', 'Nama');
                 $sheet->setCellValue('G1', 'Atas Nama');
                 $sheet->setCellValue('H1', 'Lokasi Perumahan');
-                $sheet->setCellValue('I1', 'Kabupaten/Kota');
-                $sheet->setCellValue('J1', 'Kecamatan');
-                $sheet->setCellValue('K1', 'Desa / Kelurahan');
-                $sheet->setCellValue('L1', 'Jenis Kegiatan');
-                $sheet->setCellValue('M1', 'Fungsi Bangunan');
-                $sheet->setCellValue('N1', 'Type');
-                $sheet->setCellValue('O1', 'Luas Bangunan');
-                $sheet->setCellValue('P1', 'Jumlah Unit');
-                $sheet->setCellValue('Q1', 'Keterangan');
-                $sheet->setCellValue('R1', 'Scan IMB');
+                $sheet->setCellValue('I1', 'Kecamatan');
+                $sheet->setCellValue('J1', 'Desa / Kelurahan');
+                $sheet->setCellValue('K1', 'Jenis Kegiatan');
+                $sheet->setCellValue('L1', 'Fungsi Bangunan');
+                $sheet->setCellValue('M1', 'Type');
+                $sheet->setCellValue('N1', 'Luas Bangunan');
+                $sheet->setCellValue('O1', 'Jumlah Unit');
+                $sheet->setCellValue('P1', 'Keterangan');
+                $sheet->setCellValue('Q1', 'Scan IMB');
 
                 // Fetch data
                 $data = $this->getMergedData();
@@ -65,9 +64,8 @@ class IMBIndukPerumExport implements ShouldAutoSize, FromCollection, WithCustomS
                     $sheet->setCellValue("F{$startRow}", $row['main']['nama']);
                     $sheet->setCellValue("G{$startRow}", $row['main']['atas_nama']);
                     $sheet->setCellValue("H{$startRow}", $row['main']['lokasi_perumahan']);
-                    $sheet->setCellValue("I{$startRow}", $row['main']['kabupaten']);
-                    $sheet->setCellValue("J{$startRow}", $row['main']['kecamatan']);
-                    $sheet->setCellValue("K{$startRow}", $row['main']['desa_kelurahan']);
+                    $sheet->setCellValue("I{$startRow}", $row['main']['kecamatan']);
+                    $sheet->setCellValue("J{$startRow}", $row['main']['desa_kelurahan']);
 
                     // Merge cells for parent data if there are multiple items
                     if (count($row['items']) > 1) {
@@ -81,19 +79,17 @@ class IMBIndukPerumExport implements ShouldAutoSize, FromCollection, WithCustomS
                         $sheet->mergeCells("H{$startRow}:H{$endRow}");
                         $sheet->mergeCells("I{$startRow}:I{$endRow}");
                         $sheet->mergeCells("J{$startRow}:J{$endRow}");
-                        $sheet->mergeCells("K{$startRow}:K{$endRow}");
                     }
 
                     // Add item rows
                     foreach ($row['items'] as $item) {
-                        $sheet->setCellValue("L{$currentRow}", $item['jenis_kegiatan']);
-                        $sheet->setCellValue("M{$currentRow}", $item['fungsi_bangunan']);
-                        $sheet->setCellValue("N{$currentRow}", $item['type']);
-                        $sheet->setCellValue("O{$currentRow}", $item['luas_bangunan']);
-                        $sheet->setCellValue("P{$currentRow}", $item['jumlah_unit']);
-                        $sheet->setCellValue("Q{$currentRow}", $item['keterangan']);
-                        $sheet->setCellValue("R{$currentRow}", $item['scan_imb']);
-
+                        $sheet->setCellValue("K{$currentRow}", $item['jenis_kegiatan']);
+                        $sheet->setCellValue("L{$currentRow}", $item['fungsi_bangunan']);
+                        $sheet->setCellValue("M{$currentRow}", $item['type']);
+                        $sheet->setCellValue("N{$currentRow}", $item['luas_bangunan']);
+                        $sheet->setCellValue("O{$currentRow}", $item['jumlah_unit']);
+                        $sheet->setCellValue("P{$currentRow}", $item['keterangan']);
+                        $sheet->setCellValue("Q{$currentRow}", $item['scan_imb']);
 
                         $currentRow++;
                     }
@@ -117,7 +113,6 @@ class IMBIndukPerumExport implements ShouldAutoSize, FromCollection, WithCustomS
     {
         // Fetch main data with items
         $data = DB::table('imb_induk_perum')
-            ->join('master_regency', 'imb_induk_perum.kabupaten', '=', 'master_regency.code')
             ->join('master_district', 'imb_induk_perum.kecamatan', '=', 'master_district.code')
             ->join('master_subdistrict', 'imb_induk_perum.desa_kelurahan', '=', 'master_subdistrict.code')
             ->join('item_imb_induk_perum', 'imb_induk_perum.id', '=', 'item_imb_induk_perum.induk_perum_id')
@@ -130,7 +125,6 @@ class IMBIndukPerumExport implements ShouldAutoSize, FromCollection, WithCustomS
                 'nama',
                 'atas_nama',
                 'lokasi_perumahan',
-                'master_regency.name as kabupaten',
                 'master_district.name as kecamatan',
                 'master_subdistrict.name as desa_kelurahan',
                 'item_imb_induk_perum.jenis_kegiatan',

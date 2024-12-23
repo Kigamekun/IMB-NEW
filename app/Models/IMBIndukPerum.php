@@ -19,6 +19,10 @@ class IMBIndukPerum extends Model
         "nama",
         "atas_nama",
         "lokasi_perumahan",
+        'kabupaten_lama',
+        'kecamatan_lama',
+        'kelurahan_lama',
+        "kabupaten",
         "kecamatan",
         "desa_kelurahan"
     ];

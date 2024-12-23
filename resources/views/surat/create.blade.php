@@ -51,7 +51,7 @@
                         </div>
                         <div class="mb-3" style="margin-top: 10px">
                             <label for="perihal" class="form-label">hal:</label>
-                            <textarea id="perihal" name="perihal" class="form-control" style="height: 100px" rows="2">Keterangan Izin Mendirikan Bangunan (IMBG)</textarea>
+                            <textarea id="perihal" name="perihal" class="form-control" style="height: 100px" rows="2">Keterangan Izin Mendirikan Bangunan Gedung (IMBG)</textarea>
                         </div>
                         <div class="section-title"><h3>PEMOHON</h3></div>
                         <div class="row mb-3">

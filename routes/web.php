@@ -402,12 +402,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/format-3', [SuratController::class, 'format3'])->name('surat.format-3');
         Route::post('/preview', [SuratController::class, 'preview'])->name('surat.preview');
         Route::post('/preview-table', [SuratController::class, 'previewTable'])->name('surat.previewTable'); // tambahan
-        // Route::get('/preview-index', [SuratController::class, 'previewIndex'])->name('surat.previewIndex');
-
+        Route::get('/preview-index', [SuratController::class, 'LihatIndex'])->name('surat.previewIndex');
+        Route::post('/copyData', [SuratController::class, 'copyData'])->name('surat.copyData');
+        Route::get('/suratNomor', [SuratController::class, 'getNomorSuratPemohon'])->name('surat.getNomorSuratPemohon');
         Route::get('/download/{id}', [SuratController::class, 'download'])->name('surat.download');
 
         Route::delete('/destroy/{id}', [SuratController::class, 'destroy'])->name('surat.destroy');
 
+        Route::get('/cetakHalaman', [SuratController::class, 'cetakHalaman'])->name('surat.cetakHalaman');
     });
 
     Route::prefix('master')->group(function () {

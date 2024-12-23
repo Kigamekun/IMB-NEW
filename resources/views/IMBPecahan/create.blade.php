@@ -100,6 +100,14 @@
                             </div>
                         </div>
                         <div class="row mb-3" style="margin-top: 10px">
+                            <div class="col-md-12">
+                                <label for="kabupaten" class="form-label">Kabupaten</label>
+                                <select class="form-control form-select select2-kabupaten" id="kabupaten" name="kabupaten" required>
+                                    <option></option> <!-- Placeholder option -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3" style="margin-top: 10px">
                             <div class="col-md-6">
                                 <label for="kecamatan" class="form-label">Kecamatan:</label>
                                 <select name="kecamatan" id="kecamatan" class="form-select select2-kecamatan" required>
@@ -179,11 +187,44 @@
         $('.select2').select2();
 
         function initializeSelect2WithAjax() {
+            let kabId;
+            $('.select2-kabupaten').select2({
+                width: '100%',
+                placeholder: 'Pilih Kabupaten',
+                //minimumInputLength: 2,
+                ajax: {
+                    url: "{{ route('master.kabupaten') }}", // URL to fetch kabupaten data
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            q: params.term,
+                            page: params.page || 1
+                        };
+                    },
+                    processResults: function(data, params) {
+                        console.log("Fetched data:", data); // Check data structure here
+                        return {
+                            results: data.items.map(function(item) {
+                                return {
+                                    id: item.id,
+                                    text: item.text
+                                };
+                            })
+                        };
+                    },
+                    cache: true
+                }
+            }).on('select2:select', function(e) {
+                console.log("Selected Kabupaten:", e.params.data);
+                kabId = e.params.data.id;
+            });
+
             // Kecamatan Select2 with AJAX
             $('.select2-kecamatan').select2({
                 width: '100%',
                 placeholder: 'Pilih Kecamatan',
-                minimumInputLength: 2,
+                //minimumInputLength: 2,
                 ajax: {
                     url: "{{ route('master.kecamatan') }}", // URL to fetch kecamatan data
                     dataType: 'json',
@@ -191,6 +232,7 @@
                     data: function(params) {
                         return {
                             q: params.term,
+                            kabupaten_id: kabId,
                             page: params.page || 1
                         };
                     },
@@ -217,7 +259,7 @@
                 $('.select2-kelurahan').select2({
                     width: '100%',
                     placeholder: 'Pilih Kelurahan',
-                    minimumInputLength: 2,
+                    //minimumInputLength: 2,
                     ajax: {
                         url: "{{ route('master.kelurahan') }}", // URL to fetch kelurahan data
                         dataType: 'json',

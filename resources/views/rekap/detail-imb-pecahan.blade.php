@@ -15,8 +15,8 @@
 
 
     <div class="py-12">
-        <div style="width: 90%;margin:auto">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5 rounded">
+        <div style="width: 100%;margin:auto">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5 rounded" style="width: 100%; ">
                 <div class="p-6 text-gray-900">
                     <div class="container">
                         <h1 class="text-left">Rekap Register IMB Per Tahun</h1>

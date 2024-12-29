@@ -340,7 +340,7 @@
             $('.select2-imb-pecahan').select2({
                 width: '100%',
                 placeholder: 'Pilih IMB Pecahan',
-                minimumInputLength: 2,
+              //  minimumInputLength: 2,
                 ajax: {
                     url: "{{ route('master.imb-pecahan') }}", // URL to fetch kecamatan data
                     dataType: 'json',

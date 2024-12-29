@@ -35,6 +35,7 @@ class SinkronisasiLokasiIMBController extends Controller
                 case '':
                     $data = IMBIndukPerum::join('app_md_jeniskeg', 'imb_induk_perum.jenis_kegiatan', '=', 'app_md_jeniskeg.id_jeniskeg')
                         ->where([
+                            // ['imb_induk_perum.kabupaten', '=', null],
                             ['imb_induk_perum.kecamatan', '=', null],
                             ['imb_induk_perum.desa_kelurahan', '=', null]
                         ])
@@ -43,6 +44,7 @@ class SinkronisasiLokasiIMBController extends Controller
                 case 'pecahan':
                     $data = IMBPecahan::join('app_md_jeniskeg', 'imb_pecahan.jenis_kegiatan', '=', 'app_md_jeniskeg.id_jeniskeg')
                         ->where([
+                            ['imb_pecahan.kabupaten', '=', null],
                             ['imb_pecahan.kecamatan', '=', null],
                             ['imb_pecahan.desa_kelurahan', '=', null]
                         ])
@@ -101,47 +103,55 @@ class SinkronisasiLokasiIMBController extends Controller
                 case '':
                     DB::table('imb_induk_perum')
                         ->where([
-                            'kecamatan' => $request->kecamatan_lama,
-                            'desa_kelurahan' => $request->kelurahan_lama
+                            'kabupaten_lama' => $request->kabupaten_lama,
+                            'kecamatan_lama' => $request->kecamatan_lama,
+                            'kelurahan_lama' => $request->kelurahan_lama
                         ])
                         ->update([
+                            'kabupaten' => $request->kabupaten,
                             'kecamatan' => $request->kecamatan,
                             'desa_kelurahan' => $request->desa_kelurahan
                         ]);
                     break;
                 case 'pecahan':
                     DB::table('imb_pecahan')
-                        ->where([
-                            'kecamatan_lama' => $request->kecamatan_lama,
-                            'kelurahan_lama' => $request->kelurahan_lama
-                        ])
-                        ->update([
-                            'kecamatan' => $request->kecamatan,
-                            'desa_kelurahan' => $request->desa_kelurahan
-                        ]);
+                    ->where([
+                        'kabupaten_lama' => $request->kabupaten_lama,
+                        'kecamatan_lama' => $request->kecamatan_lama,
+                        'kelurahan_lama' => $request->kelurahan_lama
+                    ])
+                    ->update([
+                        'kabupaten' => $request->kabupaten,
+                        'kecamatan' => $request->kecamatan,
+                        'desa_kelurahan' => $request->desa_kelurahan
+                    ]);
 
                     break;
                 case 'perluasan':
                     DB::table('imb_perluasan')
-                        ->where([
-                            'kecamatan_lama' => $request->kecamatan_lama,
-                            'kelurahan_lama' => $request->kelurahan_lama
-                        ])
-                        ->update([
-                            'kecamatan' => $request->kecamatan,
-                            'desa_kelurahan' => $request->desa_kelurahan
-                        ]);
+                    ->where([
+                        'kabupaten_lama' => $request->kabupaten_lama,
+                        'kecamatan_lama' => $request->kecamatan_lama,
+                        'kelurahan_lama' => $request->kelurahan_lama
+                    ])
+                    ->update([
+                        'kabupaten' => $request->kabupaten,
+                        'kecamatan' => $request->kecamatan,
+                        'desa_kelurahan' => $request->desa_kelurahan
+                    ]);
                     break;
                 case 'non_perum':
                     DB::table('imb_induk_non_perum')
-                        ->where([
-                            'kecamatan_lama' => $request->kecamatan_lama,
-                            'kelurahan_lama' => $request->kelurahan_lama
-                        ])
-                        ->update([
-                            'kecamatan' => $request->kecamatan,
-                            'desa_kelurahan' => $request->desa_kelurahan
-                        ]);
+                    ->where([
+                        'kabupaten_lama' => $request->kabupaten_lama,
+                        'kecamatan_lama' => $request->kecamatan_lama,
+                        'kelurahan_lama' => $request->kelurahan_lama
+                    ])
+                    ->update([
+                        'kabupaten' => $request->kabupaten,
+                        'kecamatan' => $request->kecamatan,
+                        'desa_kelurahan' => $request->desa_kelurahan
+                    ]);
                     break;
 
                 default:
@@ -150,14 +160,16 @@ class SinkronisasiLokasiIMBController extends Controller
             }
         } else {
             DB::table('imb_induk_perum')
-                ->where([
-                    'kecamatan_lama' => $request->kecamatan_lama,
-                    'kelurahan_lama' => $request->kelurahan_lama
-                ])
-                ->update([
-                    'kecamatan' => $request->kecamatan,
-                    'desa_kelurahan' => $request->desa_kelurahan
-                ]);
+            ->where([
+                'kabupaten_lama' => $request->kabupaten_lama,
+                'kecamatan_lama' => $request->kecamatan_lama,
+                'kelurahan_lama' => $request->kelurahan_lama
+            ])
+            ->update([
+                'kabupaten' => $request->kabupaten,
+                'kecamatan' => $request->kecamatan,
+                'desa_kelurahan' => $request->desa_kelurahan
+            ]);
         }
 
         $type = request()->query('type'); // Get the 'type' parameter from the query string

@@ -135,6 +135,17 @@ class SuratController extends Controller
 
                             ;
 
+                    // Tombol Lihat Table hanya akan muncul jika jenisSurat bukan format-1 dan format-4
+                    // if ($showLihatTable) {
+                    //     $actions .= '
+                    //         <div class="d-flex align-items-center" style="gap:5px; width: 50%;">
+                    //             <a href="' . route('surat.lihatTable', $row->id) . '" onclick="window.open(this.href, \'_blank\', \'width=800,height=600\'); return false;" class="btn btn-primary btn-sm" title="Lihat Table">
+                    //                 <i class="fa fa-table"></i>
+                    //             </a>
+                    //         </div>';
+                    // }
+
+                    // $actions .= '</div>'; // Menutup div utama actions
 
                     return $actions;
                 })
@@ -650,6 +661,493 @@ class SuratController extends Controller
     }
 
 
+    // public function update(Request $request,$id)
+    // {
+    //     $data = $request->all();
+    //     $namaFile = 'surat-' . $data['nomorSurat'] . uniqid() . '.pdf';
+
+    //     \DB::table('surat')->where('id',$id)->update([
+    //         'jenisSurat' => $request->input('jenisSurat'),
+    //         'tahun' => $request->input('tahun'),
+    //         'nomorSurat' => $request->input('nomorSurat'),
+    //         'tanggalSurat' => $request->input('tanggalSurat'),
+    //         'lampiran' => $request->input('lampiran'),
+    //         'sifat' => $request->input('sifat'),
+    //         'perihal' => $request->input('perihal'),
+    //         'permohonanTanggal' => $request->input('permohonanTanggal'),
+    //         'nama' => $request->input('nama'),
+    //         'bertindak_atas_nama' => $request->input('bertindak_atas_nama'),
+    //         'alamat' => $request->input('alamat'),
+    //         'izin_mendirikan_bangunan_atas_nama' => $request->input('izin_mendirikan_bangunan_atas_nama'),
+    //         'lokasi' => $request->input('lokasi'),
+    //         'jenisKegiatan' => $request->input('jenisKegiatan'),
+    //         'tujuanSurat' => $request->input('tujuanSurat'),
+    //         'registerNomor' => $request->input('registerNomor'),
+    //         'registerTanggal' => $request->input('registerTanggal'),
+    //         'imbgNomor' => $request->input('imbgNomor'),
+    //         'imbgTanggal' => $request->input('imbgTanggal'),
+    //         'sapaanPemohon' => $request->input('sapaanPemohon'),
+
+    //         'provinsiPemohon' => $request->input('provinsiPemohon'),
+    //         'kabupatenPemohon' => $request->input('kabupatenPemohon'),
+    //         'kecamatanPemohon' => $request->input('kecamatanPemohon'),
+    //         'kelurahanPemohon' => $request->input('kelurahanPemohon'),
+    //         'jabatan' => $request->input('jabatan'),
+
+    //         'provinsi' => 32,
+    //         'font_surat' => $request->input('font_surat'),
+    //         'kabupaten' => $request->input('kabupaten'),
+    //         'kecamatan' => $request->input('kecamatan'),
+    //         'kelurahan' => $request->input('kelurahan'),
+    //         'provinsi_terdahulu' => $request->input('provinsi-terdahulu'),
+    //         'kabupaten_terdahulu' => $request->input('kabupaten-terdahulu'),
+    //         'kecamatan_terdahulu' => $request->input('kecamatan-terdahulu'),
+    //         'kelurahan_terdahulu' => $request->input('kelurahan-terdahulu'),
+    //         'kepalaDinas' => $request->input('kepalaDinas'),
+    //         'pangkat' => $request->input('pangkat'),
+    //         'keterangan' => json_encode($request->input('ket')),
+    //         'details' => json_encode($request->input('details')),
+    //         'details2' => json_encode($request->input('details2')),
+    //         'file' => $namaFile,
+    //     ]);
+
+
+    //     $jenisSurat = $data['jenisSurat'];
+    //     list($nip, $kepalaDinas) = explode(' | ', $request->kepalaDinas);
+
+    //     $details = json_encode($request->input('details'));
+    //     $details2 = json_encode($request->input('details2'));
+
+    //     // Untuk Kabupaten
+    //     $strKabupaten = \DB::table('master_regency')
+    //         ->where('code', $data['kabupaten'])
+    //         ->first()->name;
+    //     $kabupaten = str_replace('kab.', 'Kabupaten', strtolower($strKabupaten));
+    //     $kabupaten = ucwords($kabupaten);
+
+    //     // Untuk Kecamatan
+    //     $strKecamatan = \DB::table('master_district')
+    //         ->where('code', $data['kecamatan'])
+    //         ->first()->name;
+    //     $kecamatan = ucwords(strtolower($strKecamatan));
+
+    //     // Untuk Kelurahan
+    //     $strKelurahan = \DB::table('master_subdistrict')
+    //         ->where('code', $data['kelurahan'])
+    //         ->first()->name;
+    //     $kelurahan = ucwords(strtolower($strKelurahan));
+
+    //     // Untuk Provinsi
+    //     $strProvinsi = \DB::table('master_province')
+    //         ->where('code', 32)
+    //         ->first()->name;
+    //     $provinsi = ucwords(strtolower($strProvinsi));
+
+    //     $strKabupatenPemohon = \DB::table('master_regency')
+    //         ->where('code', $data['kabupatenPemohon'])
+    //         ->first()->name;
+    //     $kabupatenPemohon = str_replace('kab.', 'Kabupaten', strtolower($strKabupatenPemohon));
+    //     $kabupatenPemohon = ucwords($kabupatenPemohon);
+
+    //     // Untuk Kecamatan
+    //     $strKecamatanPemohon = \DB::table('master_district')
+    //         ->where('code', $data['kecamatanPemohon'])
+    //         ->first()->name;
+    //     $kecamatanPemohon = ucwords(strtolower($strKecamatanPemohon));
+
+    //     // Untuk Kelurahan
+    //     $strKelurahanPemohon = \DB::table('master_subdistrict')
+    //         ->where('code', $data['kelurahanPemohon'])
+    //         ->first()->name;
+    //     $kelurahanPemohon = ucwords(strtolower($strKelurahanPemohon));
+
+    //     // Untuk Provinsi
+    //     $strProvinsiPemohon = \DB::table('master_province')
+    //         ->where('code', $data['provinsiPemohon'])
+    //         ->first()->name;
+
+    //     $provinsiPemohon = ucwords(strtolower($strProvinsiPemohon));
+
+    //     $timestamp = strtotime($data['permohonanTanggal']);
+
+    //     $months = [
+    //         '01' => 'Januari',
+    //         '02' => 'Februari',
+    //         '03' => 'Maret',
+    //         '04' => 'April',
+    //         '05' => 'Mei',
+    //         '06' => 'Juni',
+    //         '07' => 'Juli',
+    //         '08' => 'Agustus',
+    //         '09' => 'September',
+    //         '10' => 'Oktober',
+    //         '11' => 'November',
+    //         '12' => 'Desember'
+    //     ];
+
+    //     $day = date('d', $timestamp);
+    //     $month = $months[date('m', $timestamp)];
+    //     $year = date('Y', $timestamp);
+
+    //     $imbgTgl = strtotime($data['imbgTanggal']);
+
+    //     $dayImb = date('d', $imbgTgl);
+    //     $monthImb = $months[date('m', $imbgTgl)];
+    //     $yearImb = date('Y', $imbgTgl);
+
+    //     $registerTgl = strtotime($data['registerTanggal']);
+
+    //     $dayRegister = date('d', $registerTgl);
+    //     $monthRegister = $months[date('m', $registerTgl)];
+    //     $yearRegister = date('Y', $registerTgl);
+
+    //     $tahun = $data['tahun'];
+    //     $nomorSurat = $data['nomorSurat'];
+    //     $tanggalSurat = "$day $month $year";
+    //     $imbgTanggalConvert = "$dayImb $monthImb $yearImb";
+    //     $registerTanggalConvert = "$dayRegister $monthRegister $yearRegister";
+
+    //     $tahun = $data['tahun'];
+    //     $nomorSurat = $data['nomorSurat'];
+    //     $tanggalSurat = "$day $month $year";
+    //     $lampiran = $data['lampiran'];
+    //     $sifat = $data['sifat'];
+    //     $perihal = $data['perihal'];
+    //     $pemohon = [
+    //         'tanggal' => $data['permohonanTanggal'],
+    //         'nama' => $data['nama'],
+    //         'bertindak_atas_nama' => $data['bertindak_atas_nama'],
+    //         'alamat' => $data['alamat'],
+    //         'sapaanPemohon' => $data['sapaanPemohon'],
+    //         'provinsiPemohon' => $provinsiPemohon,
+    //         'kabupatenPemohon' => $kabupatenPemohon,
+    //         'kecamatanPemohon' => $kecamatanPemohon,
+    //         'kelurahanPemohon' => $kelurahanPemohon,
+    //     ];
+    //     $referensi = [
+    //         'izin_mendirikan_bangunan_atas_nama' => $data['izin_mendirikan_bangunan_atas_nama'],
+    //         'lokasi' => $data['lokasi'],
+    //         'tujuan' => $data['tujuanSurat'],
+    //         'jenisKegiatan' => $data['jenisKegiatan'],
+    //         'registerNomor' => $data['registerNomor'],
+    //         'registerTanggal' => $data['registerTanggal'],
+    //         'imbgNomor' => $data['imbgNomor'],
+    //         'imbgTanggal' => $data['imbgTanggal'],
+    //         'provinsi' => $provinsi,
+    //         'kabupaten' => $kabupaten,
+    //         'kecamatan' => $kecamatan,
+    //         'kelurahan' => $kelurahan,
+    //         'kabupaten-terdahulu' => $data['kabupaten-terdahulu'],
+    //         'kecamatan-terdahulu' => $data['kecamatan-terdahulu'],
+    //         'kelurahan-terdahulu' => $data['kelurahan-terdahulu'],
+
+    //     ];
+    //     $penandatangan = [
+    //         'kepalaDinas' => $kepalaDinas,
+    //         'jabatan' => $data['jabatan'],
+    //         'nip' => $nip,
+    //         'pangkat' => $data['pangkat'],
+    //     ];
+    //     $keterangan = $data['ket'];
+
+    //     // Ambil detail data IMBG
+    //     $details = $data['details'];
+    //     $details2 = $data['details2'];
+
+    //     // Load template view dan kirim data
+    //     if ($jenisSurat == 'format-1') {
+    //         $html = view('surat.format-1', compact(
+    //             'jenisSurat',
+    //             'tahun',
+    //             'nomorSurat',
+    //             'tanggalSurat',
+    //             'lampiran',
+    //             'sifat',
+    //             'perihal',
+    //             'pemohon',
+    //             'referensi',
+    //             'penandatangan',
+    //             'keterangan'
+    //         ))->render();
+
+    //         // Setup Dompdf
+    //         $dompdf = new Dompdf();
+    //         $dompdf->loadHtml($html);
+
+    //         // (Opsional) Pengaturan tambahan
+    //         $options = $dompdf->getOptions();
+    //         $options->set('isRemoteEnabled', true);
+    //         $dompdf->setOptions($options);
+
+    //         // Render PDF
+    //         $dompdf->setPaper('A4', 'portrait');
+    //         $dompdf->render();
+
+    //         Storage::put('public/surat/' . $namaFile, $dompdf->output());
+
+
+
+    //         // Simpan atau kirimkan sebagai respons
+    //         return response()->json(['status' => 'success', 'message' => 'Surat berhasil dibuat', 'file' => $namaFile]);
+
+    //     } else if ($jenisSurat == 'format-2') {
+    //         $html = view('surat.format-2', compact(
+    //             'jenisSurat',
+    //             'tahun',
+    //             'nomorSurat',
+    //             'tanggalSurat',
+    //             'lampiran',
+    //             'sifat',
+    //             'perihal',
+    //             'pemohon',
+    //             'referensi',
+    //             'penandatangan',
+    //             'keterangan',
+    //             'details'
+    //         ))->render();
+
+    //         // Setup Dompdf
+    //         $dompdf = new Dompdf();
+    //         $dompdf->loadHtml($html);
+
+    //         // (Opsional) Pengaturan tambahan
+    //         $options = $dompdf->getOptions();
+    //         $options->set('isRemoteEnabled', true);
+    //         $dompdf->setOptions($options);
+
+    //         // Render PDF
+    //         $dompdf->setPaper('A4', 'portrait');
+    //         $dompdf->render();
+
+    //         Storage::put('public/surat/' . $namaFile, $dompdf->output());
+
+
+    //         // Simpan atau kirimkan sebagai respons
+    //         // return $dompdf->stream('surat.pdf', ['Attachment' => true]);
+
+    //         return response()->json(['status' => 'success', 'message' => 'Surat berhasil dibuat', 'file' => $namaFile]);
+    //     } else if ($jenisSurat == 'format-3'){
+    //         $html = view('surat.format-3', compact(
+    //             'jenisSurat',
+    //             'tahun',
+    //             'nomorSurat',
+    //             'tanggalSurat',
+    //             'lampiran',
+    //             'sifat',
+    //             'perihal',
+    //             'pemohon',
+    //             'referensi',
+    //             'penandatangan',
+    //             'keterangan',
+    //             'details',
+    //             'details2'
+    //         ))->render();
+
+    //         // Setup Dompdf
+    //         $dompdf = new Dompdf();
+    //         $dompdf->loadHtml($html);
+
+    //         // (Opsional) Pengaturan tambahan
+    //         $options = $dompdf->getOptions();
+    //         $options->set('isRemoteEnabled', true);
+    //         $dompdf->setOptions($options);
+
+    //         // Render PDF
+    //         $dompdf->setPaper('A4', 'portrait');
+    //         $dompdf->render();
+
+    //         // Simpan atau kirimkan sebagai respons
+    //         Storage::put('public/surat/' . $namaFile, $dompdf->output());
+
+    //         // Simpan atau kirimkan sebagai respons
+    //         return response()->json(['status' => 'success', 'message' => 'Surat berhasil dibuat', 'file' => $namaFile]);
+
+    //     } else {
+    //         $html = view('surat.format-4', compact(
+    //             'jenisSurat',
+    //             'tahun',
+    //             'nomorSurat',
+    //             'tanggalSurat',
+    //             'lampiran',
+    //             'sifat',
+    //             'perihal',
+    //             'pemohon',
+    //             'referensi',
+    //             'penandatangan',
+    //             'keterangan',
+    //             'details',
+    //             'details2'
+    //         ))->render();
+
+    //         // Setup Dompdf
+    //         $dompdf = new Dompdf();
+    //         $dompdf->loadHtml($html);
+
+    //         // (Opsional) Pengaturan tambahan
+    //         $options = $dompdf->getOptions();
+    //         $options->set('isRemoteEnabled', true);
+    //         $dompdf->setOptions($options);
+
+    //         // Render PDF
+    //         $dompdf->setPaper('A4', 'portrait');
+    //         $dompdf->render();
+
+    //         // Simpan atau kirimkan sebagai respons
+    //         Storage::put('public/surat/' . $namaFile, $dompdf->output());
+
+    //         // Simpan atau kirimkan sebagai respons
+    //         return response()->json(['status' => 'success', 'message' => 'Surat berhasil dibuat', 'file' => $namaFile]);
+
+    //     }
+    // }
+    // public function update(Request $request, $id)
+    // {
+    //     // Validate input
+    //     $validatedData = $request->validate([
+    //         'jenisSurat' => 'required|string',
+    //         'tahun' => 'required|integer',
+    //         'nomorSurat' => 'required|string',
+    //         'tanggalSurat' => 'required|date',
+    //         'lampiran' => 'nullable|string',
+    //         'sifat' => 'nullable|string',
+    //         'perihal' => 'nullable|string',
+    //         'permohonanTanggal' => 'required|date',
+    //         'nama' => 'required|string',
+    //         'bertindak_atas_nama' => 'nullable|string',
+    //         'alamat' => 'nullable|string',
+    //         'izin_mendirikan_bangunan_atas_nama' => 'nullable|string',
+    //         'lokasi' => 'nullable|string',
+    //         'jenisKegiatan' => 'nullable|string',
+    //         'tujuanSurat' => 'nullable|string',
+    //         'registerNomor' => 'nullable|string',
+    //         'registerTanggal' => 'nullable|date',
+    //         'imbgNomor' => 'nullable|string',
+    //         'imbgTanggal' => 'nullable|date',
+    //         'sapaanPemohon' => 'nullable|string',
+    //         'provinsiPemohon' => 'nullable|integer',
+    //         'kabupatenPemohon' => 'nullable|integer',
+    //         'kecamatanPemohon' => 'nullable|integer',
+    //         'kelurahanPemohon' => 'nullable|integer',
+    //         'jabatan' => 'nullable|string',
+    //         'font_surat' => 'nullable|string',
+    //         'kabupaten' => 'nullable|integer',
+    //         'kecamatan' => 'nullable|integer',
+    //         'kelurahan' => 'nullable|integer',
+    //         // 'provinsi_terdahulu' => 'nullable|integer',
+    //         'kabupaten_terdahulu' => 'nullable|string',
+    //         'kecamatan_terdahulu' => 'nullable|string',
+    //         'kelurahan_terdahulu' => 'nullable|string',
+    //         'kepalaDinas' => 'nullable|string',
+    //         'pangkat' => 'nullable|string',
+    //         'ket' => 'nullable|array',
+    //         'details' => 'nullable|array',
+    //         'details2' => 'nullable|array',
+    //     ]);
+    //     $kabupatenTerdahulu = $validatedData['kabupaten_terdahulu'] ?? null;
+    //     $kecamatanTerdahulu = $validatedData['kecamatan_terdahulu'] ?? null;
+    //     $kelurahanTerdahulu = $validatedData['kelurahan_terdahulu'] ?? null;
+    //     try {
+    //         // Process the file upload (PDF generation)
+    //         $data = $request->all();
+    //         $namaFile = 'surat-' . $data['nomorSurat'] . uniqid() . '.pdf';
+
+
+    //         // Update the record in the database
+    //         \DB::table('surat')->where('id', $id)->update([
+    //             'jenisSurat' => $data['jenisSurat'],
+    //             'tahun' => $data['tahun'],
+    //             'nomorSurat' => $data['nomorSurat'],
+    //             'tanggalSurat' => $data['tanggalSurat'],
+    //             'lampiran' => $data['lampiran'],
+    //             'sifat' => $data['sifat'],
+    //             'perihal' => $data['perihal'],
+    //             'permohonanTanggal' => $data['permohonanTanggal'],
+    //             'nama' => $data['nama'],
+    //             'bertindak_atas_nama' => $data['bertindak_atas_nama'],
+    //             'alamat' => $data['alamat'],
+    //             'izin_mendirikan_bangunan_atas_nama' => $data['izin_mendirikan_bangunan_atas_nama'],
+    //             'lokasi' => $data['lokasi'],
+    //             'jenisKegiatan' => $data['jenisKegiatan'],
+    //             'tujuanSurat' => $data['tujuanSurat'],
+    //             'registerNomor' => $data['registerNomor'],
+    //             'registerTanggal' => $data['registerTanggal'],
+    //             'imbgNomor' => $data['imbgNomor'],
+    //             'imbgTanggal' => $data['imbgTanggal'],
+    //             'sapaanPemohon' => $data['sapaanPemohon'],
+    //             'provinsiPemohon' => $data['provinsiPemohon'],
+    //             'kabupatenPemohon' => $data['kabupatenPemohon'],
+    //             'kecamatanPemohon' => $data['kecamatanPemohon'],
+    //             'kelurahanPemohon' => $data['kelurahanPemohon'],
+    //             'jabatan' => $data['jabatan'],
+    //             'font_surat' => $data['font_surat'],
+    //             'kabupaten' => $data['kabupaten'],
+    //             'kecamatan' => $data['kecamatan'],
+    //             'kelurahan' => $data['kelurahan'],
+    //             'kabupaten_terdahulu' => $kabupatenTerdahulu ,// $data['kabupaten_terdahulu'],
+    //             'kecamatan_terdahulu' => $kecamatanTerdahulu,// $data['kecamatan_terdahulu'],
+    //             'kelurahan_terdahulu' => $kelurahanTerdahulu,//$data['kelurahan_terdahulu'],
+    //             'kepalaDinas' => $data['kepalaDinas'],
+    //             'pangkat' => $data['pangkat'],
+    //             'keterangan' => json_encode($data['ket']),
+    //             'details' => json_encode($data['details']),
+    //             'details2' => json_encode($data['details2']),
+    //             'file' => $namaFile,
+    //         ]);
+    //         // dd($request->all());
+    //         // Process DomPDF logic for PDF generation
+    //         $jenisSurat = $data['jenisSurat'];
+    //         list($nip, $kepalaDinas) = explode(' | ', $data['kepalaDinas']);
+
+    //         // Fetching location details
+    //         $kabupaten = ucwords(strtolower(\DB::table('master_regency')->where('code', $data['kabupaten'])->first()->name));
+    //         $kecamatan = ucwords(strtolower(\DB::table('master_district')->where('code', $data['kecamatan'])->first()->name));
+    //         $kelurahan = ucwords(strtolower(\DB::table('master_subdistrict')->where('code', $data['kelurahan'])->first()->name));
+    //         $provinsi = ucwords(strtolower(\DB::table('master_province')->where('code', 32)->first()->name));
+
+    //         // Generating formatted dates
+    //         $timestamp = strtotime($data['permohonanTanggal']);
+    //         $months = [
+    //             '01' => 'Januari', '02' => 'Februari', '03' => 'Maret', '04' => 'April',
+    //             '05' => 'Mei', '06' => 'Juni', '07' => 'Juli', '08' => 'Agustus',
+    //             '09' => 'September', '10' => 'Oktober', '11' => 'November', '12' => 'Desember'
+    //         ];
+    //         $day = date('d', $timestamp);
+    //         $month = $months[date('m', $timestamp)];
+    //         $year = date('Y', $timestamp);
+
+    //         // Load the appropriate view based on surat format
+    //         $html = view('surat.format-' . $jenisSurat, compact(
+    //             'jenisSurat', 'tahun', 'nomorSurat', 'tanggalSurat', 'lampiran', 'sifat',
+    //             'perihal', 'kabupaten', 'kecamatan', 'kelurahan', 'provinsi', 'nip', 'kepalaDinas'
+    //         ))->render();
+
+    //         // Set up DomPDF and render PDF
+    //         $dompdf = new Dompdf();
+    //         $dompdf->loadHtml($html);
+    //         $dompdf->setPaper('A4', 'portrait');
+    //         $dompdf->render();
+
+    //         // Store the generated PDF
+    //         Storage::put('public/surat/' . $namaFile, $dompdf->output());
+
+    //         // Return success response
+    //         return response()->json([
+    //             'status' => 'success',
+    //             'message' => 'Surat berhasil diperbarui dan PDF berhasil dibuat.',
+    //             'file' => $namaFile
+    //         ]);
+
+    //     } catch (\Exception $e) {
+    //         // Log the error and return a failure response
+    //         // Log::error('Update surat failed: ' . $e->getMessage());
+    //         dd($e);
+    //         return response()->json([
+    //             'status' => 'error',
+    //             'message' => 'Terjadi kesalahan saat memperbarui data surat: ' . $e->getMessage()
+    //         ]);
+    //     }
+    // }
+
     public function updateNomorSurat(Request $request, $id)
     {
         // Validasi input nomorSurat
@@ -678,6 +1176,8 @@ class SuratController extends Controller
 
         // Pastikan ID adalah integer
         $id = (int) $id;
+
+
 
         // Cek apakah ID valid
         $surat = \DB::table('surat')->where('id', $id)->first();
@@ -793,6 +1293,12 @@ class SuratController extends Controller
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
         }
     }
+
+
+
+
+
+
 
     public function preview(Request $request)
     {
@@ -1134,6 +1640,32 @@ class SuratController extends Controller
             return $dompdf->stream('surat.pdf', ['Attachment' => false]);
         }
     }
+
+    // public function LihatTableIndex($id) {
+    //     $data = \DB::table('surat')->where('id', $id)->first();
+
+    //     $data = (array) $data;
+    //     // Dump data untuk debug
+    //     // dd($data);
+
+    //     $jenisSurat = $data['jenisSurat'];
+
+    //     // Ambil data details dan details2
+    //     $details = $data['details'];
+    //     $details2 = $data['details2'];
+
+    //     // Pastikan server mengembalikan HTML
+    //     if ($jenisSurat == 'format-2') {
+    //         return response()->view('surat.preview-2', compact('details'))
+    //                          ->header('Content-Type', 'text/html');
+    //     } else if ($jenisSurat == 'format-3') {
+    //         return response()->view('surat.preview-3', compact('details', 'details2'))
+    //                          ->header('Content-Type', 'text/html');
+    //     }
+    //     // di controller
+    //     return response()->view('surat.preview-2', compact('details'))->header('Content-Type', 'text/html');
+
+    // }
 
     public function LihatTableIndex($id)
     {
@@ -1631,19 +2163,166 @@ class SuratController extends Controller
             // Ubah data menjadi array dan hapus ID untuk duplikasi
             $newData = (array) $originalData;
             unset($newData['id']);
-            $newData['nomorSurat'] .= 'copy';
+            $newData['nomorSurat'] .= '-copy';
             $newData['created_at'] = now();
             $newData['updated_at'] = now();
 
             // Insert data baru ke database
             $newId = \DB::table('surat')->insertGetId($newData);
 
-            return redirect()->back()->with(['status' => 'success', 'message' => 'Surat berhasil disalin.']);
+            return redirect()->back()->with('success', 'Data berhasil diduplikasi.');
         } else {
             return redirect()->back()->with('error', 'Data tidak ditemukan.');
         }
     }
 
+    // Duplikasi Data
+    // public function copyData(Request $request)
+    // {
+    //     // Validasi input
+    //     $request->validate([
+    //         'nomorSurat' => 'required_without:namaPemohon|string|max:255',
+    //         'namaPemohon' => 'required_without:nomorSurat|string|max:255',
+    //         'tahun' => 'required|date',
+    //     ]);
+
+    //     // Ambil data berdasarkan nomorSurat atau namaPemohon
+    //     $query = \DB::table('surat');
+    //     if ($request->has('nomorSurat')) {
+    //         $query->where('nomorSurat', $request->input('nomorSurat'));
+    //     } elseif ($request->has('namaPemohon')) {
+    //         $query->where('nama', $request->input('namaPemohon'));
+    //     }
+
+    //     $data = $query->first();
+
+    //     if (!$data) {
+    //         return response()->json(['status' => 'error', 'message' => 'Data tidak ditemukan.'], 404);
+    //     }
+
+    //     // Ubah data menjadi array dan hapus ID untuk duplikasi
+    //     $data = (array) $data;
+    //     unset($data['id']);
+
+    //     // Tambahkan informasi tambahan jika diperlukan
+    //     $data['nomorSurat'] .= '-copy';
+    //     $data['tahun'] = $request->input('tahun');
+    //     $data['created_at'] = now();
+    //     $data['updated_at'] = now();
+
+    //     // Insert data baru ke database
+    //     $newId = \DB::table('surat')->insertGetId($data);
+
+    //     return response()->json(['status' => 'success', 'message' => 'Data berhasil diduplikasi.', 'new_id' => $newId]);
+    // }
+
+    // public function copyData(Request $request)
+    // {
+    //     $validated = $request->validate([
+    //         'tahun' => 'required',
+    //         'nomorSK-Pemohon' => 'required',
+    //     ]);
+
+    //     $dataId = $request->input('nomorSK-Pemohon');
+    //     $originalData = DB::table('surat')->where('id', $dataId)->first();
+
+    //     if ($originalData) {
+    //         $newData = (array) $originalData;
+    //         unset($newData['id']); // Remove the original ID
+    //         $newData['created_at'] = now();
+    //         $newData['updated_at'] = now();
+
+    //         $newId = DB::table('surat')->insertGetId($newData);
+
+    //         // Copy related items if any
+    //         $relatedItems = DB::table('related_table')->where('surat_id', $dataId)->get();
+    //         foreach ($relatedItems as $item) {
+    //             $newItem = (array) $item;
+    //             unset($newItem['id']);
+    //             $newItem['surat_id'] = $newId;
+    //             DB::table('related_table')->insert($newItem);
+    //         }
+
+    //         return redirect()->route('surat.index')->with('success', 'Data berhasil dicopy');
+    //     } else {
+    //         return redirect()->route('surat.index')->with('error', 'Data tidak ditemukan');
+    //     }
+    // }
+    // public function copyData($id)
+    // {
+    //     // Ambil data asli berdasarkan ID
+    //     $originalData = \DB::table('surat')->where('id', $id)->first();
+
+    //     if ($originalData) {
+    //         // Ubah data menjadi array dan hapus ID untuk duplikasi
+    //         $newData = (array) $originalData;
+    //         unset($newData['id']);
+    //         $newData['nomorSurat'] .= '-copy';
+    //         $newData['created_at'] = now();
+    //         $newData['updated_at'] = now();
+
+    //         // Insert data baru ke database
+    //         $newId = \DB::table('surat')->insertGetId($newData);
+
+    //         return redirect()->back()->with('success', 'Data berhasil diduplikasi.');
+    //     } else {
+    //         return redirect()->back()->with('error', 'Data tidak ditemukan.');
+    //     }
+    // }
+
+    // UDAH BENER INI
+    // public function copyData($id)
+    // {
+    //     \Log::info('CopyData function called with ID: ' . $id);
+    //     // dd($id); // Debugging: Hentikan eksekusi dan tampilkan ID
+
+    //     // Ambil data asli berdasarkan ID
+    //     $originalData = \DB::table('surat')->where('id', $id)->first();
+
+    //     if ($originalData) {
+    //         // Ubah data menjadi array dan hapus ID untuk duplikasi
+    //         $newData = (array) $originalData;
+    //         unset($newData['id']);
+    //         $newData['nomorSurat'] .= '-copy';
+    //         $newData['created_at'] = now();
+    //         $newData['updated_at'] = now();
+
+    //         // Insert data baru ke database
+    //         $newId = \DB::table('surat')->insertGetId($newData);
+
+    //         return redirect()->back()->with('success', 'Data berhasil diduplikasi.');
+    //     } else {
+    //         return redirect()->back()->with('error', 'Data tidak ditemukan.');
+    //     }
+    // }
+// {
+//     // Ambil data asli berdasarkan ID
+//     $originalData = \DB::table('surat')->where('id', $id)->first();
+
+//     if ($originalData) {
+//         // Ubah data asli menjadi array
+//         $newData = (array) $originalData;
+//         unset($newData['id']); // Hapus ID asli
+//         $newData['created_at'] = now();
+//         $newData['updated_at'] = now();
+
+//         // Insert data baru dan dapatkan ID baru
+//         $newId = \DB::table('surat')->insertGetId($newData);
+
+//         // Jika ada tabel terkait, duplikat juga
+//         $relatedItems = \DB::table('related_table')->where('surat_id', $id)->get();
+//         foreach ($relatedItems as $item) {
+//             $newItem = (array) $item;
+//             unset($newItem['id']);
+//             $newItem['surat_id'] = $newId;
+//             \DB::table('related_table')->insert($newItem);
+//         }
+
+//         return redirect()->route('surat.index')->with('success', 'Data berhasil diduplikasi');
+//     } else {
+//         return redirect()->route('surat.index')->with('error', 'Data tidak ditemukan');
+//     }
+// }
     // Mendapatkan daftar tahun dari surat
     public function getTahunSurat()
     {
@@ -1690,14 +2369,111 @@ class SuratController extends Controller
         return view('surat.preview-index', compact('data'));
     }
 
+    // public function cetakHalaman(Request $request)
+    // {
+    //     $query = \DB::table('surat')
+    //         ->leftJoin('master_regency', 'surat.kabupaten', '=', 'master_regency.code')
+    //         ->leftJoin('master_district', 'surat.kecamatan', '=', 'master_district.code')
+    //         ->leftJoin('master_subdistrict', 'surat.kelurahan', '=', 'master_subdistrict.code')
+    //         ->select(
+    //             'surat.*',
+    //             'master_regency.name as nama_kabupaten',
+    //             'master_district.name as nama_kecamatan',
+    //             'master_subdistrict.name as nama_kelurahan'
+    //         );
 
+    //     // Ambil data untuk halaman saat ini
+    //     $currentPage = $request->input('page', 1);
+    //     $perPage = 10;
+    //     $data = $query->paginate($perPage, ['*'], 'page', $currentPage);
+
+    //     return view('surat.preview-index', compact('data'));
+    // }
+
+    // public function cetakHalaman(Request $request)
+    // {
+    //     // Membuat query untuk mengambil data surat dengan informasi lokasi terkait
+    //     $query = \DB::table('surat')
+    //         ->leftJoin('master_regency', 'surat.kabupaten', '=', 'master_regency.code') // Join ke master_regency
+    //         ->leftJoin('master_district', 'surat.kecamatan', '=', 'master_district.code') // Join ke master_district
+    //         ->leftJoin('master_subdistrict', 'surat.kelurahan', '=', 'master_subdistrict.code') // Join ke master_subdistrict
+    //         ->select(
+    //             'surat.*',
+    //             'master_regency.name as nama_kabupaten',
+    //             'master_district.name as nama_kecamatan',
+    //             'master_subdistrict.name as nama_kelurahan'
+    //         )
+    //         ->orderBy('updated_at', 'desc'); // Urutkan berdasarkan tanggalSurat secara descending
+    //         // Pastikan data diurutkan secara konsisten, gunakan kolom unik seperti 'id'.
+
+    //     // Mendapatkan parameter halaman dan jumlah data per halaman
+    //     $currentPage = $request->input('page', 1);
+    //     $perPage = $request->input('perPage', 10);
+
+    //     // Ambil data yang ada di halaman saat ini
+    //     $data = $query->paginate($perPage, ['*'], 'page', $currentPage);
+
+    //     // Jika request berasal dari AJAX, kembalikan JSON
+    //     if ($request->ajax()) {
+    //         return response()->json($data);
+    //     }
+
+    //     // Kirim data ke tampilan
+    //     return view('surat.cetak-halaman', compact('data'));
+    // }
+    // public function cetakHalaman(Request $request)
+    // {
+    //     $query = \DB::table('surat')
+    //         ->leftJoin('master_regency', 'surat.kabupaten', '=', 'master_regency.code')
+    //         ->leftJoin('master_district', 'surat.kecamatan', '=', 'master_district.code')
+    //         ->leftJoin('master_subdistrict', 'surat.kelurahan', '=', 'master_subdistrict.code')
+    //         ->select(
+    //             'surat.*',
+    //             'master_regency.name as nama_kabupaten',
+    //             'master_district.name as nama_kecamatan',
+    //             'master_subdistrict.name as nama_kelurahan'
+    //         )
+    //         ->orderBy('id', 'desc');
+
+    //     // Ambil parameter jumlah entri per halaman
+    //     $perPage = $request->input('perPage', 10); // Default 10
+    //     $currentPage = $request->input('page', 1);
+
+    //     // Paginate data berdasarkan halaman saat ini
+    //     $data = $query->paginate($perPage, ['*'], 'page', $currentPage);
+
+    //     return view('surat.preview-index', compact('data'));
+    // }
+
+    // public function cetakHalaman(Request $request)
+    // {
+    //     $query = \DB::table('surat')
+    //         ->leftJoin('master_regency', 'surat.kabupaten', '=', 'master_regency.code')
+    //         ->leftJoin('master_district', 'surat.kecamatan', '=', 'master_district.code')
+    //         ->leftJoin('master_subdistrict', 'surat.kelurahan', '=', 'master_subdistrict.code')
+    //         ->select(
+    //             'surat.*',
+    //             'master_regency.name as nama_kabupaten',
+    //             'master_district.name as nama_kecamatan',
+    //             'master_subdistrict.name as nama_kelurahan',
+    //             \DB::raw('ROW_NUMBER() OVER (ORDER BY surat.id DESC) as row_number')
+    //         )
+    //         ->orderBy('id', 'desc');
+
+    //     // Ambil parameter jumlah entri per halaman
+    //     $perPage = $request->input('perPage', 10); // Default 10
+    //     $currentPage = $request->input('page',1);
+
+    //     // Paginate data berdasarkan halaman saat ini
+    //     $data = $query->paginate($perPage, ['*'], 'page', $currentPage);
+    //     dd($data->items());
+    //     return view('surat.preview-index', compact('data'));
+    // }
     // public function cetakHalaman(Request $request)
     // {
     //     // Inisialisasi variabel row number
     //     // \DB::statement(\DB::raw('SET @row_number = 0'));
-    //     $perPage = $request->input('perPage', 10); // Default 10
-    //     $currentPage = $request->input('page', 1);
-    //     $offset = ($currentPage - 1) * $perPage;
+
     //     $query = \DB::table('surat')
     //         ->leftJoin('master_regency', 'surat.kabupaten', '=', 'master_regency.code')
     //         ->leftJoin('master_district', 'surat.kecamatan', '=', 'master_district.code')
@@ -1709,50 +2485,26 @@ class SuratController extends Controller
     //             'master_subdistrict.name as nama_kelurahan',
     //             // \DB::raw('@row_number := @row_number + 1 as row_number')
     //         )
-    //         ->orderBy('id', 'desc')
-    //         ->skip($offset)
-    //         ->take($perPage)
-    //         ->get();
+    //         ->orderBy('id', 'desc');
 
-    //     // Filter berdasarkan input dari request
-    //     if ($request->has('nomor_surat') && $request->input('nomor_surat') != null) {
-    //         $query->where('surat.nomorSurat', 'like', '%' . $request->input('nomor_surat') . '%');
-    //     }
+    //     // Ambil parameter jumlah entri per halaman
+    //     $perPage = $request->input('perPage', 10); // Default 10
+    //     $currentPage = $request->input('page', 1);
 
-    //     if ($request->has('nama_pemohon') && $request->input('nama_pemohon') != null) {
-    //         $query->where('surat.nama', 'like', '%' . $request->input('nama_pemohon') . '%');
-    //     }
+    //     // Paginate data berdasarkan halaman saat ini
+    //     $data = $query->paginate($perPage, ['*'], 'page', $currentPage);
 
-    //     if ($request->has('nomor_imbg')  && $request->input('nomor_imbg') != null) {
-    //         $query->where('surat.imbgNomor', 'like', '%' . $request->input('nomor_imbg') . '%');
-    //     }
-
-    //     if ($request->has('lokasi_bangunan')  && $request->input('lokasi_bangunan') != null) {
-    //         $query->where('surat.lokasi', 'like', '%' . $request->input('lokasi_bangunan') . '%');
-    //     }
-    //     if ($request->has('kabupaten_pemohon') && $request->input('kabupaten_pemohon') != null) {
-    //         $query->where('master_regency.name', 'like', '%' . $request->input('kabupaten_pemohon') . '%');
-    //     }
-
-    //     if ($request->has('kecamatan_pemohon') && $request->input('kecamatan_pemohon') != null) {
-    //         $query->where('master_district.name', 'like', '%' . $request->input('kecamatan_pemohon') . '%');
-    //     }
-
-    //     if ($request->has('kelurahan_pemohon')  && $request->input('kelurahan_pemohon') != null) {
-    //         $query->where('master_subdistrict.name', 'like', '%' . $request->input('kelurahan_pemohon') . '%');
-    //     }
-
-
-    //     return view('surat.cetak-halaman', compact('query'));
+    //     return view('surat.preview-index', compact('data'));
     // }
+
 
     public function cetakHalaman(Request $request)
     {
+        // Inisialisasi variabel row number
+        // \DB::statement(\DB::raw('SET @row_number = 0'));
         $perPage = $request->input('perPage', 10); // Default 10
         $currentPage = $request->input('page', 1);
         $offset = ($currentPage - 1) * $perPage;
-
-        // Inisialisasi query
         $query = \DB::table('surat')
             ->leftJoin('master_regency', 'surat.kabupaten', '=', 'master_regency.code')
             ->leftJoin('master_district', 'surat.kecamatan', '=', 'master_district.code')
@@ -1761,46 +2513,271 @@ class SuratController extends Controller
                 'surat.*',
                 'master_regency.name as nama_kabupaten',
                 'master_district.name as nama_kecamatan',
-                'master_subdistrict.name as nama_kelurahan'
+                'master_subdistrict.name as nama_kelurahan',
+                // \DB::raw('@row_number := @row_number + 1 as row_number')
             )
-            ->orderBy('surat.id', 'desc');
+            ->orderBy('id', 'desc')
+            ->skip($offset)
+            ->take($perPage)
+            ->get();
+        // Ambil parameter jumlah entri per halaman
 
-        // Terapkan filter berdasarkan input
-        if ($request->anyFilled('nomor_surat')) {
-            $query->where('surat.nomorSurat', 'like', '%' . $request->input('nomor_surat') . '%');
-        }
 
-        if ($request->filled('nama_pemohon')) {
-            $query->where('surat.nama', 'like', '%' . $request->input('nama_pemohon') . '%');
-        }
+        // Paginate data berdasarkan halaman saat ini
+        // $data = $query->paginate($perPage, ['*'], 'page', $currentPage);
 
-        if ($request->filled('nomor_imbg')) {
-            $query->where('surat.imbgNomor', 'like', '%' . $request->input('nomor_imbg') . '%');
-        }
-
-        if ($request->filled('lokasi_bangunan')) {
-            $query->where('surat.lokasi', 'like', '%' . $request->input('lokasi_bangunan') . '%');
-        }
-
-        if ($request->filled('kabupaten_pemohon')) {
-            $query->where('master_regency.name', 'like', '%' . $request->input('kabupaten_pemohon') . '%');
-        }
-
-        if ($request->filled('kecamatan_pemohon')) {
-            $query->where('master_district.name', 'like', '%' . $request->input('kecamatan_pemohon') . '%');
-        }
-
-        if ($request->filled('kelurahan_pemohon')) {
-            $query->where('master_subdistrict.name', 'like', '%' . $request->input('kelurahan_pemohon') . '%');
-        }
-
-        // Tambahkan pagination
-        $data = $query->skip($offset)->take($perPage)->get();
-
-        // Kirim data ke view
-        return view('surat.cetak-halaman', compact('data'));
+        return view('surat.cetak-halaman', compact('query'));
     }
 
+    // public function cariSurat(Request $request)
+    // {
+    //     if ($request->ajax()) {
+    //         $data = \DB::table('surat')->get();
+    //         return Datatables::of($data)
+    //             ->addColumn('action', function ($row) {
+    //                 // Periksa jenisSurat untuk menentukan posisi tombol
+    //                 $showLihatTable = !in_array($row->jenisSurat, ['format-1', 'format-4']); // Menyembunyikan jika format-1 atau format-4
+    //                 $showHapusForm = in_array($row->jenisSurat, ['format-1', 'format-4']); // Menampilkan form Hapus jika format-1 atau format-4
+
+    //                 $actions = '
+    //                     <div class="d-flex flex-wrap" style="gap:8px;">
+    //                         <div class="d-flex align-items-center" style="gap:5px; width: 50%;">
+    //                             <a href="' . route('surat.download', $row->id) . '" class="btn btn-success btn-sm" title="Download">
+    //                                 <i class="fas fa-download"></i>
+    //                             </a>
+    //                             <button type="button" data-url="' . route('surat.upload', $row->id) . '" class="btn btn-info btn-sm text-white" title="Upload"
+    //                                 data-toggle="modal" data-target="#uploadSuratModal">
+    //                                 <i class="fas fa-upload"></i>
+    //                             </button>
+    //                         </div>
+    //                         <div class="d-flex align-items-center" style="gap:5px; width: 50%;">
+    //                             <a href="' . route('surat.lihat', $row->id) . '" onclick="window.open(this.href, \'_blank\', \'width=800,height=600\'); return false;" class="btn btn-primary btn-sm" title="Lihat">
+    //                                 <i class="fas fa-eye"></i>
+    //                             </a>
+
+    //                             <button type="button" data-url="' . route('surat.update_nomor', $row->id) . '" class="btn btn-warning btn-sm text-white" title="Update Nomor"
+    //                                 data-toggle="modal" data-target="#updateNomorModal">
+    //                                 <i class="fas fa-envelope"></i>
+    //                             </button>
+    //                         </div>';
+
+    //                 // Tombol Hapus di samping tombol Edit (untuk format-1 dan format-4)
+    //                 if ($showHapusForm) {
+    //                     $actions .= '
+    //                         <div class="d-flex align-items-center" style="gap:5px; width: 50%;">
+    //                             <form action="' . route('surat.destroy', $row->id) . '" method="POST" style="display:inline;">
+    //                                 ' . csrf_field() . method_field('DELETE') . '
+    //                                 <button type="submit" class="btn btn-danger btn-sm" title="Hapus" onclick="confirmDelete(event)">
+    //                                     <i class="fas fa-trash-alt"></i>
+    //                                 </button>
+    //                             </form>
+    //                         </div>';
+    //                 }
+
+    //                 // Menyembunyikan tombol "Lihat Table" jika jenisSurat adalah format-1 atau format-4
+    //                 if ($showLihatTable) {
+    //                     $actions .= '
+    //                     <a href="' . route('surat.lihatTable', $row->id) . '" onclick="window.open(this.href, \'_blank\', \'width=800,height=600\'); return false;" class="btn btn-primary btn-sm" title="Lihat Table">
+    //                         <i class="fa fa-table"></i>
+    //                     </a>';
+    //                 }
+
+    //                 // Menambahkan form Hapus biasa di bawah tombol Lihat Table untuk selain format-1 atau format-4
+    //                 if (!$showHapusForm) {
+    //                     $actions .= '
+    //                     <div class="d-flex align-items-center" style="gap:5px; width: 50%;">
+    //                         <form action="' . route('surat.destroy', $row->id) . '" method="POST" style="display:inline;">
+    //                             ' . csrf_field() . method_field('DELETE') . '
+    //                             <button type="submit" class="btn btn-danger btn-sm" title="Hapus" onclick="confirmDelete(event)">
+    //                                 <i class="fas fa-trash-alt"></i>
+    //                             </button>
+    //                         </form>
+    //                     </div>';
+    //                 }
+
+    //                 $actions .= '</div>';
+    //                 return $actions;
+    //             })
+    //             ->addColumn('sudah_upload', function ($row) {
+    //                 return $row->upload ?
+    //                     '<span class="badge badge-success">Sudah</span>' :
+    //                     '<span class="badge badge-danger">Belum</span>';
+    //             })
+    //             ->rawColumns(['action', 'sudah_upload'])
+    //             ->addIndexColumn()
+    //             ->make(true);
+    //     }
+    //     return view('surat.index');
+    // }
+
+    // public function cariSurat(Request $request)
+    // {
+    //     if ($request->ajax()) {
+    //         $query = \DB::table('surat');
+
+    //         // Apply search filters
+    //         if ($request->has('search') && $request->search['value'] != '') {
+    //             $search = $request->search['value'];
+    //             $query->where(function($q) use ($search) {
+    //                 $q->where('tahun', 'like', "%{$search}%")
+    //                   ->orWhere('nomorSurat', 'like', "%{$search}%")
+    //                   ->orWhere('tanggalSurat', 'like', "%{$search}%")
+    //                   ->orWhere('nama', 'like', "%{$search}%")
+    //                   ->orWhere('bertindak_atas_nama', 'like', "%{$search}%")
+    //                   ->orWhere('alamat', 'like', "%{$search}%")
+    //                   ->orWhere('registerNomor', 'like', "%{$search}%")
+    //                   ->orWhere('imbgNomor', 'like', "%{$search}%")
+    //                   ->orWhere('lokasi', 'like', "%{$search}%")
+    //                   ->orWhere('jenisSurat', 'like', "%{$search}%");
+    //             });
+    //         }
+
+    //         return Datatables::of($query)
+    //             ->addColumn('action', function ($row) {
+    //                 // Periksa jenisSurat untuk menentukan posisi tombol
+    //                 $showLihatTable = !in_array($row->jenisSurat, ['format-1', 'format-4']); // Menyembunyikan jika format-1 atau format-4
+    //                 $showHapusForm = in_array($row->jenisSurat, ['format-1', 'format-4']); // Menampilkan form Hapus jika format-1 atau format-4
+
+    //                 $actions = '
+    //                     <div class="d-flex flex-wrap" style="gap:8px;">
+    //                         <div class="d-flex align-items-center" style="gap:5px; width: 50%;">
+    //                             <a href="' . route('surat.download', $row->id) . '" class="btn btn-success btn-sm" title="Download">
+    //                                 <i class="fas fa-download"></i>
+    //                             </a>
+    //                             <button type="button" data-url="' . route('surat.upload', $row->id) . '" class="btn btn-info btn-sm text-white" title="Upload"
+    //                                 data-toggle="modal" data-target="#uploadSuratModal">
+    //                                 <i class="fas fa-upload"></i>
+    //                             </button>
+    //                         </div>
+    //                         <div class="d-flex align-items-center" style="gap:5px; width: 50%;">
+    //                             <a href="' . route('surat.lihat', $row->id) . '" onclick="window.open(this.href, \'_blank\', \'width=800,height=600\'); return false;" class="btn btn-primary btn-sm" title="Lihat">
+    //                                 <i class="fas fa-eye"></i>
+    //                             </a>
+
+    //                             <button type="button" data-url="' . route('surat.update_nomor', $row->id) . '" class="btn btn-warning btn-sm text-white" title="Update Nomor"
+    //                                 data-toggle="modal" data-target="#updateNomorModal">
+    //                                 <i class="fas fa-envelope"></i>
+    //                             </button>
+    //                         </div>';
+
+    //                 // Tombol Hapus di samping tombol Edit (untuk format-1 dan format-4)
+    //                 if ($showHapusForm) {
+    //                     $actions .= '
+    //                         <div class="d-flex align-items-center" style="gap:5px; width: 50%;">
+    //                             <form action="' . route('surat.destroy', $row->id) . '" method="POST" style="display:inline;">
+    //                                 ' . csrf_field() . method_field('DELETE') . '
+    //                                 <button type="submit" class="btn btn-danger btn-sm" title="Hapus" onclick="confirmDelete(event)">
+    //                                     <i class="fas fa-trash-alt"></i>
+    //                                 </button>
+    //                             </form>
+    //                         </div>';
+    //                 }
+
+    //                 // Menyembunyikan tombol "Lihat Table" jika jenisSurat adalah format-1 atau format-4
+    //                 if ($showLihatTable) {
+    //                     $actions .= '
+    //                     <a href="' . route('surat.lihatTable', $row->id) . '" onclick="window.open(this.href, \'_blank\', \'width=800,height=600\'); return false;" class="btn btn-primary btn-sm" title="Lihat Table">
+    //                         <i class="fa fa-table"></i>
+    //                     </a>';
+    //                 }
+
+    //                 // Menambahkan form Hapus biasa di bawah tombol Lihat Table untuk selain format-1 atau format-4
+    //                 if (!$showHapusForm) {
+    //                     $actions .= '
+    //                     <div class="d-flex align-items-center" style="gap:5px; width: 50%;">
+    //                         <form action="' . route('surat.destroy', $row->id) . '" method="POST" style="display:inline;">
+    //                             ' . csrf_field() . method_field('DELETE') . '
+    //                             <button type="submit" class="btn btn-danger btn-sm" title="Hapus" onclick="confirmDelete(event)">
+    //                                 <i class="fas fa-trash-alt"></i>
+    //                             </button>
+    //                         </form>
+    //                     </div>';
+    //                 }
+
+    //                 $actions .= '</div>';
+    //                 return $actions;
+    //             })
+    //             ->addColumn('sudah_upload', function ($row) {
+    //                 return $row->upload ?
+    //                     '<span class="badge badge-success">Sudah</span>' :
+    //                     '<span class="badge badge-danger">Belum</span>';
+    //             })
+    //             ->rawColumns(['action', 'sudah_upload'])
+    //             ->addIndexColumn()
+    //             ->make(true);
+    //     }
+    //     return view('surat.index');
+    // }
+    // public function cariSurat(Request $request)
+    // {   // Untuk Kecamatan
+    //     $strKecamatan = \DB::table('master_district')
+    //         ->where('code', $data['kecamatan'])
+    //         ->first()->name;
+    //     $kecamatan = ucwords(strtolower($strKecamatan));
+
+    //     // Untuk Kelurahan
+    //     $strKelurahan = \DB::table('master_subdistrict')
+    //         ->where('code', $data['kelurahan'])
+    //         ->first()->name;
+    //     $kelurahan = ucwords(strtolower($strKelurahan));
+
+    //     $query = \DB::table('surat');
+
+    //     if ($request->has('nomor_surat')) {
+    //         $query->where('nomorSurat', 'like', '%' . $request->input('nomor_surat') . '%');
+    //     }
+
+    //     if ($request->has('nama_pemohon')) {
+    //         $query->where('nama', 'like', '%' . $request->input('nama_pemohon') . '%');
+    //     }
+
+    //     if ($request->has('lokasi_bangunan')) {
+    //         $query->where('lokasi', 'like', '%' . $request->input('lokasi_bangunan') . '%');
+    //     }
+
+    //     if ($request->has('kecamatan_pemohon')) {
+    //         $query->where('kecamatan', 'like', '%' . $request->input('kecamatan_pemohon') . '%');
+    //     }
+
+    //     if ($request->has('kelurahan_pemohon')) {
+    //         $query->where('kelurahan', 'like', '%' . $request->input('kelurahan_pemohon') . '%');
+    //     }
+    //     $data = $query->get();
+
+    //     return Datatables::of($query)
+    //         ->addIndexColumn()
+    //         ->addColumn('action', function ($row) {
+    //             $showLihatTable = !in_array($row->jenisSurat, ['format-1', 'format-4']); // Menyembunyikan jika format-1 atau format-4
+
+    //             $actions = '
+    //                 <div class="d-flex " style="gap:8px;">
+    //                     <div class="d-flex align-items-center" style="gap:5px; width: 50%;">
+    //                         <a href="' . route('surat.lihat', $row->id) . '" onclick="window.open(this.href, \'_blank\', \'width=800,height=600\'); return false;" class="btn btn-primary btn-sm" title="Lihat">
+    //                              <i class="fas fa-eye"></i>
+    //                         </a>
+    //                     </div>';
+
+    //             // Tombol Lihat Table hanya akan muncul jika jenisSurat bukan format-1 dan format-4
+    //             if ($showLihatTable) {
+    //                 $actions .= '
+    //                     <div class="d-flex align-items-center" style="gap:5px; width: 50%;">
+    //                         <a href="' . route('surat.lihatTable', $row->id) . '" onclick="window.open(this.href, \'_blank\', \'width=800,height=600\'); return false;" class="btn btn-primary btn-sm" title="Lihat Table">
+    //                              <i class="fas fa-table"></i>
+    //                         </a>
+    //                     </div>';
+    //             }
+
+    //             $actions .= '</div>';
+    //             return $actions;
+    //         })
+    //         ->addColumn('sudah_upload', function ($row) {
+    //             return $row->upload ?
+    //                 '<span class="badge badge-success">Sudah</span>' :
+    //                 '<span class="badge badge-danger">Belum</span>';
+    //         })
+    //         ->rawColumns(['action', 'sudah_upload'])
+    //         ->make(true);
+    // }
     public function cariSurat(Request $request)
     {
         // Query dengan join untuk mendapatkan nama kecamatan dan kelurahan

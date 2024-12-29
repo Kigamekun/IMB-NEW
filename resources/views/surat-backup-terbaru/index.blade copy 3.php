@@ -243,11 +243,20 @@
             ],
         });
 
+        // Refresh table on filter change
+        // $('#form-search input').on('keyup change', function() {
+        //     table.ajax.reload(null, false); // Reload DataTable dengan data baru tanpa mengubah halaman
+        // });
         $('#form-search input').on('keyup change', function() {
             console.log('Filter Changed:', $(this).val()); // Debug nilai input
             table.ajax.reload(null, false); // Reload dengan data baru
         });
-
+        // $('#cetakHalamanBtn').on('click', function() {
+        //     var page = table.page.info().page + 1; // Ambil halaman saat ini (DataTables menggunakan 0-based index)
+        //     var perPage = table.page.len(); // Ambil jumlah entri per halaman
+        //     var url = "{{ route('surat.cetakHalaman') }}" + "?page=" + page + "&perPage=" + perPage;
+        //     window.open(url, '_blank', 'width=800,height=600');
+        // });
         $('#cetakHalamanBtn').on('click', function() {
             var page = table.page.info().page + 1; // Halaman saat ini
             var perPage = table.page.len(); // Jumlah data per halaman

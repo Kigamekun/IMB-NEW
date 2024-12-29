@@ -17,7 +17,7 @@
     <body style="width: 700px;">
         {{-- <h1>Preview Format 3</h1> --}}
 
-        <h2>Detail data IMBG</h2>
+        <h2>Details data IMBG</h2>
         <table>
             <tr>
                 <th style="text-align:center">TIPE</th>
@@ -60,7 +60,7 @@
             </tr>
         </table>
 
-        <h2>Detail 2 Data IMBG</h2>
+        <h2>Details 2 Data IMBG</h2>
         <table>
             <thead>
                 <tr>

@@ -100,6 +100,7 @@
                                                 <th>Nama</th>
                                                 <th>Atas Nama</th>
                                                 <th>Lokasi / Perumahan</th>
+                                                <th>Kabupaten</th>
                                                 <th>Kecamatan</th>
                                                 <th>Desa / Kelurahan</th>
                                             </tr>
@@ -117,6 +118,7 @@
                                                 <th>Atas Nama</th>
                                                 <th>Jenis Kegiatan</th>
                                                 <th>Lokasi / Perumahan</th>
+                                                <th>Kabupaten</th>
                                                 <th>Kecamatan</th>
                                                 <th>Desa / Kelurahan</th>
                                                 <th>Type</th>
@@ -140,6 +142,7 @@
                                                 <th>Atas Nama</th>
                                                 <th>Jenis Kegiatan</th>
                                                 <th>Lokasi Perumahan</th>
+                                                <th>Kabupaten</th>
                                                 <th>Kecamatan</th>
                                                 <th>Desa/Kelurahan</th>
                                                 <th>Type</th>
@@ -163,6 +166,7 @@
                                                 <th>Nama</th>
                                                 <th>Atas Nama</th>
                                                 <th>Lokasi / Perumahan</th>
+                                                <th>Kabupaten</th>
                                                 <th>Kecamatan</th>
                                                 <th>Desa / Kelurahan</th>
                                                 {{-- <th>Action</th> --}}
@@ -180,6 +184,7 @@
                                         <th>Nama</th>
                                         <th>Atas Nama</th>
                                         <th>Lokasi / Perumahan</th>
+                                        <th>Kabupaten</th>
                                         <th>Kecamatan</th>
                                         <th>Desa / Kelurahan</th>
                                         {{-- <th>Action</th> --}}
@@ -266,6 +271,9 @@
                             data: 'lokasi_perumahan'
                         },
                         {
+                            data: 'kabupaten_lama'
+                        },
+                        {
                             data: 'kecamatan_lama'
                         },
                         {
@@ -339,6 +347,10 @@
                         {
                             data: 'lokasi_perumahan',
                             title: 'Lokasi Perumahan'
+                        },
+                        {
+                            data: 'kabupaten_lama',
+                            title: 'Kabupaten'
                         },
                         {
                             data: 'kecamatan_lama',
@@ -438,6 +450,10 @@
                             title: 'Lokasi Perumahan'
                         },
                         {
+                            data: 'kabupaten_lama',
+                            title: 'Kabupaten'
+                        },
+                        {
                             data: 'kecamatan_lama',
                             title: 'Kecamatan'
                         },
@@ -522,6 +538,9 @@
                         },
                         {
                             data: 'lokasi_perumahan'
+                        },
+                        {
+                            data: 'kabupaten_lama'
                         },
                         {
                             data: 'kecamatan_lama'

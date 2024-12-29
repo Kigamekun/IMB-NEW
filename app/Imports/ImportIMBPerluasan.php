@@ -72,6 +72,7 @@ class ImportIMBPerluasan implements ToCollection
                     $errorDistricts = 0;
                     $districts = DB::table('master_district')
                         ->where(DB::raw('LOWER(name)'), $rowDistrict)
+                        ->where("regency_code", $regency)
                         ->pluck('code')
                         ->toArray();
                     /// dd($districts);
@@ -152,7 +153,7 @@ class ImportIMBPerluasan implements ToCollection
                     if ($fail == 0) {
                         IMBPerluasan::create([
                             'imb_pecahan' => $row[1],
-                            'tgl_pecahan' => date('Y-m-d', strtotime($row[2])),
+                            'tgl_imb_pecahan' => date('Y-m-d', strtotime($row[2])),
                             'imb_perluasan' => $row[3],
                             'tgl_imb_perluasan' => date('Y-m-d', strtotime($row[4])),
                             'no_register' => $row[5],

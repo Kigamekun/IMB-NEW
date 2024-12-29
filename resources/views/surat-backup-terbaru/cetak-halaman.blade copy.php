@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body style="width:700px">
-    <div class="container" >
+    <div class="container mt-5" >
         <h2>Preview Data Surat</h2>
         <table class="table table-bordered" id="suratTable">
             <thead>
@@ -26,15 +26,16 @@
                     <th>Kecamatan</th>
                     <th>Kelurahan</th>
                     <th>Jenis</th>
-       
                 </tr>
             </thead>
             <tbody>
+
                 <!-- Looping data dari controller -->
                 <?php $no = 1; ?>
-                @foreach ($data as $row)
+                @foreach ($query as $row)
                     <tr>
-                        <td>{{ $no++ }}</td>
+
+                        {{-- <td>{{ $row->id }}</td> --}}
                         <td>{{ $row->tahun }}</td>
                         <td>{{ $row->nomorSurat }}</td>
                         <td>{{ $row->tanggalSurat }}</td>
@@ -50,8 +51,40 @@
                         <td>{{ $row->jenisSurat }}</td>
                     </tr>
                 @endforeach
+
             </tbody>
         </table>
     </div>
+
+    <script>
+        // var table = $('#suratTable').DataTable({
+        //     processing: true,
+        //     serverSide: true,
+        //     ajax: {
+        //         url: "{{ route('surat.previewIndex') }}",
+        //         data: function (d) {
+        //             d.perPage = $('#suratTable').DataTable().page.len(); // Ambil jumlah entri per halaman
+        //         }
+        //     },
+        //     pageLength: 10, // Default jumlah entri per halaman
+        //     columns: [
+        //         { data: 'DT_RowIndex', title: 'No' },
+        //         { data: 'tahun', title: 'Tahun' },
+        //         { data: 'nomorSurat', title: 'No SK' },
+        //         { data: 'tanggalSurat', title: 'Tanggal' },
+        //         { data: 'nama', title: 'Pemohon' },
+        //         { data: 'bertindak_atas_nama', title: 'Atas Nama' },
+        //         { data: 'alamat', title: 'Alamat Pemohon' },
+        //         { data: 'registerNomor', title: 'No Register' },
+        //         { data: 'imbgNomor', title: 'No IMBG' },
+        //         { data: 'lokasi', title: 'Lokasi Bangunan' },
+        //         { data: 'nama_kabupaten', title: 'Kabupaten / Kota' },
+        //         { data: 'nama_kecamatan', title: 'Kecamatan' },
+        //         { data: 'nama_kelurahan', title: 'Kelurahan' },
+        //         { data: 'jenisSurat', title: 'Jenis' }
+        //     ]
+        // });
+
+    </script>
 </body>
 </html>

@@ -11,6 +11,7 @@ use App\Models\IMBPecahan;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use Rap2hpoutre\FastExcel\FastExcel;
 
 class IMBPerluasanController extends Controller
 {
@@ -259,11 +260,189 @@ class IMBPerluasanController extends Controller
         return redirect()->back()->with(['status' => 'success', 'message' => 'Data berhasil dihapus']);
     }
 
+    // public function importData(Request $request)
+    // {
+    //     $file = $request->file('file');
+    //     Excel::import(new ImportIMBPerluasan(), $file);
+    //     return redirect()->route('IMBPerluasan.index');
+    // }
     public function importData(Request $request)
     {
+        ini_set('max_execution_time', 0); // Unlimited execution time
+        ini_set('memory_limit', '-1');
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
         $file = $request->file('file');
-        Excel::import(new ImportIMBPerluasan(), $file);
-        return redirect()->route('IMBPerluasan.index');
+        $failures = [];
+        $jenisKegiatanList = DB::table('app_md_jeniskeg')->pluck('id_jeniskeg', 'name_jeniskeg')->mapWithKeys(fn($item, $key) => [strtolower($key) => $item]);
+        $fungsiBangunanList = DB::table('app_md_fungsibang')->pluck('id_fungsibang', 'name_fungsibang')->mapWithKeys(fn($item, $key) => [strtolower($key) => $item]);
+        $baris = 1;
+        $users = (new FastExcel)->import($file, function ($line) use (&$failures, &$baris, $jenisKegiatanList, $fungsiBangunanList) {
+            $fail = 0;
+            $rowJenisKegiatan = strtolower($line['Jenis Kegiatan']);
+            $rowFungsiBangunan = strtolower($line['Fungsi Kegiatan']); // note, ini fungsi bangunan apa fungsi kegiatan
+            $jenis_kegiatan = $jenisKegiatanList[$rowJenisKegiatan] ?? null;
+            $fungsi_bangunan = $fungsiBangunanList[$rowFungsiBangunan] ?? null;
+            $rowDistrict = strtolower($line['Kecamatan']);
+            $rowSubdistrict = strtolower($line['Desa / Kelurahan']);
+            $rowRegency = strtolower($line["Kabupaten / Kota"]);
+
+            // dd($line["Tgl. IMB Lama"]->format('Y-m-d'));
+
+            $regency = DB::table('master_regency')
+            ->where(DB::raw('LOWER(name)'), $rowRegency)
+            ->pluck('code')
+            ->first();
+            if (!$regency) {
+                    $fail = 1;
+                    IMBPerluasan::create([
+                        'imb_pecahan' => $line['No. IMB Lama'],
+                        // 'tgl_pecahan' => date('Y-m-d', strtotime($line['Tgl. IMB Lama'])),
+                        'tgl_pecahan' => $line["Tgl. IMB Lama"]->format('Y-m-d'),
+                        'imb_perluasan' => $line['No. IMB Perluasan'],
+                        'tgl_imb_perluasan' => date('Y-m-d', strtotime($line['Tgl. IMB Perluasan'])),
+                        'no_register' => $line['No. Register'],
+                        'tgl_register' => date('Y-m-d', strtotime($line['Tgl. Register'])),
+                        'nama' => $line['Nama'],
+                        'atas_nama' => $line['Atas Nama'],
+                        'jenis_kegiatan' => $jenis_kegiatan,
+                        'fungsi_bangunan' => $fungsi_bangunan,
+                        'lokasi_perumahan' => $line['Lokasi / Perumahan'],
+                        'kabupaten_lama' => $line['Kabupaten / Kota'],
+                        'kecamatan_lama' => $line['Kecamatan'],
+                        'kelurahan_lama' => $line['Desa / Kelurahan'],
+                        'type' => $line['Type'],
+                        'luas_bangunan_lama' => $line['Luas Bangunan Lama'] == '' ? null : $line['Luas Bangunan Lama'],
+                        'luas_bangunan_perluasan' => $line['Luas Bangunan Perluasan'] == '' ? null : $line['Luas Bangunan Perluasan'],
+                        'blok' => $line['Blok'],
+                        'no_blok' => $line['No Blok'],
+                        'keterangan' => $line['Keterangan']
+                    ]);
+                    $failures[] = [
+                        'message' => 'Kabupaten ' . $line["Kabupaten / Kota"] . ' tidak ditemukan',
+                        'baris' => $baris,
+                    ];
+                    return;
+            }
+            $errorDistricts = 0;
+            $districts = DB::table('master_district')
+                ->where(DB::raw('LOWER(name)'), $rowDistrict)
+                ->where('regency_code', $regency)
+                ->pluck('code')
+                ->toArray();
+            if (empty($districts)) {
+                $fail = 1;
+                $errorDistricts = 1;
+                IMBPerluasan::create([
+                    'imb_pecahan' => $line['No. IMB Lama'],
+                    // 'tgl_pecahan' => date('Y-m-d', strtotime($line['Tgl. IMB Lama'])),
+                    'tgl_pecahan' => $line["Tgl. IMB Lama"]->format('Y-m-d'),
+                    'imb_perluasan' => $line['No. IMB Perluasan'],
+                    // 'tgl_imb_perluasan' => date('Y-m-d', strtotime($line['Tgl. IMB Perluasan'])),
+                    'tgl_imb_perluasan' => $line["Tgl. IMB Perluasan"]->format('Y-m-d'),
+                    'no_register' => $line['No. Register'],
+                    'tgl_register' => date('Y-m-d', strtotime($line['Tgl. Register'])),
+                    'nama' => $line['Nama'],
+                    'atas_nama' => $line['Atas Nama'],
+                    'jenis_kegiatan' => $jenis_kegiatan,
+                    'fungsi_bangunan' => $fungsi_bangunan,
+                    'lokasi_perumahan' => $line['Lokasi / Perumahan'],
+                    'kabupaten_lama' => $line['Kabupaten / Kota'],
+                    'kecamatan_lama' => $line['Kecamatan'],
+                    'kelurahan_lama' => $line['Desa / Kelurahan'],
+                    'type' => $line['Type'],
+                    'luas_bangunan_lama' => $line['Luas Bangunan Lama'] == '' ? null : $line['Luas Bangunan Lama'],
+                    'luas_bangunan_perluasan' => $line['Luas Bangunan Perluasan'] == '' ? null : $line['Luas Bangunan Perluasan'],
+                    'blok' => $line['Blok'],
+                    'no_blok' => $line['No Blok'],
+                    'keterangan' => $line['Keterangan']
+                ]);
+                $failures[] = [
+                    'message' => 'Kecamatan ' . $line['Kecamatan'] . ' tidak ditemukan',
+                    'baris' => $baris,
+                ];
+            }
+
+            $village = DB::table('master_subdistrict')
+                ->where(DB::raw('LOWER(name)'), $rowSubdistrict)
+                ->whereIn('district_code', $districts)
+                ->first();
+            if (!$village) {
+                if ($errorDistricts == 1) {
+                    $failures[] = [
+                        'message' => 'Desa/Kelurahan ' . $line['Desa / Kelurahan'] . ' tidak ditemukan di kecamatan ' . $line['Kecamatan'],
+                        'baris' => $baris,
+                    ];
+                    return;
+                }
+                $fail = 1;
+                IMBPerluasan::create([
+                    'imb_pecahan' => $line['No. IMB Lama'],
+                    // 'tgl_pecahan' => date('Y-m-d', strtotime($line['Tgl. IMB Lama'])),
+                    'tgl_pecahan' => $line["Tgl. IMB Lama"]->format('Y-m-d'),
+                    'imb_perluasan' => $line['No. IMB Perluasan'],
+                    // 'tgl_imb_perluasan' => date('Y-m-d', strtotime($line['Tgl. IMB Perluasan'])),
+                    'tgl_imb_perluasan' => $line["Tgl. IMB Perluasan"]->format('Y-m-d'),
+                    'no_register' => $line['No. Register'],
+                    'tgl_register' => date('Y-m-d', strtotime($line['Tgl. Register'])),
+                    'nama' => $line['Nama'],
+                    'atas_nama' => $line['Atas Nama'],
+                    'jenis_kegiatan' => $jenis_kegiatan,
+                    'fungsi_bangunan' => $fungsi_bangunan,
+                    'lokasi_perumahan' => $line['Lokasi / Perumahan'],
+                    'kabupaten_lama' => $line['Kabupaten / Kota'],
+                    'kecamatan_lama' => $line['Kecamatan'],
+                    'kelurahan_lama' => $line['Desa / Kelurahan'],
+                    'type' => $line['Type'],
+                    'luas_bangunan_lama' => $line['Luas Bangunan Lama'] == '' ? null : $line['Luas Bangunan Lama'],
+                    'luas_bangunan_perluasan' => $line['Luas Bangunan Perluasan'] == '' ? null : $line['Luas Bangunan Perluasan'],
+                    'blok' => $line['Blok'],
+                    'no_blok' => $line['No Blok'],
+                    'keterangan' => $line['Keterangan']
+                ]);
+                $failures[] = [
+                    'message' => 'Desa/Kelurahan ' . $line['Desa / Kelurahan'] . ' tidak ditemukan di kecamatan ' . $line['Kecamatan'],
+                    'baris' => $baris,
+                ];
+            }
+
+            $baris++;
+            if ($fail == 0) {
+                //dd($regency);
+                IMBPerluasan::create([
+                    'imb_pecahan' => $line['No. IMB Lama'],
+                    'tgl_imb_pecahan' => date('Y-m-d', strtotime($line['Tgl. IMB Lama'])),
+                    // 'tgl_pecahan' => $line["Tgl. IMB Lama"]->format('Y-m-d'),
+                    'imb_perluasan' => $line['No. IMB Perluasan'],
+                    'tgl_imb_perluasan' => date('Y-m-d', strtotime($line['Tgl. IMB Perluasan'])),
+                    // 'tgl_imb_perluasan' => $line["Tgl. IMB Perluasan"]->format('Y-m-d'),
+                    'no_register' => $line['No. Register'],
+                    'tgl_register' => date('Y-m-d', strtotime($line['Tgl. Register'])),
+                    // 'tgl_register' => isset($line["Tgl. Register"]) && $line["Tgl. Register"] instanceof DateTimeInterface ? $line["Tgl. Register"]->format('Y-m-d') : null,
+                    'nama' => $line['Nama'],
+                    'atas_nama' => $line['Atas Nama'],
+                    'jenis_kegiatan' => $jenis_kegiatan,
+                    'fungsi_bangunan' => $fungsi_bangunan,
+                    'lokasi_perumahan' => $line['Lokasi / Perumahan'],
+                    'kabupaten' => $regency,
+                    'kecamatan' => $village->district_code,
+                    'desa_kelurahan' => $village->code,
+                    'type' => $line['Type'],
+                    'luas_bangunan_lama' => $line['Luas Bangunan Lama'] == '' ? null : $line['Luas Bangunan Lama'],
+                    'luas_bangunan_perluasan' => $line['Luas Bangunan Perluasan'] == '' ? null : $line['Luas Bangunan Perluasan'],
+                    'blok' => $line['Blok'],
+                    'no_blok' => $line['No Blok'],
+                    'keterangan' => $line['Keterangan']
+                ]);
+            }
+        });
+        if (count($failures) > 0) {
+            //dd($failures);
+            return redirect()->back()->with(['status' => 'error', 'message' => 'Import data selesai, namun terdapat kesalahan. Silahkan download file log untuk melihat detail kesalahan.'])->with('failures', $failures);
+        } else {
+            return redirect()->back()->with(['status' => 'success', 'message' => 'Import data berhasil']);
+        }
     }
 
     public function exportData()

@@ -109,7 +109,7 @@ class IMBPecahanController extends Controller
                         'imb_induk_id' => $line['No. IMB Induk'],
                         'tgl_imb_induk' => null,
                         'imb_pecahan' => $line['No. IMB Pecahan / Rincikan'],
-                        'tgl_imb_pecahan' => null,
+                        'tgl_imb_pecahan' => date('Y-m-d', strtotime($line['Tgl. Pecahan / Rincikan'])),
                         'no_register' => $line['No. Register'],
                         'tgl_register' => null,
                         'nama' => $line['Nama'],
@@ -135,6 +135,7 @@ class IMBPecahanController extends Controller
             $errorDistricts = 0;
             $districts = DB::table('master_district')
                 ->where(DB::raw('LOWER(name)'), $rowDistrict)
+                ->where('regency_code', $regency)
                 ->pluck('code')
                 ->toArray();
             if (empty($districts)) {
@@ -144,7 +145,7 @@ class IMBPecahanController extends Controller
                     'imb_induk_id' => $line['No. IMB Induk'],
                     'tgl_imb_induk' => null,
                     'imb_pecahan' => $line['No. IMB Pecahan / Rincikan'],
-                    'tgl_imb_pecahan' => null,
+                    'tgl_imb_pecahan' => date('Y-m-d', strtotime($line['Tgl. Pecahan / Rincikan'])),
                     'no_register' => $line['No. Register'],
                     'tgl_register' => null,
                     'nama' => $line['Nama'],
@@ -184,7 +185,7 @@ class IMBPecahanController extends Controller
                     'imb_induk_id' => $line['No. IMB Induk'],
                     'tgl_imb_induk' => null,
                     'imb_pecahan' => $line['No. IMB Pecahan / Rincikan'],
-                    'tgl_imb_pecahan' => null,
+                    'tgl_imb_pecahan' => date('Y-m-d', strtotime($line['Tgl. Pecahan / Rincikan'])),
                     'no_register' => $line['No. Register'],
                     'tgl_register' => null,
                     'nama' => $line['Nama'],
@@ -214,7 +215,7 @@ class IMBPecahanController extends Controller
                     'imb_induk_id' => $line['No. IMB Induk'],
                     'tgl_imb_induk' => null,
                     'imb_pecahan' => $line['No. IMB Pecahan / Rincikan'],
-                    'tgl_imb_pecahan' => null,
+                    'tgl_imb_pecahan' => date('Y-m-d', strtotime($line['Tgl. Pecahan / Rincikan'])),
                     'no_register' => $line['No. Register'],
                     'tgl_register' => null,
                     'nama' => $line['Nama'],

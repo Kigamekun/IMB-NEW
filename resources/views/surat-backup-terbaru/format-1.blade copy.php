@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            font-size: {{ $referensi['font_surat'] }}pt !important;
+            font-size: {{ $referensi['font_surat'] }}px !important;
             line-height: 1.5;
             text-align: justify
         }
@@ -68,7 +68,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
-            font-size: {{ $referensi['font_surat'] }}pt !important;
+            font-size: {{ $referensi['font_surat'] }}px !important;
         }
 
         table,
@@ -105,9 +105,7 @@
         .info-table td {
             text-align: left;
             border: none;
-            padding-top: 2px;
-            padding-bottom: 2px;
-            padding-left: 8px;
+            padding: 4px 8px;
             vertical-align: top;
             line-height: .8;
         }
@@ -143,7 +141,7 @@
         .info-tables td {
             text-align: left;
             border: none;
-            padding: 2px 2px 2px ;
+            padding: 4px 8px;
             vertical-align: top;
             line-height: .8;
         }
@@ -193,22 +191,15 @@
         table td {
             line-height:1 !important;
         }
-        ul.custom-list {
-        list-style-type: none;
-        }
-        ul.custom-list li::before {
-            content: "-";
-            margin-left: 10px;
-        }
     </style>
 </head>
 
-<body style="width: 700px">
-    <div style="float: right; margin-right:125px; margin-top:-25px" >
+<body>
+    <div style="float: right; margin-right:100px">
         <p>Cibinong,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2024
         </p>
     </div>
-    <table class="info-table" style="  width:250px;">
+    <table class="info-table" style=" width:250px; font-weight:bold">
         <tr>
             <td>Nomor</td>
             <td>:</td>
@@ -225,39 +216,35 @@
             <td>{{ $lampiran }}</td>
         </tr>
         <tr>
-            <td>Hal</td>
+            <td>Perihal</td>
             <td>:</td>
-            <td style="line-height: 1 !important;">{{ $perihal }}</td>
+            <td style="line-height: normal">{{ $perihal }}</td>
         </tr>
     </table>
     <!-- Address Section -->
-    <div style="line-height:5px;margin-left:8px">
+    <div style="line-height:5px;margin-left:10px">
         <p>Yth,</p>
         <p><b>{{ $pemohon['sapaanPemohon'] }} {{ $pemohon['nama'] }}</b></p>
         <p>di</p>
-        @php
-            // Cek apakah 'Kabupaten' ada di kabupatenPemohon
-            $kabupaten = $pemohon['kabupatenPemohon'];
 
-            // Hanya hapus 'Kabupaten' jika kabupatenPemohon tidak ada di pemohon_alamat
-            if (!str_contains($pemohon['alamat'], 'Kabupaten') && str_contains($kabupaten, 'Kabupaten')) {
-                $kabupaten = trim(str_replace('Kabupaten', '', $kabupaten));
+        @php
+            if (str_contains($pemohon['kabupatenPemohon'], 'Kabupaten')) {
+                $pemohon['kabupatenPemohon'] = trim(str_replace('Kabupaten', '', $pemohon['kabupatenPemohon']));
             }
         @endphp
 
-        <p>{{ $kabupaten }}</p>
+        <p>{{$pemohon['kabupatenPemohon'] }}</p>
     </div>
     <br>
 
-    <div class="content" style="margin-left: 65px">
+    <div class="content" style="margin-left: 50px">
         <h3>A. DASAR</h3>
-        <ul style="margin-top:-15px; margin-left:10px;" class="custom-list">
-            <li>
-                <p style="margin-top:-15px; margin-left:27px">Peraturan Bupati Nomor 63 tahun 2013 Tentang Izin Mendirikan Bangunan Gedung BAB VII
-                    Penggantian IMBG Hilang
-                    Atau Rusak, Legalisasi dan Pemutakhiran.</p>
-            </li>
+        <ul>
+            <li><p style="margin-top:-15px">Peraturan Bupati Nomor 63 tahun 2013 Tentang Izin Mendirikan Bangunan Gedung BAB VII
+                Penggantian IMBG Hilang
+                atau Rusak, Legalisasi dan Pemutakhiran.</p></li>
         </ul>
+
         <h3>B. MEMPERHATIKAN</h3>
         <ol style="margin-top:-15px">
             <li>
@@ -266,7 +253,7 @@
                     dari:
                     <table class="info-tables">
                         <tr>
-                            <td style="width: 200px">Nama &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td style="width: 200px">Nama</td>
                             <td style="width: 5px">:</td>
                             <td class="bold-text"><b>{{ $pemohon['nama'] }}</b></td>
                         </tr>
@@ -278,11 +265,10 @@
                         <tr>
                             <td>Alamat</td>
                             <td>:</td>
-                            <td style="line-height:16px !important; text-align:justify  " >
+                            <td style="line-height:18px;">
                                 {{ $pemohon['alamat'] }}, Desa/Kelurahan
                                 {{ $pemohon['kelurahanPemohon'] }}, Kecamatan
-                                {{ $pemohon['kecamatanPemohon'] }},
-                                {{ $pemohon['kabupatenPemohon'] }}
+                                {{ $pemohon['kecamatanPemohon'] }}, {{ $pemohon['kabupatenPemohon'] }}
                             </td>
                             </td>
                         </tr>
@@ -293,15 +279,15 @@
             </li>
 
 
-            <li style="margin-top:10px !important; margin-bottom:15px !important;">Hasil pengecekan pada buku Izin Mendirikan Bangunan yang ada pada Dinas Perumahan Kawasan Permukiman dan
+            <li>Hasil pengecekan pada buku Izin Mendirikan Bangunan yang ada pada Dinas Perumahan Kawasan Permukiman dan
                 Pertanahan Kabupaten Bogor, dengan ini dapat disampaikan:</li>
 
 
             <div>
                 <table class="info-tables">
                     <tr>
-                        <td style="width: 200px">Izin Mendirikan Bangunan Atas Nama &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        <td style="width: 1px">:</td>
+                        <td style="width: 200px">Izin Mendirikan Bangunan Atas Nama</td>
+                        <td style="width: 5px">:</td>
                         <td class="bold-text">
                             <b>{{ $referensi['izin_mendirikan_bangunan_atas_nama'] }}</b>
                         </td>
@@ -314,9 +300,8 @@
                     <tr>
                         <td>Lokasi</td>
                         <td>:</td>
-                        <td style="line-height:16px !important;  text-align:justify" >
-                            {{-- {{ $referensi['lokasi'] != null || $referensi['lokasi'] != '' ? $referensi['lokasi'] . ',' : '' }}
-
+                        <td style="line-height:18px;">
+                            {{ $referensi['lokasi'] != null || $referensi['lokasi'] != '' ? $referensi['lokasi'] . ',' : '' }}
 
                             Desa/Kelurahan {{ $referensi['kelurahan'] }}
                             @if (isset($referensi['kelurahan-terdahulu']) && $referensi['kelurahan-terdahulu'] != null)
@@ -329,43 +314,25 @@
                             , {{ $referensi['kabupaten'] }}
                             @if (isset($referensi['kabupaten-terdahulu']) && $referensi['kabupaten-terdahulu'] != null)
                                 (d/h. {{ $referensi['kabupaten-terdahulu'] }})
-                            @endif --}}
-                            {{ $referensi['lokasi'] != null || $referensi['lokasi'] != '' ? $referensi['lokasi'] . ',' : '' }}
-
-                            @if (isset($referensi['kelurahan-terdahulu']) && $referensi['kelurahan-terdahulu'] != null)
-                                Desa/Kelurahan {{ $referensi['kelurahan'] }} (d/h. {{ $referensi['kelurahan-terdahulu'] }}),
-                            @else
-                                Desa/Kelurahan {{ $referensi['kelurahan'] }},
-                            @endif
-                            @if (isset($referensi['kecamatan-terdahulu']) && $referensi['kecamatan-terdahulu'] != null)
-                            Kecamatan {{ $referensi['kecamatan'] }} (d/h. {{ $referensi['kecamatan-terdahulu'] }}),
-                            @else
-                            Kecamatan {{ $referensi['kecamatan'] }},
-                            @endif
-
-                            @if (isset($referensi['kabupaten-terdahulu']) && $referensi['kabupaten-terdahulu'] != null)
-                                {{ $referensi['kabupaten'] }} (d/h. {{ $referensi['kabupaten-terdahulu'] }}).
-                            @else
-                                {{ $referensi['kabupaten'] }}.
                             @endif
                         </td>
                     </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
 
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
                     <tr>
                         <td>Nomor Register</td>
                         <td>:</td>
@@ -393,56 +360,14 @@
                     </tr>
                 </table>
             </div>
-            <div class="table-">
-                <table>
-                    <tr>
-                        <th>TIPE</th>
-                        <th>PECAH/RINCIK</th>
-                        <th>BELUM RINCIK/PECAH</th>
-                        <th>Yang Sudah Dimohon Surat Keterangan</th>
-                    </tr>
-                    @php
-                        $jumlah = 0;
-                        $pecah_jumlah = 0;
-                        $belum_rincik_jumlah = 0;
-                        $sudah_dimohon_jumlah = 0;
-                    @endphp
-                    @foreach ($details as $item)
-                        <tr>
-                            <td>Type {{ $item['type'] }} = {{ $item['jumlah'] }} Unit</td>
-                            <td>Type {{ $item['pecah_type'] }} = {{ $item['pecah_jumlah'] }} Unit</td>
-                            <td>Type {{ $item['belum_rincik_type'] }} = {{ $item['belum_rincik_jumlah'] }} Unit</td>
-                            <td>
-                                @if ($item['sudah_dimohon_jumlah'] > 0)
-                                    Type {{ $item['sudah_dimohon_type'] }} = {{ $item['sudah_dimohon_jumlah'] }} Unit
-                                @else
-                                    ---
-                                @endif
-                            </td>
-                        </tr>
-                        @php
-                            $jumlah += $item['jumlah'];
-                            $pecah_jumlah += $item['pecah_jumlah'];
-                            $belum_rincik_jumlah += $item['belum_rincik_jumlah'];
-                            $sudah_dimohon_jumlah += $item['sudah_dimohon_jumlah'];
-                        @endphp
-                    @endforeach
-                    <tr>
-                        <td style="font-weight: bold">Jumlah = {{ $jumlah }} Unit</td>
-                        <td style="font-weight: bold">Jumlah = {{ $pecah_jumlah }} Unit</td>
-                        <td style="font-weight: bold">Jumlah = {{ $belum_rincik_jumlah }} Unit</td>
-                        <td style="font-weight: bold">Jumlah = {{ $sudah_dimohon_jumlah }} Unit</td>
-                    </tr>
-                </table>
-            </div>
         </ol>
-        <ol start="3" >
+        <ol start="3">
             <li>{{ $keterangan[0] }}</li>
         </ol>
         <p>
             {{ $keterangan[1] }}
         </p>
-        <p style="margin-top:20px; margin-bottom:20px">
+        <p>
             {{ $keterangan[2] }}
         </p>
         @if (count($keterangan) > 3)
@@ -452,9 +377,10 @@
                 @endif
             @endforeach
         @endif
+
         <p>Demikian disampaikan untuk diketahui dan dipergunakan sebagaimana mestinya.</p>
     </div>
-    <div style="float: right; margin-top:-15px">
+    <div style="float: right">
         <div class="signature-section" style="width: 250px;text-align:left">
             <p class="signature-title" style="text-align:left">{{ $penandatangan['jabatan'] }} Perumahan, Kawasan
                 Permukiman dan
@@ -467,13 +393,6 @@
             <p class="signature-role" style="text-align:left;line-height:5px">{{ $penandatangan['pangkat'] }}</p>
             <p class="signature-nip" style="text-align:left;line-height:5px">NIP. {{ $penandatangan['nip'] }}</p>
         </div>
-    </div>
-
-    <div style="margin-top:175px;">
-        <h4 style="margin-left: 25px; line-height:1">Tembusan :</h4>
-        <ol style="margin-top: -15px">
-            <li>Yth. Kepala DPMPTSP Kabupaten Bogor.</li>
-        </ol>
     </div>
 </body>
 

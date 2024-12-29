@@ -46,9 +46,9 @@
                                     <div class="row mb-3">
                                         <div class="col-md-4">
                                             <label for="no_imb_induk" class="form-label">Kabupaten Lama:</label>
-                                            <select name="kabupaten_lama" id="kabupaten_lama" class="form-control select-kabupaten">
+                                            <select name="kabupaten_lama" id="kabupaten_lama" class="form-control select-kabupaten select2">
                                                 <option value="">Pilih Kabupaten</option>
-                                                @foreach (DB::table('imb_pecahan')->groupBy('kabupaten_lama')->where('kabupaten_lama', '!=', '')->select('kabupaten_lama')->get() as $kabupaten)
+                                                @foreach (DB::table('imb_induk_perum')->groupBy('kabupaten_lama')->where('kabupaten_lama', '!=', '')->whereNull('kabupaten')->select('kabupaten_lama')->get() as $kabupaten)
                                                     <option value="{{ $kabupaten->kabupaten_lama }}">{{ $kabupaten->kabupaten_lama }}
                                                     </option>
                                                 @endforeach
@@ -57,9 +57,9 @@
 
                                         <div class="col-md-4">
                                             <label for="no_imb_induk" class="form-label">Kecamatan Lama:</label>
-                                            <select name="kecamatan_lama" id="kecamatan_lama" class="form-control select-kecamatan">
+                                            <select name="kecamatan_lama" id="kecamatan_lama" class="form-control select-kecamatan select2">
                                                 <option value="">Pilih Kecamatan</option>
-                                                @foreach (DB::table('imb_pecahan')->groupBy('kecamatan_lama')->where('kecamatan_lama', '!=', '')->select('kecamatan_lama')->get() as $kecamatan)
+                                                @foreach (DB::table('imb_induk_perum')->groupBy('kecamatan_lama')->where('kecamatan_lama', '!=', '')->whereNull('kecamatan')->select('kecamatan_lama')->get() as $kecamatan)
                                                     <option value="{{ $kecamatan->kecamatan_lama }}">{{ $kecamatan->kecamatan_lama }}
                                                     </option>
                                                 @endforeach
@@ -67,9 +67,9 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label for="tgl_imb_induk" class="form-label">Kelurahan Lama:</label>
-                                            <select name="kelurahan_lama" id="kelurahan_lama" class="form-control select-kelurahan">
+                                            <select name="kelurahan_lama" id="kelurahan_lama" class="form-control select-kelurahan select2">
                                                 <option value="">Pilih Kelurahan</option>
-                                                @foreach (DB::table('imb_pecahan')->groupBy('kelurahan_lama')->where('kelurahan_lama', '!=', '')->select('kelurahan_lama')->get() as $kelurahan)
+                                                @foreach (DB::table('imb_induk_perum')->groupBy('kelurahan_lama')->where('kelurahan_lama', '!=', '')->whereNull('desa_kelurahan')->select('kelurahan_lama')->get() as $kelurahan)
                                                     <option value="{{ $kelurahan->kelurahan_lama }}">{{ $kelurahan->kelurahan_lama }}
                                                     </option>
                                                 @endforeach
@@ -109,9 +109,9 @@
                                     <div class="row mb-3">
                                         <div class="col-md-4">
                                             <label for="no_imb_induk" class="form-label">Kabupaten Lama:</label>
-                                            <select name="kabupaten_lama" id="kabupaten_lama" class="form-control select-kabupaten">
+                                            <select name="kabupaten_lama" id="kabupaten_lama" class="form-control select-kabupaten select2">
                                                 <option value="">Pilih Kabupaten</option>
-                                                @foreach (DB::table('imb_pecahan')->groupBy('kabupaten_lama')->where('kabupaten_lama', '!=', '')->select('kabupaten_lama')->get() as $kabupaten)
+                                                @foreach (DB::table('imb_pecahan')->groupBy('kabupaten_lama')->where('kabupaten_lama', '!=', '')->whereNull('kabupaten')->select('kabupaten_lama')->get() as $kabupaten)
                                                     <option value="{{ $kabupaten->kabupaten_lama }}">{{ $kabupaten->kabupaten_lama }}
                                                     </option>
                                                 @endforeach
@@ -120,9 +120,9 @@
 
                                         <div class="col-md-4">
                                             <label for="no_imb_induk" class="form-label">Kecamatan Lama:</label>
-                                            <select name="kecamatan_lama" id="kecamatan_lama" class="form-control select-kecamatan">
+                                            <select name="kecamatan_lama" id="kecamatan_lama" class="form-control select-kecamatan select2">
                                                 <option value="">Pilih Kecamatan</option>
-                                                @foreach (DB::table('imb_pecahan')->groupBy('kecamatan_lama')->where('kecamatan_lama', '!=', '')->select('kecamatan_lama')->get() as $kecamatan)
+                                                @foreach (DB::table('imb_pecahan')->groupBy('kecamatan_lama')->where('kecamatan_lama', '!=', '')->whereNull('kecamatan')->select('kecamatan_lama')->get() as $kecamatan)
                                                     <option value="{{ $kecamatan->kecamatan_lama }}">{{ $kecamatan->kecamatan_lama }}
                                                     </option>
                                                 @endforeach
@@ -130,9 +130,9 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label for="tgl_imb_induk" class="form-label">Kelurahan Lama:</label>
-                                            <select name="kelurahan_lama" id="kelurahan_lama" class="form-control select-kelurahan">
+                                            <select name="kelurahan_lama" id="kelurahan_lama" class="form-control select-kelurahan select2">
                                                 <option value="">Pilih Kelurahan</option>
-                                                @foreach (DB::table('imb_pecahan')->groupBy('kelurahan_lama')->where('kelurahan_lama', '!=', '')->select('kelurahan_lama')->get() as $kelurahan)
+                                                @foreach (DB::table('imb_pecahan')->groupBy('kelurahan_lama')->where('kelurahan_lama', '!=', '')->whereNull('desa_kelurahan')->select('kelurahan_lama')->get() as $kelurahan)
                                                     <option value="{{ $kelurahan->kelurahan_lama }}">{{ $kelurahan->kelurahan_lama }}
                                                     </option>
                                                 @endforeach
@@ -172,9 +172,9 @@
                                     <div class="row mb-3">
                                         <div class="col-md-4">
                                             <label for="no_imb_induk" class="form-label">Kabupaten Lama:</label>
-                                            <select name="kabupaten_lama" id="kabupaten_lama" class="form-control select-kabupaten">
+                                            <select name="kabupaten_lama" id="kabupaten_lama" class="form-control select-kabupaten select2">
                                                 <option value="">Pilih Kabupaten</option>
-                                                @foreach (DB::table('imb_pecahan')->groupBy('kabupaten_lama')->where('kabupaten_lama', '!=', '')->select('kabupaten_lama')->get() as $kabupaten)
+                                                @foreach (DB::table('imb_perluasan')->groupBy('kabupaten_lama')->where('kabupaten_lama', '!=', '')->whereNull('kabupaten')->select('kabupaten_lama')->get() as $kabupaten)
                                                     <option value="{{ $kabupaten->kabupaten_lama }}">{{ $kabupaten->kabupaten_lama }}
                                                     </option>
                                                 @endforeach
@@ -183,9 +183,9 @@
 
                                         <div class="col-md-4">
                                             <label for="no_imb_induk" class="form-label">Kecamatan Lama:</label>
-                                            <select name="kecamatan_lama" id="kecamatan_lama" class="form-control select-kecamatan">
+                                            <select name="kecamatan_lama" id="kecamatan_lama" class="form-control select-kecamatan select2">
                                                 <option value="">Pilih Kecamatan</option>
-                                                @foreach (DB::table('imb_pecahan')->groupBy('kecamatan_lama')->where('kecamatan_lama', '!=', '')->select('kecamatan_lama')->get() as $kecamatan)
+                                                @foreach (DB::table('imb_perluasan')->groupBy('kecamatan_lama')->where('kecamatan_lama', '!=', '')->whereNull('kecamatan')->select('kecamatan_lama')->get() as $kecamatan)
                                                     <option value="{{ $kecamatan->kecamatan_lama }}">{{ $kecamatan->kecamatan_lama }}
                                                     </option>
                                                 @endforeach
@@ -193,9 +193,9 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label for="tgl_imb_induk" class="form-label">Kelurahan Lama:</label>
-                                            <select name="kelurahan_lama" id="kelurahan_lama" class="form-control select-kelurahan">
+                                            <select name="kelurahan_lama" id="kelurahan_lama" class="form-control select-kelurahan select2">
                                                 <option value="">Pilih Kelurahan</option>
-                                                @foreach (DB::table('imb_pecahan')->groupBy('kelurahan_lama')->where('kelurahan_lama', '!=', '')->select('kelurahan_lama')->get() as $kelurahan)
+                                                @foreach (DB::table('imb_perluasan')->groupBy('kelurahan_lama')->where('kelurahan_lama', '!=', '')->whereNull('desa_kelurahan')->select('kelurahan_lama')->get() as $kelurahan)
                                                     <option value="{{ $kelurahan->kelurahan_lama }}">{{ $kelurahan->kelurahan_lama }}
                                                     </option>
                                                 @endforeach
@@ -235,9 +235,9 @@
                                     <div class="row mb-3">
                                         <div class="col-md-4">
                                             <label for="no_imb_induk" class="form-label">Kabupaten Lama:</label>
-                                            <select name="kabupaten_lama" id="kabupaten_lama" class="form-control select-kabupaten">
+                                            <select name="kabupaten_lama" id="kabupaten_lama" class="form-control select-kabupaten select2">
                                                 <option value="">Pilih Kabupaten</option>
-                                                @foreach (DB::table('imb_pecahan')->groupBy('kabupaten_lama')->where('kabupaten_lama', '!=', '')->select('kabupaten_lama')->get() as $kabupaten)
+                                                @foreach (DB::table('imb_induk_non_perum')->groupBy('kabupaten_lama')->where('kabupaten_lama', '!=', '')->whereNull('kabupaten')->select('kabupaten_lama')->get() as $kabupaten)
                                                     <option value="{{ $kabupaten->kabupaten_lama }}">{{ $kabupaten->kabupaten_lama }}
                                                     </option>
                                                 @endforeach
@@ -246,9 +246,9 @@
 
                                         <div class="col-md-4">
                                             <label for="no_imb_induk" class="form-label">Kecamatan Lama:</label>
-                                            <select name="kecamatan_lama" id="kecamatan_lama" class="form-control select-kecamatan">
+                                            <select name="kecamatan_lama" id="kecamatan_lama" class="form-control select-kecamatan select2">
                                                 <option value="">Pilih Kecamatan</option>
-                                                @foreach (DB::table('imb_pecahan')->groupBy('kecamatan_lama')->where('kecamatan_lama', '!=', '')->select('kecamatan_lama')->get() as $kecamatan)
+                                                @foreach (DB::table('imb_induk_non_perum')->groupBy('kecamatan_lama')->where('kecamatan_lama', '!=', '')->whereNull('kecamatan')->select('kecamatan_lama')->get() as $kecamatan)
                                                     <option value="{{ $kecamatan->kecamatan_lama }}">{{ $kecamatan->kecamatan_lama }}
                                                     </option>
                                                 @endforeach
@@ -256,9 +256,9 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label for="tgl_imb_induk" class="form-label">Kelurahan Lama:</label>
-                                            <select name="kelurahan_lama" id="kelurahan_lama" class="form-control select-kelurahan">
+                                            <select name="kelurahan_lama" id="kelurahan_lama" class="form-control select-kelurahan select2">
                                                 <option value="">Pilih Kelurahan</option>
-                                                @foreach (DB::table('imb_pecahan')->groupBy('kelurahan_lama')->where('kelurahan_lama', '!=', '')->select('kelurahan_lama')->get() as $kelurahan)
+                                                @foreach (DB::table('imb_induk_non_perum')->groupBy('kelurahan_lama')->where('kelurahan_lama', '!=', '')->whereNull('desa_kelurahan')->select('kelurahan_lama')->get() as $kelurahan)
                                                     <option value="{{ $kelurahan->kelurahan_lama }}">{{ $kelurahan->kelurahan_lama }}
                                                     </option>
                                                 @endforeach
@@ -302,9 +302,9 @@
                             <div class="row mb-3">
                                 <div class="col-md-4">
                                     <label for="no_imb_induk" class="form-label">Kabupaten Lama:</label>
-                                    <select name="kabupaten_lama" id="kabupaten_lama" class="form-control select-kabupaten">
+                                    <select name="kabupaten_lama" id="kabupaten_lama" class="form-control select-kabupaten select2">
                                         <option value="">Pilih Kabupaten</option>
-                                        @foreach (DB::table('imb_pecahan')->groupBy('kabupaten_lama')->where('kabupaten_lama', '!=', '')->select('kabupaten_lama')->get() as $kabupaten)
+                                        @foreach (DB::table('imb_induk_perum')->groupBy('kabupaten_lama')->where('kabupaten_lama', '!=', '')->whereNull('kabupaten')->select('kabupaten_lama')->get() as $kabupaten)
                                             <option value="{{ $kabupaten->kabupaten_lama }}">{{ $kabupaten->kabupaten_lama }}
                                             </option>
                                         @endforeach
@@ -313,9 +313,9 @@
 
                                 <div class="col-md-4">
                                     <label for="no_imb_induk" class="form-label">Kecamatan Lama:</label>
-                                    <select name="kecamatan_lama" id="kecamatan_lama" class="form-control select-kecamatan">
+                                    <select name="kecamatan_lama" id="kecamatan_lama" class="form-control select-kecamatan select2">
                                         <option value="">Pilih Kecamatan</option>
-                                        @foreach (DB::table('imb_pecahan')->groupBy('kecamatan_lama')->where('kecamatan_lama', '!=', '')->select('kecamatan_lama')->get() as $kecamatan)
+                                        @foreach (DB::table('imb_induk_perum')->groupBy('kecamatan_lama')->where('kecamatan_lama', '!=', '')->whereNull('kecamatan')->select('kecamatan_lama')->get() as $kecamatan)
                                             <option value="{{ $kecamatan->kecamatan_lama }}">{{ $kecamatan->kecamatan_lama }}
                                             </option>
                                         @endforeach
@@ -323,9 +323,9 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="tgl_imb_induk" class="form-label">Kelurahan Lama:</label>
-                                    <select name="kelurahan_lama" id="kelurahan_lama" class="form-control select-kelurahan">
+                                    <select name="kelurahan_lama" id="kelurahan_lama" class="form-control select-kelurahan select2">
                                         <option value="">Pilih Kelurahan</option>
-                                        @foreach (DB::table('imb_pecahan')->groupBy('kelurahan_lama')->where('kelurahan_lama', '!=', '')->select('kelurahan_lama')->get() as $kelurahan)
+                                        @foreach (DB::table('imb_induk_perum')->groupBy('kelurahan_lama')->where('kelurahan_lama', '!=', '')->whereNull('desa_kelurahan')->select('kelurahan_lama')->get() as $kelurahan)
                                             <option value="{{ $kelurahan->kelurahan_lama }}">{{ $kelurahan->kelurahan_lama }}
                                             </option>
                                         @endforeach

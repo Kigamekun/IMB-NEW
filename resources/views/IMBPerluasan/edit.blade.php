@@ -249,6 +249,8 @@
             }).on('select2:select', function(e) {
                 console.log("Selected Kabupaten:", e.params.data);
                 loadKecamatan(e.params.data.id)
+                $(".select2-kecamatan").val('').trigger('change')
+                $(".select2-kelurahan").val('').trigger('change')
             });
 
             loadKecamatan(document.querySelector('.select2-kabupaten').value)
@@ -285,6 +287,7 @@
                 }).on('select2:select', function(e) {
                     console.log("Selected Kecamatan:", e.params.data);
                     loadKelurahan(e.params.data.id); // Load kelurahan based on selected kecamatan
+                    $(".select2-kelurahan").val('').trigger('change')
                 });
             }
 

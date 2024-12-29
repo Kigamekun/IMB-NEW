@@ -403,8 +403,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/preview', [SuratController::class, 'preview'])->name('surat.preview');
         Route::post('/preview-table', [SuratController::class, 'previewTable'])->name('surat.previewTable'); // tambahan
         Route::get('/preview-index', [SuratController::class, 'LihatIndex'])->name('surat.previewIndex');
+        // Route::post('/copyData/{id}', [SuratController::class, 'copyData'])->name('surat.copyData');
         Route::post('/copyData', [SuratController::class, 'copyData'])->name('surat.copyData');
-        Route::get('/suratNomor', [SuratController::class, 'getNomorSuratPemohon'])->name('surat.getNomorSuratPemohon');
+        // Route::get('/getNomorSuratPemohon', [SuratController::class, 'getNomorSuratPemohon'])->name('surat.getNomorSuratPemohon');
+        Route::get('/by-year/{year}', [SuratController::class, 'getByYear'])->name('surat.byYear');
+        Route::get('/surat/dropdown-data', [SuratController::class, 'getDropdownData'])->name('surat.getDropdownData');
+
         Route::get('/download/{id}', [SuratController::class, 'download'])->name('surat.download');
 
         Route::delete('/destroy/{id}', [SuratController::class, 'destroy'])->name('surat.destroy');

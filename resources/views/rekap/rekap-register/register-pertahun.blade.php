@@ -55,7 +55,7 @@
                     <br />
 
                     <div class="table-responsive py-3">
-                        <table class="table table-bordered" style="width: 100% !important;border-bottom:none !important;" id="SuratTable">
+                        <table class="table table-bordered" style="width: 100% !important;border-bottom:none !important; " id="SuratTable">
                             <thead>
                                 <tr>
                                     <th>NO</th>
@@ -128,6 +128,7 @@
             $.get("{{ route('rekap.ListSurat') }}", function(data) {
              $.each(data.data, function(key, val) {
                // alert(val.nama_kecamatan)
+               $("#kabupaten").append("<option value='" + val.nama_kabupaten + "'>" + val.nama_kabupaten + "</option>");
                $("#kecamatan").append("<option value='" + val.nama_kecamatan + "'>" + val.nama_kecamatan + "</option>");
                $("#kelurahan").append("<option value='" + val.nama_kelurahan + "'>" + val.nama_kelurahan + "</option>");
               })
@@ -170,6 +171,7 @@
                         d.nomor_surat = $('#nomorSurat').val();
                         d.nama_pemohon = $('#namaPemohonSurat').val();
                         d.lokasi_bangunan = $('#lokasiPemohonSurat').val();
+                        d.kabupaten_pemohon = $('#kabupatenPemohonSurat').val();
                         d.kecamatan_pemohon = $('#kecamatanPemohonSurat').val();
                         d.kelurahan_pemohon = $('#kelurahanPemohonSurat').val();
                     }
@@ -206,9 +208,9 @@
                     // { data: 'jenisSurat' },
                     // { data: 'action', orderable: false, searchable: false }
                 ],
-                order: [
-                    [1, 'asc']
-                ]
+                // order: [
+                //     [1, 'asc']
+                // ]
             });
 
 
@@ -221,6 +223,7 @@
             $('#resetButton').on('click', function() {
                 $('#startYear').val('');
                 $('#endYear').val('');
+                $('#kabupaten').val('').trigger("change");
                 $('#kecamatan').val('').trigger("change");
                 $('#kelurahan').val('').trigger("change");
                 table.draw();
@@ -253,22 +256,25 @@
             // DataTable custom search function for year filtering
             $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
                 const tahun = parseInt(data[1]) || 0;
+                const tableKab = data[9] || "";
                 const tableKec = data[10] || "";
                 const tableKel = data[11] || "";
                 const startYear = parseInt($('#startYear').val(), 10);
                 const endYear = parseInt($('#endYear').val(), 10);
+                const kab = $('#kabupaten').val();
                 const kec = $('#kecamatan').val();
                 const kel = $('#kelurahan').val();
-            
+
                 // Filter berdasarkan tahun
                 const inYearRange = (!startYear || tahun >= startYear) && (!endYear || tahun <= endYear);
-                
+
                 // Filter berdasarkan kecamatan dan kelurahan
+                const matchesKab = !kab || kab === tableKab; // Jika tidak ada filter kecamatan, maka cocok
                 const matchesKec = !kec || kec === tableKec; // Jika tidak ada filter kecamatan, maka cocok
                 const matchesKel = !kel || kel === tableKel; // Jika tidak ada filter kelurahan, maka cocok
-            
+
                 // Kembalikan true jika memenuhi salah satu filter
-                return inYearRange && matchesKec && matchesKel;
+                return inYearRange && matchesKab && matchesKec && matchesKel;
             });
         });
     </script>

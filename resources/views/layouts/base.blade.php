@@ -59,6 +59,10 @@
         .menu-text {
           text-wrap: wrap;
         }
+
+        .nav-link {
+            cursor: pointer;
+        }
     </style>
     <div class="wrapper">
 

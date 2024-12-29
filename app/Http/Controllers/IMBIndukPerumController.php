@@ -102,6 +102,10 @@ class IMBIndukPerumController extends Controller
         $totalRows = (new FastExcel)->import($file)->count();
         $users = (new FastExcel)->import($file, function ($line) use ($jenisKegiatanList, $fungsiBangunanList, &$failures, &$baris, &$imbInduk, &$jenis_kegiatan_array, $totalRows) {
             if ($line["IMB Induk"] != null) {
+
+                $tanda = 1;
+                $regency = 0;
+
                 $rowSubdistrict = strtolower($line["Desa / Kelurahan"]);
                 $rowDistrict = strtolower($line["Kecamatan"]);
                 $rowRegency = strtolower($line["Kabupaten / Kota"]);
@@ -110,6 +114,7 @@ class IMBIndukPerumController extends Controller
                     ->pluck('code')
                     ->first();
                 if (!$regency) {
+                        $regency = 1;
                         $failures[] = [
                             'message' => 'Kabupaten ' . $line["Kabupaten / Kota"] . ' tidak ditemukan',
                             'baris' => $baris,
@@ -126,15 +131,19 @@ class IMBIndukPerumController extends Controller
                             'kecamatan_lama' => $line["Kecamatan"],
                             'kelurahan_lama' => $line["Desa / Kelurahan"],
                         ]);
-                        return;
+                        $tanda = 0;
+                        // return;
                 }
 
                 // $rowSubdistrict = strtolower($line["Desa / Kelurahan"]);
                 $districts = DB::table('master_district')
                     ->where(DB::raw('LOWER(name)'), $rowDistrict)
+                    ->where('regency_code', $regency)
                     ->pluck('code')
                     ->toArray();
-                if (empty($districts)) {
+                $isDistrictFail = 0;
+                if (empty($districts) && $tanda != 0) {
+                    $isDistrictFail = 1;
                     $failures[$baris] = [
                         'message' => 'Kecamatan ' . $line["Kecamatan"] . ' tidak ditemukan',
                         'baris' => $baris,
@@ -151,13 +160,15 @@ class IMBIndukPerumController extends Controller
                         'kecamatan_lama' => $line["Kecamatan"],
                         'kelurahan_lama' => $line["Desa / Kelurahan"],
                     ]);
-                    return;
+                    $tanda = 0;
+
+                    // return;
                 }
                 $village = DB::table('master_subdistrict')
                     ->where(DB::raw('LOWER(name)'), $rowSubdistrict)
                     ->whereIn('district_code', $districts)
                     ->first();
-                if (!$village) {
+                if (!$village && $tanda != 0) {
                     $failures[$baris] = [
                         'message' => 'Desa/Kelurahan ' . $line["Desa / Kelurahan"] . ' tidak ditemukan di kecamatan ' . $line["Kecamatan"],
                         'baris' => $baris,
@@ -174,57 +185,85 @@ class IMBIndukPerumController extends Controller
                         'kecamatan_lama' => $line["Kecamatan"],
                         'kelurahan_lama' => $line["Desa / Kelurahan"],
                     ]);
-                    return;
+
+                    $tanda = 0;
+                    // return;
                 }
-                $rowJenisKegiatan = strtolower($line["Jenis Kegiatan"]);
-                $rowFungsiBangunan = strtolower($line["Fungsi Bangunan"]);
-                $jenis_kegiatan = $jenisKegiatanList[$rowJenisKegiatan] ?? null;
-                $fungsi_bangunan = $fungsiBangunanList[$rowFungsiBangunan] ?? null;
-                if (!is_null($imbInduk)) {
-                    $jenisKegiatanGabungan = implode(' / ', array_unique($jenis_kegiatan_array));
-                    $jenisKegiatanRecord = DB::table('app_md_jeniskeg')
-                        ->where('name_jeniskeg', $jenisKegiatanGabungan)
-                        ->first();
-                    if (!$jenisKegiatanRecord) {
-                        $jenisKegiatanId = DB::table('app_md_jeniskeg')->insertGetId([
-                            'name_jeniskeg' => $jenisKegiatanGabungan
-                        ]);
-                    } else {
-                        $jenisKegiatanId = $jenisKegiatanRecord->id_jeniskeg;
+
+                if ($tanda == 0) {
+                    $rowJenisKegiatan = strtolower($line["Jenis Kegiatan"]);
+                    $rowFungsiBangunan = strtolower($line["Fungsi Bangunan"]);
+                    $jenis_kegiatan = $jenisKegiatanList[$rowJenisKegiatan] ?? null;
+                    $fungsi_bangunan = $fungsiBangunanList[$rowFungsiBangunan] ?? null;
+
+                    if (!in_array($line["Jenis Kegiatan"], $jenis_kegiatan_array)) {
+                        $jenis_kegiatan_array[] = $line["Jenis Kegiatan"];
                     }
-                    DB::table('imb_induk_perum')
-                        ->where('id', $imbInduk->id)
-                        ->update(['jenis_kegiatan' => $jenisKegiatanId]);
-                    $jenis_kegiatan_array = [];
+                    IMBItem::create([
+                        'induk_perum_id' => $imbInduk->id,
+                        'jenis_kegiatan' => $jenis_kegiatan,
+                        'fungsi_bangunan' => $fungsi_bangunan,
+                        'type' => $line["Type"],
+                        'luas_bangunan' => $line["Luas Bangunan"],
+                        'jumlah_unit' => $line["Jumlah Unit"],
+                        'keterangan' => $line["Keterangan"],
+                        'scan_imb' => $line["Scan IMB"],
+                    ]);
+
+                } else {
+                    $rowJenisKegiatan = strtolower($line["Jenis Kegiatan"]);
+                    $rowFungsiBangunan = strtolower($line["Fungsi Bangunan"]);
+                    $jenis_kegiatan = $jenisKegiatanList[$rowJenisKegiatan] ?? null;
+                    $fungsi_bangunan = $fungsiBangunanList[$rowFungsiBangunan] ?? null;
+                    if (!is_null($imbInduk)) {
+                        $jenisKegiatanGabungan = implode(' / ', array_unique($jenis_kegiatan_array));
+                        $jenisKegiatanRecord = DB::table('app_md_jeniskeg')
+                            ->where('name_jeniskeg', $jenisKegiatanGabungan)
+                            ->first();
+
+                        if (!$jenisKegiatanRecord) {
+                            $jenisKegiatanId = DB::table('app_md_jeniskeg')->insertGetId([
+                                'name_jeniskeg' => $jenisKegiatanGabungan
+                            ]);
+                        } else {
+                            $jenisKegiatanId = $jenisKegiatanRecord->id_jeniskeg;
+                        }
+                        DB::table('imb_induk_perum')
+                            ->where('id', $imbInduk->id)
+                            ->update(['jenis_kegiatan' => $jenisKegiatanId]);
+                        $jenis_kegiatan_array = [];
+                    }
+
+                        $imbInduk = IMBIndukPerum::create([
+                            'imb_induk' => $line["IMB Induk"],
+                            'tgl_imb_induk' => date('Y-m-d', strtotime($line["Tgl. IMB Induk"])),
+                            'no_register' => $line["No. Register"],
+                            'tgl_register' => $line["Tgl. Register"] != '' ? date('Y-m-d', strtotime($line["Tgl. Register"])) : null,
+                            'nama' => $line["Nama"],
+                            'atas_nama' => $line["Atas Nama"],
+                            'lokasi_perumahan' => $line["Lokasi / Perumahan"],
+                            'kabupaten' => $regency,
+                            'kecamatan' => $village->district_code,
+                            'desa_kelurahan' => $village->code,
+                        ]);
+
+                    if (!in_array($line["Jenis Kegiatan"], $jenis_kegiatan_array)) {
+                        $jenis_kegiatan_array[] = $line["Jenis Kegiatan"];
+                    }
+
+                    IMBItem::create([
+                        'induk_perum_id' => $imbInduk->id,
+                        'jenis_kegiatan' => $jenis_kegiatan,
+                        'fungsi_bangunan' => $fungsi_bangunan,
+                        'type' => $line["Type"],
+                        'luas_bangunan' => $line["Luas Bangunan"],
+                        'jumlah_unit' => $line["Jumlah Unit"],
+                        'keterangan' => $line["Keterangan"],
+                        'scan_imb' => $line["Scan IMB"],
+                    ]);
                 }
 
-              //  dd($regency);
 
-                $imbInduk = IMBIndukPerum::create([
-                    'imb_induk' => $line["IMB Induk"],
-                    'tgl_imb_induk' => date('Y-m-d', strtotime($line["Tgl. IMB Induk"])),
-                    'no_register' => $line["No. Register"],
-                    'tgl_register' => $line["Tgl. Register"] != '' ? date('Y-m-d', strtotime($line["Tgl. Register"])) : null,
-                    'nama' => $line["Nama"],
-                    'atas_nama' => $line["Atas Nama"],
-                    'lokasi_perumahan' => $line["Lokasi / Perumahan"],
-                    'kabupaten' => $regency,
-                    'kecamatan' => $village->district_code,
-                    'desa_kelurahan' => $village->code,
-                ]);
-                if (!in_array($line["Jenis Kegiatan"], $jenis_kegiatan_array)) {
-                    $jenis_kegiatan_array[] = $line["Jenis Kegiatan"];
-                }
-                IMBItem::create([
-                    'induk_perum_id' => $imbInduk->id,
-                    'jenis_kegiatan' => $jenis_kegiatan,
-                    'fungsi_bangunan' => $fungsi_bangunan,
-                    'type' => $line["Type"],
-                    'luas_bangunan' => $line["Luas Bangunan"],
-                    'jumlah_unit' => $line["Jumlah Unit"],
-                    'keterangan' => $line["Keterangan"],
-                    'scan_imb' => $line["Scan IMB"],
-                ]);
                 if ($baris === $totalRows) {
                     $jenisKegiatanGabungan = implode(' / ', array_unique($jenis_kegiatan_array));
                     $jenisKegiatanRecord = DB::table('app_md_jeniskeg')

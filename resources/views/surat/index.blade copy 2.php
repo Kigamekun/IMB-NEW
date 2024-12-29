@@ -127,6 +127,9 @@
         </div>
     </div>
 
+
+
+
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js"
@@ -145,7 +148,66 @@
         });
     </script>
 
+
+
     <script>
+    //     var table = $('#IMBTable').DataTable({
+    //     processing: true,
+    //     serverSide: true,
+    //     ajax: {
+    //         url: window.location.href,
+    //         data: function(d) {
+    //             d.nomor_surat = $('#nomorSurat').val();
+    //             d.nama_pemohon = $('#namaPemohonSurat').val();
+    //             d.nomor_imbg = $('#nomorIMBG').val();
+    //             d.lokasi_bangunan = $('#lokasiPemohonSurat').val();
+    //             d.kabupaten_pemohon = $('#kabupatenPemohonSurat').val();
+    //             d.kecamatan_pemohon = $('#kecamatanPemohonSurat').val();
+    //             d.kelurahan_pemohon = $('#kelurahanPemohonSurat').val();
+    //         },
+    //         dataSrc: function(res) {
+    //             if (res.code == 5500) {
+    //                 console.log(res.data);
+    //                 return InternalServerEror()
+    //             } else {
+    //                 console.log(res.data);
+    //                 return res.data
+    //             }
+    //         },
+    //         error: function() {
+    //             return InternalServerEror()
+    //         }
+    //     },
+    //     columns: [
+    //         { data: 'DT_RowIndex', title: 'No' },
+    //         { data: 'tahun', title: 'Tahun' },
+    //         { data: 'nomorSurat', title: 'No SK' },
+    //         { data: 'tanggalSurat', title: 'Tanggal' },
+    //         { data: 'nama', title: 'Pemohon' },
+    //         { data: 'bertindak_atas_nama', title: 'Atas Nama' },
+    //         { data: 'alamat', title: 'Alamat Pemohon' },
+    //         { data: 'registerNomor', title: 'No Register' },
+    //         { data: 'imbgNomor', title: 'No IMBG' },
+    //         { data: 'lokasi', title: 'Lokasi Bangunan' },
+    //         { data: 'nama_kabupaten', title: 'Kabupaten / Kota' },
+    //         { data: 'nama_kecamatan', title: 'Kecamatan' },
+    //         { data: 'nama_kelurahan', title: 'Kelurahan' },
+    //         { data: 'jenisSurat', title: 'Jenis' },
+    //         { data: 'action', title: 'Action' }
+    //     ]
+    // });
+
+    // // Refresh table on filter change
+    // $('#form-search input').on('keyup change', function() {
+    //     table.ajax.reload(null, false); // Reload DataTable dengan data baru tanpa mengubah halaman
+    // });
+
+    // $('#cetakHalamanBtn').on('click', function() {
+    //     var page = table.page.info().page + 1; // Ambil halaman saat ini (DataTables menggunakan 0-based index)
+    //     var perPage = table.page.len(); // Ambil jumlah entri per halaman
+    //     var url = "{{ route('surat.cetakHalaman') }}" + "?page=" + page + "&perPage=" + perPage;
+    //     window.open(url, '_blank', 'width=800,height=600');
+    // });
         var table = $('#IMBTable').DataTable({
             processing: true,
             serverSide: true,
@@ -183,6 +245,7 @@
                 {
                     data: 'DT_RowIndex',
                     title: 'No',
+
                 },
                 {
                     data: 'tahun',
@@ -236,46 +299,35 @@
                     data: 'jenisSurat',
                     title: 'Jenis'
                 },
+                // {
+                //     data: '#',
+                //     title: 'Status'
+                // },
                 {
                     data: 'action',
                     title: 'Action'
                 }
+
             ],
+            // order: [
+            //     [2, 'desc']
+            // ]
         });
 
+        // Refresh table on filter change
+        // $('#form-search input').on('keyup change', function() {
+        //     table.ajax.reload(null, false); // Reload DataTable dengan data baru tanpa mengubah halaman
+        // });
         $('#form-search input').on('keyup change', function() {
             console.log('Filter Changed:', $(this).val()); // Debug nilai input
             table.ajax.reload(null, false); // Reload dengan data baru
         });
-
         $('#cetakHalamanBtn').on('click', function() {
-            var page = table.page.info().page + 1; // Halaman saat ini
-            var perPage = table.page.len(); // Jumlah data per halaman
-
-            // Ambil nilai filter dari input
-            var nomorSurat = $('#nomorSurat').val();
-            var namaPemohon = $('#namaPemohonSurat').val();
-            var nomorIMBG = $('#nomorIMBG').val();
-            var lokasiPemohon = $('#lokasiPemohonSurat').val();
-            var kabupatenPemohon = $('#kabupatenPemohonSurat').val();
-            var kecamatanPemohon = $('#kecamatanPemohonSurat').val();
-            var kelurahanPemohon = $('#kelurahanPemohonSurat').val();
-
-            // Bangun URL dengan parameter filter
-            var url = "{{ route('surat.cetakHalaman') }}";
-            url += "?page=" + page + "&perPage=" + perPage;
-            url += "&nomor_surat=" + encodeURIComponent(nomorSurat || '');
-            url += "&nama_pemohon=" + encodeURIComponent(namaPemohon || '');
-            url += "&nomor_imbg=" + encodeURIComponent(nomorIMBG || '');
-            url += "&lokasi_bangunan=" + encodeURIComponent(lokasiPemohon || '');
-            url += "&kabupaten_pemohon=" + encodeURIComponent(kabupatenPemohon || '');
-            url += "&kecamatan_pemohon=" + encodeURIComponent(kecamatanPemohon || '');
-            url += "&kelurahan_pemohon=" + encodeURIComponent(kelurahanPemohon || '');
-
-            // Buka URL cetak di tab baru
+            var page = table.page.info().page + 1; // Ambil halaman saat ini (DataTables menggunakan 0-based index)
+            var perPage = table.page.len(); // Ambil jumlah entri per halaman
+            var url = "{{ route('surat.cetakHalaman') }}" + "?page=" + page + "&perPage=" + perPage;
             window.open(url, '_blank', 'width=800,height=600');
         });
-
     </script>
 @endsection
 
@@ -306,47 +358,52 @@
     </div>
 
 
-    <!-- Modal -->
-    <div class="modal fade" id="copyDataModal" tabindex="-1" aria-labelledby="copyDataModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
+<!-- Modal -->
+<div class="modal fade" id="copyDataModal" tabindex="-1" aria-labelledby="copyDataModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                {{-- <button type="button" class="close" style="float: right;" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button> --}}
+                <div>
                     <h4 class="modal-title" id="copyDataModalLabel">Copy Data</h4>
                 </div>
-
-
-                <form id="copy-data-form" action="{{ route('surat.copyData') }}" method="POST">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="tahun" class="form-label">Tahun</label>
-                            <select id="tahun" name="tahun" class="form-control">
-                                <option value="">Pilih Tahun...</option>
-                                <?php
-                                $currentYear = date('Y'); // Tahun sekarang
-                                $tahun = $currentYear - 50; // 50 tahun ke belakang
-                                for ($year = $currentYear; $year >= $tahun; $year--) {
-                                    echo "<option value='$year'>$year</option>";
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="mb-3" style="margin-top: 10px">
-                            <label for="nomor_surat" class="form-label">Nomor SK/Pemohon</label>
-                            <select id="nomorSK-Pemohon" name="nomorSK-Pemohon" class="form-control">
-                                <option value="">-- PILIH --</option>
-                            </select>
-                        </div>
-                        <input type="hidden" id="namaPemohonId" name="namaPemohonId">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                    </div>
-                </form>
             </div>
+
+
+            <form id="copy-data-form" action="{{ route('surat.copyData') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="tahun" class="form-label">Tahun</label>
+                        <select id="tahun" name="tahun" class="form-control">
+                            <option value="">Pilih Tahun...</option>
+                            <?php
+                            $currentYear = date('Y'); // Tahun sekarang
+                            $tahun = $currentYear - 50; // 50 tahun ke belakang
+                            for ($year = $currentYear; $year >= $tahun; $year--) {
+                                echo "<option value='$year'>$year</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="mb-3" style="margin-top: 10px">
+                        <label for="nomor_surat" class="form-label">Nomor SK/Pemohon</label>
+                        <select id="nomorSK-Pemohon" name="nomorSK-Pemohon" class="form-control">
+                            <option value="">-- PILIH --</option>
+                        </select>
+                    </div>
+                    <input type="hidden" id="namaPemohonId" name="namaPemohonId">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
 
 
@@ -404,12 +461,56 @@
 
 @section('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+    {{-- <script>
+        $(document).ready(function() {
+            $('.select2-copy').select2();
 
+            $('#copyDataModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var id = button.data('id');
+                var modal = $(this);
+                modal.find('#namaPemohonId').val(id);
+            });
+        });
+        $(document).ready(function() {
+            $('.select2').select2();
+
+            $('#copyDataModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var nama = $('#namaPemohon').val(); // Ambil nilai dari input nama pemohon
+                var nomorSurat = $('#nomorSurat').val(); // Ambil nilai dari input nomor surat
+
+                // Kosongkan opsi sebelumnya
+                $('#nomorSK-Pemohon').empty().append('<option value="">-- PILIH --</option>');
+
+                $.ajax({
+                    url: "{{ route('surat.getNomorSuratPemohon') }}",
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        nama: nama,
+                        nomorSurat: nomorSurat
+                    },
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            $('#nomorSK-Pemohon').append('<option value="' + response.nomorSuratPemohon + '">' + response.nomorSuratPemohon + '</option>');
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function(xhr) {
+                        alert('Terjadi kesalahan saat mengambil data.');
+                    }
+                });
+            });
+
+            // Select2CopyData();
+        });
+    </script> --}}
 
 
     <script>
         $(document).ready(function() {
-
             $('#tahun').change(function() {
                 var selectedYear = $(this).val();
                 var surat = @json($surat);
@@ -421,21 +522,16 @@
                     return item.tahun == selectedYear;
                 });
 
-                // Urutkan secara descending berdasarkan id
-                filteredSurat.sort(function(a, b) {
-                    return b.id - a.id;
-                });
-
                 if (filteredSurat.length > 0) {
                     filteredSurat.forEach(function(item) {
-                    $('#nomorSK-Pemohon').append('<option value="' + item.id + '">' + item.nomorSurat + ' an. ' + item.nama + '</option>');
+                        $('#nomorSK-Pemohon').append('<option value="' + item.id + '">' + item.nomorSurat + ' an. ' + item.nama + '</option>');
                     });
                 } else {
                     $('#nomorSK-Pemohon').append('<option value="">Tidak ada data</option>');
                 }
-                });
+            });
 
-                $('#copyDataModal').on('show.bs.modal', function (event) {
+            $('#copyDataModal').on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget);
                 var id = button.data('id');
                 var modal = $(this);

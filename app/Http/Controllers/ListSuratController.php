@@ -25,7 +25,8 @@ class ListSuratController extends Controller
                     'master_subdistrict.name as nama_kelurahan',
                     'surat.tujuanSurat', // Ensure this field is selected
                     'surat.jenisKegiatan' // Ensure this field is selected
-                );
+                )
+                ->orderBy('surat.id', 'desc'); // Order by id descending
 
             // Apply filters based on request input
             if ($request->has('nomor_surat')) {
@@ -77,8 +78,8 @@ class ListSuratController extends Controller
                     'master_subdistrict.name as nama_kelurahan',
                     'surat.tujuanSurat', // Ensure this field is selected
                     'surat.jenisKegiatan' // Ensure this field is selected
-                );
-
+                )
+                ->orderBy('surat.id', 'desc'); // Order by id descending
             // Apply filters based on request input
             if ($request->has('nomor_surat')) {
                 $query->where('surat.nomorSurat', 'like', '%' . $request->input('nomor_surat') . '%');
@@ -113,7 +114,7 @@ class ListSuratController extends Controller
         $tahun = '2024';
         return view('rekap.rekap-register.register-perbulan', compact('tahun'));
     }
-    
+
     // public function ListSurat(Reque
 
 

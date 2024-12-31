@@ -69,7 +69,7 @@
                                     <option></option> <!-- Placeholder option -->
                                 </select>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12" style="margin-top: 10px">
                                 <label for="jenis" class="form-label">Contoh Jenis:</label>
                                 <select name="jenis" id="jenis" class="form-select data-master" required>
                                     @foreach (DB::table('master_jenis_non_perum')->get() as $master_jenis)

@@ -82,6 +82,16 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="col-md-12" style="margin-top: 10px">
+                                <label for="jenis" class="form-label">Contoh Jenis:</label>
+                                <select name="jenis" id="jenis" class="form-select data-master" required>
+                                    @foreach (DB::table('master_jenis_non_perum')->get() as $master_jenis)
+                                        <option value="{{ $master_jenis->id }}"
+                                            {{ $master_jenis->id == $data->jenis ? 'selected' : '' }}>
+                                            {{ $master_jenis->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
 
                         <div class="d-flex justify-content-end" style="margin-top: 10px">

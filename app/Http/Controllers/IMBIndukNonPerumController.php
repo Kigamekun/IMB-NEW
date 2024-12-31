@@ -427,6 +427,7 @@ class IMBIndukNonPerumController extends Controller
 
             // Update imb_induk_non_perum
             DB::table('imb_induk_non_perum')->where('id', $id)->update([
+                'jenis' => $request->input('jenis'),
                 'imb_induk' => $request->input('imb_induk'),
                 'tgl_imb_induk' => $request->input('tgl_imb_induk'),
                 'no_register' => $request->input('no_register'),

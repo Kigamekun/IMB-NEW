@@ -27,24 +27,41 @@ class IMBPecahanController extends Controller
                 ->join('master_regency', 'imb_pecahan.kabupaten', '=', 'master_regency.code')
                 ->join('master_district', 'imb_pecahan.kecamatan', '=', 'master_district.code')
                 ->join('master_subdistrict', 'imb_pecahan.desa_kelurahan', '=', 'master_subdistrict.code')
-                ->select('imb_pecahan.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan','master_regency.name as kabupaten','master_regency.code as kabupaten_code', 'master_district.name as kecamatan', 'master_district.code as kecamatan_code', 'master_subdistrict.name as kelurahan', 'master_subdistrict.code as kelurahan_code');
+                ->select(
+                    'imb_pecahan.id',
+                'imb_pecahan.imb_induk_id',
+                    'imb_pecahan.tgl_imb_induk',
+                    'imb_pecahan.imb_pecahan',
+                    'imb_pecahan.tgl_imb_pecahan',
+                    'imb_pecahan.no_register',
+                    'imb_pecahan.tgl_register',
+                    'imb_pecahan.nama',
+                    'imb_pecahan.atas_nama',
+                    'imb_pecahan.lokasi_perumahan',
+                    'imb_pecahan.type',
+                    'imb_pecahan.luas',
+                    'imb_pecahan.blok',
+                    'imb_pecahan.no_blok',
+                    'imb_pecahan.keterangan',
+                    'imb_pecahan.scan_imb',
+                'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan', 'master_regency.name as kabupaten', 'master_regency.code as kabupaten_code', 'master_district.name as kecamatan', 'master_district.code as kecamatan_code', 'master_subdistrict.name as kelurahan', 'master_subdistrict.code as kelurahan_code');
 
 
-                if ($request->has('kabupaten') && $request->kabupaten) {
-                    $query->where('imb_pecahan.kabupaten', $request->kabupaten);
-                }
+            if ($request->has('kabupaten') && $request->kabupaten) {
+                $query->where('imb_pecahan.kabupaten', $request->kabupaten);
+            }
 
-                // Filter berdasarkan kecamatan
-                if ($request->has('kecamatan') && $request->kecamatan) {
-                    $query->where('imb_pecahan.kecamatan', $request->kecamatan);
-                }
+            // Filter berdasarkan kecamatan
+            if ($request->has('kecamatan') && $request->kecamatan) {
+                $query->where('imb_pecahan.kecamatan', $request->kecamatan);
+            }
 
-                // Filter berdasarkan kelurahan
-                if ($request->has('kelurahan') && $request->kelurahan) {
-                    $query->where('imb_pecahan.desa_kelurahan', $request->kelurahan);
-                }
+            // Filter berdasarkan kelurahan
+            if ($request->has('kelurahan') && $request->kelurahan) {
+                $query->where('imb_pecahan.desa_kelurahan', $request->kelurahan);
+            }
 
-                $query = $query->orderBy('imb_pecahan.created_at', 'desc')->get();
+            $query = $query->orderBy('imb_pecahan.created_at', 'desc');
 
 
 
@@ -80,42 +97,70 @@ class IMBPecahanController extends Controller
 
     public function importData(Request $request)
     {
-        ini_set('max_execution_time', 0); // Unlimited execution time
+        // Performance settings
+        ini_set('max_execution_time', 0);
         ini_set('memory_limit', '-1');
-        ini_set('display_errors', 1);
-        ini_set('display_startup_errors', 1);
-        error_reporting(E_ALL);
+
         $file = $request->file('file');
         $failures = [];
-        $jenisKegiatanList = DB::table('app_md_jeniskeg')->pluck('id_jeniskeg', 'name_jeniskeg')->mapWithKeys(fn($item, $key) => [strtolower($key) => $item]);
-        $fungsiBangunanList = DB::table('app_md_fungsibang')->pluck('id_fungsibang', 'name_fungsibang')->mapWithKeys(fn($item, $key) => [strtolower($key) => $item]);
         $baris = 1;
-        $users = (new FastExcel)->import($file, function ($line) use (&$failures, &$baris, $jenisKegiatanList, $fungsiBangunanList) {
-            $fail = 0;
-            $rowJenisKegiatan = strtolower($line['Jenis Kegiatan']);
-            $rowFungsiBangunan = strtolower($line['Fungsi Bangunan']);
-            $jenis_kegiatan = $jenisKegiatanList[$rowJenisKegiatan] ?? null;
-            $fungsi_bangunan = $fungsiBangunanList[$rowFungsiBangunan] ?? null;
-            $rowDistrict = strtolower($line['Kecamatan']);
-            $rowSubdistrict = strtolower($line['Desa / Kelurahan']);
-            $rowRegency = strtolower($line["Kabupaten / Kota"]);
-            $regency = DB::table('master_regency')
-            ->where(DB::raw('LOWER(name)'), $rowRegency)
-            ->pluck('code')
-            ->first();
-            if (!$regency) {
-                    $fail = 1;
+
+        // Cache frequently accessed data in memory
+        $jenisKegiatanList = cache()->remember('jenis_kegiatan_list', 60, function () {
+            return DB::table('app_md_jeniskeg')
+                ->pluck('id_jeniskeg', 'name_jeniskeg')
+                ->mapWithKeys(fn($item, $key) => [strtolower($key) => $item]);
+        });
+
+        $fungsiBangunanList = cache()->remember('fungsi_bangunan_list', 60, function () {
+            return DB::table('app_md_fungsibang')
+                ->pluck('id_fungsibang', 'name_fungsibang')
+                ->mapWithKeys(fn($item, $key) => [strtolower($key) => $item]);
+        });
+
+        // Pre-fetch and cache location data
+        $locationCache = cache()->remember('location_cache', 60, function () {
+            $regencies = DB::table('master_regency')->get(['code', 'name'])->keyBy(fn($item) => strtolower($item->name));
+            $districts = DB::table('master_district')->get(['code', 'name', 'regency_code']);
+            $subdistricts = DB::table('master_subdistrict')->get(['code', 'name', 'district_code']);
+
+            return [
+                'regencies' => $regencies,
+                'districts' => $districts->groupBy('regency_code'),
+                'subdistricts' => $subdistricts->groupBy('district_code')
+            ];
+        });
+
+        // Prepare batch insert
+        $batchSize = 1000;
+        $records = [];
+
+        DB::beginTransaction();
+        try {
+            (new FastExcel)->import($file, function ($line) use (&$failures, &$baris, $jenisKegiatanList, $fungsiBangunanList, $locationCache, &$records, $batchSize) {
+                $rowJenisKegiatan = strtolower($line['Jenis Kegiatan']);
+                $rowFungsiBangunan = strtolower($line['Fungsi Bangunan']);
+                $rowRegency = strtolower($line["Kabupaten / Kota"]);
+                $rowDistrict = strtolower($line['Kecamatan']);
+                $rowSubdistrict = strtolower($line['Desa / Kelurahan']);
+
+                // Quick lookups from cached data
+                $regency = $locationCache['regencies'][$rowRegency] ?? null;
+
+                if (!$regency) {
                     IMBPecahan::create([
                         'imb_induk_id' => $line['No. IMB Induk'],
                         'tgl_imb_induk' => null,
                         'imb_pecahan' => $line['No. IMB Pecahan / Rincikan'],
-                        'tgl_imb_pecahan' => date('Y-m-d', strtotime($line['Tgl. Pecahan / Rincikan'])),
+                        'tgl_imb_pecahan' => is_string($line['Tgl. Pecahan / Rincikan'])
+                            ? date('Y-m-d', strtotime($line['Tgl. Pecahan / Rincikan']))
+                            : $line['Tgl. Pecahan / Rincikan']->format('Y-m-d'),
                         'no_register' => $line['No. Register'],
                         'tgl_register' => null,
                         'nama' => $line['Nama'],
                         'atas_nama' => $line['Atas Nama'],
-                        'jenis_kegiatan' => $jenis_kegiatan,
-                        'fungsi_bangunan' => $fungsi_bangunan,
+                        'jenis_kegiatan' => $jenisKegiatanList[$rowJenisKegiatan] ?? null,
+                        'fungsi_bangunan' => $fungsiBangunanList[$rowFungsiBangunan] ?? null,
                         'lokasi_perumahan' => $line['Lokasi / Perumahan'],
                         'kabupaten_lama' => $line['Kabupaten / Kota'],
                         'kecamatan_lama' => $line['Kecamatan'],
@@ -126,120 +171,143 @@ class IMBPecahanController extends Controller
                         'no_blok' => $line['No Blok'],
                         'keterangan' => $line['Keterangan']
                     ]);
-                    $failures[] = [
-                        'message' => 'Kabupaten ' . $line["Kabupaten / Kota"] . ' tidak ditemukan',
-                        'baris' => $baris,
-                    ];
-                    return;
-            }
-            $errorDistricts = 0;
-            $districts = DB::table('master_district')
-                ->where(DB::raw('LOWER(name)'), $rowDistrict)
-                ->where('regency_code', $regency)
-                ->pluck('code')
-                ->toArray();
-            if (empty($districts)) {
-                $fail = 1;
-                $errorDistricts = 1;
-                IMBPecahan::create([
-                    'imb_induk_id' => $line['No. IMB Induk'],
-                    'tgl_imb_induk' => null,
-                    'imb_pecahan' => $line['No. IMB Pecahan / Rincikan'],
-                    'tgl_imb_pecahan' => date('Y-m-d', strtotime($line['Tgl. Pecahan / Rincikan'])),
-                    'no_register' => $line['No. Register'],
-                    'tgl_register' => null,
-                    'nama' => $line['Nama'],
-                    'atas_nama' => $line['Atas Nama'],
-                    'jenis_kegiatan' => $jenis_kegiatan,
-                    'fungsi_bangunan' => $fungsi_bangunan,
-                    'lokasi_perumahan' => $line['Lokasi / Perumahan'],
-                    'kabupaten_lama' => $line['Kabupaten / Kota'],
-                    'kecamatan_lama' => $line['Kecamatan'],
-                    'kelurahan_lama' => $line['Desa / Kelurahan'],
-                    'type' => $line['Type'],
-                    'luas' => $line['Luas'] == '' ? null : $line['Luas'],
-                    'blok' => $line['Blok'],
-                    'no_blok' => $line['No Blok'],
-                    'keterangan' => $line['Keterangan']
-                ]);
-                $failures[] = [
-                    'message' => 'Kecamatan ' . $line['Kecamatan'] . ' tidak ditemukan',
-                    'baris' => $baris,
-                ];
-            }
 
-            $village = DB::table('master_subdistrict')
-                ->where(DB::raw('LOWER(name)'), $rowSubdistrict)
-                ->whereIn('district_code', $districts)
-                ->first();
-            if (!$village) {
-                if ($errorDistricts == 1) {
-                    $failures[] = [
-                        'message' => 'Desa/Kelurahan ' . $line['Desa / Kelurahan'] . ' tidak ditemukan di kecamatan ' . $line['Kecamatan'],
-                        'baris' => $baris,
-                    ];
+                    $this->handleFailure($failures, $baris, $line, "Kabupaten {$line['Kabupaten / Kota']} tidak ditemukan");
+                    $baris++;
                     return;
                 }
-                $fail = 1;
-                IMBPecahan::create([
-                    'imb_induk_id' => $line['No. IMB Induk'],
-                    'tgl_imb_induk' => null,
-                    'imb_pecahan' => $line['No. IMB Pecahan / Rincikan'],
-                    'tgl_imb_pecahan' => date('Y-m-d', strtotime($line['Tgl. Pecahan / Rincikan'])),
-                    'no_register' => $line['No. Register'],
-                    'tgl_register' => null,
-                    'nama' => $line['Nama'],
-                    'atas_nama' => $line['Atas Nama'],
-                    'jenis_kegiatan' => $jenis_kegiatan,
-                    'fungsi_bangunan' => $fungsi_bangunan,
-                    'lokasi_perumahan' => $line['Lokasi / Perumahan'],
-                    'kabupaten_lama' => $line['Kabupaten / Kota'],
-                    'kecamatan_lama' => $line['Kecamatan'],
-                    'kelurahan_lama' => $line['Desa / Kelurahan'],
-                    'type' => $line['Type'],
-                    'luas' => $line['Luas'] == '' ? null : $line['Luas'],
-                    'blok' => $line['Blok'],
-                    'no_blok' => $line['No Blok'],
-                    'keterangan' => $line['Keterangan']
-                ]);
-                $failures[] = [
-                    'message' => 'Desa/Kelurahan ' . $line['Desa / Kelurahan'] . ' tidak ditemukan di kecamatan ' . $line['Kecamatan'],
-                    'baris' => $baris,
-                ];
-            }
 
-            $baris++;
-            if ($fail == 0) {
-                //dd($regency);
-                IMBPecahan::create([
+                $districts = $locationCache['districts'][$regency->code] ?? collect();
+                $district = $districts->first(fn($d) => strtolower($d->name) === $rowDistrict);
+
+                if (!$district) {
+                    IMBPecahan::create([
+                        'imb_induk_id' => $line['No. IMB Induk'],
+                        'tgl_imb_induk' => null,
+                        'imb_pecahan' => $line['No. IMB Pecahan / Rincikan'],
+                        'tgl_imb_pecahan' => is_string($line['Tgl. Pecahan / Rincikan'])
+                            ? date('Y-m-d', strtotime($line['Tgl. Pecahan / Rincikan']))
+                            : $line['Tgl. Pecahan / Rincikan']->format('Y-m-d'),
+                        'no_register' => $line['No. Register'],
+                        'tgl_register' => null,
+                        'nama' => $line['Nama'],
+                        'atas_nama' => $line['Atas Nama'],
+                        'jenis_kegiatan' => $jenisKegiatanList[$rowJenisKegiatan] ?? null,
+                        'fungsi_bangunan' => $fungsiBangunanList[$rowFungsiBangunan] ?? null,
+                        'lokasi_perumahan' => $line['Lokasi / Perumahan'],
+                        'kabupaten_lama' => $line['Kabupaten / Kota'],
+                        'kecamatan_lama' => $line['Kecamatan'],
+                        'kelurahan_lama' => $line['Desa / Kelurahan'],
+                        'type' => $line['Type'],
+                        'luas' => $line['Luas'] == '' ? null : $line['Luas'],
+                        'blok' => $line['Blok'],
+                        'no_blok' => $line['No Blok'],
+                        'keterangan' => $line['Keterangan']
+                    ]);
+
+                    $this->handleFailure($failures, $baris, $line, "Kecamatan {$line['Kecamatan']} tidak ditemukan");
+                    $baris++;
+                    return;
+                }
+
+                $subdistricts = $locationCache['subdistricts'][$district->code] ?? collect();
+                $village = $subdistricts->first(fn($s) => strtolower($s->name) === $rowSubdistrict);
+
+                if (!$village) {
+                    IMBPecahan::create([
+                        'imb_induk_id' => $line['No. IMB Induk'],
+                        'tgl_imb_induk' => null,
+                        'imb_pecahan' => $line['No. IMB Pecahan / Rincikan'],
+                        'tgl_imb_pecahan' => is_string($line['Tgl. Pecahan / Rincikan'])
+                            ? date('Y-m-d', strtotime($line['Tgl. Pecahan / Rincikan']))
+                            : $line['Tgl. Pecahan / Rincikan']->format('Y-m-d'),
+                        'no_register' => $line['No. Register'],
+                        'tgl_register' => null,
+                        'nama' => $line['Nama'],
+                        'atas_nama' => $line['Atas Nama'],
+                        'jenis_kegiatan' => $jenisKegiatanList[$rowJenisKegiatan] ?? null,
+                        'fungsi_bangunan' => $fungsiBangunanList[$rowFungsiBangunan] ?? null,
+                        'lokasi_perumahan' => $line['Lokasi / Perumahan'],
+                        'kabupaten_lama' => $line['Kabupaten / Kota'],
+                        'kecamatan_lama' => $line['Kecamatan'],
+                        'kelurahan_lama' => $line['Desa / Kelurahan'],
+                        'type' => $line['Type'],
+                        'luas' => $line['Luas'] == '' ? null : $line['Luas'],
+                        'blok' => $line['Blok'],
+                        'no_blok' => $line['No Blok'],
+                        'keterangan' => $line['Keterangan']
+                    ]);
+                    $this->handleFailure($failures, $baris, $line, "Desa/Kelurahan {$line['Desa / Kelurahan']} tidak ditemukan di kecamatan {$line['Kecamatan']}");
+                    $baris++;
+                    return;
+                }
+
+                // Prepare record for batch insert
+                $records[] = [
                     'imb_induk_id' => $line['No. IMB Induk'],
                     'tgl_imb_induk' => null,
                     'imb_pecahan' => $line['No. IMB Pecahan / Rincikan'],
-                    'tgl_imb_pecahan' => date('Y-m-d', strtotime($line['Tgl. Pecahan / Rincikan'])),
+                    'tgl_imb_pecahan' => is_string($line['Tgl. Pecahan / Rincikan'])
+                        ? date('Y-m-d', strtotime($line['Tgl. Pecahan / Rincikan']))
+                        : $line['Tgl. Pecahan / Rincikan']->format('Y-m-d'),
                     'no_register' => $line['No. Register'],
                     'tgl_register' => null,
                     'nama' => $line['Nama'],
                     'atas_nama' => $line['Atas Nama'],
-                    'jenis_kegiatan' => $jenis_kegiatan,
-                    'fungsi_bangunan' => $fungsi_bangunan,
+                    'jenis_kegiatan' => $jenisKegiatanList[$rowJenisKegiatan] ?? null,
+                    'fungsi_bangunan' => $fungsiBangunanList[$rowFungsiBangunan] ?? null,
                     'lokasi_perumahan' => $line['Lokasi / Perumahan'],
-                    'kabupaten' => $regency,
-                    'kecamatan' => $village->district_code,
+                    'kabupaten' => $regency->code,
+                    'kecamatan' => $district->code,
                     'desa_kelurahan' => $village->code,
                     'type' => $line['Type'],
                     'luas' => $line['Luas'] == '' ? null : $line['Luas'],
                     'blok' => $line['Blok'],
                     'no_blok' => $line['No Blok'],
-                    'keterangan' => $line['Keterangan']
-                ]);
+                    'keterangan' => $line['Keterangan'],
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ];
+
+                // Batch insert when reaching batch size
+                if (count($records) >= $batchSize) {
+                    IMBPecahan::insert($records);
+                    $records = [];
+                }
+
+                $baris++;
+            });
+
+            // Insert remaining records
+            if (!empty($records)) {
+                IMBPecahan::insert($records);
             }
-        });
-        if (count($failures) > 0) {
-            //dd($failures);
-            return redirect()->back()->with(['status' => 'error', 'message' => 'Import data selesai, namun terdapat kesalahan. Silahkan download file log untuk melihat detail kesalahan.'])->with('failures', $failures);
-        } else {
-            return redirect()->back()->with(['status' => 'success', 'message' => 'Import data berhasil']);
+
+            DB::commit();
+
+            return redirect()->back()->with([
+                'status' => count($failures) > 0 ? 'error' : 'success',
+                'message' => count($failures) > 0
+                    ? 'Import data selesai, namun terdapat kesalahan. Silahkan download file log untuk melihat detail kesalahan.'
+                    : 'Import data berhasil',
+                'failures' => $failures
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with([
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ]);
         }
+    }
+
+    private function handleFailure(&$failures, $baris, $line, $message)
+    {
+        $failures[] = [
+            'message' => $message,
+            'baris' => $baris,
+        ];
     }
 
     public function create()
@@ -318,7 +386,7 @@ class IMBPecahanController extends Controller
             ->join('master_regency', 'imb_pecahan.kabupaten', '=', 'master_regency.code')
             ->join('master_district', 'imb_pecahan.kecamatan', '=', 'master_district.code')
             ->join('master_subdistrict', 'imb_pecahan.desa_kelurahan', '=', 'master_subdistrict.code')
-            ->select('imb_pecahan.*', 'master_regency.name as kabupaten' , 'master_regency.code as kabupaten_code', 'master_district.name as kecamatan', 'master_district.code as kecamatan_code', 'master_subdistrict.name as kelurahan', 'master_subdistrict.code as kelurahan_code')
+            ->select('imb_pecahan.*', 'master_regency.name as kabupaten', 'master_regency.code as kabupaten_code', 'master_district.name as kecamatan', 'master_district.code as kecamatan_code', 'master_subdistrict.name as kelurahan', 'master_subdistrict.code as kelurahan_code')
             ->where('imb_pecahan.id', $id)->first();
 
         $imbInduk = IMBIndukPerum::where('imb_induk', $data->imb_induk_id)->first();

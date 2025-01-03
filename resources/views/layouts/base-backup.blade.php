@@ -287,7 +287,7 @@
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <span class="hidden-xs"> {{-- Auth::user()->name_user --}} 
+                                <span class="hidden-xs"> {{-- Auth::user()->name_user --}}
                                 </span>
                             </a>
                             <ul class="dropdown-menu">
@@ -295,8 +295,8 @@
                                 <li class="user-header">
 
                                     <p>
-                             
-  {{-- Auth::user()->name_user --}} 
+
+  {{-- Auth::user()->name_user --}}
                                 ?>                                       <small>DKPP</small>
                                     </p>
                                 </li>
@@ -318,7 +318,7 @@
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a href="http://103.51.103.105/simpol/app.php?appmd=CUSER" class="btn btn-default btn-flat">Update Profile</a>
+                                        <a href="http://103.    /simpol/app.php?appmd=CUSER" class="btn btn-default btn-flat">Update Profile</a>
                                     </div>
                                     <div class="pull-right">
                                         <a href="#" class="btn btn-default btn-flat">Sign out</a>
@@ -365,7 +365,7 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
                     <li class="header">{{$formattedDate}}</li>
                     <li >
                       <a
-                        href="http://103.51.103.105/simpol/app.php"
+                        href="https://simpol.hastasejahtera.online/simpol/app.php"
                         style="
                               padding: 12px 5px 12px 15px;
                                 display: block;
@@ -2182,7 +2182,7 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
 
     <script>
         function redirectAndRun(tabId, title, url) {
-            const baseUrl = 'http://103.51.103.105/simpol/app.php';
+            const baseUrl = 'https://simpol.hastasejahtera.online/simpol/app.php';
             const params = new URLSearchParams({
                 tabId: tabId,
                 title: title,

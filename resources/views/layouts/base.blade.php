@@ -321,7 +321,7 @@
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a href="http://103.51.103.105/simpol/app.php?appmd=CUSER" class="btn btn-default btn-flat">Update Profile</a>
+                                        <a href="https://simpol.hastasejahtera.online/simpol/app.php?appmd=CUSER" class="btn btn-default btn-flat">Update Profile</a>
                                     </div>
                                     <div class="pull-right">
                                         <a href="#" class="btn btn-default btn-flat">Sign out</a>
@@ -368,7 +368,7 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
                     <li class="header">{{$formattedDate}}</li>
                     <li >
                       <a
-                        href="http://103.51.103.105/simpol/app.php"
+                        href="https://simpol.hastasejahtera.online/simpol/app.php"
                         style="
                               padding: 12px 5px 12px 15px;
                                 display: block;
@@ -2185,7 +2185,7 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
 
     <script>
         function redirectAndRun(tabId, title, url) {
-            const baseUrl = 'http://103.51.103.105/simpol/app.php';
+            const baseUrl = 'https://simpol.hastasejahtera.online/simpol/app.php';
             const params = new URLSearchParams({
                 tabId: tabId,
                 title: title,

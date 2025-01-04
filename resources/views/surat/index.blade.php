@@ -182,6 +182,8 @@
             columns: [
                 {
                     data: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false,
                     title: 'No',
                 },
                 {

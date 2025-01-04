@@ -29,16 +29,11 @@
                 </tr>
             </thead>
             <tbody>
-                @if ($data->isEmpty())
-                    <tr>
-                        <td colspan="14" class="text-center">Tidak ada data yang sesuai dengan filter</td>
-                    </tr>
-                @else
+
                     <?php $no = 1; ?>
                     @foreach ($data as $row)
                         <tr>
                             <td>{{ ($_GET['page']-1) * $_GET['perPage'] + $no++ }}</td>
-
                             <td>{{ $row->tahun }}</td>
                             <td>{{ $row->nomorSurat }}</td>
                             <td>{{ $row->tanggalSurat }}</td>
@@ -54,7 +49,6 @@
                             <td>{{ $row->jenisSurat }}</td>
                         </tr>
                     @endforeach
-                @endif
             </tbody>
 
         </table>

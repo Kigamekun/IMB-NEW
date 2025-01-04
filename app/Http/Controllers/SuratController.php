@@ -25,14 +25,57 @@ class SuratController extends Controller
                 ->leftJoin('master_district', 'surat.kecamatan', '=', 'master_district.code') // Join ke master_district
                 ->leftJoin('master_subdistrict', 'surat.kelurahan', '=', 'master_subdistrict.code') // Join ke master_subdistrict
                 ->select(
-                    'surat.*',
+                    'surat.id',
+                    'surat.jenisSurat',
+                    'surat.tahun',
+                    'surat.nomorSurat',
+                    'surat.tanggalSurat',
+                    'surat.lampiran',
+                    'surat.sifat',
+                    'surat.perihal',
+                    'surat.permohonanTanggal',
+                    'surat.nama',
+                    'surat.bertindak_atas_nama',
+                    'surat.alamat',
+                    'surat.izin_mendirikan_bangunan_atas_nama',
+                    'surat.lokasi',
+                    'surat.tujuanSurat',
+                    'surat.jenisKegiatan',
+                    'surat.registerNomor',
+                    'surat.registerTanggal',
+                    'surat.imbgNomor',
+                    'surat.imbgTanggal',
+                    'surat.provinsi',
+                    'surat.kabupaten',
+                    'surat.kecamatan',
+                    'surat.kelurahan',
+                    'surat.provinsi_terdahulu',
+                    'surat.kabupaten_terdahulu',
+                    'surat.kecamatan_terdahulu',
+                    'surat.kelurahan_terdahulu',
+                    'surat.provinsiPemohon',
+                    'surat.kabupatenPemohon',
+                    'surat.kecamatanPemohon',
+                    'surat.kelurahanPemohon',
+                    'surat.jabatan',
+                    'surat.kepalaDinas',
+                    'surat.pangkat',
+                    'surat.keterangan',
+                    'surat.details',
+                    'surat.details2',
+                    'surat.file',
+                    'surat.upload',
+                    'surat.created_at',
+                    'surat.updated_at',
+                    'surat.sapaanPemohon',
+                    'surat.font_surat',
                     'master_regency.name as nama_kabupaten',
                     'master_district.name as nama_kecamatan',
                     'master_subdistrict.name as nama_kelurahan'
                 );
             // dd($query->count());
             // \Log::info($query->toSql(), $query->getBindings()); // Log query dan bindings
-            // $data = $query->get();
+            $data = $query;
             // dd($data);
                 if (isset($_GET['format'])) {
                     switch ($_GET['format']) {
@@ -82,7 +125,7 @@ class SuratController extends Controller
             }
 
 
-            $query = $query->orderBy('id', 'desc')->get();
+            $query = $query->orderBy('id', 'desc');
 
             return Datatables::of($query)
                 ->addColumn('action', function ($row) {
@@ -1137,7 +1180,53 @@ class SuratController extends Controller
 
     public function LihatTableIndex($id)
     {
-        $data = \DB::table('surat')->where('id', $id)->first();
+        $data = \DB::table('surat')
+            ->select('id',
+                    'jenisSurat',
+                    'tahun',
+                    'nomorSurat',
+                    'tanggalSurat',
+                    'lampiran',
+                    'sifat',
+                    'perihal',
+                    'permohonanTanggal',
+                    'nama',
+                    'bertindak_atas_nama',
+                    'alamat',
+                    'izin_mendirikan_bangunan_atas_nama',
+                    'lokasi',
+                    'tujuanSurat',
+                    'jenisKegiatan',
+                    'registerNomor',
+                    'registerTanggal',
+                    'imbgNomor',
+                    'imbgTanggal',
+                    'provinsi',
+                    'kabupaten',
+                    'kecamatan',
+                    'kelurahan',
+                    'provinsi_terdahulu',
+                    'kabupaten_terdahulu',
+                    'kecamatan_terdahulu',
+                    'kelurahan_terdahulu',
+                    'provinsiPemohon',
+                    'kabupatenPemohon',
+                    'kecamatanPemohon',
+                    'kelurahanPemohon',
+                    'jabatan',
+                    'kepalaDinas',
+                    'pangkat',
+                    'keterangan',
+                    'details',
+                    'details2',
+                    'file',
+                    'upload',
+                    'created_at',
+                    'updated_at',
+                    'sapaanPemohon',
+                    'font_surat') // Ensure 'tahun' is selected
+            ->where('id', $id)
+            ->first();
 
         if (!$data) {
             return redirect()->route('surat.index')->with('error', 'Data tidak ditemukan.');
@@ -1609,7 +1698,7 @@ class SuratController extends Controller
         ]);
 
         // Ambil data berdasarkan ID
-        $data = \DB::table('surat')->where('id', $request->id)->get();
+        $data = \DB::table('surat')->where('id', $request->id);
 
         // Cek apakah data ditemukan
         if ($data->isEmpty()) {
@@ -1625,7 +1714,8 @@ class SuratController extends Controller
         $id = $request->input('nomorSK-Pemohon');
 
         // Ambil data asli berdasarkan ID
-        $originalData = \DB::table('surat')->where('id', $id)->first();
+        $originalData = \DB::table('surat')
+        ->where('id', $id)->first();
 
         if ($originalData) {
             // Ubah data menjadi array dan hapus ID untuk duplikasi
@@ -1650,8 +1740,8 @@ class SuratController extends Controller
         $tahun = \DB::table('surat')
             ->select(\DB::raw('YEAR(tanggalSurat) as tahun'))
             ->distinct()
-            ->orderBy('tahun', 'desc')
-            ->get();
+            ->orderBy('tahun', 'desc');
+            // ;
 
         return response()->json(['status' => 'success', 'data' => $tahun]);
     }
@@ -1662,14 +1752,57 @@ class SuratController extends Controller
             ->leftJoin('master_district', 'surat.kecamatan', '=', 'master_district.code') // Join ke master_district
             ->leftJoin('master_subdistrict', 'surat.kelurahan', '=', 'master_subdistrict.code') // Join ke master_subdistrict
             ->select(
-                'surat.*',
-                'master_regency.name as nama_kabupaten',
-                'master_district.name as nama_kecamatan',
-                'master_subdistrict.name as nama_kelurahan'
+                'surat.id',
+                'surat.jenisSurat',
+                'surat.tahun',
+                'surat.nomorSurat',
+                'surat.tanggalSurat',
+                'surat.lampiran',
+                'surat.sifat',
+                'surat.perihal',
+                'surat.permohonanTanggal',
+                'surat.nama',
+                'surat.bertindak_atas_nama',
+                'surat.alamat',
+                'surat.izin_mendirikan_bangunan_atas_nama',
+                'surat.lokasi',
+                'surat.tujuanSurat',
+                'surat.jenisKegiatan',
+                'surat.registerNomor',
+                'surat.registerTanggal',
+                'surat.imbgNomor',
+                'surat.imbgTanggal',
+                'surat.provinsi',
+                'surat.kabupaten',
+                'surat.kecamatan',
+                'surat.kelurahan',
+                'surat.provinsi_terdahulu',
+                'surat.kabupaten_terdahulu',
+                'surat.kecamatan_terdahulu',
+                'surat.kelurahan_terdahulu',
+                'surat.provinsiPemohon',
+                'surat.kabupatenPemohon',
+                'surat.kecamatanPemohon',
+                'surat.kelurahanPemohon',
+                'surat.jabatan',
+                'surat.kepalaDinas',
+                'surat.pangkat',
+                'surat.keterangan',
+                'surat.details',
+                'surat.details2',
+                'surat.file',
+                'surat.upload',
+                'surat.created_at',
+                'surat.updated_at',
+                'surat.sapaanPemohon',
+                'surat.font_surat',
+                    'master_regency.name as nama_kabupaten',
+                    'master_district.name as nama_kecamatan',
+                    'master_subdistrict.name as nama_kelurahan'
             )
             ->orderBy('id', 'desc');
 
-        $data = $query->get();
+        $data = $query;
 
         if ($request->ajax()) {
             return Datatables::of($query)
@@ -1687,7 +1820,7 @@ class SuratController extends Controller
                 ->make(true);
         }
 
-        return view('surat.preview-index', compact('data'));
+        return view('surat.preview-index',['data'=>$data->get()]);
     }
 
 
@@ -1758,7 +1891,49 @@ class SuratController extends Controller
             ->leftJoin('master_district', 'surat.kecamatan', '=', 'master_district.code')
             ->leftJoin('master_subdistrict', 'surat.kelurahan', '=', 'master_subdistrict.code')
             ->select(
-                'surat.*',
+                'surat.id',
+                    'surat.tahun',
+                    'surat.nomorSurat',
+                    'surat.nama',
+                    'surat.imbgNomor',
+                    'surat.lokasi',
+                    'surat.jenisSurat',
+                    'surat.tanggalSurat',
+                    'surat.lampiran',
+                    'surat.sifat',
+                    'surat.perihal',
+                    'surat.permohonanTanggal',
+                    'surat.bertindak_atas_nama',
+                    'surat.alamat',
+                    'surat.izin_mendirikan_bangunan_atas_nama',
+                    'surat.registerNomor',
+                    'surat.registerTanggal',
+                    'surat.imbgTanggal',
+                    'surat.sapaanPemohon',
+                    'surat.provinsiPemohon',
+                    'surat.kabupatenPemohon',
+                    'surat.kecamatanPemohon',
+                    'surat.kelurahanPemohon',
+                    'surat.jabatan',
+                    'surat.font_surat',
+                    'surat.kabupaten',
+                    'surat.kecamatan',
+                    'surat.kelurahan',
+                    'surat.kepalaDinas',
+                    'surat.pangkat',
+                    'surat.keterangan',
+                    'surat.details',
+                    'surat.details2',
+                    'surat.file',
+                    'surat.upload',
+                    'surat.created_at',
+                    'surat.updated_at',
+                    'surat.provinsi_terdahulu',
+                    'surat.kabupaten_terdahulu',
+                    'surat.kecamatan_terdahulu',
+                    'surat.kelurahan_terdahulu',
+                    'surat.tujuanSurat',
+                    'surat.jenisKegiatan',
                 'master_regency.name as nama_kabupaten',
                 'master_district.name as nama_kecamatan',
                 'master_subdistrict.name as nama_kelurahan'
@@ -1795,20 +1970,63 @@ class SuratController extends Controller
         }
 
         // Tambahkan pagination
-        $data = $query->skip($offset)->take($perPage)->get();
+        $data = $query->skip($offset)->take($perPage);
 
         // Kirim data ke view
-        return view('surat.cetak-halaman', compact('data'));
+        return view('surat.cetak-halaman',['data'=>$data->get()]);
     }
 
     public function cariSurat(Request $request)
     {
+
         // Query dengan join untuk mendapatkan nama kecamatan dan kelurahan
         $query = \DB::table('surat')
             ->leftJoin('master_district', 'surat.kecamatan', '=', 'master_district.code') // Join ke master_district
             ->leftJoin('master_subdistrict', 'surat.kelurahan', '=', 'master_subdistrict.code') // Join ke master_subdistrict
             ->select(
-                'surat.*',
+                'surat.id',
+                    'surat.tahun',
+                    'surat.nomorSurat',
+                    'surat.nama',
+                    'surat.imbgNomor',
+                    'surat.lokasi',
+                    'surat.jenisSurat',
+                    'surat.tanggalSurat',
+                    'surat.lampiran',
+                    'surat.sifat',
+                    'surat.perihal',
+                    'surat.permohonanTanggal',
+                    'surat.bertindak_atas_nama',
+                    'surat.alamat',
+                    'surat.izin_mendirikan_bangunan_atas_nama',
+                    'surat.registerNomor',
+                    'surat.registerTanggal',
+                    'surat.imbgTanggal',
+                    'surat.sapaanPemohon',
+                    'surat.provinsiPemohon',
+                    'surat.kabupatenPemohon',
+                    'surat.kecamatanPemohon',
+                    'surat.kelurahanPemohon',
+                    'surat.jabatan',
+                    'surat.font_surat',
+                    'surat.kabupaten',
+                    'surat.kecamatan',
+                    'surat.kelurahan',
+                    'surat.kepalaDinas',
+                    'surat.pangkat',
+                    'surat.keterangan',
+                    'surat.details',
+                    'surat.details2',
+                    'surat.file',
+                    'surat.upload',
+                    'surat.created_at',
+                    'surat.updated_at',
+                    'surat.provinsi_terdahulu',
+                    'surat.kabupaten_terdahulu',
+                    'surat.kecamatan_terdahulu',
+                    'surat.kelurahan_terdahulu',
+                    'surat.tujuanSurat',
+                    'surat.jenisKegiatan',
                 'master_district.name as nama_kecamatan',
                 'master_subdistrict.name as nama_kelurahan'
             );
@@ -1834,8 +2052,9 @@ class SuratController extends Controller
             $query->where('master_subdistrict.name', 'like', '%' . $request->input('kelurahan_pemohon') . '%');
         }
 
+
         // Ambil data
-        $data = $query->get();
+        $data = $query->orderBy('id', 'desc');
 
         // Generate Datatable response
         return Datatables::of($data)

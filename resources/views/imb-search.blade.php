@@ -337,7 +337,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.js"></script>
-
+    <script src="
+    https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.all.min.js
+    "></script>
 
     <script>
         document.getElementById('previous-page-surat').addEventListener('click', function(event) {
@@ -487,9 +489,29 @@
 
             $('#submitSearchIMB').on('submit', function(e) {
                 e.preventDefault();
+                var noImb = $('#noImb').val().trim();
+                var tanggalImb = $('#tanggalImb').val().trim();
+                var nama = $('#nama').val().trim();
+                var atasNama = $('#atasNama').val().trim();
+                var lokasi = $('#lokasi').val().trim();
+                var blok = $('#blok').val().trim();
+                var noBlok = $('#noBlok').val().trim();
+                var kecamatan = $('#kecamatan').val().trim();
+                var desaKelurahan = $('#desaKelurahan').val().trim();
+
+                if (!noImb && !tanggalImb && !nama && !atasNama && !lokasi && !blok && !noBlok && !kecamatan && !desaKelurahan) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Oops...',
+                        text: 'Harap isi setidaknya satu kolom pencarian!',
+                    });
+                    return;
+                }
+
                 $('#cardImb').fadeIn();
                 imbTable.draw();
             });
+
 
             // Untuk mengambil detailnya
             $('#IMBTable').on('click', '.view-details', function() {
@@ -560,6 +582,7 @@
 
 
     <script>
+
         $(document).ready(function() {
             var typingTimer; // Timer untuk delay
             var typingInterval = 1000; // Waktu delay dalam milidetik (1 detik)
@@ -676,6 +699,21 @@
             // });
             $('#submitSearchSurat').on('submit', function(e) {
                 e.preventDefault();
+                var nomorSurat = $('#nomorSurat').val().trim();
+                var namaPemohonSurat = $('#namaPemohonSurat').val().trim();
+                var lokasiPemohonSurat = $('#lokasiPemohonSurat').val().trim();
+                var kecamatanPemohonSurat = $('#kecamatanPemohonSurat').val().trim();
+                var kelurahanPemohonSurat = $('#kelurahanPemohonSurat').val().trim();
+
+                if (!nomorSurat && !namaPemohonSurat && !lokasiPemohonSurat && !kecamatanPemohonSurat && !kelurahanPemohonSurat) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Oops...',
+                        text: 'Harap isi setidaknya satu kolom pencarian!',
+                    });
+                    return;
+                }
+
                 $('#cardSurat').fadeIn();
                 suratTable.draw();
             });

@@ -22,40 +22,47 @@ sudo apt install -y apache2 libapache2-mod-php8.2
 # Create Apache configuration file
 echo "Creating Apache configuration..."
 sudo tee /etc/apache2/sites-available/simpol.hastasejahtera.online.conf << 'EOL'
-<VirtualHost *:80>
-    ServerName simpol.hastasejahtera.online
-    Redirect permanent / https://simpol.hastasejahtera.online/
-</VirtualHost>
 
-<VirtualHost *:443>
-    ServerName simpol.hastasejahtera.online
+<VirtualHost *:80>
+    ServerName domain-anda.com
     DocumentRoot /var/www/html/simpol.id
 
-    SSLEngine on
-    SSLCertificateFile /etc/letsencrypt/live/simpol.hastasejahtera.online/fullchain.pem
-    SSLCertificateKeyFile /etc/letsencrypt/live/simpol.hastasejahtera.online/privkey.pem
-
-    # IMB Laravel Application
-    <Directory /var/www/html/simpol.id/IMB/public>
-        Options Indexes FollowSymLinks MultiViews
+    # Konfigurasi untuk aplikasi utama pada root "/"
+    <Directory /var/www/html/simpol.id>
         AllowOverride All
         Require all granted
     </Directory>
 
-    Alias /imb /var/www/html/simpol.id/IMB/public
-
-    # Simpol PHP Application
-    <Directory /var/www/html/simpol.id/simpol>
-        Options Indexes FollowSymLinks MultiViews
-        AllowOverride All
-        Require all granted
-    </Directory>
-
+    # Konfigurasi khusus untuk aplikasi SIMPOL di subdirektori "/simpol"
     Alias /simpol /var/www/html/simpol.id/simpol
+    <Directory /var/www/html/simpol.id/simpol>
+        AllowOverride All
+        Require all granted
+    </Directory>
 
-    ErrorLog ${APACHE_LOG_DIR}/simpol_error.log
-    CustomLog ${APACHE_LOG_DIR}/simpol_access.log combined
+    # Konfigurasi untuk aplikasi Laravel 8 pada subdirektori "/imb"
+    Alias /imb /var/www/html/simpol.id/IMB/public
+    <Directory /var/www/html/simpol.id/IMB/public>
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    # Konfigurasi untuk menangani PHP 5.6 menggunakan PHP-FPM (untuk SIMPOL)
+    <FilesMatch "\.php$">
+        SetHandler "proxy:unix:/var/run/php/php5.6-fpm.sock|fcgi://localhost"
+    </FilesMatch>
+
+    # Konfigurasi untuk menangani PHP 7.4 menggunakan PHP-FPM (untuk Laravel)
+    <Directory /var/www/html/simpol.id/IMB/public>
+        <FilesMatch "\.php$">
+            SetHandler "proxy:unix:/var/run/php/php8.2-fpm.sock|fcgi://localhost"
+        </FilesMatch>
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
+
 EOL
 
 # Enable site and required modules

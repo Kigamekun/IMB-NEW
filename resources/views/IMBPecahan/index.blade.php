@@ -141,7 +141,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "https://simpol.hastasejahtera.online/imb/IMBPecahan",
+                url: "{{ route('IMBPecahan.index') }}",
                 data: function(d) {
                     d.kabupaten = $('#filter-kabupaten').val(); // ID kabupaten dari select2
                     d.kecamatan = $('#filter-kecamatan').val(); // ID kecamatan dari select2

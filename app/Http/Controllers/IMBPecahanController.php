@@ -104,9 +104,13 @@ class IMBPecahanController extends Controller
 
     public function importData(Request $request)
     {
-        // Performance settings
-        ini_set('max_execution_time', 0);
-        ini_set('memory_limit', '-1');
+        // Mengatur PHP untuk tidak ada batasan waktu eksekusi dan penggunaan memori
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
 
         $file = $request->file('file');
         $failures = [];

@@ -39,7 +39,7 @@ class SinkronisasiLokasiIMBController extends Controller
                             ['imb_induk_perum.kecamatan', '=', null],
                             ['imb_induk_perum.desa_kelurahan', '=', null]
                         ])
-                        ->select('imb_induk_perum.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan')->get();
+                        ->select('imb_induk_perum.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan');
                     break;
                 case 'pecahan':
                     $data = IMBPecahan::join('app_md_jeniskeg', 'imb_pecahan.jenis_kegiatan', '=', 'app_md_jeniskeg.id_jeniskeg')
@@ -48,7 +48,7 @@ class SinkronisasiLokasiIMBController extends Controller
                             ['imb_pecahan.kecamatan', '=', null],
                             ['imb_pecahan.desa_kelurahan', '=', null]
                         ])
-                        ->select('imb_pecahan.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan')->get();
+                        ->select('imb_pecahan.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan');
                     break;
                 case 'perluasan':
                     $data = IMBPerluasan::join('app_md_jeniskeg', 'imb_perluasan.jenis_kegiatan', '=', 'app_md_jeniskeg.id_jeniskeg')
@@ -56,7 +56,7 @@ class SinkronisasiLokasiIMBController extends Controller
                             ['imb_perluasan.kecamatan', '=', null],
                             ['imb_perluasan.desa_kelurahan', '=', null]
                         ])
-                        ->select('imb_perluasan.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan')->get();
+                        ->select('imb_perluasan.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan');
                     break;
 
                 case 'non_perum':
@@ -65,7 +65,7 @@ class SinkronisasiLokasiIMBController extends Controller
                             ['imb_induk_non_perum.kecamatan', '=', null],
                             ['imb_induk_non_perum.desa_kelurahan', '=', null]
                         ])
-                        ->select('imb_induk_non_perum.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan')->get();
+                        ->select('imb_induk_non_perum.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan');
                     break;
                 default:
                     # code...

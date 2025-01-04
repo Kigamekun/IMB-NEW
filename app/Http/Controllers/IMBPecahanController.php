@@ -29,7 +29,7 @@ class IMBPecahanController extends Controller
                 ->join('master_subdistrict', 'imb_pecahan.desa_kelurahan', '=', 'master_subdistrict.code')
                 ->select(
                     'imb_pecahan.id',
-                'imb_pecahan.imb_induk_id',
+                    'imb_pecahan.imb_induk_id',
                     'imb_pecahan.tgl_imb_induk',
                     'imb_pecahan.imb_pecahan',
                     'imb_pecahan.tgl_imb_pecahan',
@@ -44,7 +44,14 @@ class IMBPecahanController extends Controller
                     'imb_pecahan.no_blok',
                     'imb_pecahan.keterangan',
                     'imb_pecahan.scan_imb',
-                'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan', 'master_regency.name as kabupaten', 'master_regency.code as kabupaten_code', 'master_district.name as kecamatan', 'master_district.code as kecamatan_code', 'master_subdistrict.name as kelurahan', 'master_subdistrict.code as kelurahan_code');
+                    'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan',
+                    'master_regency.name as kabupaten',
+                    'master_regency.code as kabupaten_code',
+                    'master_district.name as kecamatan',
+                    'master_district.code as kecamatan_code',
+                    'master_subdistrict.name as kelurahan',
+                    'master_subdistrict.code as kelurahan_code'
+                );
 
 
             if ($request->has('kabupaten') && $request->kabupaten) {

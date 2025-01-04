@@ -11,7 +11,7 @@ class DataIMBTidaklengkapController extends Controller
     public function pecahan(Request $request)
     {
         if ($request->ajax()) {
-            $data = \DB::table('imb_pecahan')
+            $data = DB::table('imb_pecahan')
                 ->select('imb_pecahan.imb_induk_id', DB::raw('COUNT(*) as jumlah_pecahan_tanpa_relasi'))
                 ->leftJoin('imb_induk_perum', 'imb_pecahan.imb_induk_id', '=', 'imb_induk_perum.imb_induk')
                 ->leftJoin('imb_induk_non_perum', 'imb_pecahan.imb_induk_id', '=', 'imb_induk_non_perum.imb_induk')
@@ -39,10 +39,10 @@ class DataIMBTidaklengkapController extends Controller
         }
 
         // Fetching options from both imb_induk_perum and imb_induk_non_perum
-        $imbIndukOptions = \DB::table('imb_induk_perum')
+        $imbIndukOptions = DB::table('imb_induk_perum')
             ->select('imb_induk')
             ->union(
-                \DB::table('imb_induk_non_perum')
+                DB::table('imb_induk_non_perum')
                     ->select('imb_induk')
             )
             ->get();
@@ -53,7 +53,7 @@ class DataIMBTidaklengkapController extends Controller
     public function perluasan(Request $request)
     {
         if ($request->ajax()) {
-            $data = \DB::table('imb_perluasan')
+            $data = DB::table('imb_perluasan')
                 ->select('imb_perluasan.imb_pecahan', DB::raw('COUNT(*) as jumlah_perluasan_tanpa_relasi'))
                 ->leftJoin('imb_pecahan', 'imb_perluasan.imb_pecahan', '=', 'imb_pecahan.imb_pecahan')
                 ->whereNull('imb_pecahan.imb_pecahan')
@@ -76,7 +76,7 @@ class DataIMBTidaklengkapController extends Controller
                 ->make(true);
         }
 
-        $imbIndukOptions = \DB::table('imb_induk_perum')
+        $imbIndukOptions = DB::table('imb_induk_perum')
             ->select('imb_induk_perum.imb_induk')
             ->get();
         return view('IMBTidakLengkap.perluasan', compact('imbIndukOptions'));

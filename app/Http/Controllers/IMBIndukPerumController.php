@@ -19,24 +19,25 @@ class IMBIndukPerumController extends Controller
     {
         if ($request->ajax()) {
             $query = IMBIndukPerum::join('app_md_jeniskeg', 'imb_induk_perum.jenis_kegiatan', '=', 'app_md_jeniskeg.id_jeniskeg')
-            ->join('master_regency', 'imb_induk_perum.kabupaten', '=', 'master_regency.code')
-            ->join('master_district', 'imb_induk_perum.kecamatan', '=', 'master_district.code')
-            ->join('master_subdistrict', 'imb_induk_perum.desa_kelurahan', '=', 'master_subdistrict.code')
-            ->select(
+                ->join('master_regency', 'imb_induk_perum.kabupaten', '=', 'master_regency.code')
+                ->join('master_district', 'imb_induk_perum.kecamatan', '=', 'master_district.code')
+                ->join('master_subdistrict', 'imb_induk_perum.desa_kelurahan', '=', 'master_subdistrict.code')
+                ->select(
 
-                'imb_induk_perum.id',
-                'imb_induk_perum.imb_induk',
-                'imb_induk_perum.tgl_imb_induk',
-                'imb_induk_perum.no_register',
-                'imb_induk_perum.tgl_register',
-                'imb_induk_perum.nama',
-                'imb_induk_perum.atas_nama',
-                'imb_induk_perum.lokasi_perumahan',
-                     'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan',
-                     'master_regency.name as kabupaten',
-                     'master_regency.code as kabupaten_code',
-                     'master_district.name as kecamatan',
-                     'master_subdistrict.name as kelurahan');
+                    'imb_induk_perum.id',
+                    'imb_induk_perum.imb_induk',
+                    'imb_induk_perum.tgl_imb_induk',
+                    'imb_induk_perum.no_register',
+                    'imb_induk_perum.tgl_register',
+                    'imb_induk_perum.nama',
+                    'imb_induk_perum.atas_nama',
+                    'imb_induk_perum.lokasi_perumahan',
+                    'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan',
+                    'master_regency.name as kabupaten',
+                    'master_regency.code as kabupaten_code',
+                    'master_district.name as kecamatan',
+                    'master_subdistrict.name as kelurahan'
+                );
 
             // Filter berdasarkan kabupaten
             if ($request->has('kabupaten') && $request->kabupaten) {
@@ -74,8 +75,8 @@ class IMBIndukPerumController extends Controller
     public function create()
     {
         $data = IMBIndukPerum::join('master_district', 'imb_induk_perum.kecamatan', '=', 'master_district.code')
-        ->select('imb_induk_perum.kabupaten', 'master_district.name as kecamatan', 'master_district.name as desa_kelurahan')
-        ->get();
+            ->select('imb_induk_perum.kabupaten', 'master_district.name as kecamatan', 'master_district.name as desa_kelurahan')
+            ->get();
 
         return view('IMBIndukPerum.create', compact('data'));
     }
@@ -123,25 +124,25 @@ class IMBIndukPerumController extends Controller
                     ->pluck('code')
                     ->first();
                 if (!$regency) {
-                        $regency = 1;
-                        $failures[] = [
-                            'message' => 'Kabupaten ' . $line["Kabupaten / Kota"] . ' tidak ditemukan',
-                            'baris' => $baris,
-                        ];
-                        $imbInduk = IMBIndukPerum::create([
-                            'imb_induk' => $line["IMB Induk"],
-                            'tgl_imb_induk' => date('Y-m-d', strtotime($line["Tgl. IMB Induk"])),
-                            'no_register' => $line["No. Register"],
-                            'tgl_register' => $line["Tgl. Register"] != '' ? date('Y-m-d', strtotime($line["Tgl. Register"])) : null,
-                            'nama' => $line["Nama"],
-                            'atas_nama' => $line["Atas Nama"],
-                            'lokasi_perumahan' => $line["Lokasi / Perumahan"],
-                            'kabupaten_lama' => $line["Kabupaten / Kota"],
-                            'kecamatan_lama' => $line["Kecamatan"],
-                            'kelurahan_lama' => $line["Desa / Kelurahan"],
-                        ]);
-                        $tanda = 0;
-                        // return;
+                    $regency = 1;
+                    $failures[] = [
+                        'message' => 'Kabupaten ' . $line["Kabupaten / Kota"] . ' tidak ditemukan',
+                        'baris' => $baris,
+                    ];
+                    $imbInduk = IMBIndukPerum::create([
+                        'imb_induk' => $line["IMB Induk"],
+                        'tgl_imb_induk' => date('Y-m-d', strtotime($line["Tgl. IMB Induk"])),
+                        'no_register' => $line["No. Register"],
+                        'tgl_register' => $line["Tgl. Register"] != '' ? date('Y-m-d', strtotime($line["Tgl. Register"])) : null,
+                        'nama' => $line["Nama"],
+                        'atas_nama' => $line["Atas Nama"],
+                        'lokasi_perumahan' => $line["Lokasi / Perumahan"],
+                        'kabupaten_lama' => $line["Kabupaten / Kota"],
+                        'kecamatan_lama' => $line["Kecamatan"],
+                        'kelurahan_lama' => $line["Desa / Kelurahan"],
+                    ]);
+                    $tanda = 0;
+                    // return;
                 }
 
                 // $rowSubdistrict = strtolower($line["Desa / Kelurahan"]);
@@ -243,18 +244,18 @@ class IMBIndukPerumController extends Controller
                         $jenis_kegiatan_array = [];
                     }
 
-                        $imbInduk = IMBIndukPerum::create([
-                            'imb_induk' => $line["IMB Induk"],
-                            'tgl_imb_induk' => date('Y-m-d', strtotime($line["Tgl. IMB Induk"])),
-                            'no_register' => $line["No. Register"],
-                            'tgl_register' => $line["Tgl. Register"] != '' ? date('Y-m-d', strtotime($line["Tgl. Register"])) : null,
-                            'nama' => $line["Nama"],
-                            'atas_nama' => $line["Atas Nama"],
-                            'lokasi_perumahan' => $line["Lokasi / Perumahan"],
-                            'kabupaten' => $regency,
-                            'kecamatan' => $village->district_code,
-                            'desa_kelurahan' => $village->code,
-                        ]);
+                    $imbInduk = IMBIndukPerum::create([
+                        'imb_induk' => $line["IMB Induk"],
+                        'tgl_imb_induk' => date('Y-m-d', strtotime($line["Tgl. IMB Induk"])),
+                        'no_register' => $line["No. Register"],
+                        'tgl_register' => $line["Tgl. Register"] != '' ? date('Y-m-d', strtotime($line["Tgl. Register"])) : null,
+                        'nama' => $line["Nama"],
+                        'atas_nama' => $line["Atas Nama"],
+                        'lokasi_perumahan' => $line["Lokasi / Perumahan"],
+                        'kabupaten' => $regency,
+                        'kecamatan' => $village->district_code,
+                        'desa_kelurahan' => $village->code,
+                    ]);
 
                     if (!in_array($line["Jenis Kegiatan"], $jenis_kegiatan_array)) {
                         $jenis_kegiatan_array[] = $line["Jenis Kegiatan"];
@@ -617,7 +618,7 @@ class IMBIndukPerumController extends Controller
             ->join('master_regency', 'imb_induk_perum.kabupaten', '=', 'master_regency.code')
             ->join('master_district', 'imb_induk_perum.kecamatan', '=', 'master_district.code')
             ->join('master_subdistrict', 'imb_induk_perum.desa_kelurahan', '=', 'master_subdistrict.code')
-            ->select('imb_induk_perum.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan', 'master_regency.name as kabupaten' , 'master_regency.code as kabupaten_code' , 'master_district.name as kecamatan', 'master_district.code as kecamatan_code', 'master_subdistrict.name as kelurahan', 'master_subdistrict.code as kelurahan_code')
+            ->select('imb_induk_perum.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan', 'master_regency.name as kabupaten', 'master_regency.code as kabupaten_code', 'master_district.name as kecamatan', 'master_district.code as kecamatan_code', 'master_subdistrict.name as kelurahan', 'master_subdistrict.code as kelurahan_code')
             ->where('imb_induk_perum.id', $id)->first();
         $item = IMBItem::where('induk_perum_id', $id)->get();
         return view('IMBIndukPerum.edit', compact('data', 'item'));

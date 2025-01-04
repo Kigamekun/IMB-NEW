@@ -1,8 +1,6 @@
 server {
     listen 80;
     server_name simpol.hastasejahtera.online;
-
-    # Redirect HTTP to HTTPS
     return 301 https://$host$request_uri;
 }
 
@@ -15,30 +13,35 @@ server {
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_prefer_server_ciphers on;
 
+    root /var/www/html/simpol.id;
+
+    # Default location
+    location / {
+        return 404;
+    }
+
     # Route for IMB Laravel application
     location /imb {
-        root /var/www/html/simpol.id/IMB/public;
-        index index.php index.html;
-        try_files $uri $uri/ /index.php?$query_string;
+        alias /var/www/html/simpol.id/IMB/public;
+        try_files $uri $uri/ /imb/index.php?$query_string;
 
         location ~ \.php$ {
             include snippets/fastcgi-php.conf;
             fastcgi_pass unix:/run/php/php8.2-fpm.sock;
-            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            fastcgi_param SCRIPT_FILENAME $request_filename;
             include fastcgi_params;
         }
     }
 
     # Route for Simpol PHP application
     location /simpol {
-        root /var/www/html/simpol.id/simpol;
-        index index.php index.html;
-        try_files $uri $uri/ /index.php?$query_string;
+        alias /var/www/html/simpol.id/simpol;
+        try_files $uri $uri/ /simpol/index.php?$query_string;
 
         location ~ \.php$ {
             include snippets/fastcgi-php.conf;
             fastcgi_pass unix:/run/php/php8.2-fpm.sock;
-            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            fastcgi_param SCRIPT_FILENAME $request_filename;
             include fastcgi_params;
         }
     }

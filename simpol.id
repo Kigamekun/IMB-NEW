@@ -1,0 +1,50 @@
+server {
+    listen 80;
+    server_name simpol.hastasejahtera.online;
+
+    # Redirect HTTP to HTTPS
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name simpol.hastasejahtera.online;
+
+    ssl_certificate /etc/letsencrypt/live/simpol.hastasejahtera.online/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/simpol.hastasejahtera.online/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers on;
+
+    # Route for IMB Laravel application
+    location /imb {
+        root /var/www/html/simpol.id/IMB/public;
+        index index.php index.html;
+        try_files $uri $uri/ /index.php?$query_string;
+
+        location ~ \.php$ {
+            include snippets/fastcgi-php.conf;
+            fastcgi_pass unix:/run/php/php8.2-fpm.sock;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            include fastcgi_params;
+        }
+    }
+
+    # Route for Simpol PHP application
+    location /simpol {
+        root /var/www/html/simpol.id/simpol;
+        index index.php index.html;
+        try_files $uri $uri/ /index.php?$query_string;
+
+        location ~ \.php$ {
+            include snippets/fastcgi-php.conf;
+            fastcgi_pass unix:/run/php/php8.2-fpm.sock;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            include fastcgi_params;
+        }
+    }
+
+    # Deny access to .htaccess files
+    location ~ /\.ht {
+        deny all;
+    }
+}

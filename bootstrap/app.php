@@ -16,7 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
 
         $middleware->append(CheckSSO::class);
-        // $middleware->append(ForceHttps::class);
+        $middleware->append(ForceHttps::class);
         $middleware->append(FrameHeadersMiddleware::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {

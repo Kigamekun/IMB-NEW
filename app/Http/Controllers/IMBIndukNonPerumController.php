@@ -539,6 +539,12 @@ class IMBIndukNonPerumController extends Controller
 
     public function exportData()
     {
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
         try {
             return Excel::download(new IMBIndukNonPerumExport, 'IMBIndukNonPerum' . Carbon::now()->timestamp . '.xlsx');
         } catch (\Throwable $th) {

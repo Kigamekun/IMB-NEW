@@ -74,7 +74,7 @@ sudo a2enmod rewrite
 # Set correct permissions
 echo "Setting permissions..."
 sudo chown -R www-data:www-data /var/www/html/simpol.id
-sudo chmod -R 755 /var/www/html/simpol.id
+sudo chmod -R 777 /var/www/html/simpol.id
 
 # Create Laravel .htaccess file
 echo "Creating Laravel .htaccess..."

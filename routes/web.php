@@ -165,6 +165,7 @@ Route::get('/chart-simpol-data', function (Request $request) {
                 ->get();
             break;
 
+
         default: // Jika jenis = 'all'
             $imbInduk = DB::table('imb_induk_perum')
                 ->select(DB::raw('MONTH(tgl_imb_induk) as bulan'), DB::raw('COUNT(*) as jumlah'))

@@ -92,8 +92,10 @@ class IMBPerluasanExport implements ShouldAutoSize, FromCollection, WithCustomSt
             ->get();
 
         $numberedData = $data->map(function ($item, $index) {
-            // $item->no = $index + 1; // Start from 1
-            return (array) $item;
+            $item = (array) $item;
+            unset($item['id']);
+            // dd($item);
+            return array_merge(['NO' => $index + 1], (array) $item);
         });
 
         return collect($numberedData);

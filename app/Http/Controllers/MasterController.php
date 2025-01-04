@@ -122,7 +122,7 @@ class MasterController extends Controller
         $pageSize = 10;
 
         $query = DB::table('master_subdistrict')
-            ->select('code', 'name');
+            ->select('code', 'name', 'district_code');
 
         // Filter by kecamatan_id if provided
         if ($kecamatanId) {
@@ -142,6 +142,7 @@ class MasterController extends Controller
         return response()->json([
             'items' => $results->map(function ($item) {
                 return [
+                    'kecamatan' => $item->district_code,
                     'id' => $item->code,
                     'text' => $item->name
                 ];

@@ -1480,24 +1480,79 @@ class RekapController extends Controller
     }
 
     // Rekap 3.2
+    // public function RekapLokasiPertahun(Request $request)
+    // {
+    //     $year = $request->input('year');
+    //     $kabupaten = $request->input('kabupaten');
+    //     $kecamatan = $request->input('kecamatan');
+    //     $kelurahan = $request->input('kelurahan');
+    //     $data = [];
+
+    //     if ($year) {
+    //         $startDate = "{$year}-01-01";
+    //         $endDate = "{$year}-12-31";
+
+    //         $data = DB::select("
+    //             SELECT
+    //                 base.kecamatan,
+    //                 base.desa_kelurahan,
+    //                 YEAR(base.tgl_register) AS tahun,
+    //                 COUNT(DISTINCT imb_induk_perum.id) AS imb_induk_perum,
+    //                 COUNT(DISTINCT imb_pecahan.id) AS imb_pecahan,
+    //                 COUNT(DISTINCT imb_perluasan.id) AS imb_perluasan,
+    //                 -- IMB Non Perumahan dengan klasifikasi berdasarkan jenis
+    //                 COUNT(DISTINCT CASE WHEN imb_induk_non_perum.jenis = 1 THEN imb_induk_non_perum.id END) AS imb_non_perusahaan,
+    //                 COUNT(DISTINCT CASE WHEN imb_induk_non_perum.jenis = 2 THEN imb_induk_non_perum.id END) AS imb_non_perorangan,
+    //                 COUNT(DISTINCT CASE WHEN imb_induk_non_perum.jenis = 3 THEN imb_induk_non_perum.id END) AS imb_non_sosial_budaya,
+    //                 COUNT(DISTINCT CASE WHEN imb_induk_non_perum.jenis = 4 THEN imb_induk_non_perum.id END) AS imb_pemutihan,
+    //                 COUNT(DISTINCT CASE WHEN imb_induk_non_perum.jenis = 5 THEN imb_induk_non_perum.id END) AS imb_bersyarat,
+    //                 COUNT(DISTINCT CASE WHEN imb_induk_non_perum.jenis = 6 THEN imb_induk_non_perum.id END) AS imb_lainnya,
+    //                 (
+    //                     COUNT(DISTINCT imb_induk_perum.id) +
+    //                     COUNT(DISTINCT imb_pecahan.id) +
+    //                     COUNT(DISTINCT imb_perluasan.id) +
+    //                     COUNT(DISTINCT imb_induk_non_perum.id)
+    //                 ) AS jumlah_imb
+    //             FROM
+    //                 (
+    //                     SELECT kecamatan, desa_kelurahan, tgl_register FROM imb_induk_perum WHERE tgl_register BETWEEN ? AND ?
+    //                     UNION ALL
+    //                     SELECT kecamatan, desa_kelurahan, tgl_register FROM imb_pecahan WHERE tgl_register BETWEEN ? AND ?
+    //                     UNION ALL
+    //                     SELECT kecamatan, desa_kelurahan, tgl_register FROM imb_perluasan WHERE tgl_register BETWEEN ? AND ?
+    //                     UNION ALL
+    //                     SELECT kecamatan, desa_kelurahan, tgl_register FROM imb_induk_non_perum WHERE tgl_register BETWEEN ? AND ?
+    //                 ) AS base
+    //             LEFT JOIN imb_induk_perum ON base.kecamatan = imb_induk_perum.kecamatan AND base.desa_kelurahan = imb_induk_perum.desa_kelurahan
+    //             LEFT JOIN imb_pecahan ON base.kecamatan = imb_pecahan.kecamatan AND base.desa_kelurahan = imb_pecahan.desa_kelurahan
+    //             LEFT JOIN imb_perluasan ON base.kecamatan = imb_perluasan.kecamatan AND base.desa_kelurahan = imb_perluasan.desa_kelurahan
+    //             LEFT JOIN imb_induk_non_perum ON base.kecamatan = imb_induk_non_perum.kecamatan AND base.desa_kelurahan = imb_induk_non_perum.desa_kelurahan
+    //             GROUP BY base.kecamatan, base.desa_kelurahan, YEAR(base.tgl_register)
+    //             ORDER BY base.kecamatan, base.desa_kelurahan, tahun;
+    //         ", [$startDate, $endDate, $startDate, $endDate, $startDate, $endDate, $startDate, $endDate]);
+    //     }
+
+    //     return view('rekap.rekap-imb-pertahun.rekap-lokasi', compact('data', 'year'));
+    // }
     public function RekapLokasiPertahun(Request $request)
     {
         $year = $request->input('year');
+        $kabupaten = $request->input('kabupaten');
+        $kecamatan = $request->input('kecamatan');
+        $kelurahan = $request->input('kelurahan');
         $data = [];
+        $bindings = [];
 
-        if ($year) {
-            $startDate = "{$year}-01-01";
-            $endDate = "{$year}-12-31";
-
-            $data = DB::select("
+        if ($request && ($year || $kabupaten || $kecamatan || $kelurahan)) {
+        $sql = "
                 SELECT
+                    base.kabupaten,
                     base.kecamatan,
                     base.desa_kelurahan,
                     YEAR(base.tgl_register) AS tahun,
                     COUNT(DISTINCT imb_induk_perum.id) AS imb_induk_perum,
                     COUNT(DISTINCT imb_pecahan.id) AS imb_pecahan,
                     COUNT(DISTINCT imb_perluasan.id) AS imb_perluasan,
-                    -- IMB Non Perumahan dengan klasifikasi berdasarkan jenis
                     COUNT(DISTINCT CASE WHEN imb_induk_non_perum.jenis = 1 THEN imb_induk_non_perum.id END) AS imb_non_perusahaan,
                     COUNT(DISTINCT CASE WHEN imb_induk_non_perum.jenis = 2 THEN imb_induk_non_perum.id END) AS imb_non_perorangan,
                     COUNT(DISTINCT CASE WHEN imb_induk_non_perum.jenis = 3 THEN imb_induk_non_perum.id END) AS imb_non_sosial_budaya,
@@ -1512,39 +1567,83 @@ class RekapController extends Controller
                     ) AS jumlah_imb
                 FROM
                     (
-                        SELECT kecamatan, desa_kelurahan, tgl_register FROM imb_induk_perum WHERE tgl_register BETWEEN ? AND ?
+                        SELECT kabupaten, kecamatan, desa_kelurahan, tgl_register FROM imb_induk_perum WHERE tgl_register BETWEEN ? AND ?
                         UNION ALL
-                        SELECT kecamatan, desa_kelurahan, tgl_register FROM imb_pecahan WHERE tgl_register BETWEEN ? AND ?
+                        SELECT kabupaten, kecamatan, desa_kelurahan, tgl_register FROM imb_pecahan WHERE tgl_register BETWEEN ? AND ?
                         UNION ALL
-                        SELECT kecamatan, desa_kelurahan, tgl_register FROM imb_perluasan WHERE tgl_register BETWEEN ? AND ?
+                        SELECT kabupaten, kecamatan, desa_kelurahan, tgl_register FROM imb_perluasan WHERE tgl_register BETWEEN ? AND ?
                         UNION ALL
-                        SELECT kecamatan, desa_kelurahan, tgl_register FROM imb_induk_non_perum WHERE tgl_register BETWEEN ? AND ?
+                        SELECT kabupaten, kecamatan, desa_kelurahan, tgl_register FROM imb_induk_non_perum WHERE tgl_register BETWEEN ? AND ?
                     ) AS base
-                LEFT JOIN imb_induk_perum ON base.kecamatan = imb_induk_perum.kecamatan AND base.desa_kelurahan = imb_induk_perum.desa_kelurahan
-                LEFT JOIN imb_pecahan ON base.kecamatan = imb_pecahan.kecamatan AND base.desa_kelurahan = imb_pecahan.desa_kelurahan
-                LEFT JOIN imb_perluasan ON base.kecamatan = imb_perluasan.kecamatan AND base.desa_kelurahan = imb_perluasan.desa_kelurahan
-                LEFT JOIN imb_induk_non_perum ON base.kecamatan = imb_induk_non_perum.kecamatan AND base.desa_kelurahan = imb_induk_non_perum.desa_kelurahan
-                GROUP BY base.kecamatan, base.desa_kelurahan, YEAR(base.tgl_register)
-                ORDER BY base.kecamatan, base.desa_kelurahan, tahun;
-            ", [$startDate, $endDate, $startDate, $endDate, $startDate, $endDate, $startDate, $endDate]);
+                LEFT JOIN imb_induk_perum ON base.kabupaten = imb_induk_perum.kabupaten AND base.kecamatan = imb_induk_perum.kecamatan AND base.desa_kelurahan = imb_induk_perum.desa_kelurahan
+                LEFT JOIN imb_pecahan ON base.kabupaten = imb_pecahan.kabupaten AND base.kecamatan = imb_pecahan.kecamatan AND base.desa_kelurahan = imb_pecahan.desa_kelurahan
+                LEFT JOIN imb_perluasan ON base.kabupaten = imb_perluasan.kabupaten AND base.kecamatan = imb_perluasan.kecamatan AND base.desa_kelurahan = imb_perluasan.desa_kelurahan
+                LEFT JOIN imb_induk_non_perum ON base.kabupaten = imb_induk_non_perum.kabupaten AND base.kecamatan = imb_induk_non_perum.kecamatan AND base.desa_kelurahan = imb_induk_non_perum.desa_kelurahan
+                WHERE 1 = 1
+            ";
+
+            if ($year) {
+                $startDate = "{$year}-01-01";
+                $endDate = "{$year}-12-31";
+
+                // Array untuk parameter binding
+                $bindings = [$startDate, $endDate, $startDate, $endDate, $startDate, $endDate, $startDate, $endDate];
+            } else {
+                $startDate = "1000-01-01";
+                $endDate = "3000-01-01";
+
+                $bindings = [$startDate, $endDate, $startDate, $endDate, $startDate, $endDate, $startDate, $endDate];
+            }
+            if ($kabupaten) {
+                $sql .= " AND base.kabupaten = ?";
+                $bindings[] = DB::table('master_regency')->where('name', $kabupaten)->value('code');
+            }
+            if ($kecamatan) {
+                $sql .= " AND base.kecamatan = ?";
+                $bindings[] = DB::table('master_district')->where('name', $kecamatan)->value('code');
+            }
+            if ($kelurahan) {
+                $sql .= " AND base.desa_kelurahan = ?";
+                $bindings[] = DB::table('master_subdistrict')->where('code', $kelurahan)->value('code');
+            }
+
+            $sql .= "
+            GROUP BY base.kabupaten, base.kecamatan, base.desa_kelurahan, YEAR(base.tgl_register)
+            ORDER BY base.kabupaten, base.kecamatan, base.desa_kelurahan, tahun;
+            ";
+
+            // dd($data);
+            // Eksekusi query
+            $data = DB::select($sql, $bindings);
         }
 
-        return view('rekap.rekap-imb-pertahun.rekap-lokasi', compact('data', 'year'));
+        return view('rekap.rekap-imb-pertahun.rekap-lokasi', compact('data'));
     }
+
 
     // Rekap 4.2
     public function RekapUnitFungsiDanLokasiPertahun(Request $request)
     {
         $year = $request->input('year');
+        $kabupaten = $request->input('kabupaten');
+        $kecamatan = $request->input('kecamatan');
+        $kelurahan = $request->input('kelurahan');
         $data = [];
+        $bindings = [];
 
-        if ($year) {
-            $startDate = "{$year}-01-01";
-            $endDate = "{$year}-12-31";
+        if ($request && ($year || $kabupaten || $kecamatan || $kelurahan)) {
+            if ($year) {
+                $startDate = "{$year}-01-01";
+                $endDate = "{$year}-12-31";
+            } else {
+                $startDate = "1000-01-01";
+                $endDate = "3000-01-01";
+            }
 
-            $data = DB::table(function ($query) use ($startDate, $endDate) {
+            $data = DB::table(function ($query) use ($startDate, $endDate, $kabupaten, $kecamatan, $kelurahan) {
                 $query->selectRaw('
                     YEAR(tgl_imb_induk) as tahun,
+                    imb_induk_perum.kabupaten,
                     imb_induk_perum.kecamatan,
                     imb_induk_perum.desa_kelurahan,
                     COUNT(DISTINCT imb_induk_perum.id) as imb_induk_perumahan,
@@ -1577,11 +1676,12 @@ class RekapController extends Controller
                     ->from('imb_induk_perum')
                     ->leftJoin('item_imb_induk_perum', 'imb_induk_perum.id', '=', 'item_imb_induk_perum.induk_perum_id')
                     ->whereBetween('tgl_imb_induk', [$startDate, $endDate])
-                    ->groupByRaw('YEAR(tgl_imb_induk), imb_induk_perum.kecamatan, imb_induk_perum.desa_kelurahan')
+                    ->groupByRaw('YEAR(tgl_imb_induk), imb_induk_perum.kabupaten, imb_induk_perum.kecamatan, imb_induk_perum.desa_kelurahan')
                     ->unionAll(
                         DB::table('imb_pecahan')
                             ->selectRaw('
                             YEAR(tgl_imb_induk) as tahun,
+                            imb_pecahan.kabupaten,
                             imb_pecahan.kecamatan,
                             imb_pecahan.desa_kelurahan,
                             0 as imb_induk_perumahan, 0 as unit_induk_perumahan,
@@ -1605,12 +1705,13 @@ class RekapController extends Controller
                             SUM(CASE WHEN fungsi_bangunan = 3 THEN 1 ELSE 0 END) as campuran_unit
                         ')
                         ->whereBetween('tgl_imb_pecahan', [$startDate, $endDate])
-                            ->groupByRaw('YEAR(tgl_imb_induk), imb_pecahan.kecamatan, imb_pecahan.desa_kelurahan')
+                            ->groupByRaw('YEAR(tgl_imb_induk), imb_pecahan.kabupaten, imb_pecahan.kecamatan, imb_pecahan.desa_kelurahan')
                     )
                     ->unionAll(
                         DB::table('imb_perluasan')
                             ->selectRaw('
                             YEAR(tgl_imb_perluasan) as tahun,
+                            imb_perluasan.kabupaten,
                             imb_perluasan.kecamatan,
                             imb_perluasan.desa_kelurahan,
                             0 as imb_induk_perumahan, 0 as unit_induk_perumahan,
@@ -1635,12 +1736,13 @@ class RekapController extends Controller
                         ')
                         ->whereBetween('tgl_imb_perluasan', [$startDate, $endDate])
 
-                            ->groupByRaw('YEAR(tgl_imb_perluasan), imb_perluasan.kecamatan, imb_perluasan.desa_kelurahan')
+                            ->groupByRaw('YEAR(tgl_imb_perluasan), imb_perluasan.kabupaten, imb_perluasan.kecamatan, imb_perluasan.desa_kelurahan')
                     )
                     ->unionAll(
                         DB::table('imb_induk_non_perum')
                             ->selectRaw('
                             YEAR(tgl_imb_induk) as tahun,
+                            imb_induk_non_perum.kabupaten,
                             imb_induk_non_perum.kecamatan,
                             imb_induk_non_perum.desa_kelurahan,
                             0 as imb_induk_perumahan, 0 as unit_induk_perumahan,
@@ -1672,11 +1774,12 @@ class RekapController extends Controller
                             ->leftJoin('item_imb_induk_non_perum', 'imb_induk_non_perum.id', '=', 'item_imb_induk_non_perum.induk_perum_id')
                         ->whereBetween('tgl_imb_induk', [$startDate, $endDate])
 
-                            ->groupByRaw('YEAR(tgl_imb_induk), imb_induk_non_perum.kecamatan, imb_induk_non_perum.desa_kelurahan')
+                            ->groupByRaw('YEAR(tgl_imb_induk), imb_induk_non_perum.kabupaten, imb_induk_non_perum.kecamatan, imb_induk_non_perum.desa_kelurahan')
                     );
             })
                 ->selectRaw('
                 tahun,
+                kabupaten,
                 kecamatan,
                 desa_kelurahan,
                 SUM(imb_induk_perumahan) as imb_induk_perumahan,
@@ -1708,20 +1811,25 @@ class RekapController extends Controller
                 SUM(campuran_imb) as campuran_imb,
                 SUM(campuran_unit) as campuran_unit
             ')
-                ->groupBy('tahun', 'kecamatan', 'desa_kelurahan')
+                ->when($kabupaten, function ($query, $kabupaten) {
+                    return $query->where('kabupaten', DB::table('master_regency')->where('name', $kabupaten)->value('code'));
+                })
+                ->when($kecamatan, function ($query, $kecamatan) {
+                    // dd(DB::table('master_district')->where('name', $kecamatan)->value('code'));
+                    return $query->where('kecamatan', DB::table('master_district')->where('name', $kecamatan)->value('code'));
+                })
+                ->when($kelurahan, function ($query, $kelurahan) {
+                    // dd($kelurahan);
+                    // dd(DB::table('master_subdistrict')->where('code', $kelurahan)->value('code'));
+                    return $query->where('desa_kelurahan', DB::table('master_subdistrict')->where('code', $kelurahan)->value('code'));
+                })
+                ->groupBy('tahun', 'kabupaten', 'kecamatan', 'desa_kelurahan')
                 ->orderBy('tahun', 'DESC')
                 ->get();
 
-    }
+        }
         return view('rekap.rekap-imb-pertahun.rekap-unit-fungsi-dan-lokasi', compact('data'));
     }
-
-
-
-
-
-
-
 
     // Rekap 4.1
     public function RekapSKIMBGPerbulan()

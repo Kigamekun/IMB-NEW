@@ -7,7 +7,6 @@ use App\Models\IMBPerluasan;
 use Illuminate\Http\Request;
 use \Yajra\DataTables\DataTables;
 use App\Exports\IMBPerluasanExport;
-use App\Models\IMBPecahan;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -153,7 +152,7 @@ class IMBPerluasanController extends Controller
             ->select('imb_perluasan.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan', 'master_regency.name as kabupaten' , 'master_regency.code as kabupaten_code', 'master_district.name as kecamatan', 'master_district.code as kecamatan_code', 'master_subdistrict.name as kelurahan', 'master_subdistrict.code as kelurahan_code')
             ->where('imb_perluasan.id', $id)->first();
 
-        $imbPecahan = IMBPecahan::where('imb_pecahan', $data->imb_pecahan)->first();
+        $imbPecahan = IMBPerluasan::where('imb_pecahan', $data->imb_pecahan)->first();
 
 
         return view('IMBPerluasan.edit', compact('data', 'imbPecahan'));
@@ -491,7 +490,7 @@ class IMBPerluasanController extends Controller
                 $regency = $locationCache['regencies'][$rowRegency] ?? null;
 
                 if (!$regency) {
-                    IMBPecahan::create([
+                    IMBPerluasan::create([
                     'imb_pecahan' => $line['No. IMB Lama'],
                     'tgl_imb_pecahan' => date('Y-m-d', strtotime($line['Tgl. IMB Lama'])),
                     'imb_perluasan' => $line['No. IMB Perluasan'],
@@ -503,9 +502,9 @@ class IMBPerluasanController extends Controller
                     'jenis_kegiatan' => $jenisKegiatanList[$rowJenisKegiatan] ?? null,
                         'fungsi_bangunan' => $fungsiBangunanList[$rowFungsiBangunan] ?? null,
                     'lokasi_perumahan' => $line['Lokasi / Perumahan'],
-                    'kabupaten' => $regency,
-                    'kecamatan' => $village->district_code,
-                    'desa_kelurahan' => $village->code,
+                    'kabupaten_lama' => $line['Kabupaten / Kota'],
+                    'kecamatan_lama' => $line['Kecamatan'],
+                    'kelurahan_lama' => $line['Desa / Kelurahan'],
                     'type' => $line['Type'],
                     'luas_bangunan_lama' => $line['Luas Bangunan Lama'] == '' ? null : $line['Luas Bangunan Lama'],
                     'luas_bangunan_perluasan' => $line['Luas Bangunan Perluasan'] == '' ? null : $line['Luas Bangunan Perluasan'],
@@ -523,7 +522,7 @@ class IMBPerluasanController extends Controller
                 $district = $districts->first(fn($d) => strtolower($d->name) === $rowDistrict);
 
                 if (!$district) {
-                    IMBPecahan::create([
+                    IMBPerluasan::create([
                         'imb_induk_id' => $line['No. IMB Induk'],
                         'tgl_imb_induk' => null,
                         'imb_pecahan' => $line['No. IMB Pecahan / Rincikan'],
@@ -556,7 +555,7 @@ class IMBPerluasanController extends Controller
                 $village = $subdistricts->first(fn($s) => strtolower($s->name) === $rowSubdistrict);
 
                 if (!$village) {
-                    IMBPecahan::create([
+                    IMBPerluasan::create([
                         'imb_induk_id' => $line['No. IMB Induk'],
                         'tgl_imb_induk' => null,
                         'imb_pecahan' => $line['No. IMB Pecahan / Rincikan'],
@@ -594,8 +593,8 @@ class IMBPerluasanController extends Controller
                     'tgl_register' => date('Y-m-d', strtotime($line['Tgl. Register'])),
                     'nama' => $line['Nama'],
                     'atas_nama' => $line['Atas Nama'],
-                    'jenis_kegiatan' => $jenis_kegiatan,
-                    'fungsi_bangunan' => $fungsi_bangunan,
+                   'jenis_kegiatan' => $jenisKegiatanList[$rowJenisKegiatan] ?? null,
+                    'fungsi_bangunan' => $fungsiBangunanList[$rowFungsiBangunan] ?? null,
                     'lokasi_perumahan' => $line['Lokasi / Perumahan'],
                     'kabupaten' => $regency,
                     'kecamatan' => $village->district_code,
@@ -612,7 +611,7 @@ class IMBPerluasanController extends Controller
 
                 // Batch insert when reaching batch size
                 if (count($records) >= $batchSize) {
-                    IMBPecahan::insert($records);
+                    IMBPerluasan::insert($records);
                     $records = [];
                 }
 
@@ -621,7 +620,7 @@ class IMBPerluasanController extends Controller
 
             // Insert remaining records
             if (!empty($records)) {
-                IMBPecahan::insert($records);
+                IMBPerluasan::insert($records);
             }
 
             DB::commit();

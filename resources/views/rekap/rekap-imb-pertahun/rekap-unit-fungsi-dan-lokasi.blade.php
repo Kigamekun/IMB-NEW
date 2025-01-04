@@ -31,6 +31,30 @@
                                         placeholder="Tahun" value="{{ request('year') }}" />
                                 </div>
                                 <div>
+                                    <select value="" name="kabupaten" class="form-control select2" id="kabupaten" value="{{ request('kabupaten') }}">
+                                        @if (request('kabupaten'))
+                                            <option value="{{ DB::table('master_regency')->where('name', request('kabupaten'))->value('name') }}" selected >{{ DB::table('master_regency')->where('name', request('kabupaten'))->value('name') }}</option>
+                                            {{-- <script>
+                                                loadKecamatan('{{ DB::table('master_regency')->where('name', request('kabupaten'))->value('code') }}')
+                                            </script> --}}
+                                        @endif
+                                    </select>
+                                </div>
+                                <div>
+                                    <select value="" name="kecamatan" class="form-control select2" id="kecamatan">
+                                        @if (request('kecamatan'))
+                                        <option value="{{ DB::table('master_district')->where('name', request('kecamatan'))->value('name') }}" selected >{{ DB::table('master_district')->where('name', request('kecamatan'))->value('name') }}</option>
+                                    @endif
+                                    </select>
+                                </div>
+                                <div>
+                                    <select value="" name="kelurahan" class="form-control select2" id="kelurahan">
+                                        @if (request('kelurahan'))
+                                            <option value="{{ DB::table('master_subdistrict')->where('code', request('kelurahan'))->value('code') }}" selected >{{ DB::table('master_subdistrict')->where('code', request('kelurahan'))->value('name') }}</option>
+                                        @endif
+                                    </select>
+                                </div>
+                                <div>
                                     <button type="submit" class="btn btn-primary">Filter</button>
                                     <a href="{{ route('rekap.RekapUnitFungsiDanLokasiPertahun') }}"
                                         class="btn btn-secondary">Reset</a>
@@ -91,12 +115,13 @@
                                     @foreach ($data as $key => $item)
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
-                                            <td>{{ $item->tahun }}</td>
-                                            <td>{{ 'BOGOR' }}</td> {{-- Sesuaikan jika ada data kabupaten --}}
+                                            {{-- <td>{{ "bogor" }}</td> --}}
+                                            <td>{{ DB::table('master_regency')->where('code', $item->kabupaten)->first()->name }}</td>
                                             <td>{{ DB::table('master_district')->where('code', $item->kecamatan)->first()->name }}
                                             </td>
                                             <td>{{ DB::table('master_subdistrict')->where('code', $item->desa_kelurahan)->first()->name }}
                                             </td>
+                                            <td>{{ $item->tahun }}</td>
                                             <td>
                                                 {{ collect([
                                                     $item->imb_induk_perumahan,
@@ -220,8 +245,205 @@
 
     <script>
         $(document).ready(function() {
-            $('#kecamatan').select2()
-            $('#kelurahan').select2()
+            $('.select2').select2();
+            $('#kabupaten').select2({
+                width: '100%',
+                placeholder: 'Pilih Kabupaten',
+                //minimumInputLength: 2,
+                ajax: {
+                    url: "{{ route('master.kabupaten') }}", // URL to fetch kabupaten data
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            q: params.term,
+                            page: params.page || 1
+                        };
+                    },
+                    processResults: function(data, params) {
+                        console.log("Fetched data:", data); // Check data structure here
+                        return {
+                            results: data.items.map(function(item) {
+                                return {
+                                    id: item.text,
+                                    code: item.id,
+                                    text: item.text
+                                };
+                            })
+                        };
+                    },
+                    cache: true
+                }
+            }).on('select2:select', function(e) {
+                console.log("Selected Kabupaten:", e.params.data);
+                loadKecamatan(e.params.data.code)
+            });
+
+            function getKecamatan() {
+                $('#kecamatan').select2({
+                    width: '100%',
+                    placeholder: 'Pilih Kecamatan',
+                    //minimumInputLength: 2,
+                    ajax: {
+                        url: "{{ route('master.kecamatan') }}", // URL to fetch kabupaten data
+                        dataType: 'json',
+                        delay: 250,
+                        data: function(params) {
+                            const kabId = '{{ DB::table('master_regency')->where('name', $_GET['kabupaten'] ?? null)->value('code') }}'
+                            // console.log(kabId)
+                            return {
+                                q: params.term,
+                                kabupaten_id: kabId ?? null,
+                                page: params.page || 1
+                            };
+                        },
+                        processResults: function(data, params) {
+                            console.log("Fetched data:", data); // Check data structure here
+                            return {
+                                results: data.items.map(function(item) {
+                                    return {
+                                        id: item.text,
+                                        code: item.id,
+                                        text: item.text
+                                    };
+                                })
+                            };
+                        },
+                        cache: true
+                    }
+                }).on('select2:select', function(e) {
+                    console.log("Selected Kabupaten:", e.params.data);
+                    loadKelurahan(e.params.data.code)
+                });
+            }
+
+            getKecamatan()
+
+            function loadKecamatan(kabId) {
+                $('#kecamatan').select2({
+                    width: '100%',
+                    placeholder: 'Pilih Kecamatan',
+                    //minimumInputLength: 2,
+                    ajax: {
+                        url: "{{ route('master.kecamatan') }}",
+                        dataType: 'json',
+                        delay: 250,
+                        data: function(params) {
+                            return {
+                                q: params.term,
+                                kabupaten_id: kabId,
+                                page: params.page || 1
+                            };
+                        },
+                        processResults: function(data, params) {
+                            console.log("Fetched data:", data); // Check data structure here
+                            return {
+                                results: data.items.map(function(item) {
+                                    return {
+                                        id: item.text,
+                                        code: item.id,
+                                        text: item.text
+                                    };
+                                })
+                            };
+                        },
+                        cache: true
+                    }
+                }).on('select2:select', function(e) {
+                    console.log("Selected Kabupaten:", e.params.data);
+                    //loadKecamatan(e.params.data.id)
+                });
+
+            }
+
+            function getKelurahan() {
+                $('#kelurahan').select2({
+                    width: '100%',
+                    placeholder: 'Pilih Kelurahan',
+                    //minimumInputLength: 2,
+                    ajax: {
+                        url: "{{ route('master.kelurahan') }}",
+                        dataType: 'json',
+                        delay: 250,
+                        data: function(params) {
+                            const kecId = '{{ DB::table('master_district')->where('name', $_GET['kecamatan'] ?? null)->value('code') }}'
+                            // console.log(kabId)
+                            return {
+                                q: params.term,
+                                kecamatan_id: kecId,
+                                page: params.page || 1
+                            };
+                        },
+                        processResults: function(data, params) {
+                        //  console.log("Fetched data:", data); // Check data structure here
+                        const limitedItems = data.items.slice(0, 80); // Batasi hanya 80 data pertama supaya tidak lag
+
+                            return {
+                                results: limitedItems.map(function(item) {
+                                    return {
+                                        id: item.id,
+                                        code: item.id,
+                                        text: item.text
+                                    };
+                                })
+                            };
+                        },
+                        cache: true
+                    }
+                }).on('select2:select', function(e) {
+                    console.log("Selected Kelurahan:", e.params.data);
+                });
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('kabupaten') && urlParams.get('kecamatan')) {
+                getKelurahan()
+            } else {
+                $('#kelurahan').select2({
+                    width: '100%',
+                    placeholder: 'Pilih Kelurahan',
+                    //minimumInputLength: 2,
+                })
+
+            }
+
+            function loadKelurahan(kecId) {
+                $('#kelurahan').select2({
+                    width: '100%',
+                    placeholder: 'Pilih Kelurahan',
+                    //minimumInputLength: 2,
+                    ajax: {
+                        url: "{{ route('master.kelurahan') }}",
+                        dataType: 'json',
+                        delay: 250,
+                        data: function(params) {
+                            return {
+                                q: params.term,
+                                kecamatan_id: kecId,
+                                page: params.page || 1
+                            };
+                        },
+                        processResults: function(data, params) {
+                            console.log("Fetched data:", data); // Check data structure here
+                            return {
+                                results: data.items.map(function(item) {
+                                    return {
+                                        id: item.id,
+                                        code: item.id,
+                                        text: item.text
+                                    };
+                                })
+                            };
+                        },
+                        cache: true
+                    }
+                }).on('select2:select', function(e) {
+                    console.log("Selected Kabupaten:", e.params.data);
+                    //loadKecamatan(e.params.data.id)
+                });
+
+            }
+
             const table = $('#IMBTable').DataTable({
                 dom: 'Bfrtip',
                 buttons: [{
@@ -277,13 +499,13 @@
                                     rowData[24], // CAMPURAN UNIT
                                     rowData[25], // CAMPURAN UNIT
                                 ]);
-                    
+
                                 // Accumulate totals for numerical columns (from index 2 to 17)
                                 for (let i = 5; i <= 25; i++) {
                                     totals[i] += parseFloat(rowData[i]) || 0; // Convert to number or default to 0
                                 }
                             });
-                    
+
                         // Push total row
                         const totalRow = ['TOTAL', '', "", "", "", ...totals.slice(5)];
                         sheetData.push(totalRow);

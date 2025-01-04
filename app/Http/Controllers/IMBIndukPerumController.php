@@ -22,7 +22,16 @@ class IMBIndukPerumController extends Controller
             ->join('master_regency', 'imb_induk_perum.kabupaten', '=', 'master_regency.code')
             ->join('master_district', 'imb_induk_perum.kecamatan', '=', 'master_district.code')
             ->join('master_subdistrict', 'imb_induk_perum.desa_kelurahan', '=', 'master_subdistrict.code')
-            ->select('imb_induk_perum.*',
+            ->select(
+
+                'imb_induk_perum.id',
+                'imb_induk_perum.imb_induk',
+                'imb_induk_perum.tgl_imb_induk',
+                'imb_induk_perum.no_register',
+                'imb_induk_perum.tgl_register',
+                'imb_induk_perum.nama',
+                'imb_induk_perum.atas_nama',
+                'imb_induk_perum.lokasi_perumahan',
                      'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan',
                      'master_regency.name as kabupaten',
                      'master_regency.code as kabupaten_code',
@@ -44,7 +53,7 @@ class IMBIndukPerumController extends Controller
                 $query->where('imb_induk_perum.desa_kelurahan', $request->kelurahan);
             }
 
-            $data = $query->orderBy('imb_induk_perum.created_at', 'desc')->get();
+            $data = $query->orderBy('imb_induk_perum.created_at', 'desc');
             return Datatables::of($data)
                 ->addColumn('action', function ($row) {
                     return '

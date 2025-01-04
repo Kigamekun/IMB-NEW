@@ -1,7 +1,7 @@
 # Reset permissions
 sudo chown -R www-data:www-data /var/www/html/simpol.id
-sudo chmod -R 755 /var/www/html/simpol.id
-sudo find /var/www/html/simpol.id -type f -exec chmod 644 {} \;
+sudo chmod -R 777 /var/www/html/simpol.id
+sudo find /var/www/html/simpol.id -type f -exec chmod 777 {} \;
 
 # Clear Laravel cache
 cd /var/www/html/simpol.id/IMB
@@ -16,3 +16,4 @@ sudo systemctl restart php8.2-fpm
 
 # Check Nginx config
 sudo nginx -t
+g

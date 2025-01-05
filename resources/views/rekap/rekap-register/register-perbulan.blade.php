@@ -382,6 +382,8 @@
                 $('#kabupaten').val('').trigger('change');
                 $('#kecamatan').val('').trigger('change');
                 $('#kelurahan').val('').trigger("change");
+                getKecamatan()
+                getKelurahan()
                 table.draw();
             });
 

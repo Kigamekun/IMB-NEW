@@ -1502,8 +1502,10 @@ class RekapController extends Controller
 
     }
 
+
     public function RekapLokasiPertahun(Request $request)
     {
+        // Set execution environment
         ini_set('max_execution_time', 0);
         ini_set('memory_limit', '-1');
         ini_set('upload_max_filesize', '0');
@@ -1511,6 +1513,7 @@ class RekapController extends Controller
         ini_set('max_input_time', '0');
         ini_set('max_input_vars', 10000);
 
+        // Get request parameters
         $year = $request->input('year');
         $kabupaten = $request->input('kabupaten');
         $kecamatan = $request->input('kecamatan');
@@ -1518,44 +1521,43 @@ class RekapController extends Controller
         $data = [];
 
         if ($request && ($year || $kabupaten || $kecamatan || $kelurahan)) {
-            // Mengatur tanggal berdasarkan tahun
+            // Set date range
             $startDate = $year ? "{$year}-01-01" : "1000-01-01";
             $endDate = $year ? "{$year}-12-31" : "3000-01-01";
 
-            // Mendapatkan kode dari master data
+            // Get codes from master data
             $kabupatenCode = $kabupaten ? DB::table('master_regency')->where('name', $kabupaten)->value('code') : null;
             $kecamatanCode = $kecamatan ? DB::table('master_district')->where('name', $kecamatan)->value('code') : null;
             $kelurahanCode = $kelurahan ? DB::table('master_subdistrict')->where('code', $kelurahan)->value('code') : null;
 
-            // Menyiapkan parameter binding
+            // Prepare query bindings
             $bindings = [
-                // Parameter untuk imb_induk_perum
+                // Parameters for imb_induk_perum
                 $startDate, $endDate,
                 $kabupatenCode, $kabupatenCode,
                 $kecamatanCode, $kecamatanCode,
                 $kelurahanCode, $kelurahanCode,
 
-                // Parameter untuk imb_pecahan
+                // Parameters for imb_pecahan
                 $startDate, $endDate,
                 $kabupatenCode, $kabupatenCode,
                 $kecamatanCode, $kecamatanCode,
                 $kelurahanCode, $kelurahanCode,
 
-                // Parameter untuk imb_perluasan
+                // Parameters for imb_perluasan
                 $startDate, $endDate,
                 $kabupatenCode, $kabupatenCode,
                 $kecamatanCode, $kecamatanCode,
                 $kelurahanCode, $kelurahanCode,
 
-                // Parameter untuk imb_induk_non_perum
+                // Parameters for imb_induk_non_perum
                 $startDate, $endDate,
                 $kabupatenCode, $kabupatenCode,
                 $kecamatanCode, $kecamatanCode,
                 $kelurahanCode, $kelurahanCode
             ];
 
-            // Eksekusi query
-
+            // SQL Query
             $sql = "
             WITH combined_data AS (
                 SELECT
@@ -1634,26 +1636,33 @@ class RekapController extends Controller
                 COUNT(DISTINCT CASE WHEN source = 'imb_non_perumahan' AND jenis = 4 THEN id END) as imb_pemutihan,
                 COUNT(DISTINCT CASE WHEN source = 'imb_non_perumahan' AND jenis = 5 THEN id END) as imb_bersyarat,
                 COUNT(DISTINCT CASE WHEN source = 'imb_non_perumahan' AND jenis = 6 THEN id END) as imb_lainnya,
-                FROM combined_data
                 COUNT(DISTINCT id) as jumlah_imb
-            kabupaten,
+            FROM combined_data
             GROUP BY
-                desa_kelurahan,
-                kecamatan,
-                ORDER BY
-                tahun
-            kecamatan,
                 kabupaten,
-                tahun;
+                kecamatan,
                 desa_kelurahan,
+                tahun
+            ORDER BY
+                kabupaten,
+                kecamatan,
+                desa_kelurahan,
+                tahun;
             ";
-            $data = DB::select($sql, $bindings);
+
+            // Execute query
+            try {
+                $data = DB::select($sql, $bindings);
+            } catch (\Exception $e) {
+                // Log error for debugging
+                \Log::error('Error in RekapLokasiPertahun: ' . $e->getMessage());
+                // You might want to handle the error appropriately here
+            }
         }
 
+        // Return view with data
         return view('rekap.rekap-imb-pertahun.rekap-lokasi', compact('data'));
     }
-
-
     // Rekap 4.2
     public function RekapUnitFungsiDanLokasiPertahun(Request $request)
     {

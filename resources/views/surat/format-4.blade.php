@@ -219,7 +219,7 @@
         <tr>
             <td>Hal</td>
             <td>:</td>
-            <td style="line-height: 16px !important; text-align:justify;">{{ $perihal }}</td>
+            <td style="line-height: 16px !important; text-align:justify; font-weight:bold;">{{ $perihal }}</td>
         </tr>
     </table>
     <div style="line-height:5px;margin-left:10px">

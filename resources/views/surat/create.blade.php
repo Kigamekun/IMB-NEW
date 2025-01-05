@@ -236,7 +236,7 @@
                             </div> --}}
                             <div class=" col-md-6">
                                 <label for="kecamatan" class="control-label">Kecamatan:</label>
-                                <select id="kecamatan" name="kecamatan" class="form-control select2 select2-kecamatan">
+                                <select id="kecamatan" name="kecamatan"  class="form-control select2 select2-kecamatan">
                                     <option value="">--- PILIH ---</option>
                                 </select>
                             </div>
@@ -427,6 +427,7 @@
                                 </div>
                                 <br />
                             </div>
+                            <br>
                             <button type="button" id="preview-surat" class="btn btn-primary">Preview Surat</button>
                             <button type="button" id="submit-surat" class="btn btn-success" style="margin-left: 10px; margin-right:10px" >Simpan dan Cetak</button>
                             <button type="button" id="preview-table" class="btn btn-primary hidden">Preview Data</button>

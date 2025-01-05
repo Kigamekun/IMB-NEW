@@ -25,7 +25,7 @@
                 <br />
                 <div class="mb-4">
                     <form method="GET" action="{{ route('rekap.RekapLokasiPertahun') }}">
-                        <div style="display:flex;gap:10px;">
+                        <div class="" style="display:flex;flex-wrap:wrap;gap:10px;">
                             <div>
                                 <input type="number" name="year" id="year" class="form-control" placeholder="Tahun" value="{{ request('year') }}" />
                             </div>

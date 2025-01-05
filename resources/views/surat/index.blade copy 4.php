@@ -410,7 +410,42 @@
 
 
     <script>
+        // $(document).ready(function() {
 
+        //     $('#tahun').change(function() {
+        //         var selectedYear = $(this).val();
+        //         var surat = @json($surat);
+
+        //         // Kosongkan opsi sebelumnya
+        //         $('#nomorSK-Pemohon').empty().append('<option value="">-- PILIH --</option>');
+
+        //         var filteredSurat = surat.filter(function(item) {
+        //             return item.tahun == selectedYear;
+        //         });
+
+        //         // Urutkan secara descending berdasarkan id
+        //         filteredSurat.sort(function(a, b) {
+        //             return b.id - a.id;
+        //         });
+
+        //         if (filteredSurat.length > 0) {
+        //             filteredSurat.forEach(function(item) {
+        //             $('#nomorSK-Pemohon').append('<option value="' + item.id + '">' + item.nomorSurat + ' an. ' + item.nama + '</option>');
+        //             });
+        //         } else {
+        //             $('#nomorSK-Pemohon').append('<option value="">Tidak ada data</option>');
+        //         }
+        //         });
+
+        //         $('#copyDataModal').on('show.bs.modal', function (event) {
+        //         var button = $(event.relatedTarget);
+        //         var id = button.data('id');
+        //         var modal = $(this);
+
+        //         // Set the hidden input value to the ID of the selected item
+        //         modal.find('#namaPemohonId').val(id);
+        //     });
+        // });
         $(document).ready(function () {
             // Event listener untuk dropdown tahun
             $('#tahun').change(function () {

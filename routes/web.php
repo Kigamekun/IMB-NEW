@@ -406,6 +406,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/preview-index', [SuratController::class, 'LihatIndex'])->name('surat.previewIndex');
         // Route::post('/copyData/{id}', [SuratController::class, 'copyData'])->name('surat.copyData');
         Route::post('/copyData', [SuratController::class, 'copyData'])->name('surat.copyData');
+        Route::get('/filter', [SuratController::class, 'filterSurat'])->name('surat.filter');
         // Route::get('/getNomorSuratPemohon', [SuratController::class, 'getNomorSuratPemohon'])->name('surat.getNomorSuratPemohon');
         Route::get('/by-year/{year}', [SuratController::class, 'getByYear'])->name('surat.byYear');
         Route::get('/surat/dropdown-data', [SuratController::class, 'getDropdownData'])->name('surat.getDropdownData');

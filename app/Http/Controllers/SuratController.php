@@ -11,6 +11,7 @@ use Carbon\Carbon;
 // use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use \Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Cache;
 
 
 class SuratController extends Controller
@@ -200,10 +201,11 @@ class SuratController extends Controller
                 ->make(true);
         }
          // Ambil data surat untuk select box
-        $surat = \DB::table('surat')->select('id', 'nomorSurat', 'nama', 'tahun')->get();
+        // $surat = \DB::table('surat')->select('id', 'nomorSurat', 'nama', 'tahun')->get();
 
         // return view('surat.index',  compact('surat'));
-          return view('surat.index',  compact('surat'));
+        //   return view('surat.index',  compact('surat'));
+        return view('surat.index');
     }
 
 
@@ -1734,17 +1736,60 @@ class SuratController extends Controller
         }
     }
 
-    // Mendapatkan daftar tahun dari surat
-    public function getTahunSurat()
-    {
-        $tahun = \DB::table('surat')
-            ->select(\DB::raw('YEAR(tanggalSurat) as tahun'))
-            ->distinct()
-            ->orderBy('tahun', 'desc');
-            // ;
+    // Filter Surat Untuk tahun pada copyData
+    // public function filterSurat(Request $request)
+    // {
+    //     $request->validate([
+    //         'tahun' => 'required|integer',
+    //     ]);
 
-        return response()->json(['status' => 'success', 'data' => $tahun]);
+    //     $tahun = $request->input('tahun');
+
+    //     // Menggunakan cursor untuk membaca data dalam bentuk generator
+    //     $filteredSurat = \DB::table('surat')
+    //         ->select('id', 'nomorSurat', 'nama', 'tahun')
+    //         ->where('tahun', $tahun)
+    //         ->orderByDesc('id') // Urutkan secara descending
+    //         ->cursor(); // Mengembalikan generator
+
+    //     // Ubah generator menjadi array JSON
+    //     $data = [];
+    //     foreach ($filteredSurat as $item) {
+    //         $data[] = $item;
+    //     }
+
+    //     return response()->json($data);
+    // }
+    
+   // Filter Surat Untuk tahun pada copyData
+    public function filterSurat(Request $request)
+    {
+        $request->validate([
+            'tahun' => 'required|integer',
+        ]);
+
+        $tahun = $request->input('tahun');
+
+        // Cek cache terlebih dahulu
+        $cacheKey = "filtered_surat_{$tahun}";
+        $filteredSurat = Cache::get($cacheKey);
+
+        if (!$filteredSurat) {
+            $filteredSurat = \DB::table('surat')
+                ->select('id', 'nomorSurat', 'nama', 'tahun')
+                ->where('tahun', $tahun)
+                ->orderByDesc('id')
+                ->get();
+
+            // Simpan hasil ke cache
+            Cache::put($cacheKey, $filteredSurat, 60); // Cache selama 60 menit
+        }
+
+        return response()->json($filteredSurat);
     }
+
+
+
 
     public function LihatIndex(Request $request){
         $query = \DB::table('surat')

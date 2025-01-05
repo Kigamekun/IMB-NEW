@@ -209,7 +209,7 @@
         <tr>
             <td>Nomor</td>
             <td>:</td>
-            <td>{{ $nomorSurat }}</td>
+            <td></td>
         </tr
         <tr>
             <td>Lampiran</td>

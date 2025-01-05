@@ -65,11 +65,11 @@
                                             $subdistrict = DB::table('master_subdistrict')->get()->keyBy('code');
                                         @endphp
 
-                                        @foreach ($data as $index => $row)
+                                       {{-- @foreach ($data as $index => $row)
                                             @if(isset($row->desa_kelurahan) && isset($subdistrict[$row->desa_kelurahan]))
                                                 <option value="{{ $subdistrict[$row->desa_kelurahan]->name }}">{{ $subdistrict[$row->desa_kelurahan]->name }}</option>
                                             @endif
-                                        @endforeach
+                                        @endforeach --}}
                                     </select>
                                 </div>
                                 <div>

@@ -116,10 +116,9 @@
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
                                             {{-- <td>{{ "bogor" }}</td> --}}
-                                            <td>{{ DB::table('master_regency')->where('code', $item->kabupaten)->first()->name }}</td>
-                                            <td>{{ DB::table('master_district')->where('code', $item->kecamatan)->first()->name }}
-                                            </td>
-                                            <td>{{ DB::table('master_subdistrict')->where('code', $item->desa_kelurahan)->first()->name }}
+                                            <td>{{ !is_null(DB::table('master_regency')->where('code', $item->kabupaten)->first()) ? DB::table('master_regency')->where('code', $item->kabupaten)->first()->name : $item->kabupaten }}</td>
+                                            <td>{{ !is_null(DB::table('master_district')->where('code', $item->kecamatan)->first()) ? DB::table('master_district')->where('code', $item->kecamatan)->first()->name : $item->kecamatan }}</td>
+                                            <td>{{ !is_null(DB::table('master_subdistrict')->where('code', $item->desa_kelurahan)->first()) ? DB::table('master_subdistrict')->where('code', $item->desa_kelurahan)->first()->name : $item->desa_kelurahan }}
                                             </td>
                                             <td>{{ $item->tahun }}</td>
                                             <td>

@@ -12,6 +12,14 @@ class RekapController extends Controller
     // Rekap 1
     public function RekapPenerbitan(Request $request)
     {
+
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
+
         $data = DB::table(function ($query) {
             $query->selectRaw('YEAR(tgl_imb_induk) AS tahun, COUNT(*) AS imb_induk_perumahan, 0 AS imb_pecahan, 0 AS imb_perluasan, 0 AS imb_induk_non_perumahan')
                 ->from('imb_induk_perum')
@@ -49,6 +57,13 @@ class RekapController extends Controller
     // Rekap 1.1
     public function RekapPenerbitanDetail(Request $request)
     {
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
+
         $data = DB::table(function ($query) {
             $query->selectRaw('YEAR(tgl_imb_induk) AS tahun, COUNT(*) AS imb_induk_perumahan, 0 AS imb_pecahan, 0 AS imb_perluasan, 0 AS imb_non_perusahaan, 0 AS imb_perorangan, 0 AS imb_sosbud, 0 AS imb_pemutihan, 0 AS imb_bersyarat, 0 AS imb_lainnya')
                 ->from('imb_induk_perum')
@@ -103,6 +118,13 @@ class RekapController extends Controller
     // Rekap 2
     public function RekapUnitDanFungsi(Request $request)
     {
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
+
         $data = DB::table(function ($query) {
             $query->selectRaw('YEAR(tgl_imb_induk) as tahun, COUNT(DISTINCT imb_induk_perum.id) as imb_induk_perumahan, SUM(item_imb_induk_perum.jumlah_unit) as unit_induk_perumahan, 0 as imb_pecahan, 0 as unit_pecahan, 0 as imb_perluasan, 0 as unit_perluasan, 0 as imb_non_perumahan, 0 as unit_non_perumahan,SUM(CASE WHEN item_imb_induk_perum.fungsi_bangunan IN (1, 6) THEN 1 ELSE 0 END) as hunian_imb, SUM(CASE WHEN item_imb_induk_perum.fungsi_bangunan IN (1, 6) THEN item_imb_induk_perum.jumlah_unit ELSE 0 END) as hunian_unit, SUM(CASE WHEN item_imb_induk_perum.fungsi_bangunan = 2 THEN 1 ELSE 0 END) as usaha_imb, SUM(CASE WHEN item_imb_induk_perum.fungsi_bangunan = 2 THEN item_imb_induk_perum.jumlah_unit ELSE 0 END) as usaha_unit, SUM(CASE WHEN item_imb_induk_perum.fungsi_bangunan IN (4, 5, 7, 8) THEN 1 ELSE 0 END) as sosbud_imb, SUM(CASE WHEN item_imb_induk_perum.fungsi_bangunan IN (4, 5, 7, 8) THEN item_imb_induk_perum.jumlah_unit ELSE 0 END) as sosbud_unit, SUM(CASE WHEN item_imb_induk_perum.fungsi_bangunan = 9 THEN 1 ELSE 0 END) as khusus_imb, SUM(CASE WHEN item_imb_induk_perum.fungsi_bangunan = 9 THEN item_imb_induk_perum.jumlah_unit ELSE 0 END) as khusus_unit, SUM(CASE WHEN item_imb_induk_perum.fungsi_bangunan = 3 THEN 1 ELSE 0 END) as campuran_imb, SUM(CASE WHEN item_imb_induk_perum.fungsi_bangunan = 3 THEN item_imb_induk_perum.jumlah_unit ELSE 0 END) as campuran_unit')
                 ->from('imb_induk_perum')
@@ -137,6 +159,13 @@ class RekapController extends Controller
     // Rekap 2.1
     public function RekapUnitDanFungsiDetail(Request $request)
     {
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
+
         $data = DB::table(function ($query) {
             $query->selectRaw('
                 YEAR(tgl_imb_induk) as tahun,
@@ -284,6 +313,13 @@ class RekapController extends Controller
     // Rekap 3
     public function RekapLokasi()
     {
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
+
         $data = DB::select("
          SELECT
              base.kabupaten,
@@ -324,6 +360,13 @@ class RekapController extends Controller
     // Rekap 3.1
     public function RekapLokasiDetail()
     {
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
+
         $data = DB::select("
          SELECT
              base.kabupaten,
@@ -373,6 +416,13 @@ class RekapController extends Controller
     // Rekap 4
     public function RekapUnitFungsiDanLokasi()
     {
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
+
         $data = DB::table(function ($query) {
             $query->selectRaw('
                     YEAR(tgl_imb_induk) as tahun,
@@ -521,6 +571,13 @@ class RekapController extends Controller
     // Rekap 4.1
     public function RekapUnitFungsiDanLokasiDetail()
     {
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
+
         $data = DB::table(function ($query) {
             $query->selectRaw('
                 YEAR(tgl_imb_induk) as tahun,
@@ -851,6 +908,13 @@ class RekapController extends Controller
     // new function
     public function DetailIMBIndukList(Request $request)
     {
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
+
         if ($request->ajax()) {
             $nama_pengembang = $request->input('nama_pengembang');
             $nama_perumahan = $request->input('nama_perumahan');
@@ -1001,6 +1065,13 @@ class RekapController extends Controller
 
     public function DetailIMBIndukListNamaPemohon(Request $request, $nama_pemohon)
     {
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
+
         if ($request->ajax()) {
 
             $nama_pengembang = $nama_pemohon;
@@ -1122,6 +1193,13 @@ class RekapController extends Controller
 
     public function DetailIMBIndukNamaPemohon(Request $request, $nama_pemohon)
     {
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
+
         if ($request->ajax()) {
             $imbIndukQuery = DB::table('imb_induk_perum')
                 ->selectRaw("
@@ -1273,6 +1351,13 @@ class RekapController extends Controller
 
     public function DetailIMBPecahanList(Request $request)
     {
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
+
         if ($request->ajax()) {
             $imbInduk = $_GET['imbInduk'];
 
@@ -1311,6 +1396,13 @@ class RekapController extends Controller
     }
     public function DetailIMBPecahanNamaIMB(Request $request, $imb_induk)
     {
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
+
         if ($request->ajax()) {
 
             $data = IMBPecahan::
@@ -1346,6 +1438,13 @@ class RekapController extends Controller
 
     public function DetailIMBPerluasanList(Request $request)
     {
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
+
         if ($request->ajax()) {
 
             $imbPecahan = $_GET['imbPecahan'];
@@ -1379,6 +1478,13 @@ class RekapController extends Controller
     // REKAP 2.2
     public function RekapUnitDanFungsiPertahun(Request $request)
     {
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
+
         $year = $request->input('year');
 
         $data = [];
@@ -1536,6 +1642,13 @@ class RekapController extends Controller
     // }
     public function RekapLokasiPertahun(Request $request)
     {
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
+
         $year = $request->input('year');
         $kabupaten = $request->input('kabupaten');
         $kecamatan = $request->input('kecamatan');
@@ -1624,6 +1737,13 @@ class RekapController extends Controller
     // Rekap 4.2
     public function RekapUnitFungsiDanLokasiPertahun(Request $request)
     {
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
+
         $year = $request->input('year');
         $kabupaten = $request->input('kabupaten');
         $kecamatan = $request->input('kecamatan');
@@ -1834,6 +1954,13 @@ class RekapController extends Controller
     // Rekap 4.1
     public function RekapSKIMBGPerbulan()
     {
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
+
         $data = DB::select("
         SELECT
             base.kecamatan AS kecamatan,
@@ -1894,6 +2021,13 @@ class RekapController extends Controller
     // Rekap 4.1
     public function RekapSKIMBGPertahun()
     {
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
+
         $data = DB::select("
         SELECT
             base.kecamatan AS kecamatan,
@@ -1974,6 +2108,13 @@ class RekapController extends Controller
 
     public function RegisterIMBPerTahunStore(Request $request)
     {
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
+
         if ($request->ajax()) {
 
             $nama_pengembang = $_GET['nama_pengembang'];
@@ -2051,6 +2192,14 @@ class RekapController extends Controller
 
     public function RegisterIMBPerTahunNamaPemohon(Request $request, $nama_pemohon)
     {
+
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
+
         if ($request->ajax()) {
             $data = DB::table('imb_induk_perum as imb_induk')
                 ->selectRaw('
@@ -2099,6 +2248,13 @@ class RekapController extends Controller
 
     public function IMBsubmit(Request $request)
     {
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
+
         $tahun = $request->input('tahun');
         $type = $request->input('type');
 
@@ -2229,6 +2385,13 @@ class RekapController extends Controller
 
     public function RekapSuratPerbulan($tahun)
     {
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
+
         $data = DB::table('dbsimpol.surat')
             ->selectRaw('
                 YEAR(tanggalSurat) AS TAHUN,
@@ -2270,6 +2433,13 @@ class RekapController extends Controller
 
     public function RekapSuratPertahun()
     {
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
+
         $data = DB::table('dbsimpol.surat')
             ->selectRaw('
             tahun AS TAHUN,

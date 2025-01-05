@@ -268,6 +268,7 @@
                 }).on('select2:select', function(e) {
                     console.log("Selected Kecamatan:", e.params.data);
                     loadKelurahan(e.params.data.id); // Load kelurahan based on selected kecamatan
+                    $(".select2-kelurahan").val('').trigger('change')
                 });
             }
 

@@ -107,9 +107,6 @@
 
     <script>
         $(document).ready(function() {
-            $('#kabupaten').select2()
-            $('#kecamatan').select2()
-            $('#kelurahan').select2()
             $('#kabupaten').select2({
                 width: '100%',
                 placeholder: 'Pilih Kabupaten',
@@ -142,7 +139,6 @@
                 console.log("Selected Kabupaten:", e.params.data);
                 loadKecamatan(e.params.data.code)
             });
-
             $('#kelurahan').select2({
                 width: '100%',
                 placeholder: 'Pilih Kelurahan',

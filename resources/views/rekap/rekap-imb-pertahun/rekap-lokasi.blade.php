@@ -318,18 +318,6 @@
                 });
             }
 
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('kabupaten') && urlParams.get('kecamatan')) {
-                getKelurahan()
-            } else {
-                $('#kelurahan').select2({
-                    width: '100%',
-                    placeholder: 'Pilih Kelurahan',
-                    //minimumInputLength: 2,
-                })
-
-            }
-
             function loadKelurahan(kecId) {
                 $('#kelurahan').select2({
                     width: '100%',
@@ -364,6 +352,18 @@
                     console.log("Selected Kabupaten:", e.params.data);
                     //loadKecamatan(e.params.data.id)
                 });
+
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('kabupaten') && urlParams.get('kecamatan')) {
+                getKelurahan()
+            } else {
+                $('#kelurahan').select2({
+                    width: '100%',
+                    placeholder: 'Pilih Kelurahan',
+                    //minimumInputLength: 2,
+                })
 
             }
             const table = $('#IMBTable').DataTable({

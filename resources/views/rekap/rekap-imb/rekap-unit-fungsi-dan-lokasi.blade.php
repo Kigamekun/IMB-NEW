@@ -81,11 +81,11 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
                                         $subdistrict = DB::table('master_subdistrict')->get()->keyBy('code');
                                     @endphp
 
-                                    @foreach ($data as $index => $row)
+                                    {{-- @foreach ($data as $index => $row)
                                         @if(isset($row->desa_kelurahan) && isset($subdistrict[$row->desa_kelurahan]))
                                             <option value="{{ $subdistrict[$row->desa_kelurahan]->name }}">{{ $subdistrict[$row->desa_kelurahan]->name }}</option>
                                         @endif
-                                    @endforeach
+                                    @endforeach --}}
                                 </select>
                             </div>
                             <div>
@@ -179,17 +179,17 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
                                 </td> --}}
                                 <td>
                                     @if(isset($row->kabupaten) && isset($regencies[$row->kabupaten]))
-                                        <option value="{{ $regencies[$row->kabupaten]->name }}">{{ $regencies[$row->kabupaten]->name }}</option>
+                                        {{ $regencies[$row->kabupaten]->name }}
                                     @endif
                                 </td> {{-- Sesuaikan jika ada data kabupaten --}}
                                 <td>
                                     @if(isset($row->kecamatan) && isset($districts[$row->kecamatan]))
-                                            <option value="{{ $districts[$row->kecamatan]->name }}">{{ $districts[$row->kecamatan]->name }}</option>
+                                        {{ $districts[$row->kecamatan]->name }}
                                     @endif
                                 </td>
                                 <td>
                                     @if(isset($row->desa_kelurahan) && isset($subdistrict[$row->desa_kelurahan]))
-                                        <option value="{{ $subdistrict[$row->desa_kelurahan]->name }}">{{ $subdistrict[$row->desa_kelurahan]->name }}</option>
+                                        {{ $subdistrict[$row->desa_kelurahan]->name }}
                                     @endif
                                 </td>
                                 <td>{{ $row->tahun }}</td>

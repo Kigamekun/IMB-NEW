@@ -74,11 +74,11 @@
                                             $subdistrict = DB::table('master_subdistrict')->get()->keyBy('code');
                                         @endphp
 
-                                        @foreach ($data as $index => $row)
+                                        {{-- @foreach ($data as $index => $row)
                                             @if(isset($row->desa_kelurahan) && isset($subdistrict[$row->desa_kelurahan]))
                                                 <option value="{{ $subdistrict[$row->desa_kelurahan]->name }}">{{ $subdistrict[$row->desa_kelurahan]->name }}</option>
                                             @endif
-                                        @endforeach
+                                        @endforeach --}}
                                     </select>
                                 </div>
                                 <div>
@@ -145,17 +145,17 @@
                                         }}</td> --}}
                                     <td>
                                         @if(isset($row->kabupaten) && isset($regencies[$row->kabupaten]))
-                                            <option value="{{ $regencies[$row->kabupaten]->name }}">{{ $regencies[$row->kabupaten]->name }}</option>
+                                            {{ $regencies[$row->kabupaten]->name }}
                                         @endif
                                     </td> {{-- Sesuaikan jika ada data kabupaten --}}
                                     <td>
                                         @if(isset($row->kecamatan) && isset($districts[$row->kecamatan]))
-                                             <option value="{{ $districts[$row->kecamatan]->name }}">{{ $districts[$row->kecamatan]->name }}</option>
+                                            {{ $districts[$row->kecamatan]->name }}
                                         @endif
                                     </td>
                                     <td>
                                         @if(isset($row->desa_kelurahan) && isset($subdistrict[$row->desa_kelurahan]))
-                                            <option value="{{ $subdistrict[$row->desa_kelurahan]->name }}">{{ $subdistrict[$row->desa_kelurahan]->name }}</option>
+                                            {{ $subdistrict[$row->desa_kelurahan]->name }}
                                         @endif
                                     </td>
                                     <td>{{ $row->tahun }}</td>
@@ -264,11 +264,6 @@
                 loadKecamatan(e.params.data.code)
             });
 
-            $('#kelurahan').select2({
-                width: '100%',
-                placeholder: 'Pilih Kelurahan',
-            })
-
             function getKecamatan() {
                 $('#kecamatan').select2({
                     width: '100%',
@@ -279,8 +274,10 @@
                         dataType: 'json',
                         delay: 250,
                         data: function(params) {
+                            const kabId = '{{ DB::table('master_regency')->where('name', $_GET['kabupaten'] ?? null)->value('code') }}'
                             return {
                                 q: params.term,
+                                kabupaten_id: kabId ?? null,
                                 page: params.page || 1
                             };
                         },
@@ -305,42 +302,6 @@
             }
 
             getKecamatan()
-
-            function getKelurahan() {
-                $('#kelurahan').select2({
-                    width: '100%',
-                    placeholder: 'Pilih Kelurahan',
-                    //minimumInputLength: 2,
-                    ajax: {
-                        url: "{{ route('master.kelurahan') }}",
-                        dataType: 'json',
-                        delay: 250,
-                        data: function(params) {
-                            return {
-                                q: params.term,
-                                page: params.page || 1
-                            };
-                        },
-                        processResults: function(data, params) {
-                        //  console.log("Fetched data:", data); // Check data structure here
-                        const limitedItems = data.items.slice(0, 80); // Batasi hanya 80 data pertama supaya tidak lag
-
-                            return {
-                                results: limitedItems.map(function(item) {
-                                    return {
-                                        id: item.text,
-                                        code: item.id,
-                                        text: item.text
-                                    };
-                                })
-                            };
-                        },
-                        cache: true
-                    }
-                }).on('select2:select', function(e) {
-                    console.log("Selected Kelurahan:", e.params.data);
-                });
-            }
 
             function loadKecamatan(kabId) {
                 $('#kecamatan').select2({
@@ -379,6 +340,44 @@
 
             }
 
+            function getKelurahan() {
+                $('#kelurahan').select2({
+                    width: '100%',
+                    placeholder: 'Pilih Kelurahan',
+                    //minimumInputLength: 2,
+                    ajax: {
+                        url: "{{ route('master.kelurahan') }}",
+                        dataType: 'json',
+                        delay: 250,
+                        data: function(params) {
+                            const kecId = '{{ DB::table('master_district')->where('name', $_GET['kecamatan'] ?? null)->value('code') }}'
+                            return {
+                                q: params.term,
+                                kecamatan_id: kecId,
+                                page: params.page || 1
+                            };
+                        },
+                        processResults: function(data, params) {
+                        //  console.log("Fetched data:", data); // Check data structure here
+                        const limitedItems = data.items.slice(0, 80); // Batasi hanya 80 data pertama supaya tidak lag
+
+                            return {
+                                results: limitedItems.map(function(item) {
+                                    return {
+                                        id: item.id,
+                                        code: item.id,
+                                        text: item.text
+                                    };
+                                })
+                            };
+                        },
+                        cache: true
+                    }
+                }).on('select2:select', function(e) {
+                    console.log("Selected Kelurahan:", e.params.data);
+                });
+            }
+
             function loadKelurahan(kecId) {
                 $('#kelurahan').select2({
                     width: '100%',
@@ -413,6 +412,18 @@
                     console.log("Selected Kabupaten:", e.params.data);
                     //loadKecamatan(e.params.data.id)
                 });
+
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('kabupaten') && urlParams.get('kecamatan')) {
+                getKelurahan()
+            } else {
+                $('#kelurahan').select2({
+                    width: '100%',
+                    placeholder: 'Pilih Kelurahan',
+                    //minimumInputLength: 2,
+                })
 
             }
 

@@ -10,7 +10,7 @@
         <div style="width: 90%;margin:auto">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5 rounded">
                 <div class="p-6 text-gray-900">
-                    <h3 class="text-3xl font-bold">REKAP SK IMBG PERTAHUN</h3>
+                    <h3 class="text-3xl font-bold">REKAP SURAT KETERANGAN IMBG PERTAHUN</h3>
                     <br />
                     <div class="mb-4">
                         <form id="filterForm" class="form-inline">

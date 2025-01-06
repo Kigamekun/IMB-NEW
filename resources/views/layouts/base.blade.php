@@ -1600,7 +1600,7 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
                             <li class="treeview" data-level="1">
                                 <a class="nav-link">
                                 <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">SK IMBG</span>
+                                <span class="title menu-text">SURAT KET. IMBG</span>
                                 <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>
                                 </span>
@@ -1642,7 +1642,7 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
                                     <li class="nav-item">
                                         <a class="nav-link" style="padding-left:20px" href="{{route('rekap.RekapSuratPertahun')}}">
                                             <i class="fa fa-square-o"></i>
-                                            <span class="title menu-text">Rekap SK IMBG</span>
+                                            <span class="title menu-text">Rekap Surat Ket. IMBG</span>
                                             <span></span>
                                         </a>
                                     </li>

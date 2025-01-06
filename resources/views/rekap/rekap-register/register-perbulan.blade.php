@@ -10,7 +10,7 @@
         <div style="width: 90%;margin:auto">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5 rounded">
                 <div class="p-6 text-gray-900">
-                    <h3 class="text-3xl font-bold">REGISTER SK IMBG PERBULAN</h3>
+                    <h3 class="text-3xl font-bold">REGISTER SURAT KETERANGAN IMBG PERBULAN</h3>
                     <div class="mb-4">
                         <form id="filterForm" class="form-inline">
                             <div style="display:flex;flex-wrap:wrap;gap:10px;">

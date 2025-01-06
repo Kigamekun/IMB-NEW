@@ -15,7 +15,7 @@
                         <div class="section-title"><h3>JENIS SURAT</h3></div>
                         <div class="row mb-3">
                             <div class="col-md-4">
-                                <label for="jenisSurat" class="form-label">Jenis Surat:</label>
+                                <label for="jenisSurat" class="form-label">Jenis Surat: <span style="color: red">*</span></label>
                                 <select id="jenisSurat" name="jenisSurat" class="form-control form-select">
                                     <option value="format-1" {{ $data['jenisSurat'] == 'format-1' ? 'selected' : '' }}>
                                         FORMAT-1</option>
@@ -28,41 +28,41 @@
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label for="tahun" class="form-label">Tahun:</label>
+                                <label for="tahun" class="form-label">Tahun: <span style="color: red">*</span></label>
                                 <input type="text" id="tahun" name="tahun" class="form-control"
                                     value="{{ $data['tahun'] }}" readonly>
                             </div>
                             <div class="col-md-4">
-                                <label for="nomorSurat" class="form-label">Nomor Surat:</label>
+                                <label for="nomorSurat" class="form-label">Nomor Surat <span style="color: red">*</span>:</label>
                                 <input type="text" id="nomorSurat" name="nomorSurat" class="form-control"
                                     value="{{ $data['nomorSurat'] }}" readonly>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-4" style="margin-top: 10px;">
-                                <label for="tanggalSurat" class="form-label">Tanggal Surat:</label>
+                                <label for="tanggalSurat" class="form-label">Tanggal Surat: <span style="color: red">*</span></label>
                                 <input type="date" id="tanggalSurat" name="tanggalSurat" class="form-control"
                                     value="{{ $data['tanggalSurat'] }}">
                             </div>
                             <div class="col-md-4" style="margin-top: 10px;">
-                                <label for="lampiran" class="form-label">Lampiran:</label>
+                                <label for="lampiran" class="form-label">Lampiran: <span style="color: red">*</span></label>
                                 <input type="text" id="lampiran" name="lampiran" class="form-control"
                                     value="{{ $data['lampiran'] }}">
                             </div>
                             <div class="col-md-4" style="margin-top: 10px;">
-                                <label for="sifat" class="form-label">Sifat:</label>
+                                <label for="sifat" class="form-label">Sifat: <span style="color: red">*</span></label>
                                 <input type="text" id="sifat" name="sifat" class="form-control"
                                     value="{{ $data['sifat'] }}">
                             </div>
                         </div>
                         <div class="mb-3" style="margin-top: 10px;">
-                            <label for="perihal" class="form-label">Perihal:</label>
+                            <label for="perihal" class="form-label">Hal: <span style="color: red">*</span></label>
                             <textarea id="perihal" name="perihal" class="form-control" style="height: 100px" rows="2">{{ $data['perihal'] }}</textarea>
                         </div>
                         <div class="section-title"><h3>PEMOHON</h3></div>
                         <div class="row mb-3">
                             <div class="col-md-12">
-                                <label for="permohonanTanggal" class="form-label">Permohonan Tanggal:</label>
+                                <label for="permohonanTanggal" class="form-label">Permohonan Tanggal: <span style="color: red">*</span></label>
                                 <input type="date" id="permohonanTanggal" name="permohonanTanggal" class="form-control"
                                     value="{{ $data['permohonanTanggal'] }}">
                             </div>
@@ -70,12 +70,12 @@
                         <div class="row mb-3">
 
                             <div class="col-md-6" style="margin-top: 10px;">
-                                <label for="nama" class="form-label">Nama:</label>
+                                <label for="nama" class="form-label">Nama: <span style="color: red">*</span></label>
                                 <input type="text" id="nama" name="nama" class="form-control"
                                     value="{{ $data['nama'] }}">
                             </div>
                             <div class="col-md-6" style="margin-top: 10px;">
-                                <label for="sapaanPemohon" class="form-label">Sapaan Pemohon:</label>
+                                <label for="sapaanPemohon" class="form-label">Sapaan Pemohon: <span style="color: red">*</span></label>
                                 <select name="sapaanPemohon" id="sapaanPemohon" class="form-control">
                                     <option {{ $data['sapaanPemohon'] == 'Bapak' ? 'selected' : '' }} value="Bapak">Bapak</option>
                                     <option {{ $data['sapaanPemohon'] == 'Ibu' ? 'selected' : '' }} value="Ibu">Ibu</option>
@@ -88,19 +88,19 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6" style="margin-top: 10px;">
-                                <label for="bertindak_atas_nama" class="form-label">Bertindak Atas Nama:</label>
+                                <label for="bertindak_atas_nama" class="form-label">Bertindak Atas Nama: <span style="color: red">*</span></label>
                                 <input type="text" id="bertindak_atas_nama" name="bertindak_atas_nama"
                                     class="form-control" value="{{ $data['bertindak_atas_nama'] }}">
                             </div>
                             <div class="col-md-6" style="margin-top: 10px;">
-                                <label for="alamat" class="form-label">Alamat:</label>
+                                <label for="alamat" class="form-label">Alamat: <span style="color: red">*</span></label>
                                 <input type="text" id="alamat" name="alamat" class="form-control"
                                     value="{{ $data['alamat'] }}">
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6" style="margin-top: 10px;">
-                                <label for="provinsiPemohon" class="form-label">Provinsi:</label>
+                                <label for="provinsiPemohon" class="form-label">Provinsi <span style="color: red">*</span>:</label>
                                 <select id="provinsiPemohon" name="provinsiPemohon"
                                     class="form-select select2-provinsi-pemohon">
                                     @foreach (DB::table('master_province')->get() as $item)
@@ -126,7 +126,7 @@
                             </div> --}}
                             <!-- Kabupaten/Kota -->
                             <div class="col-md-6" style="margin-top: 10px;">
-                                <label for="kabupatenPemohon" class="form-label">Kabupaten/Kota:</label>
+                                <label for="kabupatenPemohon" class="form-label">Kabupaten/Kota: <span style="color: red">*</span></label>
                                 <select id="kabupatenPemohon" name="kabupatenPemohon" class="form-control select2 select2-kabupaten-pemohon">
                                     @foreach (DB::table('master_regency')->where('province_code', $data['provinsiPemohon'])->get() as $item)
                                         <option value="{{ $item->code }}"
@@ -152,7 +152,7 @@
                                 </select>
                             </div> --}}
                             <div class="col-md-6" style="margin-top: 10px;">
-                                <label for="kecamatanPemohon" class="form-label">Kecamatan:</label>
+                                <label for="kecamatanPemohon" class="form-label">Kecamatan: <span style="color: red">*</span></label>
                                 <select id="kecamatanPemohon" name="kecamatanPemohon" class="form-control select2-kecamatan-pemohon">
                                     @foreach (DB::table('master_district')->where('regency_code', $data['kabupatenPemohon'])->get() as $item)
                                         <option value="{{ $item->code }}"
@@ -176,7 +176,7 @@
                                 </select>
                             </div> --}}
                             <div class="col-md-6" style="margin-top: 10px;">
-                                <label for="kelurahanPemohon" class="form-label">Kelurahan:</label>
+                                <label for="kelurahanPemohon" class="form-label">Kelurahan: <span style="color: red">*</span></label>
                                 <select id="kelurahanPemohon" name="kelurahanPemohon" class="form-control select2-kelurahan-pemohon">
                                     @foreach (DB::table('master_subdistrict')->where('district_code', $data['kecamatanPemohon'])->get() as $item)
                                         <option value="{{ $item->code }}"
@@ -191,7 +191,7 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="izin_mendirikan_bangunan_atas_nama" class="form-label">Izin Mendirikan
-                                    Bangunan atas nama :</label>
+                                    Bangunan atas nama : <span style="color: red">*</span></label>
                                 <input type="text" id="izin_mendirikan_bangunan_atas_nama"
                                     name="izin_mendirikan_bangunan_atas_nama" class="form-control"
                                     value="{{ $data['izin_mendirikan_bangunan_atas_nama'] }}">
@@ -273,7 +273,7 @@
                             </div> --}}
                             <div class="col-md-6">
                                 <div id="format-biasa-tujuan" style="{{ $data['jenisSurat'] != 'format-4' ? 'display: block;' : 'display: none;' }}">
-                                    <label for="tujuanSurat" class="form-label">Tujuan Surat:</label>
+                                    <label for="tujuanSurat" class="form-label">Tujuan Surat: <span style="color: red">*</span></label>
                                     <select id="tujuanSurat" name="tujuanSurat" class="form-select form-control select2">
                                         <option value="">--- PILIH ---</option>
                                         @foreach (DB::table('master_tujuan_surat')->get() as $tujuan)
@@ -286,7 +286,7 @@
                                 </div>
 
                                 <div id="format-4-tujuan" style="{{ $data['jenisSurat'] == 'format-4' ? 'display: block;' : 'display: none;' }}">
-                                    <label for="jenisKegiatan" class="form-label">Jenis Kegiatan:</label>
+                                    <label for="jenisKegiatan" class="form-label">Jenis Kegiatan: <span style="color: red">*</span></label>
                                     <select id="jenisKegiatan" name="jenisKegiatan" class="form-select form-control select2" style="width:100%">
                                         <option value="">--- PILIH ---</option>
                                         @foreach (DB::table('app_md_jeniskeg')->get() as $jenis_keg)
@@ -340,7 +340,7 @@
 
                         <div class="row mb-3" style="margin-top: 10px;">
                             <div class="col-md-6">
-                                <label for="registerTanggal" class="form-label">Register Tanggal:</label>
+                                <label for="registerTanggal" class="form-label">Register Tanggal: <span style="color: red">*</span></label>
                                 <input type="date" id="registerTanggal" name="registerTanggal" class="form-control"
                                     value="{{ $data['registerTanggal'] }}">
                             </div>
@@ -351,7 +351,7 @@
                             </div>
                         </div>
                         <div class="mb-3" style="margin-top: 10px;">
-                            <label for="imbgTanggal" class="form-label">IMBG Tanggal:</label>
+                            <label for="imbgTanggal" class="form-label">IMBG Tanggal: <span style="color: red">*</span></label>
                             <input type="date" id="imbgTanggal" name="imbgTanggal" class="form-control"
                                 value="{{ $data['imbgTanggal'] }}">
                         </div>
@@ -369,9 +369,39 @@
                             </div> --}}
 
                             <div class="col-md-6" style="margin-top: 10px;">
-                                <label for="kabupaten" class="control-label">Kabupaten/Kota:</label>
-                                <select id="kabupaten" name="kabupaten" class="form-control select2 select2-kabupaten" >
+                                <label for="provinsi" class="control-label">Provinsi: <span style="color: red">*</span></label>
+                                <select id="provinsi" name="provinsi" class="form-control select2 select2-provinsi" >
+                                    @foreach (DB::table('master_province')->where('code', $data['provinsi'])->get() as $item)
+                                        <option value="{{ $item->code }}"
+                                            {{ $item->code == $data['provinsi'] ? 'selected' : '' }}>
+                                            {{ $item->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6" style="margin-top: 10px;">
+                                <label for="provinsi-terdahulu" class="form-label">Provinsi Terdahulu:</label>
+                                <input type="text" id="provinsi-terdahulu" name="provinsi-terdahulu"
+                                    class="form-control" value="{{ $data['provinsi_terdahulu'] }}">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            {{-- <div class="col-md-6" style="margin-top: 10px;">
+                                <label for="kabupaten" class="form-label">Kabupaten/Kota:</label>
+                                <select id="kabupaten" name="kabupaten" class="form-select select2 select2-kabupaten">
                                     @foreach (DB::table('master_regency')->where('province_code', 32)->get() as $item)
+                                        <option value="{{ $item->code }}"
+                                            {{ $item->code == $data['kabupaten'] ? 'selected' : '' }}>
+                                            {{ $item->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div> --}}
+
+                            <div class="col-md-6" style="margin-top: 10px;">
+                                <label for="kabupaten" class="control-label">Kabupaten/Kota: <span style="color: red">*</span></label>
+                                <select id="kabupaten" name="kabupaten" class="form-control select2 select2-kabupaten" >
+                                    @foreach (DB::table('master_regency')->where('province_code', $data['provinsi'])->get() as $item)
                                         <option value="{{ $item->code }}"
                                             {{ $item->code == $data['kabupaten'] ? 'selected' : '' }}>
                                             {{ $item->name }}
@@ -399,7 +429,7 @@
                             </div> --}}
                             {{-- Yang terbaru --}}
                             <div class="col-md-6">
-                                <label for="kecamatan" class="control-label">Kecamatan:</label>
+                                <label for="kecamatan" class="control-label">Kecamatan: <span style="color: red">*</span></label>
                                 <select id="kecamatan" name="kecamatan" class="form-control select2 select2-kecamatan">
                                     @foreach (DB::table('master_district')->where('regency_code', $data['kabupaten'])->get() as $item)
                                         <option value="{{ $item->code }}"
@@ -429,7 +459,7 @@
                                 </select>
                             </div> --}}
                             <div class="form-group col-md-6">
-                                <label for="kelurahan" class="control-label">Kelurahan:</label>
+                                <label for="kelurahan" class="control-label">Kelurahan: <span style="color: red">*</span></label>
                                 <select id="kelurahan" name="kelurahan" class="form-control select2 select2-kelurahan">
                                     @foreach (DB::table('master_subdistrict')->where('district_code', $data['kecamatan'])->get() as $item)
                                         <option value="{{ $item->code }}"
@@ -449,7 +479,7 @@
                         <div class="section-title"><h3>PENANDATANGAN</h3></div>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="kepalaDinas" class="form-label">Penandatangan:</label>
+                                <label for="kepalaDinas" class="form-label">Penandatangan: <span style="color: red">*</span></label>
                                 <select id="kepalaDinas" name="kepalaDinas" class="form-select form-control select2">
                                     <option value="">--- PILIH ---</option>
                                     @foreach (DB::table('app_md_user')->whereNotIn('nip_user', ['-', '', '.'])->get() as $user)
@@ -463,7 +493,7 @@
                             </div>
                             {{-- @dd($data) --}}
                             <div class="col-md-6">
-                                <label for="jabatan" class="form-label">Jabatan:</label>
+                                <label for="jabatan" class="form-label">Jabatan: <span style="color: red">*</span></label>
                                 <select id="jabatan" name="jabatan" class="form-select form-control select2">
                                     @foreach (DB::table('app_md_jabatan')->get() as $jabatan)
                                         <option {{ $jabatan->name_jabatan == $data['jabatan'] ? 'selected' : '' }}
@@ -474,7 +504,7 @@
                             </div>
                         </div>
                         <div class="mb-3" style="margin-top: 10px">
-                            <label for="pangkat" class="form-label">Pangkat/Golongan:</label>
+                            <label for="pangkat" class="form-label">Pangkat/Golongan: <span style="color: red">*</span></label>
                             <select id="pangkat" name="pangkat" class="form-select form-control select2">
                                 @foreach (DB::table('app_md_golongan')->get() as $golongan)
                                     <option {{ $golongan->name_golongan == $data['pangkat'] ? 'selected' : '' }}
@@ -488,7 +518,7 @@
                             @foreach ($data['keterangan'] as $key => $item)
                                 <div class="mb-3" style="margin-top: 10px" >
                                     <label for="ket{{ $key + 1 }}"
-                                        class="form-label">KET-{{ $key + 1 }}:</label>
+                                        class="form-label">KET-{{ $key + 1 }}:  <span style="color: red">*</span></label>
                                     <textarea id="ket{{ $key + 1 }}" name="ket[]" class="form-control" style="height: 100px" rows="3">{{ $item }}</textarea>
                                 </div>
                             @endforeach
@@ -501,7 +531,7 @@
                         <br>
 
                         <div class="section-title"><h3>SETTING SURAT</h3></div>
-                        <label for="fontSize" class="form-label">Font Size:</label>
+                        <label for="fontSize" class="form-label">Font Size:  <span style="color: red">*</span></label>
 
                         <input type="text" id="font_surat" name="font_surat" value="{{$data['font_surat']}}" class="form-control" placeholder="Dalam Ukuran pt">
 
@@ -512,11 +542,11 @@
                                 <table class="table-bordered table ">
                                     <tbody id="details">
                                         <tr>
-                                            <th colspan="2">Data IMBG</th>
-                                            <th colspan="2">Pecah/Rincik </th>
-                                            <th colspan="2">Belum Rincik/Pecah</th>
-                                            <th colspan="2">Sudah Dimohon Surat Keterangan</th>
-                                            <th rowspan="2">Hapus</th>
+                                            <th colspan="2">Data IMBG <span style="color: red">*</span></th>
+                                            <th colspan="2">Pecah/Rincik <span style="color: red">*</span></th>
+                                            <th colspan="2">Belum Rincik/Pecah <span style="color: red">*</span></th>
+                                            <th colspan="2">Sudah Dimohon Surat Keterangan <span style="color: red">*</span></th>
+                                            <th rowspan="2">Hapus <span style="color: red">*</span></th>
                                         </tr>
                                         <tr>
                                             <th>Type</th>
@@ -579,12 +609,12 @@
                                 <table class="table-bordered table ">
                                     <tbody id="details2">
                                         <tr>
-                                            <th>No</th>
-                                            <th style="width: 10%">Type</th>
-                                            <th style="width: 10%">Blok</th>
-                                            <th style="width: 50%">Nomor</th>
-                                            <th>Jumlah</th>
-                                            <th>Hapus</th>
+                                            <th>No <span style="color: red">*</span></th>
+                                            <th style="width: 10%">Type <span style="color: red">*</span></th>
+                                            <th style="width: 10%">Blok <span style="color: red">*</span></th>
+                                            <th style="width: 50%">Nomor <span style="color: red">*</span></th>
+                                            <th>Jumlah <span style="color: red">*</span></th>
+                                            <th>Hapus <span style="color: red">*</span></th>
                                         </tr>
                                         @foreach ($data['details2'] as $key => $item)
                                             <tr>
@@ -650,12 +680,12 @@
 
         function initializeSelect2WithAjax() {
             // Provinsi Select2 with AJAX
-            $('.select2-kabupaten').select2({
+            $('.select2-provinsi').select2({
                 width: '100%',
-                placeholder: 'Pilih kabupaten',
+                placeholder: 'Pilih provinsi',
                 minimumInputLength: 0,
                 ajax: {
-                    url: '{{ route('master.kabupaten') }}', // URL to fetch kabupaten data
+                    url: '{{ route('master.provinsi') }}', // URL to fetch kabupaten data
                     dataType: 'json',
                     delay: 250,
                     data: function(params) {
@@ -665,7 +695,7 @@
                         };
                     },
                     processResults: function(data, params) {
-                        console.log("Fetched kabupaten data:", data); // Check data structure here
+                        console.log("Fetched provinsi data:", data); // Check data structure here
                         return {
                             results: data.items.map(function(item) {
                                 return {
@@ -679,8 +709,43 @@
                 }
             }).on('select2:select', function(e) {
                 console.log("Selected Provinsi:", e.params.data);
-                loadKecamatan(e.params.data.id); // Load kabupaten based on selected provinsi
+                loadKabupaten(e.params.data.id); // Load kabupaten based on selected provinsi
             });
+            function loadKabupaten(provinsiId){
+                $('.select2-kabupaten').select2({
+                    width: '100%',
+                    placeholder: 'Pilih kabupaten',
+                    minimumInputLength: 0,
+                    ajax: {
+                        url: '{{ route('master.kabupaten') }}', // URL to fetch kabupaten data
+                        dataType: 'json',
+                        delay: 250,
+                        data: function(params) {
+                            return {
+                                q: params.term,
+                                provinsi_id: provinsiId, // Pass the selected provinsi ID
+                                page: params.page || 1
+                            };
+                        },
+                        processResults: function(data, params) {
+                            console.log("Fetched kabupaten data:", data); // Check data structure here
+                            return {
+                                results: data.items.map(function(item) {
+                                    return {
+                                        id: item.id,
+                                        text: item.text
+                                    };
+                                })
+                            };
+                        },
+                        cache: true
+                    }
+                }).on('select2:select', function(e) {
+                    console.log("Selected Provinsi:", e.params.data);
+                    loadKecamatan(e.params.data.id); // Load kabupaten based on selected provinsi
+                });
+            }
+
 
 
             // Kecamatan Select2 with AJAX

@@ -35,18 +35,18 @@
                             id="IMBTable">
                             <thead>
                                 <tr>
-                                    <th>NO</th>
-                                    <th>TAHUN</th>
-                                    <th>BERKAS MASUK</th>
-                                    <th>JUMLAH SURAT</th>
-                                    <th>PEMUTAKHIRAN DATA</th>
-                                    <th>BALIK NAMA</th>
-                                    <th>PENGGANTI SK IMBG HILANG</th>
-                                    <th>BALIK NAMA & PENGGANTI SK IMBG HILANG</th>
-                                    <th>PECAH & BALIK NAMA</th>
-                                    <th>LEGALISIR</th>
-                                    <th>FORMAT BARU</th>
-                                    <th>LINTAS</th>
+                                    <th style="text-align: center; vertical-align:middle">NO</th>
+                                    <th style="text-align: center; vertical-align:middle">TAHUN</th>
+                                    <th style="text-align: center; vertical-align:middle">BERKAS MASUK</th>
+                                    <th style="text-align: center; vertical-align:middle">JUMLAH SURAT</th>
+                                    <th style="text-align: center; vertical-align:middle">PEMUTAKHIRAN DATA</th>
+                                    <th style="text-align: center; vertical-align:middle">BALIK NAMA</th>
+                                    <th style="text-align: center; vertical-align:middle">PENGGANTI SK IMBG HILANG</th>
+                                    <th style="text-align: center; vertical-align:middle">BALIK NAMA & PENGGANTI SK IMBG HILANG</th>
+                                    <th style="text-align: center; vertical-align:middle">PECAH & BALIK NAMA</th>
+                                    <th style="text-align: center; vertical-align:middle">LEGALISIR</th>
+                                    <th style="text-align: center; vertical-align:middle">FORMAT BARU</th>
+                                    <th style="text-align: center; vertical-align:middle">LINTAS</th>
                                 </tr>
                             </thead>
                             <tbody>

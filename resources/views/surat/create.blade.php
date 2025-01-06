@@ -15,7 +15,7 @@
                         <div class="section-title"><h3>JENIS SURAT</h3></div>
                         <div class="row mb-3">
                             <div class="col-md-4">
-                                <label for="jenisSurat" class="form-label">Jenis Surat:</label>
+                                <label for="jenisSurat" class="form-label">Jenis Surat: <span style="color: red">*</span></label>
                                 <select id="jenisSurat" name="jenisSurat" class="form-control form-select">
                                     <option value="format-1">FORMAT-1</option>
                                     <option value="format-2">FORMAT-2</option>
@@ -24,12 +24,12 @@
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label for="tahun" class="form-label">Tahun:</label>
+                                <label for="tahun" class="form-label">Tahun: <span style="color: red">*</span></label>
                                 <input type="text" id="tahun" name="tahun" class="form-control" value="{{ date('Y') }}"
                                     readonly>
                             </div>
                             <div class="col-md-4">
-                                <label for="nomorSurat" class="form-label">Nomor Surat:</label>
+                                <label for="nomorSurat" class="form-label">Nomor Surat: </label>
                                 <input type="text" id="nomorSurat" name="nomorSurat" class="form-control" value="-"
                                     readonly>
                             </div>
@@ -40,16 +40,16 @@
                                 <input type="date" id="tanggalSurat" name="tanggalSurat" class="form-control" readonly>
                             </div>
                             <div class="col-md-4">
-                                <label for="lampiran" class="form-label">Lampiran:</label>
+                                <label for="lampiran" class="form-label">Lampiran: </label>
                                 <input type="text" id="lampiran" name="lampiran" class="form-control" value="">
                             </div>
                             <div class="col-md-4">
-                                <label for="sifat" class="form-label">Sifat:</label>
+                                <label for="sifat" class="form-label">Sifat: <span style="color: red">*</span></label>
                                 <input type="text" id="sifat" name="sifat" class="form-control" value="Biasa">
                             </div>
                         </div>
                         <div class="mb-3" style="margin-top: 10px">
-                            <label for="perihal" class="form-label">hal:</label>
+                            <label for="perihal" class="form-label">Hal: <span style="color: red">*</span></label>
                             <textarea id="perihal" name="perihal" class="form-control" style="height: 100px" rows="2">Keterangan Izin Mendirikan Bangunan Gedung (IMBG)</textarea>
                         </div>
                         <div class="section-title"><h3>PEMOHON</h3></div>

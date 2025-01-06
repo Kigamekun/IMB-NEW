@@ -335,9 +335,9 @@ class SuratController extends Controller
             'izin_mendirikan_bangunan_atas_nama' => 'required',
             'lokasi' => 'nullable',
 
-            'registerNomor' => 'required',
+            'registerNomor' => 'nullable',
             'registerTanggal' => 'required',
-            'imbgNomor' => 'required',
+            'imbgNomor' => 'nullable',
             'imbgTanggal' => 'required',
             'sapaanPemohon' => 'required',
             'provinsiPemohon' => 'required',

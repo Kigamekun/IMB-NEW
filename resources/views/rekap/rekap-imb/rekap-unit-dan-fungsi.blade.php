@@ -5,7 +5,7 @@
     <style>
         th {
             white-space: wrap;
-            text-align: center;
+            text-align: center; vertical-align:middle;
         }
     </style>
 
@@ -48,18 +48,18 @@
 
                             <thead>
                                 <tr>
-                                    <th rowspan="3">No</th>
-                                    <th rowspan="3">Tahun</th>
-                                    <th rowspan="3">Jumlah IMB</th>
-                                    <th rowspan="3">Jumlah Unit</th>
-                                    <th colspan="4" rowspan="2" style="text-align: center;">Jenis IMB</th>
-                                    <th colspan="10" style="text-align: center">Fungsi Bangunan</th>
+                                    <th rowspan="3"style="text-align: center; vertical-align:middle">No</th>
+                                    <th rowspan="3"style="text-align: center; vertical-align:middle">Tahun</th>
+                                    <th rowspan="3" style="text-align: center; vertical-align:middle">Jumlah IMB</th>
+                                    <th rowspan="3" style="text-align: center; vertical-align:middle">Jumlah Unit</th>
+                                    <th colspan="4" rowspan="2" style="text-align: center; vertical-align:middle;">Jenis IMB</th>
+                                    <th colspan="10" style="text-align: center; vertical-align:middle">Fungsi Bangunan</th>
                                     {{-- <th rowspan="3">NO</th>
                                     <th rowspan="3">TAHUN</th>
                                     <th rowspan="3">JUMLAH IMB</th>
                                     <th rowspan="3">JUMLAH UNIT</th>
-                                    <th colspan="4" rowspan="2" style="text-align: center;">JENIS IMB</th>
-                                    <th colspan="10" style="text-align: center">FUNGSI BANGUNAN</th> --}}
+                                    <th colspan="4" rowspan="2" style="text-align: center; vertical-align:middle;">JENIS IMB</th>
+                                    <th colspan="10" style="text-align: center; vertical-align:middle">FUNGSI BANGUNAN</th> --}}
                                 </tr>
                                 <tr>
                                     {{-- <th colspan="2">HUNIAN</th>
@@ -67,11 +67,11 @@
                                     <th colspan="2">SOSIAL DAN BUDAYA</th>
                                     <th colspan="2">KHUSUS</th>
                                     <th colspan="2">CAMPURAN</th> --}}
-                                    <th colspan="2">Hunian</th>
-                                    <th colspan="2">Usaha</th>
-                                    <th colspan="2">Sosial dan Budaya</th>
-                                    <th colspan="2">Khusus</th>
-                                    <th colspan="2">Campuran</th>
+                                    <th colspan="2"style="text-align: center; vertical-align:middle">Hunian</th>
+                                    <th colspan="2"style="text-align: center; vertical-align:middle">Usaha</th>
+                                    <th colspan="2"style="text-align: center; vertical-align:middle">Sosial dan Budaya</th>
+                                    <th colspan="2"style="text-align: center; vertical-align:middle">Khusus</th>
+                                    <th colspan="2"style="text-align: center; vertical-align:middle">Campuran</th>
                                 </tr>
                                 <tr>
                                     {{-- <th>INDUK PERUMAHAN</th>
@@ -88,20 +88,20 @@
                                     <th>UNIT</th>
                                     <th>ITEM IMB</th>
                                     <th>UNIT</th> --}}
-                                    <th>Induk Perumahan</th>
-                                    <th>Pecahan</th>
-                                    <th>Perluasan</th>
-                                    <th>Induk Non Perumahan</th>
-                                    <th>Item IMB</th>
-                                    <th>Unit</th>
-                                    <th>Item IMB</th>
-                                    <th>Unit</th>
-                                    <th>Item IMB</th>
-                                    <th>Unit</th>
-                                    <th>Item IMB</th>
-                                    <th>Unit</th>
-                                    <th>Item IMB</th>
-                                    <th>Unit</th>
+                                    <th style="text-align: center; vertical-align:middle">Induk Perumahan</th>
+                                    <th style="text-align: center; vertical-align:middle">Pecahan</th>
+                                    <th style="text-align: center; vertical-align:middle">Perluasan</th>
+                                    <th style="text-align: center; vertical-align:middle">Induk Non Perumahan</th>
+                                    <th style="text-align: center; vertical-align:middle">Item IMB</th>
+                                    <th style="text-align: center; vertical-align:middle">Unit</th>
+                                    <th style="text-align: center; vertical-align:middle">Item IMB</th>
+                                    <th style="text-align: center; vertical-align:middle">Unit</th>
+                                    <th style="text-align: center; vertical-align:middle">Item IMB</th>
+                                    <th style="text-align: center; vertical-align:middle">Unit</th>
+                                    <th style="text-align: center; vertical-align:middle">Item IMB</th>
+                                    <th style="text-align: center; vertical-align:middle">Unit</th>
+                                    <th style="text-align: center; vertical-align:middle">Item IMB</th>
+                                    <th style="text-align: center; vertical-align:middle">Unit</th>
                                 </tr>
                             </thead>
                             <tbody>

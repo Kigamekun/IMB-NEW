@@ -85,16 +85,16 @@
                             id="IMBTable">
                             <thead>
                                 <tr>
-                                    <th>No</th>
-                                    <th>Kabupaten / Kota</th>
-                                    <th>Kecamatan</th>
-                                    <th>Desa / Kelurahan</th>
-                                    <th>Tahun</th>
-                                    <th>Jumlah IMB</th>
-                                    <th>Induk Perumahan</th>
-                                    <th>Pecahan</th>
-                                    <th>Perluasan</th>
-                                    <th>Non Perumahan</th>
+                                    <th style="text-align: center; vertical-align:middle">No</th>
+                                    <th style="text-align: center; vertical-align:middle">Kabupaten / Kota</th>
+                                    <th style="text-align: center; vertical-align:middle">Kecamatan</th>
+                                    <th style="text-align: center; vertical-align:middle">Desa / Kelurahan</th>
+                                    <th style="text-align: center; vertical-align:middle">Tahun</th>
+                                    <th style="text-align: center; vertical-align:middle">Jumlah IMB</th>
+                                    <th style="text-align: center; vertical-align:middle">Induk Perumahan</th>
+                                    <th style="text-align: center; vertical-align:middle">Pecahan</th>
+                                    <th style="text-align: center; vertical-align:middle">Perluasan</th>
+                                    <th style="text-align: center; vertical-align:middle">Non Perumahan</th>
                                 </tr>
                             </thead>
                             <tbody>

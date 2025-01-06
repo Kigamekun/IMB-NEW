@@ -299,7 +299,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <label for="registerNomor" class="form-label">Register Nomor:</label>
+                                <label for="registerNomor" class="form-label">Nomor Register:</label>
                                 <input type="text" id="registerNomor" name="registerNomor" class="form-control"
                                     value="{{ $data['registerNomor'] }}">
                             </div>
@@ -345,7 +345,7 @@
                                     value="{{ $data['registerTanggal'] }}">
                             </div>
                             <div class="col-md-6">
-                                <label for="imbgNomor" class="form-label">IMBG Nomor:</label>
+                                <label for="imbgNomor" class="form-label">Nomor IMBG :</label>
                                 <input type="text" id="imbgNomor" name="imbgNomor" class="form-control"
                                     value="{{ $data['imbgNomor'] }}">
                             </div>

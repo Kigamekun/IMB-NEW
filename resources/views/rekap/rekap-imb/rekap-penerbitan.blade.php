@@ -34,13 +34,13 @@
                         <table class="table table-bordered" style="width: 100% !important;border-bottom:none !important;" id="IMBTable">
                             <thead>
                                 <tr>
-                                    <th>No</th>
-                                    <th>Tahun</th>
-                                    <th>Jumlah IMB</th>
-                                    <th>IMB Induk Perumahan</th>
-                                    <th>IMB Pecahan</th>
-                                    <th>IMB Perluasan</th>
-                                    <th>IMB Induk Non Perumahan</th>
+                                    <th style="text-align: center; vertical-align:middle">No</th>
+                                    <th style="text-align: center; vertical-align:middle">Tahun</th>
+                                    <th style="text-align: center; vertical-align:middle">Jumlah IMB</th>
+                                    <th style="text-align: center; vertical-align:middle">IMB Induk Perumahan</th>
+                                    <th style="text-align: center; vertical-align:middle">IMB Pecahan</th>
+                                    <th style="text-align: center; vertical-align:middle">IMB Perluasan</th>
+                                    <th style="text-align: center; vertical-align:middle">IMB Induk Non Perumahan</th>
                                     {{-- <th>NO</th>
                                     <th>TAHUN</th>
                                     <th>JUMLAH IMB</th>

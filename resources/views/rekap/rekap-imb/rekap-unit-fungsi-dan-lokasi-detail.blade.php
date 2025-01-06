@@ -113,67 +113,67 @@
                                     <th rowspan="3">JUMLAH UNIT</th>
                                     <th colspan="9" rowspan="2">JENIS IMB</th>
                                     <th colspan="10">FUNGSI BANGUNAN</th> --}}
-                                    <th rowspan="3">No</th>
-                                    <th rowspan="3">Kab/Kota</th>
-                                    <th rowspan="3">Kecamatan</th>
-                                    <th rowspan="3">Desa/Kel</th>
-                                    <th rowspan="3">Tahun</th>
-                                    <th rowspan="3">Jumlah IMB</th>
-                                    <th rowspan="3">Jumlah Unit</th>
-                                    <th colspan="9" rowspan="2">Jenis IMB</th>
-                                    <th colspan="10">Fungsi Bangunan</th>
+                                    <th style="text-align: center; vertical-align:middle" rowspan="3">No</th>
+                                    <th style="text-align: center; vertical-align:middle" rowspan="3">Kab/Kota</th>
+                                    <th style="text-align: center; vertical-align:middle" rowspan="3">Kecamatan</th>
+                                    <th style="text-align: center; vertical-align:middle" rowspan="3">Desa/Kel</th>
+                                    <th style="text-align: center; vertical-align:middle" rowspan="3">Tahun</th>
+                                    <th style="text-align: center; vertical-align:middle" rowspan="3">Jumlah IMB</th>
+                                    <th style="text-align: center; vertical-align:middle" rowspan="3">Jumlah Unit</th>
+                                    <th style="text-align: center; vertical-align:middle" colspan="9" rowspan="2">Jenis IMB</th>
+                                    <th style="text-align: center; vertical-align:middle" colspan="10">Fungsi Bangunan</th>
                                 </tr>
                                 <tr>
-                                    {{-- <th colspan="2">HUNIAN</th>
-                                    <th colspan="2">USAHA</th>
-                                    <th colspan="2">SOSIAL DAN BUDAYA</th>
-                                    <th colspan="2">KHUSUS</th>
-                                    <th colspan="2">CAMPURAN</th> --}}
-                                    <th colspan="2">Hunian</th>
-                                    <th colspan="2">Usaha</th>
-                                    <th colspan="2">Sosial dan Budaya</th>
-                                    <th colspan="2">Khusus</th>
-                                    <th colspan="2">Campuran</th>
+                                    {{-- <th style="text-align: center; vertical-align:middle" colspan="2">HUNIAN</th>
+                                    <th style="text-align: center; vertical-align:middle" colspan="2">USAHA</th>
+                                    <th style="text-align: center; vertical-align:middle" colspan="2">SOSIAL DAN BUDAYA</th>
+                                    <th style="text-align: center; vertical-align:middle" colspan="2">KHUSUS</th>
+                                    <th style="text-align: center; vertical-align:middle" colspan="2">CAMPURAN</th> --}}
+                                    <th style="text-align: center; vertical-align:middle" colspan="2">Hunian</th>
+                                    <th style="text-align: center; vertical-align:middle" colspan="2">Usaha</th>
+                                    <th style="text-align: center; vertical-align:middle" colspan="2">Sosial dan Budaya</th>
+                                    <th style="text-align: center; vertical-align:middle" colspan="2">Khusus</th>
+                                    <th style="text-align: center; vertical-align:middle" colspan="2">Campuran</th>
                                 </tr>
                                 <tr>
-                                    {{-- <th>INDUK PERUMAHAN</th>
-                                    <th>PECAHAN</th>
-                                    <th>PERLUASAN</th>
-                                    <th>INDUK NON PERUMAHAN (PERUSAHAAN)</th>
-                                    <th>INDUK NON PERUMAHAN (PERORANGAN)</th>
-                                    <th>INDUK NON PERUMAHAN (SOSIAL DAN BUDAYA)</th>
-                                    <th>PEMUTIHAN</th>
-                                    <th>BERSYARAT</th>
-                                    <th>LAINNYA</th>
-                                    <th>ITEM IMB</th>
-                                    <th>UNIT</th>
-                                    <th>ITEM IMB</th>
-                                    <th>UNIT</th>
-                                    <th>ITEM IMB</th>
-                                    <th>UNIT</th>
-                                    <th>ITEM IMB</th>
-                                    <th>UNIT</th>
-                                    <th>ITEM IMB</th>
-                                    <th>UNIT</th> --}}
-                                    <th>Induk Perumahan</th>
-                                    <th>Pecahan</th>
-                                    <th>Perluasan</th>
-                                    <th>Induk Non Perumahan (Perusahaan)</th>
-                                    <th>Induk Non Perumahan (Perorangan)</th>
-                                    <th>Induk Non Perumahan (Sosial dan Budaya)</th>
-                                    <th>Pemutihan</th>
-                                    <th>Bersyarat</th>
-                                    <th>Lainnya</th>
-                                    <th>Item IMB</th>
-                                    <th>Unit</th>
-                                    <th>Item IMB</th>
-                                    <th>Unit</th>
-                                    <th>Item IMB</th>
-                                    <th>Unit</th>
-                                    <th>Item IMB</th>
-                                    <th>Unit</th>
-                                    <th>Item IMB</th>
-                                    <th>Unit</th>
+                                    {{-- <th style="text-align: center; vertical-align:middle">INDUK PERUMAHAN</th>
+                                    <th style="text-align: center; vertical-align:middle">PECAHAN</th>
+                                    <th style="text-align: center; vertical-align:middle">PERLUASAN</th>
+                                    <th style="text-align: center; vertical-align:middle">INDUK NON PERUMAHAN (PERUSAHAAN)</th>
+                                    <th style="text-align: center; vertical-align:middle">INDUK NON PERUMAHAN (PERORANGAN)</th>
+                                    <th style="text-align: center; vertical-align:middle">INDUK NON PERUMAHAN (SOSIAL DAN BUDAYA)</th>
+                                    <th style="text-align: center; vertical-align:middle">PEMUTIHAN</th>
+                                    <th style="text-align: center; vertical-align:middle">BERSYARAT</th>
+                                    <th style="text-align: center; vertical-align:middle">LAINNYA</th>
+                                    <th style="text-align: center; vertical-align:middle">ITEM IMB</th>
+                                    <th style="text-align: center; vertical-align:middle">UNIT</th>
+                                    <th style="text-align: center; vertical-align:middle">ITEM IMB</th>
+                                    <th style="text-align: center; vertical-align:middle">UNIT</th>
+                                    <th style="text-align: center; vertical-align:middle">ITEM IMB</th>
+                                    <th style="text-align: center; vertical-align:middle">UNIT</th>
+                                    <th style="text-align: center; vertical-align:middle">ITEM IMB</th>
+                                    <th style="text-align: center; vertical-align:middle">UNIT</th>
+                                    <th style="text-align: center; vertical-align:middle">ITEM IMB</th>
+                                    <th style="text-align: center; vertical-align:middle">UNIT</th> --}}
+                                    <th style="text-align: center; vertical-align:middle">Induk Perumahan</th>
+                                    <th style="text-align: center; vertical-align:middle">Pecahan</th>
+                                    <th style="text-align: center; vertical-align:middle">Perluasan</th>
+                                    <th style="text-align: center; vertical-align:middle">Induk Non Perumahan (Perusahaan)</th>
+                                    <th style="text-align: center; vertical-align:middle">Induk Non Perumahan (Perorangan)</th>
+                                    <th style="text-align: center; vertical-align:middle">Induk Non Perumahan (Sosial dan Budaya)</th>
+                                    <th style="text-align: center; vertical-align:middle">Pemutihan</th>
+                                    <th style="text-align: center; vertical-align:middle">Bersyarat</th>
+                                    <th style="text-align: center; vertical-align:middle">Lainnya</th>
+                                    <th style="text-align: center; vertical-align:middle">Item IMB</th>
+                                    <th style="text-align: center; vertical-align:middle">Unit</th>
+                                    <th style="text-align: center; vertical-align:middle">Item IMB</th>
+                                    <th style="text-align: center; vertical-align:middle">Unit</th>
+                                    <th style="text-align: center; vertical-align:middle">Item IMB</th>
+                                    <th style="text-align: center; vertical-align:middle">Unit</th>
+                                    <th style="text-align: center; vertical-align:middle">Item IMB</th>
+                                    <th style="text-align: center; vertical-align:middle">Unit</th>
+                                    <th style="text-align: center; vertical-align:middle">Item IMB</th>
+                                    <th style="text-align: center; vertical-align:middle">Unit</th>
                                 </tr>
                             </thead>
                             <tbody>

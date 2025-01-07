@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\{IMBController, RekapController, JenisNonPerumController, TujuanSuratController, DataIMBTidaklengkapController, MasterController, SinkronisasiLokasiIMBController, SuratController, IMBIndukNonPerumController, IMBIndukPerumController, IMBTidakLengkapController, IMBPerluasanController, IMBPecahanController, IMBBersyaratController, IMBPelunasanController, IMBPemutihanController, ListSuratController};
+use App\Http\Controllers\{IMBController,LocationController,BulkDeleteController, RekapController, JenisNonPerumController, TujuanSuratController, DataIMBTidaklengkapController, MasterController, SinkronisasiLokasiIMBController, SuratController, IMBIndukNonPerumController, IMBIndukPerumController, IMBTidakLengkapController, IMBPerluasanController, IMBPecahanController, IMBBersyaratController, IMBPelunasanController, IMBPemutihanController, ListSuratController};
 
 Route::get('/', function () {
     return view('dashboard');
@@ -23,6 +23,16 @@ Route::get('/imb/search', function () {
 Route::get('/chart-simpol', function () {
     return view('chart-simpol');
 })->name('chart-simpol');
+
+
+Route::get('/bulk-delete', [BulkDeleteController::class, 'index'])->name('bulk-delete.index');
+Route::delete('/bulk-delete', [BulkDeleteController::class, 'delete'])->name('bulk-delete.delete');
+
+
+
+Route::get('/get-locations', [LocationController::class, 'getLocations']);
+Route::get('/get-kecamatan', [LocationController::class, 'getKecamatan']);
+Route::get('/get-desa', [LocationController::class, 'getDesa']);
 
 
 // Route::get('/chart-simpol-data', function (Request $request) {

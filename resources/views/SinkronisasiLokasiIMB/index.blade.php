@@ -73,6 +73,8 @@
                                 Hubungkan Data
                             </a>
                         @endisset
+                        <a href="{{ route('bulk-delete.index') }}" class="btn btn-info">Delete Bulk</a>
+
                     </div>
                     <br>
                     @if (!empty(Session::get('failures')))

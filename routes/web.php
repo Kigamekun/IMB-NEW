@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\{IMBController, RekapController, JenisNonPerumController, TujuanSuratController, DataIMBTidaklengkapController, MasterController, SinkronisasiLokasiIMBController, SuratController, IMBIndukNonPerumController, IMBIndukPerumController, IMBTidakLengkapController, IMBPerluasanController, IMBPecahanController, IMBBersyaratController, IMBPelunasanController, IMBPemutihanController, ListSuratController};
+use App\Http\Controllers\BookController;
+
 
 Route::get('/', function () {
     return view('dashboard');
@@ -433,6 +435,12 @@ Route::middleware(['auth'])->group(function () {
         });
 
     });
+
+
+Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
+Route::post('/books/store', [BookController::class, 'store'])->name('books.store');
+
+
 });
 
 

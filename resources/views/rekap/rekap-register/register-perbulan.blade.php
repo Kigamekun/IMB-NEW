@@ -10,7 +10,7 @@
         <div style="width: 90%;margin:auto">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5 rounded">
                 <div class="p-6 text-gray-900">
-                    <h3 class="text-3xl font-bold">REGISTER SK IMBG PERBULAN</h3>
+                    <h3 class="text-3xl font-bold">REGISTER SURAT KETERANGAN IMBG PERBULAN</h3>
                     <div class="mb-4">
                         <form id="filterForm" class="form-inline">
                             <div style="display:flex;flex-wrap:wrap;gap:10px;">
@@ -57,19 +57,19 @@
                         <table class="table table-bordered" style="width: 100% !important; border-bottom:none !important;" id="SuratTable">
                             <thead>
                                 <tr style="text-align: justify;">
-                                    <th>NO</th>
-                                    {{-- <th>Tahun</th> --}}
-                                    <th>NO SK</th>
-                                    <th>TANGGAL</th>
-                                    <th>PEMOHON</th>
-                                    <th>ATAS NAMA</th>
-                                    <th>NO REGISTER</th>
-                                    <th>NO IMBG</th>
-                                    <th>LOKASI BANGUNAN</th>
-                                    <th>KAB./KOTA</th>
-                                    <th>KECAMATAN</th>
-                                    <th>DESA/KEL.</th>
-                                    <th>JENIS</th>
+                                    <th style="text-align: center; vertical-align:middle">NO</th>
+                                    {{-- <th style="text-align: center; vertical-align:middle">Tahun</th> --}}
+                                    <th style="text-align: center; vertical-align:middle">NO SK</th>
+                                    <th style="text-align: center; vertical-align:middle">TANGGAL</th>
+                                    <th style="text-align: center; vertical-align:middle">PEMOHON</th>
+                                    <th style="text-align: center; vertical-align:middle">ATAS NAMA</th>
+                                    <th style="text-align: center; vertical-align:middle">NO REGISTER</th>
+                                    <th style="text-align: center; vertical-align:middle">NO IMBG</th>
+                                    <th style="text-align: center; vertical-align:middle">LOKASI BANGUNAN</th>
+                                    <th style="text-align: center; vertical-align:middle">KAB./KOTA</th>
+                                    <th style="text-align: center; vertical-align:middle">KECAMATAN</th>
+                                    <th style="text-align: center; vertical-align:middle">DESA/KEL.</th>
+                                    <th style="text-align: center; vertical-align:middle">JENIS</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -382,6 +382,8 @@
                 $('#kabupaten').val('').trigger('change');
                 $('#kecamatan').val('').trigger('change');
                 $('#kelurahan').val('').trigger("change");
+                getKecamatan()
+                getKelurahan()
                 table.draw();
             });
 

@@ -33,6 +33,12 @@
                         <a class="btn btn-success ml-2" href="{{ route('IMBIndukNonPerum.download-template') }}">
                             Download Template
                         </a>
+
+                        <form action="{{ route('delete.duplicates') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="type" value="imb_induk_non_perum">
+                            <button type="submit" class="btn btn-danger">Hapus Duplikat</button>
+                        </form>
                     </div>
                     <br>
                     @if (!empty(Session::get('failures')))

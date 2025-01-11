@@ -43,18 +43,18 @@
                     id="IMBTable">
                         <thead>
                             <tr>
-                                <th>No</th>
-                                <th>Tahun</th>
-                                <th>Jumlah IMB</th>
-                                <th>Induk Perumahan</th>
-                                <th>Pecahan</th>
-                                <th>Perluasan</th>
-                                <th>Induk Non Perumahan (Perusahaan)</th>
-                                <th>Induk Non Perumahan (Perorangan)</th>
-                                <th>Induk Non Perumahan (Sosial dan Budaya)</th>
-                                <th>Pemutihan</th>
-                                <th>Bersyarat</th>
-                                <th>Lainnya</th>
+                                <th style="text-align: center; vertical-align:middle">No</th>
+                                <th style="text-align: center; vertical-align:middle">Tahun</th>
+                                <th style="text-align: center; vertical-align:middle">Jumlah IMB</th>
+                                <th style="text-align: center; vertical-align:middle">Induk Perumahan</th>
+                                <th style="text-align: center; vertical-align:middle">Pecahan</th>
+                                <th style="text-align: center; vertical-align:middle">Perluasan</th>
+                                <th style="text-align: center; vertical-align:middle">Induk Non Perumahan (Perusahaan)</th>
+                                <th style="text-align: center; vertical-align:middle">Induk Non Perumahan (Perorangan)</th>
+                                <th style="text-align: center; vertical-align:middle">Induk Non Perumahan (Sosial dan Budaya)</th>
+                                <th style="text-align: center; vertical-align:middle">Pemutihan</th>
+                                <th style="text-align: center; vertical-align:middle">Bersyarat</th>
+                                <th style="text-align: center; vertical-align:middle">Lainnya</th>
                                 {{-- <th>No</th>
                                 <th>Tahun</th>
                                 <th>Jumlah IMB</th>

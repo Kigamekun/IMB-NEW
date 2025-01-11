@@ -46,51 +46,51 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
                     <table class="table table-bordered" style="width: 100% !important; border-bottom:none !important;" id="IMBTable">
                         <thead>
                             <tr>
-                                <th rowspan="3">No</th>
-                                <th rowspan="3">Tahun</th>
-                                <th rowspan="3">Jumlah IMB</th>
-                                <th rowspan="3">Jumlah Unit</th>
-                                <th colspan="9" rowspan="2" style="text-align: center">Jenis IMB</th>
-                                <th colspan="10" style="text-align: center">Fungsi Bangunan</th>
-                                {{-- <th rowspan="3">NO</th>
-                                <th rowspan="3">TAHUN</th>
-                                <th rowspan="3">JUMLAH IMB</th>
-                                <th rowspan="3">JUMLAH UNIT</th>
-                                <th colspan="9" rowspan="2" style="text-align: center">JENIS IMB</th>
-                                <th colspan="10" style="text-align: center">FUNGSI BANGUNAN</th> --}}
+                                <th style="text-align: center; vertical-align:middle" rowspan="3">No</th>
+                                <th style="text-align: center; vertical-align:middle" rowspan="3">Tahun</th>
+                                <th style="text-align: center; vertical-align:middle" rowspan="3">Jumlah IMB</th>
+                                <th style="text-align: center; vertical-align:middle" rowspan="3">Jumlah Unit</th>
+                                <th style="text-align: center; vertical-align:middle" colspan="9" rowspan="2" style="text-align: center; vertical-align:middle">Jenis IMB</th>
+                                <th style="text-align: center; vertical-align:middle" colspan="10" style="text-align: center; vertical-align:middle">Fungsi Bangunan</th>
+                                {{-- <th style="text-align: center; vertical-align:middle" rowspan="3">NO</th>
+                                <th style="text-align: center; vertical-align:middle" rowspan="3">TAHUN</th>
+                                <th style="text-align: center; vertical-align:middle" rowspan="3">JUMLAH IMB</th>
+                                <th style="text-align: center; vertical-align:middle" rowspan="3">JUMLAH UNIT</th>
+                                <th style="text-align: center; vertical-align:middle" colspan="9" rowspan="2" style="text-align: center; vertical-align:middle">JENIS IMB</th>
+                                <th style="text-align: center; vertical-align:middle" colspan="10" style="text-align: center; vertical-align:middle">FUNGSI BANGUNAN</th> --}}
                             </tr>
                             <tr>
-                                <th colspan="2">Hunian</th>
-                                <th colspan="2">Usaha</th>
-                                <th colspan="2">Sosial dan Budaya</th>
-                                <th colspan="2">Khusus</th>
-                                <th colspan="2">Campuran</th>
-                                {{-- <th colspan="2">HUNIAN</th>
-                                <th colspan="2">USAHA</th>
-                                <th colspan="2">SOSIAL DAN BUDAYA</th>
-                                <th colspan="2">KHUSUS</th>
-                                <th colspan="2">CAMPURAN</th> --}}
+                                <th style="text-align: center; vertical-align:middle" colspan="2">Hunian</th>
+                                <th style="text-align: center; vertical-align:middle" colspan="2">Usaha</th>
+                                <th style="text-align: center; vertical-align:middle" colspan="2">Sosial dan Budaya</th>
+                                <th style="text-align: center; vertical-align:middle" colspan="2">Khusus</th>
+                                <th style="text-align: center; vertical-align:middle" colspan="2">Campuran</th>
+                                {{-- <th style="text-align: center; vertical-align:middle" colspan="2">HUNIAN</th>
+                                <th style="text-align: center; vertical-align:middle" colspan="2">USAHA</th>
+                                <th style="text-align: center; vertical-align:middle" colspan="2">SOSIAL DAN BUDAYA</th>
+                                <th style="text-align: center; vertical-align:middle" colspan="2">KHUSUS</th>
+                                <th style="text-align: center; vertical-align:middle" colspan="2">CAMPURAN</th> --}}
                             </tr>
                             <tr>
-                                <th>Induk Perumahan</th>
-                                <th>Pecahan</th>
-                                <th>Perluasan</th>
-                                <th>Induk Non Perumahan (Perusahaan)</th>
-                                <th>Induk Non Perumahan (Perorangan)</th>
-                                <th>Induk Non Perumahan (Sosial dan Budaya)</th>
-                                <th>Pemutihan</th>
-                                <th>Bersyarat</th>
-                                <th>Lainnya</th>
-                                <th>Item IMB</th>
-                                <th>Unit</th>
-                                <th>Item IMB</th>
-                                <th>Unit</th>
-                                <th>Item IMB</th>
-                                <th>Unit</th>
-                                <th>Item IMB</th>
-                                <th>Unit</th>
-                                <th>Item IMB</th>
-                                <th>Unit</th>
+                                <th style="text-align: center; vertical-align:middle">Induk Perumahan</th>
+                                <th style="text-align: center; vertical-align:middle">Pecahan</th>
+                                <th style="text-align: center; vertical-align:middle">Perluasan</th>
+                                <th style="text-align: center; vertical-align:middle">Induk Non Perumahan (Perusahaan)</th>
+                                <th style="text-align: center; vertical-align:middle">Induk Non Perumahan (Perorangan)</th>
+                                <th style="text-align: center; vertical-align:middle">Induk Non Perumahan (Sosial dan Budaya)</th>
+                                <th style="text-align: center; vertical-align:middle">Pemutihan</th>
+                                <th style="text-align: center; vertical-align:middle">Bersyarat</th>
+                                <th style="text-align: center; vertical-align:middle">Lainnya</th>
+                                <th style="text-align: center; vertical-align:middle">Item IMB</th>
+                                <th style="text-align: center; vertical-align:middle">Unit</th>
+                                <th style="text-align: center; vertical-align:middle">Item IMB</th>
+                                <th style="text-align: center; vertical-align:middle">Unit</th>
+                                <th style="text-align: center; vertical-align:middle">Item IMB</th>
+                                <th style="text-align: center; vertical-align:middle">Unit</th>
+                                <th style="text-align: center; vertical-align:middle">Item IMB</th>
+                                <th style="text-align: center; vertical-align:middle">Unit</th>
+                                <th style="text-align: center; vertical-align:middle">Item IMB</th>
+                                <th style="text-align: center; vertical-align:middle">Unit</th>
                                 {{-- <th>INDUK PERUMAHAN</th>
                                 <th>PECAHAN</th>
                                 <th>PERLUASAN</th>
@@ -167,7 +167,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th style="text-align: center;">Total</th>
+                                <th style="text-align: center" >Total</th>
                                 <th></th> <!-- Placeholder untuk kolom "Tahun" -->
                                 <th id="total-jumlah-imb"></th>
                                 <th id="total-jumlah-unit"></th>

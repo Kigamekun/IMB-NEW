@@ -56,8 +56,9 @@
         .dt-search {
             margin-bottom: 10px;
         }
+
         .menu-text {
-          text-wrap: wrap;
+            text-wrap: wrap;
         }
 
         .nav-link {
@@ -299,8 +300,8 @@
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header">
-                                     <p>
-                                      {{-- Auth::user()->name_user --}}
+                                    <p>
+                                        {{-- Auth::user()->name_user --}}
                                     </p>
                                 </li>
                                 <!-- Menu Body -->
@@ -321,7 +322,8 @@
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a href="https://simpol.hastasejahtera.online/simpol/app.php?appmd=CUSER" class="btn btn-default btn-flat">Update Profile</a>
+                                        <a href="https://simpol.hastasejahtera.online/simpol/app.php?appmd=CUSER"
+                                            class="btn btn-default btn-flat">Update Profile</a>
                                     </div>
                                     <div class="pull-right">
                                         <a href="#" class="btn btn-default btn-flat">Sign out</a>
@@ -360,822 +362,661 @@
 
                     $today = Carbon\Carbon::now();
 
-// Format tanggal sesuai keinginan
-$formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
+                    // Format tanggal sesuai keinginan
+                    $formattedDate = $today->isoFormat('dddd, DD MMMM YYYY');
 
                 @endphp
                 <ul id="sidebarMenu" class="sidebar-menu" data-widget="tree">
-                    <li class="header">{{$formattedDate}}</li>
-                    <li >
-                      <a
-                        href="https://simpol.hastasejahtera.online/simpol/app.php"
-                        style="
+                    <li class="header">{{ $formattedDate }}</li>
+                    <li>
+                        <a href="https://simpol.hastasejahtera.online/simpol/app.php"
+                            style="
                               padding: 12px 5px 12px 15px;
                                 display: block;
                               "
-                        class="nav-link"
-                      >
-                        <i class="fa fa-pie-chart"></i>
-                        <span style="margin-left:-0px" class="title menu-text">
-                          KEMBALI KE SIMPOL
-                        </span>
-                      </a>
+                            class="nav-link">
+                            <i class="fa fa-pie-chart"></i>
+                            <span style="margin-left:-0px" class="title menu-text">
+                                KEMBALI KE SIMPOL
+                            </span>
+                        </a>
                     </li>
                     <li class="treeview " data-level="0">
-                      <a class="nav-link">
-                        <i class="fa fa-folder"></i>
-                        <span class="title menu-text">MASTER</span>
-                        <span class="pull-right-container">
-                          <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                      </a>
-
-                      {{-- WILAYAH  --}}
-                      <ul class="treeview-menu" style="display: none;">
-                        <li class="treeview " data-level="1">
-                          <a style="padding-left:20px" class="nav-link">
-                            <i class="fa fa-square-o"></i>
-                            <span class="title menu-text">WILAYAH</span>
+                        <a class="nav-link">
+                            <i class="fa fa-folder"></i>
+                            <span class="title menu-text">MASTER</span>
                             <span class="pull-right-container">
-                              <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                          </a>
-                          <ul class="treeview-menu" style="display: none;">
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1011', 'Provinsi', 'menu.php?cform=md_prov', 'relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Provinsi</span>
-                                <span></span>
-                              </a>
-                            </li>
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1012', 'Kabupaten/Kota', 'menu.php?cform=md_kab', 'relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Kabupaten/Kota</span>
-                                <span></span>
-                              </a>
-                            </li>
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1013', 'Kecamatan', 'menu.php?cform=md_kec', 'relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Kecamatan</span>
-                                <span></span>
-                              </a>
-                            </li>
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1014', 'Desa/Kelurahan', 'menu.php?cform=md_kel', 'relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Desa/Kelurahan</span>
-                                <span></span>
-                              </a>
-                            </li>
-                          </ul>
-                        </li>
-
-                        {{-- Bangunan Sub menu --}}
-                        <li class="treeview " data-level="1">
-                          <a style="padding-left:20px" class="nav-link">
-                            <i class="fa fa-square-o"></i>
-                            <span class="title menu-text">BANGUNAN</span>
-                            <span class="pull-right-container">
-                              <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                          </a>
-                          <ul class="treeview-menu" style="display: none;">
-                            {{-- Kode Bangunan --}}
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1021', 'Kode Bangunan', 'menu.php?cform=md_kodebang', 'relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Kode Bangunan</span>
-                                <span></span>
-                              </a>
-                            </li>
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1022', 'Fungsi Bangunan', 'menu.php?cform=md_fungsibang', 'relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Fungsi Bangunan</span>
-                                <span></span>
-                              </a>
-                            </li>
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1023', 'Jenis Kegiatan', 'menu.php?cform=md_jeniskeg', 'relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Jenis Kegiatan</span>
-                                <span></span>
-                              </a>
-                            </li>
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1024', 'Bangunan Penunjang', 'menu.php?cform=md_bangpenunjang', 'relative');">
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Bangunan Penunjang</span>
-                                <span></span>
-                              </a>
-                            </li>
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1025', 'Kelompok Bangunan', 'menu.php?cform=md_bangkelompok', 'relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Kelompok Bangunan</span>
-                                <span></span>
-                              </a>
-                            </li>
-                          </ul>
-                        </li>
-                        {{-- DOKUMEN SUB TAB --}}
-                        <li class="treeview " data-level="1">
-                          <a style="padding-left:20px" class="nav-link">
-                            <i class="fa fa-square-o"></i>
-                            <span class="title menu-text">DOKUMEN</span>
-                            <span class="pull-right-container">
-                              <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                          </a>
-                          <ul class="treeview-menu" style="display: none;">
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1031', 'Kendali Dokumen', 'menu.php?cform=md_kendalidoc', 'relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Kendali Dokumen</span>
-                                <span></span>
-                              </a>
-                            </li>
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1032', 'Periksa Dokumen', 'menu.php?cform=md_periksadoc', 'relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Periksa Dokumen</span>
-                                <span></span>
-                              </a>
-                            </li>
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1033', 'Posisi Dokumen', 'menu.php?cform=md_posisidoc', 'relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Posisi Dokumen</span>
-                                <span></span>
-                              </a>
-                            </li>
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1034', 'Surat Tanah', 'menu.php?cform=md_tanahdoc', 'relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Surat Tanah</span>
-                                <span></span>
-                              </a>
-                            </li>
-                          </ul>
-                        </li>
-
-                        {{-- PEGAWAI TAB --}}
-                        <li class="treeview " data-level="1">
-                          <a style="padding-left:20px" class="nav-link">
-                            <i class="fa fa-square-o"></i>
-                            <span class="title menu-text">PEGAWAI</span>
-                            <span class="pull-right-container">
-                              <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                          </a>
-                          <ul class="treeview-menu" style="display: none;">
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1041', 'Instansi', 'menu.php?cform=md_instansi', 'relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Instansi</span>
-                                <span></span>
-                              </a>
-                            </li>
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1042', 'Bidang', 'menu.php?cform=md_bidang', 'relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Bidang</span>
-                                <span></span>
-                              </a>
-                            </li>
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1043', 'Seksi', 'menu.php?cform=md_bidangsub', 'relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Seksi</span>
-                                <span></span>
-                              </a>
-                            </li>
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1044', 'Golongan', 'menu.php?cform=md_golongan', 'relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Golongan</span>
-                                <span></span>
-                              </a>
-                            </li>
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1045', 'Jabatan', 'menu.php?cform=md_jabatan', 'relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Jabatan</span>
-                                <span></span>
-                              </a>
-                            </li>
-                          </ul>
-                        </li>
-
-                        {{-- FORMULA --}}
-                        <li class="treeview " data-level="1">
-                          <a style="padding-left:20px" class="nav-link">
-                            <i class="fa fa-square-o"></i>
-                            <span class="title menu-text">FORMULA</span>
-                            <span class="pull-right-container">
-                              <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                          </a>
-                          <ul class="treeview-menu" style="display: none;">
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1051', 'Parameter', 'menu.php?cform=md_izinparam', 'relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Parameter</span>
-                                <span></span>
-                              </a>
-                            </li>
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1052', 'Index Parameter', 'menu.php?cform=md_izinparamidx', 'relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Index Parameter</span>
-                                <span></span>
-                              </a>
-                            </li>
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1053', 'Objek Bangunan', 'menu.php?cform=md_bangobjek', 'relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Objek Bangunan</span>
-                                <span></span>
-                              </a>
-                            </li>
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1054', 'Harga Satuan Bangunan', 'menu.php?cform=md_bangharga','relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Harga Satuan Bangunan</span>
-                                <span></span>
-                              </a>
-                            </li>
-                          </ul>
-                        </li>
-
-                        <li class="treeview " data-level="1">
-                            <a style="padding-left:20px" class="nav-link">
-                              <i class="fa fa-square-o"></i>
-                              <span class="title menu-text">IMB</span>
-                              <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
-                              </span>
-                            </a>
-                            <ul class="treeview-menu" style="display: none;">
-                              <li class=" " data-level="2">
-                                <a
-                                  style="padding-left:40px"
-                                  class="nav-link" href="{{ route('tujuan-surat.index') }}"
-                                >
-                                  <i class="fa fa-square-o"></i>
-                                  Tujuan Surat
+                            </span>
+                        </a>
+
+                        {{-- WILAYAH  --}}
+                        <ul class="treeview-menu" style="display: none;">
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">WILAYAH</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
                                 </a>
-                              </li>
-                              <li >
-                                <a
-                                  style="padding-left:40px"
-                                  class="nav-link"
-                                  href="{{ route('jenis-non-perum.index') }}"
-                                >
-                                  <i class="fa fa-square-o"></i>
-                                  <span class="title menu-text">Jenis Non Perum</span>
-                                  <span></span>
+                                <ul class="treeview-menu" style="display: none;">
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1011', 'Provinsi', 'menu.php?cform=md_prov', 'relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Provinsi</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1012', 'Kabupaten/Kota', 'menu.php?cform=md_kab', 'relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Kabupaten/Kota</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1013', 'Kecamatan', 'menu.php?cform=md_kec', 'relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Kecamatan</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1014', 'Desa/Kelurahan', 'menu.php?cform=md_kel', 'relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Desa/Kelurahan</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            {{-- Bangunan Sub menu --}}
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">BANGUNAN</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
                                 </a>
-                              </li>
+                                <ul class="treeview-menu" style="display: none;">
+                                    {{-- Kode Bangunan --}}
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1021', 'Kode Bangunan', 'menu.php?cform=md_kodebang', 'relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Kode Bangunan</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1022', 'Fungsi Bangunan', 'menu.php?cform=md_fungsibang', 'relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Fungsi Bangunan</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1023', 'Jenis Kegiatan', 'menu.php?cform=md_jeniskeg', 'relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Jenis Kegiatan</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1024', 'Bangunan Penunjang', 'menu.php?cform=md_bangpenunjang', 'relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Bangunan Penunjang</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1025', 'Kelompok Bangunan', 'menu.php?cform=md_bangkelompok', 'relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Kelompok Bangunan</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            {{-- DOKUMEN SUB TAB --}}
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">DOKUMEN</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu" style="display: none;">
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1031', 'Kendali Dokumen', 'menu.php?cform=md_kendalidoc', 'relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Kendali Dokumen</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1032', 'Periksa Dokumen', 'menu.php?cform=md_periksadoc', 'relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Periksa Dokumen</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1033', 'Posisi Dokumen', 'menu.php?cform=md_posisidoc', 'relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Posisi Dokumen</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1034', 'Surat Tanah', 'menu.php?cform=md_tanahdoc', 'relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Surat Tanah</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
 
-                            </ul>
-                          </li>
+                            {{-- PEGAWAI TAB --}}
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">PEGAWAI</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu" style="display: none;">
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1041', 'Instansi', 'menu.php?cform=md_instansi', 'relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Instansi</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1042', 'Bidang', 'menu.php?cform=md_bidang', 'relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Bidang</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1043', 'Seksi', 'menu.php?cform=md_bidangsub', 'relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Seksi</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1044', 'Golongan', 'menu.php?cform=md_golongan', 'relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Golongan</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1045', 'Jabatan', 'menu.php?cform=md_jabatan', 'relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Jabatan</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            {{-- FORMULA --}}
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">FORMULA</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu" style="display: none;">
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1051', 'Parameter', 'menu.php?cform=md_izinparam', 'relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Parameter</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1052', 'Index Parameter', 'menu.php?cform=md_izinparamidx', 'relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Index Parameter</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1053', 'Objek Bangunan', 'menu.php?cform=md_bangobjek', 'relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Objek Bangunan</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1054', 'Harga Satuan Bangunan', 'menu.php?cform=md_bangharga','relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Harga Satuan Bangunan</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">IMB</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu" style="display: none;">
+                                    <li class=" " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            href="{{ route('tujuan-surat.index') }}">
+                                            <i class="fa fa-square-o"></i>
+                                            Tujuan Surat
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a style="padding-left:40px" class="nav-link"
+                                            href="{{ route('jenis-non-perum.index') }}">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Jenis Non Perum</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </li>
 
 
-                      </ul>
+                        </ul>
                     </li>
 
                     {{-- REGISTER --}}
                     <li class="treeview " data-level="0">
-                      <a class="nav-link">
-                        <i class="fa fa-user"></i>
-                        <span class="title menu-text">LOKET &amp; REGISTER</span>
-                        <span class="pull-right-container">
-                          <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                      </a>
-                      <ul class="treeview-menu" style="display: none;">
-                        <li class="treeview " data-level="1">
-                          <a style="padding-left:20px" class="nav-link">
-                            <i class="fa fa-square-o"></i>
-                            <span class="title menu-text">LOKET</span>
+                        <a class="nav-link">
+                            <i class="fa fa-user"></i>
+                            <span class="title menu-text">LOKET &amp; REGISTER</span>
                             <span class="pull-right-container">
-                              <i class="fa fa-angle-left pull-right"></i>
+                                <i class="fa fa-angle-left pull-right"></i>
                             </span>
-                          </a>
-                          <ul class="treeview-menu" style="display: none;">
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1055', 'Status Permohonan', 'menu.php?cform=request_state','relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Status Permohonan</span>
-                                <span></span>
-                              </a>
+                        </a>
+                        <ul class="treeview-menu" style="display: none;">
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">LOKET</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu" style="display: none;">
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1055', 'Status Permohonan', 'menu.php?cform=request_state','relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Status Permohonan</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1056', 'Import Permohonan', 'menu.php?cform=lok_request','relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Import Permohonan</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1057', 'Data Loket PDRT', 'menu.php?cform=lok_reg','relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Data Loket PDRT</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1058', 'Status Loket PDRT', 'menu.php?cform=request_state','relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Status Loket PDRT</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1056', 'Import Permohonan', 'menu.php?cform=lok_request','relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Import Permohonan</span>
-                                <span></span>
-                              </a>
+                            {{-- REGISTER --}}
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">REGISTER</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu" style="display: none;">
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1059', 'Import Data Loket', 'menu.php?cform=pdrt_lokimport','relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Import Data Loket</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1060', 'Data Register PDRT', 'menu.php?cform=pdrt_reg','relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Data Register PDRT</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP1061', 'Cetak Form PDRT', 'menu.php?cform=pdrt_printform','relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Cetak Form PDRT</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1057', 'Data Loket PDRT', 'menu.php?cform=lok_reg','relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Data Loket PDRT</span>
-                                <span></span>
-                              </a>
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link"
+                                    onclick="redirectAndRun('APP1062', 'Cek Status PDRT', 'menu.php?cform=request_state','relative');">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">Cek Status PDRT</span>
+                                    <span></span>
+                                </a>
                             </li>
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1058', 'Status Loket PDRT', 'menu.php?cform=request_state','relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Status Loket PDRT</span>
-                                <span></span>
-                              </a>
-                            </li>
-                          </ul>
-                        </li>
-                        {{-- REGISTER --}}
-                        <li class="treeview " data-level="1">
-                          <a style="padding-left:20px" class="nav-link">
-                            <i class="fa fa-square-o"></i>
-                            <span class="title menu-text">REGISTER</span>
-                            <span class="pull-right-container">
-                              <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                          </a>
-                          <ul class="treeview-menu" style="display: none;">
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1059', 'Import Data Loket', 'menu.php?cform=pdrt_lokimport','relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Import Data Loket</span>
-                                <span></span>
-                              </a>
-                            </li>
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1060', 'Data Register PDRT', 'menu.php?cform=pdrt_reg','relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Data Register PDRT</span>
-                                <span></span>
-                              </a>
-                            </li>
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP1061', 'Cetak Form PDRT', 'menu.php?cform=pdrt_printform','relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Cetak Form PDRT</span>
-                                <span></span>
-                              </a>
-                            </li>
-                          </ul>
-                        </li>
-                        <li class="treeview " data-level="1">
-                          <a
-                            style="padding-left:20px"
-                            class="nav-link"
-                            onclick="redirectAndRun('APP1062', 'Cek Status PDRT', 'menu.php?cform=request_state','relative');"
-                          >
-                            <i class="fa fa-square-o"></i>
-                            <span class="title menu-text">Cek Status PDRT</span>
-                            <span></span>
-                          </a>
-                        </li>
-                      </ul>
+                        </ul>
                     </li>
 
                     {{-- Kajian --}}
                     <li class="treeview " data-level="0">
-                      <a class="nav-link">
-                        <i class="fa fa-camera"></i>
-                        <span class="title menu-text">SURVEY &amp; KAJIAN</span>
-                        <span class="pull-right-container">
-                          <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                      </a>
-                      <ul class="treeview-menu" style="display: none;">
-                        <li class="treeview " data-level="1">
-                          <a
-                            style="padding-left:20px"
-                            class="nav-link"
-                            onclick="redirectAndRun('APP4001', 'Cetak Blanko Survey', 'menu.php?cform=pdrt_printblanko','relative');"
-                          >
-                            <i class="fa fa-square-o"></i>
-                            <span class="title menu-text">Cetak Blanko Survey</span>
-                            <span></span>
-                          </a>
-                        </li>
-                        <li class="treeview " data-level="1">
-                          <a
-                            style="padding-left:20px"
-                            class="nav-link"
-                            onclick="redirectAndRun('APP4004', 'Upload Foto Survey', 'menu.php?cform=pdrt_uploadsurvey','relative');"
-                          >
-                            <i class="fa fa-square-o"></i>
-                            <span class="title menu-text">Upload Foto Survey</span>
-                            <span></span>
-                          </a>
-                        </li>
-                        <li class="treeview " data-level="1">
-                          <a
-                            style="padding-left:20px"
-                            class="nav-link"
-                            onclick="redirectAndRun('APP4005', 'Hapus Foto Survey', 'menu.php?cform=pdrt_deletesurvey','relative');"
-                          >
-                            <i class="fa fa-square-o"></i>
-                            <span class="title menu-text">Hapus Foto Survey</span>
-                            <span></span>
-                          </a>
-                        </li>
-                        <li class="treeview " data-level="1">
-                          <a
-                            style="padding-left:20px"
-                            class="nav-link"
-                            onclick="redirectAndRun('APP4003', 'Proses Kajian', 'menu.php?cform=pdrt_kajian','relative');"
-                          >
-                            <i class="fa fa-square-o"></i>
-                            <span class="title menu-text">Proses Kajian</span>
-                            <span></span>
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li class="treeview " data-level="0">
-                      <a class="nav-link">
-                        <i class="fa fa-calculator"></i>
-                        <span class="title menu-text">PERHITUNGAN &amp; SK</span>
-                        <span class="pull-right-container">
-                          <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                      </a>
-                      <ul class="treeview-menu" style="display: none;">
-                        <li class="treeview " data-level="1">
-                          <a
-                            style="padding-left:20px"
-                            class="nav-link"
-                            onclick="redirectAndRun('APP5001', 'Perhitungan PDRT', 'menu.php?cform=pdrt_hitung','relative');"
-                          >
-                            <i class="fa fa-square-o"></i>
-                            <span class="title menu-text">Perhitungan PDRT</span>
-                            <span></span>
-                          </a>
-                        </li>
-                        <li class="treeview " data-level="1">
-                          <a
-                            style="padding-left:20px"
-                            class="nav-link"
-                            onclick="redirectAndRun('APP5002', 'Pencetakan SK', 'menu.php?cform=pdrt_printsk','relative');"
-                          >
-                            <i class="fa fa-square-o"></i>
-                            <span class="title menu-text">Pencetakan SK</span>
-                            <span></span>
-                          </a>
-                        </li>
-                        <li class="treeview " data-level="1">
-                          <a
-                            style="padding-left:20px"
-                            class="nav-link"
-                            onclick="redirectAndRun('APP5003', 'Perhitungan Denda', 'menu.php?cform=pdrt_denda','relative');"
-                          >
-                            <i class="fa fa-square-o"></i>
-                            <span class="title menu-text">Perhitungan Denda</span>
-                            <span></span>
-                          </a>
-                        </li>
-                        <li class="treeview " data-level="1">
-                          <a
-                            style="padding-left:20px"
-                            class="nav-link"
-                            onclick="redirectAndRun('APP5004', 'Pencetakan STS', 'menu.php?cform=pdrt_printsts','relative');"
-                          >
-                            <i class="fa fa-square-o"></i>
-                            <span class="title menu-text">Pencetakan STS</span>
-                            <span></span>
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li class="treeview " data-level="0">
-                      <a class="nav-link">
-                        <i class="fa fa-calendar-check-o"></i>
-                        <span class="title menu-text">KENDALI BERKAS</span>
-                        <span class="pull-right-container">
-                          <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                      </a>
-                      <ul class="treeview-menu" style="display: none;">
-                        <li class="treeview " data-level="1">
-                          <a
-                            style="padding-left:20px"
-                            class="nav-link"
-                            onclick="redirectAndRun('APP7001', 'Data Status Berkas', 'menu.php?cform=pdrt_datastate','relative');"
-                          >
-                            <i class="fa fa-square-o"></i>
-                            <span class="title menu-text">Data Status Berkas</span>
-                            <span></span>
-                          </a>
-                        </li>
-                        <li class="treeview " data-level="1">
-                          <a
-                            style="padding-left:20px"
-                            class="nav-link"
-                            onclick="redirectAndRun('APP7002', 'Update Status', 'menu.php?cform=pdrt_updatestate','relative');"
-                            >
-                            <i class="fa fa-square-o"></i>
-                            <span class="title menu-text">Update Status</span>
-                            <span></span>
-                          </a>
-                        </li>
-                        <li class="treeview " data-level="1">
-                          <a
-                            style="padding-left:20px"
-                            class="nav-link"
-                            onclick="redirectAndRun('APP7003', 'Update Dokumen', 'menu.php?cform=pdrt_updatedoc','relative');"
-                          >
-                            <i class="fa fa-square-o"></i>
-                            <span class="title menu-text">Update Dokumen</span>
-                            <span></span>
-                          </a>
-                        </li>
-                        <li class="treeview " data-level="1">
-                          <a
-                            style="padding-left:20px"
-                            class="nav-link"
-                            onclick="redirectAndRun('APP7005', 'SK Kehilangan', 'menu.php?cform=pdrt_skhilang','relative');"
-                          >
-                            <i class="fa fa-square-o"></i>
-                            <span class="title menu-text">SK Kehilangan</span>
-                            <span></span>
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li class="treeview " data-level="0">
-                      <a class="nav-link">
-                        <i class="fa fa-pie-chart"></i>
-                        <span class="title menu-text">LAPORAN</span>
-                        <span class="pull-right-container">
-                          <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                      </a>
-                      <ul class="treeview-menu" style="display: none;">
-                        <li class="treeview " data-level="1">
-                          <a
-                            style="padding-left:20px"
-                            class="nav-link"
-                            onclick="redirectAndRun('APP8001', 'Register Per Periode', 'menu.php?cform=pdrt_reportdatper','relative');"
-                            <i class="fa fa-square-o"></i>
-                            <span class="title menu-text">Register Per Periode</span>
-                            <span></span>
-                          </a>
-                        </li>
-                        <li class="treeview " data-level="1">
-                          <a
-                            style="padding-left:20px"
-                            class="nav-link"
-                            onclick="redirectAndRun('APP8002', 'Register Per Bulan', 'menu.php?cform=pdrt_reportdatmonth','relative');"
-                          >
-                            <i class="fa fa-square-o"></i>
-                            <span class="title menu-text">Register Per Bulan</span>
-                            <span></span>
-                          </a>
-                        </li>
-                        <li class="treeview " data-level="1">
-                          <a
-                            style="padding-left:20px"
-                            class="nav-link"
-                            onclick="redirectAndRun('APP8003', 'Rekap Register', 'menu.php?cform=pdrt_reportsum','relative');"
-                          >
-                            <i class="fa fa-square-o"></i>
-                            <span class="title menu-text">Rekap Register</span>
-                            <span></span>
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li class="treeview " data-level="0">
-                      <a class="nav-link">
-                        <i class="fa fa-gear"></i>
-                        <span class="title menu-text">ADMIN</span>
-                        <span class="pull-right-container">
-                          <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                      </a>
-                      <ul class="treeview-menu" style="display: none;">
-                        <li class="treeview " data-level="1">
-                          <a style="padding-left:20px" class="nav-link">
-                            <i class="fa fa-square-o"></i>
-                            <span class="title menu-text">SISTEM</span>
+                        <a class="nav-link">
+                            <i class="fa fa-camera"></i>
+                            <span class="title menu-text">SURVEY &amp; KAJIAN</span>
                             <span class="pull-right-container">
-                              <i class="fa fa-angle-left pull-right"></i>
+                                <i class="fa fa-angle-left pull-right"></i>
                             </span>
-                          </a>
-                          <ul class="treeview-menu" style="display: none;">
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP9011', 'Pengaturan Aplikasi', 'menu.php?cform=UTI_CONFIG','relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Pengaturan Aplikasi</span>
-                                <span></span>
-                              </a>
+                        </a>
+                        <ul class="treeview-menu" style="display: none;">
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link"
+                                    onclick="redirectAndRun('APP4001', 'Cetak Blanko Survey', 'menu.php?cform=pdrt_printblanko','relative');">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">Cetak Blanko Survey</span>
+                                    <span></span>
+                                </a>
                             </li>
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP9012', 'Menu Aplikasi', 'menu.php?cform=UTI_MENU','relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Menu Aplikasi</span>
-                                <span></span>
-                              </a>
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link"
+                                    onclick="redirectAndRun('APP4004', 'Upload Foto Survey', 'menu.php?cform=pdrt_uploadsurvey','relative');">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">Upload Foto Survey</span>
+                                    <span></span>
+                                </a>
                             </li>
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP9013', 'Level Pengguna', 'menu.php?cform=UTI_USRLEVEL','relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Level Pengguna</span>
-                                <span></span>
-                              </a>
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link"
+                                    onclick="redirectAndRun('APP4005', 'Hapus Foto Survey', 'menu.php?cform=pdrt_deletesurvey','relative');">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">Hapus Foto Survey</span>
+                                    <span></span>
+                                </a>
                             </li>
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP9014', 'KONFIGURASI', 'menu.php?cform=UTI_XCOF','relative');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">KONFIGURASI</span>
-                                <span></span>
-                              </a>
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link"
+                                    onclick="redirectAndRun('APP4003', 'Proses Kajian', 'menu.php?cform=pdrt_kajian','relative');">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">Proses Kajian</span>
+                                    <span></span>
+                                </a>
                             </li>
-                          </ul>
-                        </li>
-                        <li class="treeview " data-level="1">
-                          <a style="padding-left:20px" class="nav-link">
-                            <i class="fa fa-square-o"></i>
-                            <span class="title menu-text">PENGGUNA</span>
+                        </ul>
+                    </li>
+                    <li class="treeview " data-level="0">
+                        <a class="nav-link">
+                            <i class="fa fa-calculator"></i>
+                            <span class="title menu-text">PERHITUNGAN &amp; SK</span>
                             <span class="pull-right-container">
-                              <i class="fa fa-angle-left pull-right"></i>
+                                <i class="fa fa-angle-left pull-right"></i>
                             </span>
-                          </a>
-                          <ul class="treeview-menu" style="display: none;">
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP9021', 'Data Pengguna', 'menu.php?cform=UTI_USER');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Data Pengguna</span>
-                                <span></span>
-                              </a>
+                        </a>
+                        <ul class="treeview-menu" style="display: none;">
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link"
+                                    onclick="redirectAndRun('APP5001', 'Perhitungan PDRT', 'menu.php?cform=pdrt_hitung','relative');">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">Perhitungan PDRT</span>
+                                    <span></span>
+                                </a>
                             </li>
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP9022', 'Status Login', 'menu.php?cform=UTI_LOGST');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Status Login</span>
-                                <span></span>
-                              </a>
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link"
+                                    onclick="redirectAndRun('APP5002', 'Pencetakan SK', 'menu.php?cform=pdrt_printsk','relative');">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">Pencetakan SK</span>
+                                    <span></span>
+                                </a>
                             </li>
-                            <li class="treeview " data-level="2">
-                              <a
-                                style="padding-left:40px"
-                                class="nav-link"
-                                onclick="redirectAndRun('APP9023', 'Update Password', 'menu.php?cform=UTI_LOGUPD');"
-                              >
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">Update Password</span>
-                                <span></span>
-                              </a>
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link"
+                                    onclick="redirectAndRun('APP5003', 'Perhitungan Denda', 'menu.php?cform=pdrt_denda','relative');">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">Perhitungan Denda</span>
+                                    <span></span>
+                                </a>
                             </li>
-                          </ul>
-                        </li>
-                      </ul>
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link"
+                                    onclick="redirectAndRun('APP5004', 'Pencetakan STS', 'menu.php?cform=pdrt_printsts','relative');">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">Pencetakan STS</span>
+                                    <span></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="treeview " data-level="0">
+                        <a class="nav-link">
+                            <i class="fa fa-calendar-check-o"></i>
+                            <span class="title menu-text">KENDALI BERKAS</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu" style="display: none;">
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link"
+                                    onclick="redirectAndRun('APP7001', 'Data Status Berkas', 'menu.php?cform=pdrt_datastate','relative');">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">Data Status Berkas</span>
+                                    <span></span>
+                                </a>
+                            </li>
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link"
+                                    onclick="redirectAndRun('APP7002', 'Update Status', 'menu.php?cform=pdrt_updatestate','relative');">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">Update Status</span>
+                                    <span></span>
+                                </a>
+                            </li>
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link"
+                                    onclick="redirectAndRun('APP7003', 'Update Dokumen', 'menu.php?cform=pdrt_updatedoc','relative');">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">Update Dokumen</span>
+                                    <span></span>
+                                </a>
+                            </li>
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link"
+                                    onclick="redirectAndRun('APP7005', 'SK Kehilangan', 'menu.php?cform=pdrt_skhilang','relative');">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">SK Kehilangan</span>
+                                    <span></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="treeview " data-level="0">
+                        <a class="nav-link">
+                            <i class="fa fa-pie-chart"></i>
+                            <span class="title menu-text">LAPORAN</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu" style="display: none;">
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link"
+                                    onclick="redirectAndRun('APP8001', 'Register Per Periode', 'menu.php?cform=pdrt_reportdatper','relative');"
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">Register Per Periode</span>
+                                    <span></span>
+                                </a>
+                            </li>
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link"
+                                    onclick="redirectAndRun('APP8002', 'Register Per Bulan', 'menu.php?cform=pdrt_reportdatmonth','relative');">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">Register Per Bulan</span>
+                                    <span></span>
+                                </a>
+                            </li>
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link"
+                                    onclick="redirectAndRun('APP8003', 'Rekap Register', 'menu.php?cform=pdrt_reportsum','relative');">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">Rekap Register</span>
+                                    <span></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="treeview " data-level="0">
+                        <a class="nav-link">
+                            <i class="fa fa-gear"></i>
+                            <span class="title menu-text">ADMIN</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu" style="display: none;">
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">SISTEM</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu" style="display: none;">
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP9011', 'Pengaturan Aplikasi', 'menu.php?cform=UTI_CONFIG','relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Pengaturan Aplikasi</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP9012', 'Menu Aplikasi', 'menu.php?cform=UTI_MENU','relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Menu Aplikasi</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP9013', 'Level Pengguna', 'menu.php?cform=UTI_USRLEVEL','relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Level Pengguna</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP9014', 'KONFIGURASI', 'menu.php?cform=UTI_XCOF','relative');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">KONFIGURASI</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">PENGGUNA</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu" style="display: none;">
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP9021', 'Data Pengguna', 'menu.php?cform=UTI_USER');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Data Pengguna</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP9022', 'Status Login', 'menu.php?cform=UTI_LOGST');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Status Login</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview " data-level="2">
+                                        <a style="padding-left:40px" class="nav-link"
+                                            onclick="redirectAndRun('APP9023', 'Update Password', 'menu.php?cform=UTI_LOGUPD');">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Update Password</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
 
@@ -1188,22 +1029,23 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
                     <li class="header">Menu IMB</li>
 
                     <li class="treeview " data-level="0">
-                      <a class="nav-link">
-                        <i class="fa fa-pie-chart"></i>
-                        <span class="title menu-text">IMB</span>
-                        <span class="pull-right-container">
-                          <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                      </a>
-                      <ul class="treeview-menu " style="display: none;">
-                        <li class="nav-item">
-                            <a class="nav-link" style="padding-left:20px" href="{{ route('IMBIndukPerum.index') }}">
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">IMB Induk Perum</span>
-                                <span></span>
-                            </a>
-                        </li>
-                        {{-- <li class="treeview " data-level="1">
+                        <a class="nav-link">
+                            <i class="fa fa-pie-chart"></i>
+                            <span class="title menu-text">IMB</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu " style="display: none;">
+                            <li class="nav-item">
+                                <a class="nav-link" style="padding-left:20px"
+                                    href="{{ route('IMBIndukPerum.index') }}">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">IMB Induk Perum</span>
+                                    <span></span>
+                                </a>
+                            </li>
+                            {{-- <li class="treeview " data-level="1">
                           <a
                             style="padding-left:20px"
                             class="nav-link"
@@ -1215,16 +1057,17 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
                           </a>
                         </li> --}}
 
-                        <!-- IMB Pecahan -->
-                        <li class="nav-item">
-                            <a class="nav-link" style="padding-left:20px"  href="{{ route('IMBPecahan.index') }}">
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">IMB Pecahan</span>
-                                <span></span>
-                            </a>
-                        </li>
+                            <!-- IMB Pecahan -->
+                            <li class="nav-item">
+                                <a class="nav-link" style="padding-left:20px"
+                                    href="{{ route('IMBPecahan.index') }}">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">IMB Pecahan</span>
+                                    <span></span>
+                                </a>
+                            </li>
 
-                        {{-- <li class="treeview " data-level="1">
+                            {{-- <li class="treeview " data-level="1">
                           <a style="padding-left:20px" class="nav-link"  href="{{ route('IMBPecahan.index') }}">
                             <i class="fa fa-square-o"></i>
                             <span class="title menu-text">IMB Pecahan</span>
@@ -1232,16 +1075,17 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
                           </a>
                         </li> --}}
 
-                        <!-- IMB Perluasan -->
-                        <li class="nav-item">
-                            <a class="nav-link" style="padding-left:20px"  href="{{ route('IMBPerluasan.index') }}">
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">IMB Perluasan</span>
-                                <span></span>
-                            </a>
-                        </li>
+                            <!-- IMB Perluasan -->
+                            <li class="nav-item">
+                                <a class="nav-link" style="padding-left:20px"
+                                    href="{{ route('IMBPerluasan.index') }}">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">IMB Perluasan</span>
+                                    <span></span>
+                                </a>
+                            </li>
 
-                        {{-- <li class="treeview " data-level="1">
+                            {{-- <li class="treeview " data-level="1">
                           <a style="padding-left:20px" class="nav-link" href="/imb/IMBPerluasan">
                             <i class="fa fa-square-o"></i>
                             <span class="title menu-text">IMB Perluasan</span>
@@ -1249,15 +1093,16 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
                           </a>
                         </li> --}}
 
-                        <!-- IMB Induk Non Perum -->
-                        <li class="nav-item">
-                            <a class="nav-link" style="padding-left:20px"  href="{{ route('IMBIndukNonPerum.index') }}">
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">IMB Non Perum</span>
-                                <span></span>
-                            </a>
-                        </li>
-                        {{-- <li class="treeview " data-level="1">
+                            <!-- IMB Induk Non Perum -->
+                            <li class="nav-item">
+                                <a class="nav-link" style="padding-left:20px"
+                                    href="{{ route('IMBIndukNonPerum.index') }}">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">IMB Non Perum</span>
+                                    <span></span>
+                                </a>
+                            </li>
+                            {{-- <li class="treeview " data-level="1">
                           <a
                             style="padding-left:20px"
                             class="nav-link"
@@ -1268,7 +1113,7 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
                             <span></span>
                           </a>
                         </li> --}}
-                      </ul>
+                        </ul>
                     </li>
 
 
@@ -1277,85 +1122,85 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
 
                     <li class="treeview " data-level="0">
                         <a class="nav-link">
-                          <i class="fa fa-user"></i>
-                          <span class="title menu-text">KENDALI DATA IMB</span>
-                          <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
-                          </span>
+                            <i class="fa fa-user"></i>
+                            <span class="title menu-text">KENDALI DATA IMB</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
                         </a>
                         <ul class="treeview-menu" style="display: none;">
-                          <li class="treeview " data-level="1">
-                            <a style="padding-left:20px" class="nav-link">
-                              <i class="fa fa-square-o"></i>
-                              <span class="title menu-text">Data Tidak Lengkap</span>
-                              <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                              </span>
-                            </a>
-                            <ul class="treeview-menu " style="display: none;">
-                                <!-- IMB Pecahan -->
-                                <li class="nav-item">
-                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('DataIMBTidakLengkap.pecahan') }}">
-                                        <i class="fa fa-square-o"></i>
-                                        <span class="title menu-text">IMB Pecahan</span>
-                                        <span></span>
-                                    </a>
-                                </li>
-                                <!-- IMB Perluasan -->
-                                <li class="nav-item">
-                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('DataIMBTidakLengkap.perluasan') }}">
-                                        <i class="fa fa-square-o"></i>
-                                        <span class="title menu-text">IMB Perluasan</span>
-                                        <span></span>
-                                    </a>
-                                </li>
-                              </ul>
-                          </li>
-                          {{-- REGISTER --}}
-                          <li class="treeview " data-level="1">
-                            <a style="padding-left:20px" class="nav-link">
-                              <i class="fa fa-square-o"></i>
-                              <span class="title menu-text">Sinkronisasi Lokasi</span>
-                              <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                              </span>
-                            </a>
-                            <ul class="treeview-menu " style="display: none;">
-                                <li class="nav-item">
-                                    <a class="nav-link" style="padding-left:20px" href="{{ route('SinkronisasiLokasiIMB.index') }}">
-                                        <i class="fa fa-square-o"></i>Induk
-                                    </a>
-                                </li>
-                                <!-- Pecahan -->
-                                <li class="nav-item">
-                                    <a class="nav-link"
-                                    style="padding-left:20px"
-                                        href="{{ route('SinkronisasiLokasiIMB.index') }}?type=pecahan">
-                                        <i class="fa fa-square-o"></i>Pecahan
-                                    </a>
-                                </li>
-                                <!-- Perluasan -->
-                                <li class="nav-item">
-                                    <a class="nav-link"
-                                    style="padding-left:20px"
-                                        href="{{ route('SinkronisasiLokasiIMB.index') }}?type=perluasan">
-                                        <i class="fa fa-square-o"></i>Perluasan
-                                    </a>
-                                </li>
-                                <!-- Non Perum -->
-                                <li class="nav-item">
-                                    <a class="nav-link"
-                                    style="padding-left:20px"
-                                        href="{{ route('SinkronisasiLokasiIMB.index') }}?type=non_perum">
-                                        <i class="fa fa-square-o"></i>Non Perum
-                                    </a>
-                                </li>
-                              </ul>
-                          </li>
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">Data Tidak Lengkap</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu " style="display: none;">
+                                    <!-- IMB Pecahan -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="padding-left:20px"
+                                            href="{{ route('DataIMBTidakLengkap.pecahan') }}">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">IMB Pecahan</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <!-- IMB Perluasan -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="padding-left:20px"
+                                            href="{{ route('DataIMBTidakLengkap.perluasan') }}">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">IMB Perluasan</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            {{-- REGISTER --}}
+                            <li class="treeview " data-level="1">
+                                <a style="padding-left:20px" class="nav-link">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">Sinkronisasi Lokasi</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu " style="display: none;">
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="padding-left:20px"
+                                            href="{{ route('SinkronisasiLokasiIMB.index') }}">
+                                            <i class="fa fa-square-o"></i>Induk
+                                        </a>
+                                    </li>
+                                    <!-- Pecahan -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="padding-left:20px"
+                                            href="{{ route('SinkronisasiLokasiIMB.index') }}?type=pecahan">
+                                            <i class="fa fa-square-o"></i>Pecahan
+                                        </a>
+                                    </li>
+                                    <!-- Perluasan -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="padding-left:20px"
+                                            href="{{ route('SinkronisasiLokasiIMB.index') }}?type=perluasan">
+                                            <i class="fa fa-square-o"></i>Perluasan
+                                        </a>
+                                    </li>
+                                    <!-- Non Perum -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="padding-left:20px"
+                                            href="{{ route('SinkronisasiLokasiIMB.index') }}?type=non_perum">
+                                            <i class="fa fa-square-o"></i>Non Perum
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
 
                         </ul>
-                      </li>
-{{--
+                    </li>
+                    {{--
                     <li class="treeview " data-level="0">
                       <a class="nav-link">
                         <i class="fa fa-pie-chart"></i>
@@ -1368,196 +1213,222 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
                     </li> --}}
 
 
-                    <li >
-                      <a
-                        href="{{ route('surat.index') }}"
-                        style="
+                    <li>
+                        <a href="{{ route('surat.index') }}"
+                            style="
                               padding: 12px 5px 12px 15px;
                                 display: block;
                               "
-                        class="nav-link"
-                      >
-                        <i class="fa fa-pie-chart"></i>
-                        <span style="margin-left:-0px" class="title menu-text">
-                          SURAT KET. IMBG
-                        </span>
-                      </a>
+                            class="nav-link">
+                            <i class="fa fa-pie-chart"></i>
+                            <span style="margin-left:-0px" class="title menu-text">
+                                SURAT KET. IMBG
+                            </span>
+                        </a>
                     </li>
 
 
+                    <li>
+                        <a href="{{ route('books.index') }}"
+                            style="
+                                padding: 12px 5px 12px 15px;
+                                  display: block;
+                                "
+                            class="nav-link">
+                            <i class="fa fa-pie-chart"></i>
+                            <span style="margin-left:-0px" class="title menu-text">
+                                GALERI
+                            </span>
+                        </a>
+                    </li>
+
                     <li class="treeview" data-level="0">
                         <a class="nav-link">
-                          <i class="fa fa-pie-chart"></i>
-                          <span class="title menu-text">REKAP </span>
-                          <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
-                          </span>
+                            <i class="fa fa-pie-chart"></i>
+                            <span class="title menu-text">REKAP </span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
                         </a>
                         <ul class="treeview-menu" style="display: none;">
-                          <!-- Rekap IMB -->
-                          <li class="treeview" data-level="1">
-                            <a class="nav-link">
-                              <i class="fa fa-square-o"></i>
-                              <span class="title menu-text">Rekap IMB</span>
-                              <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                              </span>
-                              </a>
-                            <ul class="treeview-menu " style="display: none;">
-                                <!-- IMB Rekap penerbitan  -->
-                                <li class="nav-item">
-                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapPenerbitan') }}">
-                                        <i class="fa fa-square-o"></i>
-                                        <span class="title menu-text">Penerbitan</span>
-                                        <span></span>
-                                    </a>
-                                </li>
-                                <!-- IMB Rekap penerbitan detail -->
-                                <li class="nav-item">
-                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapPenerbitanDetail') }}">
-                                        <i class="fa fa-square-o"></i>
-                                        <span class="title menu-text">Penerbitan Detail</span>
-                                        <span></span>
-                                    </a>
-                                </li>
-                                <!-- IMB Rekap Unit dan Fungsi -->
-                                <li class="nav-item">
-                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapUnitDanFungsi') }}">
-                                        <i class="fa fa-square-o"></i>
-                                        <span class="title menu-text">Unit dan Fungsi</span>
-                                        <span></span>
-                                    </a>
-                                </li>
-                                <!-- IMB Rekap Unit dan Fungsi detail -->
-                                <li class="nav-item">
-                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapUnitDanFungsiDetail') }}">
-                                        <i class="fa fa-square-o"></i>
-                                        <span class="title menu-text">Unit dan Fungsi Detail</span>
-                                        <span></span>
-                                    </a>
-                                </li>
-                                <!-- IMB Rekap Lokasi -->
-                                <li class="nav-item">
-                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapLokasi') }}">
-                                        <i class="fa fa-square-o"></i>
-                                        <span class="title menu-text">Lokasi</span>
-                                        <span></span>
-                                    </a>
-                                </li>
-                                <!-- IMB Rekap lokasi detail -->
-                                <li class="nav-item">
-                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapLokasiDetail') }}">
-                                        <i class="fa fa-square-o"></i>
-                                        <span class="title menu-text">Lokasi Detail</span>
-                                        <span></span>
-                                    </a>
-                                </li>
-                                <!-- IMB Rekap Unit Fungsi dan Lokasi -->
-                                <li class="nav-item">
-                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapUnitFungsiDanLokasi') }}">
-                                        <i class="fa fa-square-o"></i>
-                                        <span class="title menu-text">Unit Fungsi dan Lokasi</span>
-                                        <span></span>
-                                    </a>
-                                </li>
-                                <!-- IMB Rekap Unit Fungsi dan Lokasi detail -->
-                                <li class="nav-item">
-                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapUnitFungsiDanLokasiDetail') }}">
-                                        <i class="fa fa-square-o"></i>
-                                        <span class="title menu-text">Unit Fungsi dan Lokasi Detail</span>
-                                        <span></span>
-                                    </a>
-                                </li>
-                              </ul>
-                          </li>
-                          <!-- Rekap IMB Pertahun -->
-                          <li class="treeview" data-level="1">
-                            <a class="nav-link">
-                              <i class="fa fa-square-o"></i>
-                              <span class="title menu-text">IMB Pertahun</span>
-                              <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                              </span>
-                            </a>
-                            <ul class="treeview-menu " style="display: none;">
-                                <!-- IMB Rekap unit dan fungsi  -->
-                                <li class="nav-item">
-                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapUnitDanFungsiPertahun') }}">
-                                        <i class="fa fa-square-o"></i>
-                                        <span class="title menu-text">Unit dan Fungsi</span>
-                                        <span></span>
-                                    </a>
-                                </li>
-                                <!-- IMB Rekap Lokasi  -->
-                                <li class="nav-item">
-                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapLokasiPertahun') }}">
-                                        <i class="fa fa-square-o"></i>
-                                        <span class="title menu-text">Lokasi</span>
-                                        <span></span>
-                                    </a>
-                                </li>
-                                <!-- IMB Rekap unit fungsi dan Lokasi  -->
-                                <li class="nav-item">
-                                    <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.RekapUnitFungsiDanLokasiPertahun') }}">
-                                        <i class="fa fa-square-o"></i>
-                                        <span class="title menu-text">Unit Fungsi dan Lokasi</span>
-                                        <span></span>
-                                    </a>
-                                </li>
-                            </ul>
-                          </li>
+                            <!-- Rekap IMB -->
+                            <li class="treeview" data-level="1">
+                                <a class="nav-link">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">Rekap IMB</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu " style="display: none;">
+                                    <!-- IMB Rekap penerbitan  -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="padding-left:20px"
+                                            href="{{ route('rekap.RekapPenerbitan') }}">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Penerbitan</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <!-- IMB Rekap penerbitan detail -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="padding-left:20px"
+                                            href="{{ route('rekap.RekapPenerbitanDetail') }}">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Penerbitan Detail</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <!-- IMB Rekap Unit dan Fungsi -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="padding-left:20px"
+                                            href="{{ route('rekap.RekapUnitDanFungsi') }}">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Unit dan Fungsi</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <!-- IMB Rekap Unit dan Fungsi detail -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="padding-left:20px"
+                                            href="{{ route('rekap.RekapUnitDanFungsiDetail') }}">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Unit dan Fungsi Detail</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <!-- IMB Rekap Lokasi -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="padding-left:20px"
+                                            href="{{ route('rekap.RekapLokasi') }}">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Lokasi</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <!-- IMB Rekap lokasi detail -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="padding-left:20px"
+                                            href="{{ route('rekap.RekapLokasiDetail') }}">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Lokasi Detail</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <!-- IMB Rekap Unit Fungsi dan Lokasi -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="padding-left:20px"
+                                            href="{{ route('rekap.RekapUnitFungsiDanLokasi') }}">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Unit Fungsi dan Lokasi</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <!-- IMB Rekap Unit Fungsi dan Lokasi detail -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="padding-left:20px"
+                                            href="{{ route('rekap.RekapUnitFungsiDanLokasiDetail') }}">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Unit Fungsi dan Lokasi Detail</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- Rekap IMB Pertahun -->
+                            <li class="treeview" data-level="1">
+                                <a class="nav-link">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">IMB Pertahun</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu " style="display: none;">
+                                    <!-- IMB Rekap unit dan fungsi  -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="padding-left:20px"
+                                            href="{{ route('rekap.RekapUnitDanFungsiPertahun') }}">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Unit dan Fungsi</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <!-- IMB Rekap Lokasi  -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="padding-left:20px"
+                                            href="{{ route('rekap.RekapLokasiPertahun') }}">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Lokasi</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <!-- IMB Rekap unit fungsi dan Lokasi  -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="padding-left:20px"
+                                            href="{{ route('rekap.RekapUnitFungsiDanLokasiPertahun') }}">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">Unit Fungsi dan Lokasi</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
 
-                          <!-- Register IMB Pertahun -->
-                          <li class="treeview" data-level="1">
-                            <a class="nav-link">
-                              <i class="fa fa-square-o"></i>
-                              <span class="title menu-text">Register IMB Pertahun</span>
-                              <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                              </span>
-                            </a>
-                            <ul class="treeview-menu " style="display: none;">
-                              <!-- IMB Rekap  -->
-                              <li class="nav-item">
-                                  <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.DetailIMBInduk') }}">
-                                      <i class="fa fa-square-o"></i>
-                                      <span class="title menu-text">IMB Induk</span>
-                                      <span></span>
-                                  </a>
-                              </li>
-                              <!-- IMB Rekap -->
-                              {{-- <li class="nav-item">
+                            <!-- Register IMB Pertahun -->
+                            <li class="treeview" data-level="1">
+                                <a class="nav-link">
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">Register IMB Pertahun</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu " style="display: none;">
+                                    <!-- IMB Rekap  -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="padding-left:20px"
+                                            href="{{ route('rekap.DetailIMBInduk') }}">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">IMB Induk</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <!-- IMB Rekap -->
+                                    {{-- <li class="nav-item">
                                   <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.DetailIMBIndukList') }}">
                                       <i class="fa fa-square-o"></i>
                                       <span class="title menu-text">IMB Induk List</span>
                                       <span></span>
                                   </a>
                               </li> --}}
-                              <!-- IMB Rekap -->
-                              <li class="nav-item">
-                                  <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.DetailIMBPecahan') }}">
-                                      <i class="fa fa-square-o"></i>
-                                      <span class="title menu-text">IMB Pecahan</span>
-                                      <span></span>
-                                  </a>
-                              </li>
-                              <!-- IMB Rekap  -->
-                              {{-- <li class="nav-item">
+                                    <!-- IMB Rekap -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="padding-left:20px"
+                                            href="{{ route('rekap.DetailIMBPecahan') }}">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">IMB Pecahan</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    <!-- IMB Rekap  -->
+                                    {{-- <li class="nav-item">
                                   <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.DetailIMBPecahanList') }}">
                                       <i class="fa fa-square-o"></i>
                                       <span class="title menu-text">IMB Pecahan List</span>
                                       <span></span>
                                   </a>
                               </li> --}}
-                              <!-- IMB Rekap -->
-                              <li class="nav-item">
-                                  <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.DetailIMBPerluasan') }}">
-                                      <i class="fa fa-square-o"></i>
-                                      <span class="title menu-text">IMB Perluasan</span>
-                                      <span></span>
-                                  </a>
-                              </li>
-                              {{-- <!-- IMB Rekap -->
+                                    <!-- IMB Rekap -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="padding-left:20px"
+                                            href="{{ route('rekap.DetailIMBPerluasan') }}">
+                                            <i class="fa fa-square-o"></i>
+                                            <span class="title menu-text">IMB Perluasan</span>
+                                            <span></span>
+                                        </a>
+                                    </li>
+                                    {{-- <!-- IMB Rekap -->
                               <li class="nav-item">
                                   <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.DetailIMBPerluasanList') }}">
                                       <i class="fa fa-square-o"></i>
@@ -1565,8 +1436,8 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
                                       <span></span>
                                   </a>
                               </li> --}}
-                            </ul>
-                          </li>
+                                </ul>
+                            </li>
 
                             <!-- Rekap SK IMBG Pertahun -->
                             {{-- <li class="treeview" data-level="1">
@@ -1599,11 +1470,11 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
                             <!-- Rekap SK IMBG REGISTER Pertahun -->
                             <li class="treeview" data-level="1">
                                 <a class="nav-link">
-                                <i class="fa fa-square-o"></i>
-                                <span class="title menu-text">SK IMBG</span>
-                                <span class="pull-right-container">
-                                    <i class="fa fa-angle-left pull-right"></i>
-                                </span>
+                                    <i class="fa fa-square-o"></i>
+                                    <span class="title menu-text">SURAT KET. IMBG</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
                                 </a>
                                 <ul class="treeview-menu " style="display: none;">
                                     <!-- IMB Rekap  -->
@@ -1624,15 +1495,17 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
                                     </li> --}}
                                     <!-- IMB Rekap  -->
                                     <li class="nav-item">
-                                        <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.ListSurat10') }}">
+                                        <a class="nav-link" style="padding-left:20px"
+                                            href="{{ route('rekap.ListSurat10') }}">
                                             <i class="fa fa-square-o"></i>
                                             <span class="title menu-text">Register Perbulan</span>
                                             <span></span>
                                         </a>
                                     </li>
-                                <!-- IMB Rekap   -->
+                                    <!-- IMB Rekap   -->
                                     <li class="nav-item">
-                                        <a class="nav-link" style="padding-left:20px"  href="{{ route('rekap.ListSurat') }}">
+                                        <a class="nav-link" style="padding-left:20px"
+                                            href="{{ route('rekap.ListSurat') }}">
                                             <i class="fa fa-square-o"></i>
                                             <span class="title menu-text">Register Pertahun</span>
                                             <span></span>
@@ -1640,20 +1513,21 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
                                     </li>
                                     <!-- IMB Rekap   -->
                                     <li class="nav-item">
-                                        <a class="nav-link" style="padding-left:20px" href="{{route('rekap.RekapSuratPertahun')}}">
+                                        <a class="nav-link" style="padding-left:20px"
+                                            href="{{ route('rekap.RekapSuratPertahun') }}">
                                             <i class="fa fa-square-o"></i>
-                                            <span class="title menu-text">Rekap SK IMBG</span>
+                                            <span class="title menu-text">Rekap Surat Ket. IMBG</span>
                                             <span></span>
                                         </a>
                                     </li>
                                 </ul>
                             </li>
                         </ul>
-                      </li>
+                    </li>
 
 
 
-                     </ul>
+                </ul>
 
 
 

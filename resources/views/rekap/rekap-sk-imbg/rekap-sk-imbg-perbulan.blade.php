@@ -10,7 +10,7 @@
         <div style="width: 90%;margin:auto">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5 rounded">
                 <div class="p-6 text-gray-900">
-                    <h3 class="text-3xl font-bold">Data Rekap</h3>
+                    <h3 class="text-3xl font-bold">Data Rekap Surat Keterangan IMBG Perbulan</h3>
                     <br />
                     <div class="mb-4">
                         <form id="filterForm" class="form-inline">
@@ -37,18 +37,18 @@
                             id="IMBTable">
                             <thead>
                                 <tr>
-                                    <th>NO</th>
-                                    <th>BULAN</th>
-                                    <th>BERKAS MASUK</th>
-                                    <th>JUMLAH SURAT</th>
-                                    <th>PEMUTAKHIRAN DATA</th>
-                                    <th>BALIK NAMA</th>
-                                    <th>PENGGANTI SK IMBG HILANG</th>
-                                    <th>BALIK NAMA & PENGGANTI SK IMBG HILANG</th>
-                                    <th>PECAH & BALIK NAMA</th>
-                                    <th>LEGALISIR</th>
-                                    <th>FORMAT BARU</th>
-                                    <th>LINTAS</th>
+                                    <th style="text-align: center; vertical-align:middle">NO</th>
+                                    <th style="text-align: center; vertical-align:middle">BULAN</th>
+                                    <th style="text-align: center; vertical-align:middle">BERKAS MASUK</th>
+                                    <th style="text-align: center; vertical-align:middle">JUMLAH SURAT</th>
+                                    <th style="text-align: center; vertical-align:middle">PEMUTAKHIRAN DATA</th>
+                                    <th style="text-align: center; vertical-align:middle">BALIK NAMA</th>
+                                    <th style="text-align: center; vertical-align:middle">PENGGANTI SK IMBG HILANG</th>
+                                    <th style="text-align: center; vertical-align:middle">BALIK NAMA & PENGGANTI SK IMBG HILANG</th>
+                                    <th style="text-align: center; vertical-align:middle">PECAH & BALIK NAMA</th>
+                                    <th style="text-align: center; vertical-align:middle">LEGALISIR</th>
+                                    <th style="text-align: center; vertical-align:middle">FORMAT BARU</th>
+                                    <th style="text-align: center; vertical-align:middle">LINTAS</th>
                                 </tr>
                             </thead>
                             <tbody>

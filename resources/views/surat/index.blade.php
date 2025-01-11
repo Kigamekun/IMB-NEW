@@ -6,7 +6,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.bootstrap5.css">
-
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
     <style>
         th {
@@ -335,7 +335,7 @@
                         </div>
                         <div class="mb-3" style="margin-top: 10px">
                             <label for="nomor_surat" class="form-label">Nomor SK/Pemohon</label>
-                            <select id="nomorSK-Pemohon" name="nomorSK-Pemohon" class="form-control">
+                            <select id="nomorSK-Pemohon" name="nomorSK-Pemohon" class="form-control select2 select-nomorSK">
                                 <option value="">-- PILIH --</option>
                             </select>
                         </div>
@@ -436,6 +436,14 @@
                             } else {
                                 $('#nomorSK-Pemohon').append('<option value="">Tidak ada data</option>');
                             }
+                            $('#nomorSK-Pemohon').select2(
+                                {
+                                    width: '100%',
+                                    placeholder: 'Pilih Surat yang akan dicopy',
+                                    minimumInputLength: 0,
+                                    dropdownParent: $('#copyDataModal'),  // Set modal as parent for dropdown
+                                }
+                            );
                         },
                         error: function () {
                             alert('Terjadi kesalahan saat memuat data.');

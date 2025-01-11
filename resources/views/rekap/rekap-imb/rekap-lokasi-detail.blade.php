@@ -94,20 +94,20 @@
                             id="IMBTable">
                             <thead>
                                 <tr>
-                                    <th rowspan="2">No</th>
-                                    <th rowspan="2">Kab/Kota</th>
-                                    <th rowspan="2">Kecamatan</th>
-                                    <th rowspan="2">Desa/Kel</th>
-                                    <th rowspan="2">Tahun</th>
-                                    <th rowspan="2">Jumlah IMB</th>
-                                    <th colspan="9" style="text-align: center">Jenis IMB</th>
+                                    <th rowspan="2" style="text-align: center; vertical-align:middle">No</th>
+                                    <th rowspan="2" style="text-align: center; vertical-align:middle">Kab/Kota</th>
+                                    <th rowspan="2" style="text-align: center; vertical-align:middle">Kecamatan</th>
+                                    <th rowspan="2" style="text-align: center; vertical-align:middle">Desa/Kel</th>
+                                    <th rowspan="2" style="text-align: center; vertical-align:middle">Tahun</th>
+                                    <th rowspan="2" style="text-align: center; vertical-align:middle">Jumlah IMB</th>
+                                    <th colspan="9" style="text-align: center; vertical-align:middle">Jenis IMB</th>
                                     {{-- <th rowspan="2">NO</th>
                                     <th rowspan="2">KAB/KOTA</th>
                                     <th rowspan="2">KECAMATAN</th>
                                     <th rowspan="2">DESA/KEL</th>
                                     <th rowspan="2">TAHUN</th>
                                     <th rowspan="2">JUMLAH IMB</th>
-                                    <th colspan="9" style="text-align: center">JENIS IMB</th> --}}
+                                    <th colspan="9" style="text-align: center; vertical-align:middle">JENIS IMB</th> --}}
                                 </tr>
                                 <tr>
                                     {{-- <th >INDUK PERUMAHAN</th>
@@ -119,15 +119,15 @@
                                     <th >PEMUTIHAN</th>
                                     <th >BERSYARAT</th>
                                     <th >LAINNYA</th> --}}
-                                    <th>Induk Perumahan</th>
-                                    <th>Pecahan</th>
-                                    <th>Perluasan</th>
-                                    <th>Induk Non Perumahan (Perusahaan)</th>
-                                    <th>Induk Non Perumahan (Perorangan)</th>
-                                    <th>Induk Non Perumahan (Sosial dan Budaya)</th>
-                                    <th>Pemutihan</th>
-                                    <th>Bersyarat</th>
-                                    <th>Lainnya</th>
+                                    <th style="text-align: center; vertical-align:middle">Induk Perumahan</th>
+                                    <th style="text-align: center; vertical-align:middle">Pecahan</th>
+                                    <th style="text-align: center; vertical-align:middle">Perluasan</th>
+                                    <th style="text-align: center; vertical-align:middle">Induk Non Perumahan (Perusahaan)</th>
+                                    <th style="text-align: center; vertical-align:middle">Induk Non Perumahan (Perorangan)</th>
+                                    <th style="text-align: center; vertical-align:middle">Induk Non Perumahan (Sosial dan Budaya)</th>
+                                    <th style="text-align: center; vertical-align:middle">Pemutihan</th>
+                                    <th style="text-align: center; vertical-align:middle">Bersyarat</th>
+                                    <th style="text-align: center; vertical-align:middle">Lainnya</th>
 
                                 </tr>
                             </thead>

@@ -64,7 +64,7 @@
 
         <header class="main-header">
             <!-- Logo -->
-            <a href="index2.html" class="logo">
+            <a href="https://simpol.hastasejahtera.online/simpol/app.php" class="logo">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
                 <span class="logo-lg"><b>SIMPOL</b><small> v.02</small></span>
             </a>
@@ -1665,7 +1665,7 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
           </a>
           <ul class="treeview-menu">
             <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-            <li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
+            <li><a href="https://simpol.hastasejahtera.online/simpol/app.php"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
           </ul>
         </li>
         <li class="treeview">

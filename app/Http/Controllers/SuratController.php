@@ -333,11 +333,11 @@ class SuratController extends Controller
             'bertindak_atas_nama' => 'required',
             'alamat' => 'required',
             'izin_mendirikan_bangunan_atas_nama' => 'required',
-            'lokasi' => 'required',
+            'lokasi' => 'nullable',
 
-            'registerNomor' => 'required',
+            'registerNomor' => 'nullable',
             'registerTanggal' => 'required',
-            'imbgNomor' => 'required',
+            'imbgNomor' => 'nullable',
             'imbgTanggal' => 'required',
             'sapaanPemohon' => 'required',
             'provinsiPemohon' => 'required',
@@ -383,7 +383,7 @@ class SuratController extends Controller
             'kelurahanPemohon' => $request->input('kelurahanPemohon'),
             'jabatan' => $request->input('jabatan'),
 
-            'provinsi' => 32,
+            'provinsi' => $request->input('provinsi'),
             'font_surat' => $request->input('font_surat'),
             'kabupaten' => $request->input('kabupaten'),
             'kecamatan' => $request->input('kecamatan'),
@@ -428,7 +428,7 @@ class SuratController extends Controller
 
         // Untuk Provinsi
         $strProvinsi = \DB::table('master_province')
-            ->where('code', 32)
+            ->where('code', $data['provinsi'])
             ->first()->name;
         $provinsi = ucwords(strtolower($strProvinsi));
 
@@ -751,7 +751,7 @@ class SuratController extends Controller
             'jenisSurat' => 'required|string|max:255',
             'bertindak_atas_nama' => 'required|string|max:255',
             'izin_mendirikan_bangunan_atas_nama' => 'required',
-            'lokasi' => 'required|string|max:255',
+            'lokasi' => 'nullable|string|max:255',
             'tahun' => 'required|integer',
             'nomorSurat' => 'required|string|max:255',
             'tanggalSurat' => 'required|date',
@@ -763,6 +763,7 @@ class SuratController extends Controller
             'permohonanTanggal' => 'required|date',
             'nama' => 'required|string|max:255',
             'alamat' => 'required|string|max:255',
+            'provinsi' => 'required|string|max:255',
             'kabupaten' => 'required|string|max:255',
             'kecamatan' => 'required|string|max:255',
             'kelurahan' => 'required|string|max:255',
@@ -806,6 +807,7 @@ class SuratController extends Controller
                 'bertindak_atas_nama' => $validated['bertindak_atas_nama'],
                 'alamat' => $validated['alamat'],
                 'lokasi' => $validated['lokasi'],
+                'provinsi' => $validated['provinsi'],
                 'kabupaten' => $validated['kabupaten'],
                 'kecamatan' => $validated['kecamatan'],
                 'tujuanSurat' => $validated['tujuanSurat'],
@@ -1760,7 +1762,7 @@ class SuratController extends Controller
 
     //     return response()->json($data);
     // }
-    
+
    // Filter Surat Untuk tahun pada copyData
     public function filterSurat(Request $request)
     {

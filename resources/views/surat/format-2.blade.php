@@ -212,7 +212,7 @@
         <tr>
             <td>Nomor</td>
             <td>:</td>
-            <td>{{ $nomorSurat }}</td>
+            <td></td>
         </tr>
         <tr>
             <td>Sifat</td>
@@ -227,7 +227,7 @@
         <tr>
             <td>Hal</td>
             <td>:</td>
-            <td style="line-height: 1 !important;">{{ $perihal }}</td>
+            <td style="line-height: 1 !important; font-weight:bold;">{{ $perihal }}</td>
         </tr>
     </table>
     <!-- Address Section -->

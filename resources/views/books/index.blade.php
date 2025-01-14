@@ -56,7 +56,16 @@
                                 Tahun : {{ $book->year }}<br>
                                 <small class="text-muted">{{ ucfirst($book->category) }}</small>
                             </p>
-                            <a href="{{ route('books.show', $book->id) }}" class="btn btn-primary btn-sm w-100">Detail</a>
+                            <div style="display: flex;gap:5px;justify-content:end;">
+                                <a href="{{ route('books.show', $book->id) }}" class="btn btn-primary btn-sm w-100">Detail</a>
+                                {{-- edit dan hapus  --}}
+                                    <a href="{{ route('books.edit', $book->id) }}" class="btn btn-warning btn-sm w-100">Edit</a>
+                                    <form action="{{ route('books.destroy', $book->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm w-100">Hapus</button>
+                                    </form>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -68,6 +68,15 @@ public function destroy($id)
 
     public function store(Request $request)
     {
+        ini_set('post_max_size', '100M');
+        ini_set('upload_max_filesize', '100M');
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
+
         $request->validate([
             'title' => 'required|string|max:255',
             'year' => 'required',
@@ -102,4 +111,75 @@ public function destroy($id)
 
         return redirect()->route('books.create')->with('success', 'Buku berhasil ditambahkan!');
     }
+
+    public function edit($id)
+{
+    $book = Book::with('pages')->findOrFail($id);
+    return view('books.edit', compact('book'));
+}
+
+public function update(Request $request, $id)
+{
+    ini_set('post_max_size', '100M');
+        ini_set('upload_max_filesize', '100M');
+        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
+        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
+        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
+        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
+        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
+        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
+
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'year' => 'required',
+        'cover' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        'category' => 'required|string|in:induk perum,pecahan,perluasan,non perum',
+        'description' => 'nullable|string',
+        'pages.*.id' => 'nullable|exists:pages,id',
+        'pages.*.page_number' => 'required|string|max:10',
+        'pages.*.image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        'pages.*.description' => 'nullable|string',
+    ]);
+
+    // Update the book
+    $book = Book::findOrFail($id);
+    $book->title = $request->title;
+    $book->year = $request->year;
+    $book->category = $request->category;
+    $book->description = $request->description;
+
+    if ($request->hasFile('cover')) {
+        $coverPath = $request->file('cover')->store('books/covers', 'public');
+        $book->cover = $coverPath;
+    }
+
+    $book->save();
+
+    // Update or create pages
+    foreach ($request->pages as $key => $page) {
+        if (isset($page['id'])) {
+            // Update existing page
+            $pageModel = Page::findOrFail($page['id']);
+            $pageModel->page_number = $page['page_number'];
+            $pageModel->description = $page['description'];
+            if (isset($page['image'])) {
+                $pageImagePath = $page['image']->store('books/pages', 'public');
+                $pageModel->image = $pageImagePath;
+            }
+            $pageModel->save();
+        } else {
+            // Create new page
+            $pageImagePath = $page['image']->store('books/pages', 'public');
+            Page::create([
+                'book_id' => $book->id,
+                'page_number' => $page['page_number'],
+                'image' => $pageImagePath,
+                'description' => $page['description'],
+            ]);
+        }
+    }
+
+    return redirect()->route('books.edit', $id)->with('success', 'Buku berhasil diperbarui!');
+}
+
 }

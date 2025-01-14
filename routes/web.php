@@ -460,7 +460,9 @@ Route::delete('/books/{id}', [BookController::class, 'destroy'])->name('books.de
 
 
 Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
+Route::get('/books/edit/{id}', [BookController::class, 'edit'])->name('books.edit');
 Route::post('/books/store', [BookController::class, 'store'])->name('books.store');
+Route::put('/books/update/{id}', [BookController::class, 'update'])->name('books.update');
 
 
 });

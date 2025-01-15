@@ -171,7 +171,7 @@
         }
 
         .signature-title {
-            /* font-weight: bold; */
+            font-weight: bold;
             text-align: center;
             margin-bottom: 10px;
         }

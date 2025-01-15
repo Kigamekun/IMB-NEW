@@ -49,7 +49,7 @@
                 <div class="col-md-3 mb-4">
                     <div class="card ">
                         <img src="{{ asset('storage/' . $book->cover) }}" class="card-img-top"
-                            style="border-radius: 10px;width:354px;height:472px; object-fit: cover;" alt="{{ $book->title }}">
+                            style="border-radius: 10px;width:100%;height:472px; object-fit: cover;" alt="{{ $book->title }}">
                         <div class="card-body">
                             <h5 class="card-title">{{ Str::limit($book->title, 25) }}</h5>
                             <p class="card-text">

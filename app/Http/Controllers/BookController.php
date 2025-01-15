@@ -80,11 +80,11 @@ public function destroy($id)
         $request->validate([
             'title' => 'required|string|max:255',
             'year' => 'required',
-            'cover' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'cover' => 'required|image|mimes:jpeg,png,jpg',
             'category' => 'required|string|in:induk perum,pecahan,perluasan,non perum',
             'description' => 'nullable|string',
             'pages.*.page_number' => 'required|string|max:10',
-            'pages.*.image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'pages.*.image' => 'required|image|mimes:jpeg,png,jpg',
             'pages.*.description' => 'nullable|string',
         ]);
 
@@ -132,12 +132,12 @@ public function update(Request $request, $id)
     $request->validate([
         'title' => 'required|string|max:255',
         'year' => 'required',
-        'cover' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        'cover' => 'nullable|image|mimes:jpeg,png,jpg',
         'category' => 'required|string|in:induk perum,pecahan,perluasan,non perum',
         'description' => 'nullable|string',
         'pages.*.id' => 'nullable|exists:pages,id',
         'pages.*.page_number' => 'required|string|max:10',
-        'pages.*.image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        'pages.*.image' => 'nullable|image|mimes:jpeg,png,jpg',
         'pages.*.description' => 'nullable|string',
     ]);
 

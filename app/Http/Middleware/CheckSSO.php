@@ -15,7 +15,7 @@ class CheckSSO
      */
     public function handle(Request $request, Closure $next): Response
     {
-        auth()->loginUsingId(1);
+        // auth()->loginUsingId(1);
 
 
     //     $secretKey = env('SHARED_SECRET_KEY');
@@ -36,7 +36,7 @@ class CheckSSO
     //     } else {
     //         return redirect('https://simpol.hastasejahtera.online/simpol');
     //     }
-        // auth()->loginUsingId(1);
+        auth()->loginUsingId(1);
 
         return $next($request);
     }

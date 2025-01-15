@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\BookController;
+
 use App\Http\Controllers\{IMBController,LocationController,BulkDeleteController, RekapController, JenisNonPerumController, TujuanSuratController, DataIMBTidaklengkapController, MasterController, SinkronisasiLokasiIMBController, SuratController, IMBIndukNonPerumController, IMBIndukPerumController, IMBTidakLengkapController, IMBPerluasanController, IMBPecahanController, IMBBersyaratController, IMBPelunasanController, IMBPemutihanController, ListSuratController};
 
 Route::get('/', function () {
@@ -27,6 +29,8 @@ Route::get('/chart-simpol', function () {
 
 Route::get('/bulk-delete', [BulkDeleteController::class, 'index'])->name('bulk-delete.index');
 Route::delete('/bulk-delete', [BulkDeleteController::class, 'delete'])->name('bulk-delete.delete');
+
+Route::post('/delete-duplicates', [BulkDeleteController::class, 'deleteDuplicates'])->name('delete.duplicates');
 
 
 
@@ -443,6 +447,24 @@ Route::middleware(['auth'])->group(function () {
         });
 
     });
+
+
+
+
+Route::get('/books', [BookController::class, 'index'])->name('books.index');
+Route::get('/books/{id}', [BookController::class, 'show'])
+    ->where('id', '[0-9]+') // Hanya menerima angka
+    ->name('books.show');
+Route::delete('/books/{id}', [BookController::class, 'destroy'])->name('books.destroy');
+
+
+
+Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
+Route::get('/books/edit/{id}', [BookController::class, 'edit'])->name('books.edit');
+Route::post('/books/store', [BookController::class, 'store'])->name('books.store');
+Route::put('/books/update/{id}', [BookController::class, 'update'])->name('books.update');
+
+
 });
 
 

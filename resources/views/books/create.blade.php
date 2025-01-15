@@ -1,0 +1,108 @@
+@extends('layouts.base')
+
+@section('content')
+    <div class="container">
+        <h1>Form Tambah Buku</h1>
+        @if (session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+        <form action="{{ route('books.store') }}" method="POST" enctype="multipart/form-data" id="bookForm">
+            @csrf
+            <div class="mb-3">
+                <label for="title" class="form-label">Judul Buku*</label>
+                <input type="text" name="title" id="title" class="form-control" required>
+            </div>
+            <br>
+            <div class="mb-3">
+                <label for="year" class="form-label">Tahun*</label>
+                <input type="number" name="year" id="year" class="form-control" required>
+            </div>
+
+            <br>
+            <div class="mb-3">
+                <label for="cover" class="form-label">Sampul Buku*</label>
+                <input type="file" name="cover" id="cover" class="form-control" accept="image/*" required>
+            </div>
+            <br>
+
+            <div class="mb-3">
+                <label for="category" class="form-label">Kategori Buku*</label>
+                <select name="category" id="category" class="form-control" required>
+                    <option value="">-- Pilih Kategori --</option>
+                    <option value="induk perum">Induk Perum</option>
+                    <option value="pecahan">Pecahan</option>
+                    <option value="perluasan">Perluasan</option>
+                    <option value="non perum">Non Perum</option>
+                </select>
+            </div>
+            <br>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Deskripsi Buku (Opsional)</label>
+                <textarea name="description" id="description" class="form-control"></textarea>
+            </div>
+
+            <br>
+
+            <h3>Halaman Buku</h3>
+            <div id="pagesContainer">
+                <div class="page-group mb-3">
+                    <h5>Halaman 1</h5>
+                    <div class="mb-3">
+                        <label for="page_number_1" class="form-label">Halaman Buku*</label>
+                        <input type="text" name="pages[0][page_number]" id="page_number_1" class="form-control" required>
+                    </div>
+            <br>
+
+                    <div class="mb-3">
+                        <label for="page_image_1" class="form-label">Gambar Halaman*</label>
+                        <input type="file" name="pages[0][image]" id="page_image_1" class="form-control" accept="image/*"
+                            required>
+                    </div>
+            <br>
+
+                    <div class="mb-3">
+                        <label for="page_description_1" class="form-label">Deskripsi Halaman (Opsional)</label>
+                        <textarea name="pages[0][description]" id="page_description_1" class="form-control"></textarea>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+            <button type="button" id="addPageButton" class="btn btn-primary mb-3">Tambah Halaman</button>
+            <button type="submit" class="btn btn-success">Simpan Buku</button>
+        </form>
+    </div>
+@endsection
+
+@section('scripts')
+    <script>
+        let pageIndex = 1;
+        document.getElementById('addPageButton').addEventListener('click', () => {
+            pageIndex++;
+            const container = document.getElementById('pagesContainer');
+            const pageGroup = document.createElement('div');
+            pageGroup.classList.add('page-group', 'mb-3');
+            pageGroup.innerHTML = `
+            <h5>Halaman ${pageIndex}</h5>
+            <div class="mb-3">
+                <label for="page_number_${pageIndex}" class="form-label">Halaman Buku*</label>
+                <input type="text" name="pages[${pageIndex - 1}][page_number]" id="page_number_${pageIndex}" class="form-control" required>
+            </div>
+            <br>
+
+            <div class="mb-3">
+                <label for="page_image_${pageIndex}" class="form-label">Gambar Halaman*</label>
+                <input type="file" name="pages[${pageIndex - 1}][image]" id="page_image_${pageIndex}" class="form-control" accept="image/*" required>
+            </div>
+            <br>
+
+            <div class="mb-3">
+                <label for="page_description_${pageIndex}" class="form-label">Deskripsi Halaman (Opsional)</label>
+                <textarea name="pages[${pageIndex - 1}][description]" id="page_description_${pageIndex}" class="form-control"></textarea>
+            </div>
+            <hr>
+        `;
+            container.appendChild(pageGroup);
+        });
+    </script>
+@endsection

@@ -484,9 +484,9 @@
                                     <option value="">--- PILIH ---</option>
                                     @foreach (DB::table('app_md_user')->whereNotIn('nip_user', ['-', '', '.'])->get() as $user)
                                         <option
-                                            {{ $user->nip_user . ' | ' . strtoupper($user->name_user) . $user->gelar_blk == $data['kepalaDinas'] ? 'selected' : '' }}
-                                            value="{{ $user->nip_user . ' | ' . strtoupper($user->name_user) . $user->gelar_blk }}">
-                                            {{ $user->nip_user . ' | ' . strtoupper($user->name_user) . $user->gelar_blk }}
+                                            {{ $user->nip_user . ' | ' . strtoupper($user->name_user) . ($user->gelar_blk ? ', ' . $user->gelar_blk : '') == $data['kepalaDinas'] ? 'selected' : '' }}
+                                            value="{{ $user->nip_user . ' | ' . strtoupper($user->name_user) . ($user->gelar_blk ? ', ' . $user->gelar_blk : '') }}">
+                                            {{ $user->nip_user . ' | ' . strtoupper($user->name_user) . ($user->gelar_blk ? ', ' . $user->gelar_blk : '') }}
                                         </option>
                                     @endforeach
                                 </select>

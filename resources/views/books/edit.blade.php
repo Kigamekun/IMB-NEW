@@ -73,9 +73,6 @@
 </div>
 
 
-@php
-phpinfo();
-@endphp
 
 @php
 $c = count($book->pages);

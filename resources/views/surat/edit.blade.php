@@ -483,10 +483,13 @@
                                 <select id="kepalaDinas" name="kepalaDinas" class="form-select form-control select2">
                                     <option value="">--- PILIH ---</option>
                                     @foreach (DB::table('app_md_user')->whereNotIn('nip_user', ['-', '', '.'])->get() as $user)
-                                        <option
-                                            {{ $user->nip_user . ' | ' . strtoupper($user->name_user) . ($user->gelar_blk ? ', ' . $user->gelar_blk : '') == $data['kepalaDinas'] ? 'selected' : '' }}
+                                            {{--     {{ $user->nip_user . ' | ' . strtoupper($user->name_user) . ($user->gelar_blk ? ', ' . $user->gelar_blk : '') == $data['kepalaDinas'] ? 'selected' : '' }}
                                             value="{{ $user->nip_user . ' | ' . strtoupper($user->name_user) . ($user->gelar_blk ? ', ' . $user->gelar_blk : '') }}">
-                                            {{ $user->nip_user . ' | ' . strtoupper($user->name_user) . ($user->gelar_blk ? ', ' . $user->gelar_blk : '') }}
+                                            {{ $user->nip_user . ' | ' . strtoupper($user->name_user) . ($user->gelar_blk ? ', ' . $user->gelar_blk : '') }} --}}
+                                        <option
+                                            {{ $user->nip_user . ' | ' . ucwords(strtolower($user->name_user)) . ($user->gelar_blk ? ', ' . ucwords(strtolower($user->gelar_blk)) : '') == $data['kepalaDinas'] ? 'selected' : '' }}
+                                            value="{{ $user->nip_user . ' | ' . ucwords(strtolower($user->name_user)) . ($user->gelar_blk ? ', ' . ucwords(strtolower($user->gelar_blk)) : '') }}">
+                                            {{ $user->nip_user . ' | ' . ucwords(strtolower($user->name_user)) . ($user->gelar_blk ? ', ' . ucwords(strtolower($user->gelar_blk)) : '') }}
                                         </option>
                                     @endforeach
                                 </select>

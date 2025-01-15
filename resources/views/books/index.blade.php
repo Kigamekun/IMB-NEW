@@ -60,11 +60,11 @@
                                 <a href="{{ route('books.show', $book->id) }}" class="btn btn-primary btn-sm w-100">Detail</a>
                                 {{-- edit dan hapus  --}}
                                     <a href="{{ route('books.edit', $book->id) }}" class="btn btn-warning btn-sm w-100">Edit</a>
-                                    <form action="{{ route('books.destroy', $book->id) }}" method="POST">
+                                    {{-- <form action="{{ route('books.destroy', $book->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm w-100">Hapus</button>
-                                    </form>
+                                    </form> --}}
                             </div>
                         </div>
                     </div>

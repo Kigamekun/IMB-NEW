@@ -29,8 +29,6 @@ class IMBPerluasanExport implements ShouldAutoSize, FromCollection, WithCustomSt
             AfterSheet::class => function (AfterSheet $event) {
                 /** @var Sheet $sheet */
                 $sheet = $event->sheet;
-
-
                 // `imb_pecahan`, `tgl_imb_pecahan`, `imb_perluasan`, `tgl_imb_perluasan`, `no_register`, `tgl_register`, `nama`, `atas_nama`, `jenis_kegiatan`, `fungsi_bangunan`, `lokasi_perumahan`, `kecamatan`, `desa_kelurahan`, `type`, `luas_bangunan_lama`, `luas_bangunan_perluasan`, `blok`, `no_blok`, `keterangan`, `scan_imb`
                 $sheet->setCellValue('A1', 'NO');
                 $sheet->setCellValue('B1', 'IMB Pecahan');

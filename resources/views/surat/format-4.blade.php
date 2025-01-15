@@ -348,7 +348,7 @@
             <tr>
                 <td>Peruntukan</td>
                 <td>:</td>
-                <td><i><b>{{ $referensi['jenisKegiatan'] }}</b></i></td>
+                <td><i>{{ $referensi['jenisKegiatan'] }}</i></td>
             </tr>
         </table>
 

@@ -2322,8 +2322,8 @@ class RekapController extends Controller
 
         $data = DB::table('dbsimpol.surat')
             ->selectRaw('
-                YEAR(tanggalSurat) AS TAHUN,
-                MONTH(tanggalSurat) AS BULAN,
+                YEAR(created_at) AS TAHUN,
+                MONTH(created_at) AS BULAN,
                 COUNT(*) AS BERKAS_MASUK,
                 SUM(CASE
                 WHEN nomorSurat != "-" THEN 1 ELSE 0
@@ -2353,9 +2353,9 @@ class RekapController extends Controller
                     WHEN jenisSurat = "format-4"  AND kabupaten != "3201" THEN 1 ELSE 0
                 END) AS LINTAS
             ')
-            ->whereYear('tanggalSurat', $tahun)
-            ->groupByRaw('YEAR(tanggalSurat), MONTH(tanggalSurat)')
-            ->orderByRaw('YEAR(tanggalSurat), MONTH(tanggalSurat)')
+            ->whereYear('created_at', $tahun)
+            ->groupByRaw('YEAR(created_at), MONTH(created_at)')
+            ->orderByRaw('YEAR(created_at), MONTH(created_at)')
             ->get();
 
         return view('rekap.rekap-sk-imbg.rekap-sk-imbg-perbulan', compact('data'));
@@ -2372,7 +2372,7 @@ class RekapController extends Controller
 
         $data = DB::table('dbsimpol.surat')
             ->selectRaw('
-            YEAR(tanggalSurat) AS TAHUN,
+            YEAR(created_at) AS TAHUN,
             COUNT(*) AS BERKAS_MASUK,
             SUM(CASE
                 WHEN nomorSurat != "-" THEN 1 ELSE 0
@@ -2402,9 +2402,8 @@ class RekapController extends Controller
                 WHEN jenisSurat = "format-4" AND kabupaten != "3201" THEN 1 ELSE 0
             END) AS LINTAS
         ')
-            ->where('tanggalSurat', '!=', null)
-            ->groupByRaw('YEAR(tanggalSurat)')
-            ->orderByRaw('YEAR(tanggalSurat)')
+            ->groupByRaw('YEAR(created_at)')
+            ->orderByRaw('YEAR(created_at)')
             ->get();
 
 

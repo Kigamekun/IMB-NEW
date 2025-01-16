@@ -487,9 +487,9 @@
                                             value="{{ $user->nip_user . ' | ' . strtoupper($user->name_user) . ($user->gelar_blk ? ', ' . $user->gelar_blk : '') }}">
                                             {{ $user->nip_user . ' | ' . strtoupper($user->name_user) . ($user->gelar_blk ? ', ' . $user->gelar_blk : '') }} --}}
                                         <option
-                                            {{ $user->nip_user . ' | ' . ucwords(strtolower($user->name_user)) . ($user->gelar_blk ? ', ' . ucwords(strtolower($user->gelar_blk)) : '') == $data['kepalaDinas'] ? 'selected' : '' }}
-                                            value="{{ $user->nip_user . ' | ' . ucwords(strtolower($user->name_user)) . ($user->gelar_blk ? ', ' . ucwords(strtolower($user->gelar_blk)) : '') }}">
-                                            {{ $user->nip_user . ' | ' . ucwords(strtolower($user->name_user)) . ($user->gelar_blk ? ', ' . ucwords(strtolower($user->gelar_blk)) : '') }}
+                                            {{ $user->nip_user . ' | ' . ucwords(($user->name_user)) . ($user->gelar_blk ? ', ' . ucwords(($user->gelar_blk)) : '') == $data['kepalaDinas'] ? 'selected' : '' }}
+                                            value="{{ $user->nip_user . ' | ' . ucwords(($user->name_user)) . ($user->gelar_blk ? ', ' . ucwords(($user->gelar_blk)) : '') }}">
+                                            {{ $user->nip_user . ' | ' . ucwords(($user->name_user)) . ($user->gelar_blk ? ', ' . ucwords(($user->gelar_blk)) : '') }}
                                         </option>
                                     @endforeach
                                 </select>

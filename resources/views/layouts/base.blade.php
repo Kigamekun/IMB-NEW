@@ -294,14 +294,15 @@
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <span class="hidden-xs"> {{-- Auth::user()->name_user --}}
+                                <span class="hidden-xs">
+                                   {{ Auth::user()->name_user }}
                                 </span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header">
                                     <p>
-                                        {{-- Auth::user()->name_user --}}
+                                        {{ Auth::user()->name_user }}
                                     </p>
                                 </li>
                                 <!-- Menu Body -->
@@ -1023,6 +1024,25 @@
                     </li>
                 </ul>
 
+
+                @else 
+
+                <ul id="sidebarMenu" class="sidebar-menu" data-widget="tree">
+                    <li class="header">{{ $formattedDate }}</li>
+                    <li>
+                        <a href="https://simpol.hastasejahtera.online/simpol/app.php"
+                            style="
+                              padding: 12px 5px 12px 15px;
+                                display: block;
+                              "
+                            class="nav-link">
+                            <i class="fa fa-pie-chart"></i>
+                            <span style="margin-left:-0px" class="title menu-text">
+                                KEMBALI KE SIMPOL
+                            </span>
+                        </a>
+                    </li>
+                    </ul>
                 @endif
 
 

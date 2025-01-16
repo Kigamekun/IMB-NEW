@@ -66,41 +66,68 @@ public function destroy($id)
 }
 
 
+    // public function store(Request $request)
+    // {
+
+
+    //     $coverPath = $request->file('cover')->store('books/covers', 'public');
+    // $book = Book::create([
+    //     'title' => $request->title,
+    //     'year' => $request->year,
+    //     'cover' => $coverPath,
+    //     'category' => $request->category,
+    //     'description' => $request->description,
+    // ]);
+
+    // // Opsi pertama: Menambahkan halaman secara manual
+    // if ($request->has('pages')) {
+    //     foreach ($request->pages as $page) {
+    //         $pageImagePath = $page['image']->store('books/pages', 'public');
+    //         Page::create([
+    //             'book_id' => $book->id,
+    //             'page_number' => $page['page_number'],
+    //             'image' => $pageImagePath,
+    //             'description' => $page['description'] ?? '-',
+    //         ]);
+    //     }
+    // }
+
+    // // Opsi kedua: Mengunggah multiple file upload
+    // if ($request->has('page_images')) {
+    //     $pageNumber = 1; // Halaman dimulai dari 1
+    //     foreach ($request->file('page_images') as $file) {
+    //         $pageImagePath = $file->store('books/pages', 'public');
+    //         Page::create([
+    //             'book_id' => $book->id,
+    //             'page_number' => $pageNumber++,
+    //             'image' => $pageImagePath,
+    //             'description' => '-', // Default deskripsi
+    //         ]);
+    //     }
+    // }
+
+  
+    //     return redirect()->route('books.create')->with('success', 'Buku berhasil ditambahkan!');
+    // }
+
+
     public function store(Request $request)
-    {
+{
+    // Validasi form
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'year' => 'required|integer',
+        'cover' => 'required|image',
+        'pages.*.image' => 'nullable|image',
+        'pages.*.page_number' => 'nullable|integer|min:1',
+        'pages.*.description' => 'nullable|string|max:500',
+        'page_images.*' => 'nullable|image',
+    ]);
 
-        // $request->validate([
-        //     'title' => 'required|string|max:255',
-        //     'year' => 'required',
-        //     'category' => 'required|string|in:induk perum,pecahan,perluasan,non perum',
-        //     'description' => 'nullable|string',
-        //     'pages.*.page_number' => 'required|string|max:10',
-        //     'pages.*.description' => 'nullable|string',
-        // ]);
+    // Simpan cover
+    $coverPath = $request->file('cover')->store('books/covers', 'public');
 
-        // // Save the book
-        // $coverPath = $request->file('cover')->store('books/covers', 'public');
-        // $book = Book::create([
-        //     'title' => $request->title,
-        //     'year' => $request->year,
-        //     'cover' => $coverPath,
-        //     'category' => $request->category,
-        //     'description' => $request->description,
-        // ]);
-
-        // // Save the pages
-        // foreach ($request->pages as $page) {
-        //     $pageImagePath = $page['image']->store('books/pages', 'public');
-        //     Page::create([
-        //         'book_id' => $book->id,
-        //         'page_number' => $page['page_number'],
-        //         'image' => $pageImagePath,
-        //         'description' => $page['description'],
-        //     ]);
-        // }
-
-
-        $coverPath = $request->file('cover')->store('books/covers', 'public');
+    // Simpan buku
     $book = Book::create([
         'title' => $request->title,
         'year' => $request->year,
@@ -109,37 +136,65 @@ public function destroy($id)
         'description' => $request->description,
     ]);
 
-    dd($request->all());
-    // Opsi pertama: Menambahkan halaman secara manual
-    if ($request->has('pages')) {
+    // Prioritas logika untuk page_images jika pages tidak valid
+    if ($request->has('pages') && $this->isValidPages($request->pages)) {
+        // Jika ada pages dengan data valid, simpan satu per satu
+        $pagesData = [];
         foreach ($request->pages as $page) {
-            $pageImagePath = $page['image']->store('books/pages', 'public');
-            Page::create([
-                'book_id' => $book->id,
-                'page_number' => $page['page_number'],
-                'image' => $pageImagePath,
-                'description' => $page['description'] ?? '-',
-            ]);
+            if (isset($page['image'])) {
+                $pageImagePath = $page['image']->store('books/pages', 'public');
+                $pagesData[] = [
+                    'book_id' => $book->id,
+                    'page_number' => $page['page_number'] ?? 0,
+                    'image' => $pageImagePath,
+                    'description' => $page['description'] ?? '-',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
         }
-    }
 
-    // Opsi kedua: Mengunggah multiple file upload
-    if ($request->has('page_images')) {
-        $pageNumber = 1; // Halaman dimulai dari 1
+        if (!empty($pagesData)) {
+            Page::insert($pagesData);
+        }
+    } elseif ($request->has('page_images')) {
+        // Jika tidak ada pages valid, proses file di page_images
+        $pagesData = [];
+        $pageNumber = 1;
         foreach ($request->file('page_images') as $file) {
             $pageImagePath = $file->store('books/pages', 'public');
-            Page::create([
+            $pagesData[] = [
                 'book_id' => $book->id,
                 'page_number' => $pageNumber++,
                 'image' => $pageImagePath,
-                'description' => '-', // Default deskripsi
-            ]);
+                'description' => '-',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
+        if (!empty($pagesData)) {
+            Page::insert($pagesData);
         }
     }
 
-  
-        return redirect()->route('books.create')->with('success', 'Buku berhasil ditambahkan!');
+    return redirect()->route('books.create')->with('success', 'Buku berhasil ditambahkan!');
+}
+
+/**
+ * Helper function untuk memeriksa validitas pages
+ */
+private function isValidPages($pages)
+{
+    foreach ($pages as $page) {
+        if (isset($page['image'])) {
+            return true;
+        }
     }
+    return false;
+}
+
+
 
     public function edit($id)
 {

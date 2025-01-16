@@ -2329,28 +2329,28 @@ class RekapController extends Controller
                 WHEN nomorSurat != "-" THEN 1 ELSE 0
             END) AS JUMLAH_SURAT,
                 SUM(CASE
-                    WHEN jenisSurat IN ("format-1", "format-2", "format-3") AND tujuanSurat = "PEMUTAKHIRAN DATA" THEN 1 ELSE 0
+                    WHEN jenisSurat IN ("format-1", "format-2", "format-3") AND nomorSurat != "-" AND tujuanSurat = "PEMUTAKHIRAN DATA" THEN 1 ELSE 0
                 END) AS PEMUTAKHIRAN_DATA,
                 SUM(CASE
-                    WHEN jenisSurat IN ("format-1", "format-2", "format-3") AND tujuanSurat = "BALIK NAMA" THEN 1 ELSE 0
+                    WHEN jenisSurat IN ("format-1", "format-2", "format-3")  AND nomorSurat != "-" AND tujuanSurat = "BALIK NAMA" THEN 1 ELSE 0
                 END) AS BALIK_NAMA,
                 SUM(CASE
-                    WHEN jenisSurat IN ("format-1", "format-2", "format-3") AND tujuanSurat = "PENGGANTI SK IMBG HILANG" THEN 1 ELSE 0
+                    WHEN jenisSurat IN ("format-1", "format-2", "format-3")  AND nomorSurat != "-" AND tujuanSurat = "PENGGANTI SK IMBG HILANG" THEN 1 ELSE 0
                 END) AS PENGGANTI_SK_IMBG_HILANG,
                 SUM(CASE
-                    WHEN jenisSurat IN ("format-1", "format-2", "format-3") AND tujuanSurat = "BALIK NAMA & PENGGANTI SK IMBG HILANG" THEN 1 ELSE 0
+                    WHEN jenisSurat IN ("format-1", "format-2", "format-3")  AND nomorSurat != "-" AND tujuanSurat = "BALIK NAMA & PENGGANTI SK IMBG HILANG" THEN 1 ELSE 0
                 END) AS BALIK_NAMA_PENGGANTI_SK_IMBG_HILANG,
                 SUM(CASE
-                    WHEN jenisSurat IN ("format-1", "format-2", "format-3") AND tujuanSurat = "PECAH & BALIK NAMA" THEN 1 ELSE 0
+                    WHEN jenisSurat IN ("format-1", "format-2", "format-3")  AND nomorSurat != "-" AND tujuanSurat = "PECAH & BALIK NAMA" THEN 1 ELSE 0
                 END) AS PECAH_BALIK_NAMA,
                 SUM(CASE
-                    WHEN jenisSurat IN ("format-1", "format-2", "format-3") AND tujuanSurat = "LEGALISIR" THEN 1 ELSE 0
+                    WHEN jenisSurat IN ("format-1", "format-2", "format-3")  AND nomorSurat != "-" AND tujuanSurat = "LEGALISIR" THEN 1 ELSE 0
                 END) AS LEGALISIR,
                 SUM(CASE
-                    WHEN jenisSurat = "format-4"  AND kabupaten = "3201" THEN 1 ELSE 0
+                    WHEN jenisSurat = "format-4"  AND nomorSurat != "-"  AND kabupaten = "3201" THEN 1 ELSE 0
                 END) AS FORMAT_BARU,
                 SUM(CASE
-                    WHEN jenisSurat = "format-4"  AND kabupaten != "3201" THEN 1 ELSE 0
+                    WHEN jenisSurat = "format-4"  AND nomorSurat != "-"  AND kabupaten != "3201" THEN 1 ELSE 0
                 END) AS LINTAS
             ')
             ->whereYear('created_at', $tahun)
@@ -2378,28 +2378,28 @@ class RekapController extends Controller
                 WHEN nomorSurat != "-" THEN 1 ELSE 0
             END) AS JUMLAH_SURAT,
             SUM(CASE
-                WHEN jenisSurat IN ("format-1","format-2","format-3") AND tujuanSurat = "PEMUTAKHIRAN DATA" THEN 1 ELSE 0
+                WHEN jenisSurat IN ("format-1","format-2","format-3") AND nomorSurat != "-" AND tujuanSurat = "PEMUTAKHIRAN DATA" THEN 1 ELSE 0
             END) AS PEMUTAKHIRAN_DATA,
             SUM(CASE
-                WHEN jenisSurat IN ("format-1","format-2","format-3") AND tujuanSurat = "BALIK NAMA" THEN 1 ELSE 0
+                WHEN jenisSurat IN ("format-1","format-2","format-3") AND nomorSurat != "-" AND tujuanSurat = "BALIK NAMA" THEN 1 ELSE 0
             END) AS BALIK_NAMA,
             SUM(CASE
-                WHEN jenisSurat IN ("format-1","format-2","format-3") AND tujuanSurat = "PENGGANTI SK IMBG HILANG" THEN 1 ELSE 0
+                WHEN jenisSurat IN ("format-1","format-2","format-3") AND nomorSurat != "-" AND tujuanSurat = "PENGGANTI SK IMBG HILANG" THEN 1 ELSE 0
             END) AS PENGGANTI_SK_IMBG_HILANG,
             SUM(CASE
-                WHEN jenisSurat IN ("format-1","format-2","format-3") AND tujuanSurat = "BALIK NAMA & PENGGANTI SK IMBG HILANG" THEN 1 ELSE 0
+                WHEN jenisSurat IN ("format-1","format-2","format-3") AND nomorSurat != "-" AND tujuanSurat = "BALIK NAMA & PENGGANTI SK IMBG HILANG" THEN 1 ELSE 0
             END) AS BALIK_NAMA_PENGGANTI_SK_IMBG_HILANG,
             SUM(CASE
-                WHEN jenisSurat IN ("format-1","format-2","format-3") AND tujuanSurat = "PECAH & BALIK NAMA" THEN 1 ELSE 0
+                WHEN jenisSurat IN ("format-1","format-2","format-3") AND nomorSurat != "-" AND tujuanSurat = "PECAH & BALIK NAMA" THEN 1 ELSE 0
             END) AS PECAH_BALIK_NAMA,
             SUM(CASE
-                WHEN jenisSurat IN ("format-1","format-2","format-3") AND tujuanSurat = "LEGALISIR" THEN 1 ELSE 0
+                WHEN jenisSurat IN ("format-1","format-2","format-3") AND nomorSurat != "-" AND tujuanSurat = "LEGALISIR" THEN 1 ELSE 0
             END) AS LEGALISIR,
             SUM(CASE
-                WHEN jenisSurat = "format-4" AND kabupaten = "3201" THEN 1 ELSE 0
+                WHEN jenisSurat = "format-4" AND nomorSurat != "-" AND kabupaten = "3201" THEN 1 ELSE 0
             END) AS FORMAT_BARU,
             SUM(CASE
-                WHEN jenisSurat = "format-4" AND kabupaten != "3201" THEN 1 ELSE 0
+                WHEN jenisSurat = "format-4" AND nomorSurat != "-" AND kabupaten != "3201" THEN 1 ELSE 0
             END) AS LINTAS
         ')
             ->groupByRaw('YEAR(created_at)')

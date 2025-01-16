@@ -87,11 +87,11 @@
             <h5>Halaman 1</h5>
             <div class="mb-3">
                 <label for="page_number_1" class="form-label">Halaman Buku*</label>
-                <input type="text" name="pages[0][page_number]" id="page_number_1" class="form-control" required>
+                <input type="text" name="pages[0][page_number]" id="page_number_1" class="form-control" >
             </div>
             <div class="mb-3">
                 <label for="page_image_1" class="form-label">Gambar Halaman*</label>
-                <input type="file" name="pages[0][image]" id="page_image_1" class="form-control" accept="image/*" required>
+                <input type="file" name="pages[0][image]" id="page_image_1" class="form-control" accept="image/*" >
             </div>
             <div class="mb-3">
                 <label for="page_description_1" class="form-label">Deskripsi Halaman (Opsional)</label>

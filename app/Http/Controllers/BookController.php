@@ -69,36 +69,74 @@ public function destroy($id)
     public function store(Request $request)
     {
 
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'year' => 'required',
-            'category' => 'required|string|in:induk perum,pecahan,perluasan,non perum',
-            'description' => 'nullable|string',
-            'pages.*.page_number' => 'required|string|max:10',
-            'pages.*.description' => 'nullable|string',
-        ]);
+        // $request->validate([
+        //     'title' => 'required|string|max:255',
+        //     'year' => 'required',
+        //     'category' => 'required|string|in:induk perum,pecahan,perluasan,non perum',
+        //     'description' => 'nullable|string',
+        //     'pages.*.page_number' => 'required|string|max:10',
+        //     'pages.*.description' => 'nullable|string',
+        // ]);
 
-        // Save the book
+        // // Save the book
+        // $coverPath = $request->file('cover')->store('books/covers', 'public');
+        // $book = Book::create([
+        //     'title' => $request->title,
+        //     'year' => $request->year,
+        //     'cover' => $coverPath,
+        //     'category' => $request->category,
+        //     'description' => $request->description,
+        // ]);
+
+        // // Save the pages
+        // foreach ($request->pages as $page) {
+        //     $pageImagePath = $page['image']->store('books/pages', 'public');
+        //     Page::create([
+        //         'book_id' => $book->id,
+        //         'page_number' => $page['page_number'],
+        //         'image' => $pageImagePath,
+        //         'description' => $page['description'],
+        //     ]);
+        // }
+
+
         $coverPath = $request->file('cover')->store('books/covers', 'public');
-        $book = Book::create([
-            'title' => $request->title,
-            'year' => $request->year,
-            'cover' => $coverPath,
-            'category' => $request->category,
-            'description' => $request->description,
-        ]);
+    $book = Book::create([
+        'title' => $request->title,
+        'year' => $request->year,
+        'cover' => $coverPath,
+        'category' => $request->category,
+        'description' => $request->description,
+    ]);
 
-        // Save the pages
+    // Opsi pertama: Menambahkan halaman secara manual
+    if ($request->has('pages')) {
         foreach ($request->pages as $page) {
             $pageImagePath = $page['image']->store('books/pages', 'public');
             Page::create([
                 'book_id' => $book->id,
                 'page_number' => $page['page_number'],
                 'image' => $pageImagePath,
-                'description' => $page['description'],
+                'description' => $page['description'] ?? '-',
             ]);
         }
+    }
 
+    // Opsi kedua: Mengunggah multiple file upload
+    if ($request->has('page_images')) {
+        $pageNumber = 1; // Halaman dimulai dari 1
+        foreach ($request->file('page_images') as $file) {
+            $pageImagePath = $file->store('books/pages', 'public');
+            Page::create([
+                'book_id' => $book->id,
+                'page_number' => $pageNumber++,
+                'image' => $pageImagePath,
+                'description' => '-', // Default deskripsi
+            ]);
+        }
+    }
+
+  
         return redirect()->route('books.create')->with('success', 'Buku berhasil ditambahkan!');
     }
 

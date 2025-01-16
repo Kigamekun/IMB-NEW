@@ -68,14 +68,6 @@ public function destroy($id)
 
     public function store(Request $request)
     {
-        ini_set('post_max_size', '100M');
-        ini_set('upload_max_filesize', '100M');
-        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
-        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
-        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
-        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
-        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
-        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
 
         $request->validate([
             'title' => 'required|string|max:255',
@@ -118,14 +110,6 @@ public function destroy($id)
 
 public function update(Request $request, $id)
 {
-    ini_set('post_max_size', '100M');
-        ini_set('upload_max_filesize', '100M');
-        ini_set('max_execution_time', 0); // Tidak ada batas waktu eksekusi
-        ini_set('memory_limit', '-1'); // Tidak ada batas penggunaan memori
-        ini_set('upload_max_filesize', '0'); // Tidak ada batasan ukuran file
-        ini_set('post_max_size', '0'); // Tidak ada batasan ukuran data POST
-        ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
-        ini_set('max_input_vars', 10000); // Mengatur batas input variabel
 
     $request->validate([
         'title' => 'required|string|max:255',

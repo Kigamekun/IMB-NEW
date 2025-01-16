@@ -62,7 +62,6 @@ class BulkDeleteController extends Controller
         $category = $request->input('category', 'induk'); // Default ke 'induk'
         // Validasi kategori
         if (!array_key_exists($category, $this->models)) {
-            dd('ada');
             return redirect()->back()->withErrors(['Invalid category']);
         }
 

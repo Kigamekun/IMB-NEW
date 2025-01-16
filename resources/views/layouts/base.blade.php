@@ -366,6 +366,9 @@
                     $formattedDate = $today->isoFormat('dddd, DD MMMM YYYY');
 
                 @endphp
+
+                @if (auth()->user()->level_user != 11)
+                
                 <ul id="sidebarMenu" class="sidebar-menu" data-widget="tree">
                     <li class="header">{{ $formattedDate }}</li>
                     <li>
@@ -1020,6 +1023,7 @@
                     </li>
                 </ul>
 
+                @endif
 
 
 

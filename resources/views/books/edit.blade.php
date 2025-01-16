@@ -72,6 +72,8 @@
     </form>
 </div>
 
+
+
 @php
 $c = count($book->pages);
 @endphp

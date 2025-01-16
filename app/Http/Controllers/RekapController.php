@@ -2325,7 +2325,9 @@ class RekapController extends Controller
                 YEAR(tanggalSurat) AS TAHUN,
                 MONTH(tanggalSurat) AS BULAN,
                 COUNT(*) AS BERKAS_MASUK,
-                COUNT(*) AS JUMLAH_SURAT,
+                UM(CASE
+                WHEN nomorSurat != "-" THEN 1 ELSE 0
+            END) AS JUMLAH_SURAT,
                 SUM(CASE
                     WHEN jenisSurat IN ("format-1", "format-2", "format-3") AND tujuanSurat = "PEMUTAKHIRAN DATA" THEN 1 ELSE 0
                 END) AS PEMUTAKHIRAN_DATA,
@@ -2372,7 +2374,9 @@ class RekapController extends Controller
             ->selectRaw('
             YEAR(tanggalSurat) AS TAHUN,
             COUNT(*) AS BERKAS_MASUK,
-            COUNT(*) AS JUMLAH_SURAT,
+            SUM(CASE
+                WHEN nomorSurat != "-" THEN 1 ELSE 0
+            END) AS JUMLAH_SURAT,
             SUM(CASE
                 WHEN jenisSurat IN ("format-1","format-2","format-3") AND tujuanSurat = "PEMUTAKHIRAN DATA" THEN 1 ELSE 0
             END) AS PEMUTAKHIRAN_DATA,

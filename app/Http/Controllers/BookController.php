@@ -109,6 +109,7 @@ public function destroy($id)
         'description' => $request->description,
     ]);
 
+    dd($request->all());
     // Opsi pertama: Menambahkan halaman secara manual
     if ($request->has('pages')) {
         foreach ($request->pages as $page) {

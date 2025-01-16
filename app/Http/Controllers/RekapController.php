@@ -2325,7 +2325,7 @@ class RekapController extends Controller
                 YEAR(tanggalSurat) AS TAHUN,
                 MONTH(tanggalSurat) AS BULAN,
                 COUNT(*) AS BERKAS_MASUK,
-                UM(CASE
+                SUM(CASE
                 WHEN nomorSurat != "-" THEN 1 ELSE 0
             END) AS JUMLAH_SURAT,
                 SUM(CASE

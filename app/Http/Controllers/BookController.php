@@ -202,58 +202,126 @@ private function isValidPages($pages)
     return view('books.edit', compact('book'));
 }
 
-public function update(Request $request, $id)
+public function update(Request $request, Book $book)
 {
-
+    // Validasi form
     $request->validate([
         'title' => 'required|string|max:255',
-        'year' => 'required',
-        'category' => 'required|string|in:induk perum,pecahan,perluasan,non perum',
+        'year' => 'required|integer',
+        'cover' => 'nullable|image',
+        'category' => 'required|string',
         'description' => 'nullable|string',
-        'pages.*.id' => 'nullable|exists:pages,id',
-        'pages.*.page_number' => 'required|string|max:10',
-        'pages.*.description' => 'nullable|string',
+        'existing_pages.*.page_number' => 'required|integer',
+        'existing_pages.*.image' => 'nullable|image',
+        'existing_pages.*.description' => 'nullable|string',
+        'new_pages.*.page_number' => 'nullable|integer',
+        'new_pages.*.image' => 'nullable|image',
+        'new_pages.*.description' => 'nullable|string',
+        'page_images.*' => 'nullable|image',
     ]);
 
-    // Update the book
-    $book = Book::findOrFail($id);
-    $book->title = $request->title;
-    $book->year = $request->year;
-    $book->category = $request->category;
-    $book->description = $request->description;
-
+    // Update cover jika ada
     if ($request->hasFile('cover')) {
+        // Hapus cover lama
+        if ($book->cover) {
+            Storage::disk('public')->delete($book->cover);
+        }
         $coverPath = $request->file('cover')->store('books/covers', 'public');
         $book->cover = $coverPath;
     }
 
-    $book->save();
+    // Update data buku
+    $book->update([
+        'title' => $request->title,
+        'year' => $request->year,
+        'category' => $request->category,
+        'description' => $request->description,
+    ]);
 
-    // Update or create pages
-    foreach ($request->pages as $key => $page) {
-        if (isset($page['id'])) {
-            // Update existing page
-            $pageModel = Page::findOrFail($page['id']);
-            $pageModel->page_number = $page['page_number'];
-            $pageModel->description = $page['description'];
-            if (isset($page['image'])) {
-                $pageImagePath = $page['image']->store('books/pages', 'public');
-                $pageModel->image = $pageImagePath;
+    // Handle bulk upload jika dipilih
+    if ($request->hasFile('page_images')) {
+        $bulkAction = $request->input('bulk_action');
+        
+        // Jika replace, hapus semua halaman yang ada
+        if ($bulkAction === 'replace') {
+            foreach ($book->pages as $page) {
+                Storage::disk('public')->delete($page->image);
             }
-            $pageModel->save();
-        } else {
-            // Create new page
-            $pageImagePath = $page['image']->store('books/pages', 'public');
-            Page::create([
+            $book->pages()->delete();
+        }
+
+        // Proses upload bulk
+        $pageNumber = $bulkAction === 'replace' ? 1 : ($book->pages()->max('page_number') + 1);
+        $pagesData = [];
+        
+        foreach ($request->file('page_images') as $file) {
+            $pageImagePath = $file->store('books/pages', 'public');
+            $pagesData[] = [
                 'book_id' => $book->id,
-                'page_number' => $page['page_number'],
+                'page_number' => $pageNumber++,
                 'image' => $pageImagePath,
-                'description' => $page['description'],
-            ]);
+                'description' => '-',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
+        if (!empty($pagesData)) {
+            Page::insert($pagesData);
+        }
+    } else {
+        // Handle manual updates
+        if ($request->has('existing_pages')) {
+            foreach ($request->existing_pages as $pageId => $pageData) {
+                $page = Page::find($pageId);
+                
+                if ($page) {
+                    // Check if page should be deleted
+                    if (isset($pageData['delete']) && $pageData['delete']) {
+                        Storage::disk('public')->delete($page->image);
+                        $page->delete();
+                        continue;
+                    }
+
+                    // Update page data
+                    $page->page_number = $pageData['page_number'];
+                    $page->description = $pageData['description'] ?? '-';
+
+                    // Update image if new one is uploaded
+                    if (isset($pageData['image']) && $pageData['image']) {
+                        Storage::disk('public')->delete($page->image);
+                        $page->image = $pageData['image']->store('books/pages', 'public');
+                    }
+
+                    $page->save();
+                }
+            }
+        }
+
+        // Handle new pages
+        if ($request->has('new_pages')) {
+            $pagesData = [];
+            foreach ($request->new_pages as $pageData) {
+                if (isset($pageData['image'])) {
+                    $pageImagePath = $pageData['image']->store('books/pages', 'public');
+                    $pagesData[] = [
+                        'book_id' => $book->id,
+                        'page_number' => $pageData['page_number'],
+                        'image' => $pageImagePath,
+                        'description' => $pageData['description'] ?? '-',
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
+            }
+
+            if (!empty($pagesData)) {
+                Page::insert($pagesData);
+            }
         }
     }
 
-    return redirect()->route('books.edit', $id)->with('success', 'Buku berhasil diperbarui!');
+    return redirect()->route('books.edit', $book->id)->with('success', 'Buku berhasil diperbarui!');
 }
 
 }

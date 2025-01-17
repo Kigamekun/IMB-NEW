@@ -202,8 +202,10 @@ private function isValidPages($pages)
     return view('books.edit', compact('book'));
 }
 
-public function update(Request $request, Book $book)
+public function update(Request $request, $id)
 {
+
+    $book = Book::findOrFail($id);
     // Validasi form
     $request->validate([
         'title' => 'required|string|max:255',

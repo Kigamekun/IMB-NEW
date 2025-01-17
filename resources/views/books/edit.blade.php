@@ -72,7 +72,7 @@
                                 <small class="text-muted">Biarkan kosong jika tidak ingin mengubah gambar</small>
                                 @if($page->image)
                                     <div class="mt-2">
-                                        <img src="{{ Storage::url($page->image) }}" alt="Page {{ $page->page_number }}" 
+                                        <img src="{{ asset('storage/' . $page->image) }}" alt="Page {{ $page->page_number }}" 
                                              style="max-width: 200px;">
                                     </div>
                                 @endif

@@ -209,7 +209,11 @@
         <tr>
             <td>Nomor</td>
             <td>:</td>
-            <td></td>
+            <td>
+                @if($nomorSurat !== '-' && !str_contains($nomorSurat, 'copy'))
+                    {{ $nomorSurat }}
+                @endif
+            </td>
         </tr
         <tr>
             <td>Lampiran</td>

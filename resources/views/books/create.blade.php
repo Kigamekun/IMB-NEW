@@ -52,11 +52,11 @@
                         <h5>Halaman 1</h5>
                         <div class="mb-3">
                             <label for="page_number_1" class="form-label">Halaman Buku*</label>
-                            <input type="text" name="pages[0][page_number]" id="page_number_1" class="form-control" required>
+                            <input type="text" name="pages[0][page_number]" id="page_number_1" class="form-control" >
                         </div>
                         <div class="mb-3">
                             <label for="page_image_1" class="form-label">Gambar Halaman*</label>
-                            <input type="file" name="pages[0][image]" id="page_image_1" class="form-control" accept="image/*" required>
+                            <input type="file" name="pages[0][image]" id="page_image_1" class="form-control" accept="image/*" >
                         </div>
                         <div class="mb-3">
                             <label for="page_description_1" class="form-label">Deskripsi Halaman (Opsional)</label>
@@ -73,16 +73,16 @@
                 <h4>Unggah Gambar Bulk</h4>
                 <div class="mb-3">
                     <label for="page_images" class="form-label">Unggah Gambar Halaman*</label>
-                    <input type="file" name="page_images[]" id="page_images" class="form-control" accept="image/*" multiple required>
+                    <input type="file" name="page_images[]" id="page_images" class="form-control" accept="image/*" multiple >
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Pilihan Tindakan*</label>
                     <div class="form-check">
-                        <input type="radio" name="bulk_action" id="replace" value="replace" class="form-check-input" required>
+                        <input type="radio" name="bulk_action" id="replace" value="replace" class="form-check-input" >
                         <label for="replace" class="form-check-label">Ganti Semua Data Sebelumnya</label>
                     </div>
                     <div class="form-check">
-                        <input type="radio" name="bulk_action" id="append" value="append" class="form-check-input" required>
+                        <input type="radio" name="bulk_action" id="append" value="append" class="form-check-input" >
                         <label for="append" class="form-check-label">Tambahkan ke Data Sebelumnya</label>
                     </div>
                 </div>

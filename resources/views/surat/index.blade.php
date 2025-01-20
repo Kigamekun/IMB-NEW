@@ -152,10 +152,8 @@
 
             ajax: {
                 url: window.location.href,
-                // url: window.location.href + '?_=' + new Date().getTime(), // Hindari cache
                 data: function(d) {
                     console.log('Data Sent:', d); // Debug data yang dikirim
-                    // d.perPage = $('#IMBTable').DataTable().page.len(); // Ambil jumlah entri per halaman
                     d.nomor_surat = $('#nomorSurat').val();
                     d.nama_pemohon = $('#namaPemohonSurat').val();
                     d.nomor_imbg = $('#nomorIMBG').val();

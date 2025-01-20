@@ -248,6 +248,9 @@
             if (!str_contains($pemohon['alamat'], 'Kabupaten') && str_contains($kabupaten, 'Kabupaten')) {
                 $kabupaten = trim(str_replace('Kabupaten', '', $kabupaten));
             }
+            if ((!str_contains($pemohon['alamat'], 'Kota Adm.') || str_contains($pemohon['alamat'], 'Kota Adm.') || str_contains($pemohon['alamat'], 'Kota Adm.')) && (str_contains($kabupaten, 'Kota Adm.') || str_contains($kabupaten, 'Kota Adm.') || str_contains($kabupaten, 'Kota Adm.'))) {
+                $kabupaten = trim(str_replace(['Kota Adm.', 'Kota Adm.', 'Kota Adm.'], '', $kabupaten));
+            }
         @endphp
 
         <p>{{ $kabupaten }}</p>
@@ -284,7 +287,9 @@
                             <td>:</td>
                             <td style="line-height:1.15 !important; text-align:justify">{{ $pemohon['alamat'] }}, Desa/Kelurahan
                                 {{ $pemohon['kelurahanPemohon'] }}, Kecamatan
-                                {{ $pemohon['kecamatanPemohon'] }}, {{ $pemohon['kabupatenPemohon'] }}</td>
+                                {{ $pemohon['kecamatanPemohon'] }},
+                                {{ str_replace('Kota Adm.', '', $pemohon['kabupatenPemohon']) }}
+
                             </td>
                         </tr>
                     </table>
@@ -324,9 +329,10 @@
                             @endif
 
                             @if (isset($referensi['kabupaten-terdahulu']) && $referensi['kabupaten-terdahulu'] != null)
-                                {{ $referensi['kabupaten'] }} (d/h. {{ $referensi['kabupaten-terdahulu'] }}).
+                                {{ str_replace('Kota Adm.', '', $referensi['kabupaten']) }} (d/h. {{ str_replace('Kota Adm.', '', $referensi['kabupaten-terdahulu']) }})
+
                             @else
-                                {{ $referensi['kabupaten'] }}.
+                                {{ str_replace('Kota Adm.', '', $referensi['kabupaten']) }}
                             @endif
                         </td>
                     </tr>

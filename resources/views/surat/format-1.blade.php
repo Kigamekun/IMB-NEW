@@ -254,6 +254,10 @@
             if (!str_contains($pemohon['alamat'], 'Kabupaten') && str_contains($kabupaten, 'Kabupaten')) {
                 $kabupaten = trim(str_replace('Kabupaten', '', $kabupaten));
             }
+            // Pengecekan Kota Adm. Pada Jakarta
+            if ((!str_contains($pemohon['alamat'], 'Kota Adm.') || str_contains($pemohon['alamat'], 'Kota Adm.') || str_contains($pemohon['alamat'], 'Kota Adm.')) && (str_contains($kabupaten, 'Kota Adm.') || str_contains($kabupaten, 'Kota Adm.') || str_contains($kabupaten, 'Kota Adm.'))) {
+                $kabupaten = trim(str_replace(['Kota Adm.', 'Kota Adm.', 'Kota Adm.'], '', $kabupaten));
+            }
         @endphp
         <p>{{ $kabupaten }}</p>
     </div>
@@ -291,7 +295,8 @@
                                 {{ $pemohon['alamat'] }}, Desa/Kelurahan
                                 {{ $pemohon['kelurahanPemohon'] }}, Kecamatan
                                 {{ $pemohon['kecamatanPemohon'] }},
-                                {{ $pemohon['kabupatenPemohon'] }}
+                                {{ str_replace('Kota Adm.', '', $pemohon['kabupatenPemohon']) }}
+
                             </td>
                             </td>
                         </tr>
@@ -338,6 +343,13 @@
                             @if (isset($referensi['kabupaten-terdahulu']) && $referensi['kabupaten-terdahulu'] != null)
                                 (d/h. {{ $referensi['kabupaten-terdahulu'] }})
                             @endif --}}
+                            {{-- @php
+                                $lokasiKabupaten = $pemohon['kabupatenPemohon'];
+                                // Pengecekan Kota Adm. Pada Jakarta
+                                if ((!str_contains($pemohon['alamat'], 'Kota Adm.') || str_contains($pemohon['alamat'], 'Kota Adm.') || str_contains($pemohon['alamat'], 'Kota Adm.')) && (str_contains($kabupaten, 'Kota Adm.') || str_contains($kabupaten, 'Kota Adm.') || str_contains($kabupaten, 'Kota Adm.'))) {
+                                    $kabupaten = trim(str_replace(['Kota Adm.', 'Kota Adm.', 'Kota Adm.'], '', $kabupaten));
+                                }
+                            @endphp --}}
                             {{ $referensi['lokasi'] != null || $referensi['lokasi'] != '' ? $referensi['lokasi'] . ',' : '' }}
 
                             @if (isset($referensi['kelurahan-terdahulu']) && $referensi['kelurahan-terdahulu'] != null)
@@ -352,9 +364,9 @@
                             @endif
 
                             @if (isset($referensi['kabupaten-terdahulu']) && $referensi['kabupaten-terdahulu'] != null)
-                                {{ $referensi['kabupaten'] }} (d/h. {{ $referensi['kabupaten-terdahulu'] }}).
+                                {{ str_replace('Kota Adm.', '', $referensi['kabupaten']) }} (d/h. {{ str_replace('Kota Adm.', '', $referensi['kabupaten-terdahulu']) }})
                             @else
-                                {{ $referensi['kabupaten'] }}.
+                                {{ str_replace('Kota Adm.', '', $referensi['kabupaten']) }}
                             @endif
                         </td>
                     </tr>

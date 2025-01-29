@@ -82,8 +82,9 @@
 
         <!-- Pagination -->
         <div class="d-flex justify-content-center">
-            {{ $books->links() }}
+            {{ $books->appends(request()->query())->links() }}
         </div>
+
     </div>
     <br>
     <br>

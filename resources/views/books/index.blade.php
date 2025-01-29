@@ -3,6 +3,7 @@
 @section('content')
     <div class="container py-4">
         <h1 class="mb-4">Galeri Buku</h1>
+        <h2>Jumlah Buku yang Masuk :  {{ $books->count() }}</h2>
 
         <!-- Filter Form -->
         <form action="{{ route('books.index') }}" method="GET" class="mb-4">

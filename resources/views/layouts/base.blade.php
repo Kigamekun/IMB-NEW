@@ -323,12 +323,16 @@
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a href="https://simpol.hastasejahtera.online/simpol/app.php?appmd=CUSER"
+                                        <a href="https://simpol.hasta.my.id/simpol/app.php?appmd=CUSER"
                                             class="btn btn-default btn-flat">Update Profile</a>
                                     </div>
                                     <div class="pull-right">
-                                        <a href="#" class="btn btn-default btn-flat">Sign out</a>
-                                    </div>
+                                <form action="{{ route('logout') }}" method="post">
+                                    @csrf
+                                    <button type="submit" class="btn btn-default btn-flat">Sign out</button>
+                                </form>
+
+                                </div>
                                 </li>
                             </ul>
                         </li>
@@ -373,7 +377,7 @@
                 <ul id="sidebarMenu" class="sidebar-menu" data-widget="tree">
                     <li class="header">{{ $formattedDate }}</li>
                     <li>
-                        <a href="https://simpol.hastasejahtera.online/simpol/app.php"
+                        <a href="https://simpol.hasta.my.id/simpol/app.php"
                             style="
                               padding: 12px 5px 12px 15px;
                                 display: block;
@@ -1030,7 +1034,7 @@
                 <ul id="sidebarMenu" class="sidebar-menu" data-widget="tree">
                     <li class="header">{{ $formattedDate }}</li>
                     <li>
-                        <a href="https://simpol.hastasejahtera.online/simpol/app.php"
+                        <a href="https://simpol.hasta.my.id/simpol/app.php"
                             style="
                               padding: 12px 5px 12px 15px;
                                 display: block;
@@ -2083,7 +2087,7 @@
 
     <script>
         function redirectAndRun(tabId, title, url) {
-            const baseUrl = 'https://simpol.hastasejahtera.online/simpol/app.php';
+            const baseUrl = 'https://simpol.hasta.my.id/simpol/app.php';
             const params = new URLSearchParams({
                 tabId: tabId,
                 title: title,

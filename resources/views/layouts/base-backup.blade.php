@@ -64,7 +64,7 @@
 
         <header class="main-header">
             <!-- Logo -->
-            <a href="https://simpol.hastasejahtera.online/simpol/app.php" class="logo">
+            <a href="https://simpol.hasta.my.id/simpol/app.php" class="logo">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
                 <span class="logo-lg"><b>SIMPOL</b><small> v.02</small></span>
             </a>
@@ -365,7 +365,7 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
                     <li class="header">{{$formattedDate}}</li>
                     <li >
                       <a
-                        href="https://simpol.hastasejahtera.online/simpol/app.php"
+                        href="https://simpol.hasta.my.id/simpol/app.php"
                         style="
                               padding: 12px 5px 12px 15px;
                                 display: block;
@@ -1665,7 +1665,7 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
           </a>
           <ul class="treeview-menu">
             <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-            <li><a href="https://simpol.hastasejahtera.online/simpol/app.php"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
+            <li><a href="https://simpol.hasta.my.id/simpol/app.php"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -2182,7 +2182,7 @@ $formattedDate = $today->isoFormat("dddd, DD MMMM YYYY");
 
     <script>
         function redirectAndRun(tabId, title, url) {
-            const baseUrl = 'https://simpol.hastasejahtera.online/simpol/app.php';
+            const baseUrl = 'https://simpol.hasta.my.id/simpol/app.php';
             const params = new URLSearchParams({
                 tabId: tabId,
                 title: title,

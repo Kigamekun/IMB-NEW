@@ -34,7 +34,7 @@ class CheckSSO
                 }
             }
         } else {
-            return redirect('https://simpol.hastasejahtera.online/simpol');
+            return redirect('https://simpol.hasta.my.id/simpol');
         }
         // auth()->loginUsingId(1);
 

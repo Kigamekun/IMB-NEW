@@ -16,7 +16,7 @@ class FrameHeadersMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $response = $next($request);
-        $response->headers->set('X-Frame-Options', 'ALLOW FROM https://simpol.hastasejahtera.online/');
+        $response->headers->set('X-Frame-Options', 'ALLOW FROM https://simpol.hasta.my.id/');
         return $response;
     }
 }

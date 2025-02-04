@@ -193,7 +193,7 @@
                             <div class="col-md-6">
                                 <label for="registerNomor" class="form-label">Nomor Register:</label>
                                 <input type="text" id="registerNomor" name="registerNomor" class="form-control"
-                                    value="-">
+                                    value="">
                             </div>
                         </div>
                         <div class="row mb-3" style="margin-top: 10px">
@@ -205,7 +205,7 @@
                             <div class="col-md-6">
                                 <label for="imbgNomor" class="form-label">Nomor IMBG:</label>
                                 <input type="text" id="imbgNomor" name="imbgNomor" class="form-control"
-                                    value="-">
+                                    value="">
                             </div>
                         </div>
                         <div class="mb-3" style="margin-top: 10px">

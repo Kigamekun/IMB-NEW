@@ -325,7 +325,7 @@
                         <div id="keteranganContainer">
                             <div class="mb-3">
                                 <label for="ket1" class="form-label">KET-1: <span style="color: red">*</span></label>
-                                <textarea id="ket1" name="ket[]" class="form-control" style="height: 100px" rows="3">Nama dan Nomor Izin Mendirikan Bangunan Gedung tersebut di atas adalah benar tercatat dalam buku register Izin Mendirikan Bangunan pada Dinas Perumahan Kawasan Permukiman Dan Pertanahan Kabupaten Bogor.</textarea>
+                                <textarea id="ket1" name="ket[]" class="form-control" style="height: 100px" rows="3">Nama dan Nomor Izin Mendirikan Bangunan Gedung tersebut di atas adalah benar tercatat dalam buku register Izin Mendirikan Bangunan registrasi dan database SIMPOL V.02 pada Dinas Perumahan Kawasan Permukiman Dan Pertanahan Kabupaten Bogor.</textarea>
                             </div>
                             <div class="mb-3" style="margin-top: 10px">
                                 <label for="ket2" class="form-label">KET-2: <span style="color: red">*</span></label>

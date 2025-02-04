@@ -238,7 +238,7 @@
                             <th>Tahun</th>
                             <th>No SK</th>
                             <th>Tanggal</th>
-                            <th>Pemohon</th>
+                            <th>Nama Pemohon Surat Keterangan</th>
                             <th>Atas Nama</th>
                             <th>Alamat Pemohon</th>
                             <th>No Register</th>

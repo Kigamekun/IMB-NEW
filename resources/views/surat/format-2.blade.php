@@ -323,21 +323,6 @@
                         <td>Lokasi</td>
                         <td>:</td>
                         <td style="line-height:16px !important;  text-align:justify" >
-                            {{-- {{ $referensi['lokasi'] != null || $referensi['lokasi'] != '' ? $referensi['lokasi'] . ',' : '' }}
-
-
-                            Desa/Kelurahan {{ $referensi['kelurahan'] }}
-                            @if (isset($referensi['kelurahan-terdahulu']) && $referensi['kelurahan-terdahulu'] != null)
-                                (d/h. {{ $referensi['kelurahan-terdahulu'] }})
-                            @endif
-                            , Kecamatan {{ $referensi['kecamatan'] }}
-                            @if (isset($referensi['kecamatan-terdahulu']) && $referensi['kecamatan-terdahulu'] != null)
-                                (d/h. {{ $referensi['kecamatan-terdahulu'] }})
-                            @endif
-                            , {{ $referensi['kabupaten'] }}
-                            @if (isset($referensi['kabupaten-terdahulu']) && $referensi['kabupaten-terdahulu'] != null)
-                                (d/h. {{ $referensi['kabupaten-terdahulu'] }})
-                            @endif --}}
                             {{ $referensi['lokasi'] != null || $referensi['lokasi'] != '' ? $referensi['lokasi'] . ',' : '' }}
 
                             @if (isset($referensi['kelurahan-terdahulu']) && $referensi['kelurahan-terdahulu'] != null)
@@ -354,7 +339,7 @@
                             @if (isset($referensi['kabupaten-terdahulu']) && $referensi['kabupaten-terdahulu'] != null)
                             {{ str_replace('Kota Adm.', '', $referensi['kabupaten']) }} (d/h. {{ str_replace('Kota Adm.', '', $referensi['kabupaten-terdahulu']) }})
                             @else
-                                {{ str_replace('Kota Adm.', '', $pemohon['kabupatenPemohon']) }}
+                                {{ str_replace('Kota Adm.', '', $referensi['kabupaten']) }}
 
                             @endif
                         </td>

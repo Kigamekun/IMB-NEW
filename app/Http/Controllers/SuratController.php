@@ -853,22 +853,15 @@ class SuratController extends Controller
     public function preview(Request $request)
     {
         $data = $request->all();
-        dd($request->all());
 
 
         $jenisSurat = $data['jenisSurat'];
 
         list($nip, $kepalaDinas) = explode(' | ', $request->kepalaDinas);
 
-        // $details = json_encode($request->input('details'));
-        // $details2 = json_encode($request->input('details2'));
-        $details = json_decode($data['details'],true);
-        $details2 = json_decode($data['details2'],true);
-
-        // dd($details, $details2);
-        // dd($details, $details2);
-        // dd($details, $details2);
-        // dd($details);
+        $details = json_encode($request->input('details'));
+        $details2 = json_encode($request->input('details2'));
+        dd($details, $details2);
 
         // Untuk Kabupaten
         $strKabupaten = \DB::table('master_regency')

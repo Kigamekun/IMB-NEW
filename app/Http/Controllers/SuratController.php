@@ -855,7 +855,7 @@ class SuratController extends Controller
         $data = $request->all();
         // dd($request->all());
 
-
+        $data =(array)$data;
         $jenisSurat = $data['jenisSurat'];
 
         list($nip, $kepalaDinas) = explode(' | ', $request->kepalaDinas);

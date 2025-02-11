@@ -1002,8 +1002,10 @@ class SuratController extends Controller
 
 
         // Ambil detail data IMBG
-        $details = $data['details'];
-        $details2 = $data['details2'];
+        // $details = $data['details'];
+        // $details2 = $data['details2'];
+        $details = json_decode($data['details'], true);
+        $details2 = json_decode($data['details2'], true);
         // dd('data details 1',$details);
         // dd('data details 2',$details2);
 

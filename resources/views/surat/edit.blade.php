@@ -1090,6 +1090,7 @@
 
     </script>
 
+    @dd($data)
 
     <script>
         $(document).ready(function() {
@@ -1172,6 +1173,7 @@
                     },
                     body: formData
                 })
+
                 .then(response => {
 
                     if (!response.ok) {
@@ -1215,7 +1217,6 @@
                             text: data.message || 'Terjadi kesalahan saat memproses surat.',
                             icon: 'error',
                         });
-                        
                     }
                 })
                 .catch(error => {

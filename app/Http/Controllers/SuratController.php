@@ -861,7 +861,7 @@ class SuratController extends Controller
 
         $details = json_encode($request->input('details'));
         $details2 = json_encode($request->input('details2'));
-        dd($details, $details2);
+        // dd($details, $details2);
 
         // Untuk Kabupaten
         $strKabupaten = \DB::table('master_regency')

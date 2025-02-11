@@ -397,6 +397,7 @@
                         $belum_rincik_jumlah = 0;
                         $sudah_dimohon_jumlah = 0;
                     @endphp
+                    @dd($details)
                     @foreach ($details as $item)
                         <tr>
                             <td>Type {{ $item['type'] }} = {{ $item['jumlah'] }} Unit</td>

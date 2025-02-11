@@ -1090,8 +1090,6 @@
 
     </script>
 
-    @dd($data)
-
     <script>
         $(document).ready(function() {
 

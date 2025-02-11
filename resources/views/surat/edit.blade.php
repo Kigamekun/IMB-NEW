@@ -1215,7 +1215,7 @@
                             text: data.message || 'Terjadi kesalahan saat memproses surat.',
                             icon: 'error',
                         });
-                        console.log(data.message)
+                        
                     }
                 })
                 .catch(error => {

@@ -836,7 +836,7 @@ class SuratController extends Controller
                 'details2' => json_encode($validated['details2']),
                 'file' => $namaFile,
             ]);
-
+            dd($updated);
             // Tampilkan response sukses
             return response()->json(['status' => 'success', 'message' => 'Surat berhasil diperbarui.', 'file' => $namaFile]);
             if ($updated) {

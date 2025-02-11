@@ -555,7 +555,7 @@ class SuratController extends Controller
         // Ambil detail data IMBG
         $details = $data['details'];
         $details2 = $data['details2'];
-
+        dd('data 1 dan 2', $details, $details2);
         // Load template view dan kirim data
         if ($jenisSurat == 'format-1') {
             $html = view('surat.format-1', compact(

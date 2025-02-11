@@ -1001,10 +1001,10 @@ class SuratController extends Controller
         $keterangan = $data['ket'];
 
 
-        // // Ambil detail data IMBG
-        // $details = $data['details'];
-        // $details2 = $data['details2'];
-        // dd('data details 1',$details);
+        // Ambil detail data IMBG
+        $details = $details;
+        $details2 = $data['details2'];
+        dd('data details 1',$details);
         // dd('data details 2',$details2);
 
         // Load template view dan kirim data

@@ -853,6 +853,7 @@ class SuratController extends Controller
     public function preview(Request $request)
     {
         $data = $request->all();
+        dd($request->all());
 
 
         $jenisSurat = $data['jenisSurat'];
@@ -861,7 +862,7 @@ class SuratController extends Controller
 
         $details = json_encode($request->input('details'));
         $details2 = json_encode($request->input('details2'));
-        dd($details, $details2);
+        // dd($details, $details2);
         // dd($details, $details2);
         // dd($details, $details2);
         // dd($details);

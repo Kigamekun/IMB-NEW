@@ -1002,10 +1002,10 @@ class SuratController extends Controller
 
 
         // Ambil detail data IMBG
-        // $details = $data['details'];
-        // $details2 = $data['details2'];
-        // dd('data details 1',$details);
-        // dd('data details 2',$details2);
+        $details = $data['details'];
+        $details2 = $data['details2'];
+        dd('data details 1',$details);
+        dd('data details 2',$details2);
 
         // Load template view dan kirim data
         if ($jenisSurat == 'format-1') {

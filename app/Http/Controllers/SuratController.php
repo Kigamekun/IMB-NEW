@@ -859,10 +859,9 @@ class SuratController extends Controller
 
         list($nip, $kepalaDinas) = explode(' | ', $request->kepalaDinas);
 
-        // $details = json_encode($request->input('details'));
-        // $details2 = json_encode($request->input('details2'));
-        $details = $data['details'];
-        $details2 = $data['details2'];
+        $details = json_encode($request->input('details'));
+        $details2 = json_encode($request->input('details2'));
+
         // dd($details);
 
         // Untuk Kabupaten

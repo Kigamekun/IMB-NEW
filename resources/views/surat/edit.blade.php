@@ -540,7 +540,7 @@
 
 
                         <br>
-                        <div class="container mt-4">
+                        <div class="mt-4" style="width: 100%">
                             <div id="detail" style="display: none; margin-left:-15px">
                                 <table class="table-bordered table ">
                                     <tbody id="details">

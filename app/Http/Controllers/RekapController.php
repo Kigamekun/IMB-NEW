@@ -1280,7 +1280,7 @@ class RekapController extends Controller
 
             $data = DB::table('imb_induk_perum as induk')
                 ->join('item_imb_induk_perum as item', 'induk.id', '=', 'item.induk_perum_id')
-                ->leftJoin('imb_pecahan as pecahan', function ($join) {
+                ->rightJoin('imb_pecahan as pecahan', function ($join) {
                     $join->on('pecahan.imb_induk_id', '=', 'induk.imb_induk')
                         ->on('pecahan.type', '=', 'item.type');
                 })
@@ -1292,8 +1292,19 @@ class RekapController extends Controller
                 ')
                 ->where('induk.imb_induk', $imbInduk)
                 ->groupBy('item.type')
-                ->orderBy('item.type')
-                ->get();
+                ->orderBy('item.type');
+
+                if (!empty($namaPengembang)) {
+                    $data->where('pecahan.nama', 'LIKE', "%{$namaPengembang}%");
+                }
+
+                // Tambahkan filter berdasarkan nama perumahan dari tabel pecahan
+                if (!empty($namaPerumahan)) {
+                    $data->where('pecahan.lokasi_perumahan', 'LIKE', "%{$namaPerumahan}%");
+                }
+
+
+            $data = $data->get();
 
             return Datatables::of($data)
                 ->rawColumns(['action'])

@@ -26,7 +26,7 @@
 
                         <form id="rekapForm" method="GET" action="{{ route('rekap.DetailIMBPerluasanList') }}">
                             <div class="row">
-                                <div class="col-md-6 ">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="imbPecahan">IMB Pecahan</label>
                                         <input type="text" id="imbPecahan" name="imbPecahan"
@@ -35,9 +35,17 @@
                                 </div>
                                 <div class="col-md-6 ">
                                     <div class="form-group">
-                                        <label for="namaPerumahan">Nama Perumahan</label>
-                                        <input type="text" id="namaPerumahan" name="namaPerumahan"
-                                            class="form-control" placeholder="Masukkan IMB Pecahan...">
+                                        <label for="nama_pengembang">Nama Pengembang</label>
+                                        <input type="text" id="nama_pengembang" name="nama_pengembang"
+                                            class="form-control" placeholder="Masukkan nama pengembang...">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+                                        <label for="nama_perumahan">Nama Perumahan</label>
+                                        <input type="text" id="nama_perumahan" name="nama_perumahan" class="form-control"
+                                            placeholder="Masukkan nama perumahan...">
                                     </div>
                                 </div>
                                 <div class="col-md-6">

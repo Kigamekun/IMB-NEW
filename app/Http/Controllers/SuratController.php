@@ -803,7 +803,7 @@ class SuratController extends Controller
             $namaFile = 'surat-' . $validated['nomorSurat'] . uniqid() . '.pdf';
 
             // Perbarui data di tabel surat
-            $updated = DB::table('surat')->where('id', $id)->update([
+            $updated = \DB::table('surat')->where('id', $id)->update([
                 'jenisSurat' => $validated['jenisSurat'],
                 'tahun' => $validated['tahun'],
                 'nomorSurat' => $validated['nomorSurat'],

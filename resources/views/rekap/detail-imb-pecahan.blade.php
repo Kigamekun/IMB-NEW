@@ -26,13 +26,29 @@
 
                         <form id="rekapForm" method="GET" action="{{ route('rekap.DetailIMBPecahanList') }}">
                             <div class="row">
-                                <div class="col-md-6 ">
+                                <div class="col-md-12 ">
                                     <div class="form-group">
                                         <label for="imbInduk">IMB Induk</label>
                                         <input type="text" id="imbInduk" name="imbInduk" class="form-control"
                                             placeholder="Masukkan IMB Induk...">
                                     </div>
                                 </div>
+                                <div class="col-md-6 ">
+                                    <div class="form-group">
+                                        <label for="nama_pengembang">Nama Pengembang</label>
+                                        <input type="text" id="nama_pengembang" name="nama_pengembang"
+                                            class="form-control" placeholder="Masukkan nama pengembang...">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+                                        <label for="nama_perumahan">Nama Perumahan</label>
+                                        <input type="text" id="nama_perumahan" name="nama_perumahan" class="form-control"
+                                            placeholder="Masukkan nama perumahan...">
+                                    </div>
+                                </div>
+
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="startYear">Tahun Awal</label>

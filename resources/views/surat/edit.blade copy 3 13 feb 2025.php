@@ -1,5 +1,5 @@
 @extends('layouts.base')
-
+<!-- Cioy dari 13/02/2025 -->
 @section('styles')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @endsection
@@ -561,31 +561,31 @@
                                             <th>Type</th>
                                             <th>Jumlah (Unit)</th>
                                         </tr>
-                                        @foreach ($data['details'] as $index => $item)
+                                        @foreach ($data['details'] as $item)
                                             <tr>
-                                                <td><input type="text" name="details[{{ $index }}][type]" style="width: 50px"
+                                                <td><input type="text" name="details[0][type]" style="width: 50px"
                                                         class="form-control" value="{{ $item->type }}">
                                                 </td>
-                                                <td><input type="text" name="details[{{ $index }}][jumlah]" style="width: 50px"
+                                                <td><input type="text" name="details[0][jumlah]" style="width: 50px"
                                                         class="form-control" value="{{ $item->jumlah }}"></td>
-                                                <td><input type="text" name="details[{{ $index }}][pecah_type]"
+                                                <td><input type="text" name="details[0][pecah_type]"
                                                         style="width: 50px" class="form-control"
                                                         value="{{ $item->pecah_type }}">
                                                 </td>
-                                                <td><input type="text" name="details[{{ $index }}][pecah_jumlah]"
+                                                <td><input type="text" name="details[0][pecah_jumlah]"
                                                         style="width: 50px" class="form-control"
                                                         value="{{ $item->pecah_jumlah }}">
                                                 </td>
-                                                <td><input type="text" name="details[{{ $index }}][belum_rincik_type]"
+                                                <td><input type="text" name="details[0][belum_rincik_type]"
                                                         style="width: 50px" class="form-control"
                                                         value="{{ $item->belum_rincik_type }}"></td>
-                                                <td><input type="text" name="details[{{ $index }}][belum_rincik_jumlah]"
+                                                <td><input type="text" name="details[0][belum_rincik_jumlah]"
                                                         style="width: 50px" class="form-control"
                                                         value="{{ $item->belum_rincik_jumlah }}"></td>
-                                                <td><input type="text" name="details[{{ $index }}][sudah_dimohon_type]"
+                                                <td><input type="text" name="details[0][sudah_dimohon_type]"
                                                         style="width: 50px" class="form-control"
                                                         value="{{ $item->sudah_dimohon_type }}"></td>
-                                                <td><input type="text" name="details[{{ $index }}][sudah_dimohon_jumlah]"
+                                                <td><input type="text" name="details[0][sudah_dimohon_jumlah]"
                                                         style="width: 50px" class="form-control"
                                                         value="{{ $item->sudah_dimohon_jumlah }}"></td>
                                                 <td rowspan="2"><button type="button"
@@ -594,7 +594,7 @@
                                             </tr>
                                             <tr>
                                                 <td colspan="8" class="p-3">
-                                                    <textarea type="text" name="details[{{ $index }}][sudah_dimohon_keterangan]" style="width: 100%;height:100px"
+                                                    <textarea type="text" name="details[0][sudah_dimohon_keterangan]" style="width: 100%;height:100px"
                                                         class="form-control">{{ $item->sudah_dimohon_keterangan }}</textarea>
                                                 </td>
                                             </tr>
@@ -619,27 +619,25 @@
                                             <th>Jumlah <span style="color: red">*</span></th>
                                             <th>Hapus <span style="color: red">*</span></th>
                                         </tr>
-
                                         @foreach ($data['details2'] as $key => $item)
                                             <tr>
-                                                <td>{{$loop->iteration}}</td>  <!-- Menampilkan nomor berdasarkan $key -->
-                                                <td><input type="text" name="details2[{{$key}}][type]" class="form-control"
+                                                <td>{{ $key + 1 }}</td>
+                                                <td><input type="text" name="details2[0][type]" class="form-control"
                                                         value="{{ $item->type }}">
                                                 </td>
-                                                <td><input type="text" name="details2[{{$key}}][blok]" class="form-control"
+                                                <td><input type="text" name="details2[0][blok]" class="form-control"
                                                         value="{{ $item->blok }}">
                                                 </td>
-                                                <td><input type="text" name="details2[{{$key}}][nomor]" class="form-control"
+                                                <td><input type="text" name="details2[0][nomor]" class="form-control"
                                                         value="{{ $item->nomor }}">
                                                 </td>
-                                                <td><input type="text" name="details2[{{$key}}][jumlah]" class="form-control"
+                                                <td><input type="text" name="details2[0][jumlah]" class="form-control"
                                                         value="{{ $item->jumlah }}">
                                                 </td>
                                                 <td><button type="button"
                                                         class="btn btn-danger remove-detail-2">Hapus</button>
                                                 </td>
                                             </tr>
-
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -658,6 +656,8 @@
         </div>
     </div>
 @endsection
+
+
 
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -967,10 +967,8 @@
         });
 
 
-        let detailCount = {{ count($data['details']) }};
-
+        let detailCount = 1;
         let detail2Count = 1;
-
 
         $('#add-detail').on('click', function() {
             const detailHtml = `
@@ -999,17 +997,16 @@
         $('#add-detail-2').on('click', function() {
             const detailHtml = `
                 <tr>
-                    <td>${detail2Count + 1}</td>
-                    <td><input type="text" name="details2[${detail2Count}][type]" class="form-control" required></td>
-                    <td><input type="text" name="details2[${detail2Count}][blok]" class="form-control" required></td>
-                    <td><input type="text" name="details2[${detail2Count}][nomor]" class="form-control"></td>
-                    <td><input type="text" name="details2[${detail2Count}][jumlah]" class="form-control"></td>
+                    <td>${detailCount + 1}</td>
+                    <td><input type="text" name="details2[${detailCount}][type]" class="form-control" required></td>
+                    <td><input type="text" name="details2[${detailCount}][blok]" class="form-control" required></td>
+                    <td><input type="text" name="details2[${detailCount}][nomor]" class="form-control"></td>
+                    <td><input type="text" name="details2[${detailCount}][jumlah]" class="form-control"></td>
                     <td><button type="button" class="btn btn-danger remove-detail-2">Hapus</button></td>
                 </tr>
             `;
-
             $('#details2').append(detailHtml);
-            detail2Count++; // Naikkan setelah elemen ditambahkan
+            detail2Count++;
         });
 
         $(document).on('click', '.remove-detail-2', function() {
@@ -1154,76 +1151,6 @@
             });
 
 
-            // $('#submit-surat').click(function() {
-            //     Swal.fire({
-            //         title: 'Menghasilkan Surat...',
-            //         text: 'Mohon tunggu, surat sedang diproses.',
-            //         allowOutsideClick: false,
-            //         didOpen: () => {
-            //             Swal.showLoading();
-            //         }
-            //     });
-
-            //     let form = document.getElementById('suratForm');
-            //     let formData = new FormData(form);
-
-
-            //     fetch(@json($url), {
-            //         method: 'POST',
-            //         headers: {
-            //             'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            //         },
-            //         body: formData
-            //     })
-            //     .then(response => {
-            //         console.log('Response status:', response.status); // Log status code
-            //         if (!response.ok) {
-            //             // Jika respons tidak OK (status 4xx/5xx)
-            //             throw new Error(`HTTP error! Status: ${response.status}`);
-            //         }
-            //         return response.json();
-            //     })
-            //     .then(data => {
-            //         console.log(data)
-            //         Swal.close();
-
-            //         if (data.status === 'success') {
-            //                 Swal.fire({
-            //                     title: 'Surat Berhasil Dibuat!',
-            //                     text: 'Surat akan diunduh secara otomatis.',
-            //                     icon: 'success',
-            //                     timer: 2000,
-            //                     showConfirmButton: false
-            //                 }).then(() => {
-            //                     window.location.href = "{{ route('surat.index') }}";
-            //                 });
-
-            //             // Mengunduh file secara otomatis
-            //             const fileUrl = `{{ asset('storage/surat/') }}/${data.file}`;
-            //             const link = document.createElement('a');
-            //             link.href = fileUrl;
-            //             link.download = data.file; // Nama file yang diunduh
-            //             link.click();
-            //         } else {
-            //             Swal.fire({
-            //                 title: 'Gagal Membuat Surat',
-            //                 text: data.message || 'Terjadi kesalahan saat memproses surat.',
-            //                 icon: 'error',
-            //             });
-            //         }
-            //     })
-            //     .catch(error => {
-            //         console.log(error)
-            //         Swal.close();
-            //         console.error('Fetch Error:', error); // Debug untuk melihat error
-            //         Swal.fire({
-            //             title: 'Gagal Membuat Surat',
-            //             text: 'Terjadi kesalahan koneksi atau server.',
-            //             icon: 'error',
-            //         });
-            //     });
-            // });
-
             $('#submit-surat').click(function() {
                 Swal.fire({
                     title: 'Menghasilkan Surat...',
@@ -1237,42 +1164,44 @@
                 let form = document.getElementById('suratForm');
                 let formData = new FormData(form);
 
-                // Debug FormData
-                for (let [key, value] of formData.entries()) {
-                    console.log(key, value);
-                }
-
                 fetch(@json($url), {
                     method: 'POST',
                     headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
                     body: formData
                 })
+
                 .then(response => {
-                    console.log('Response status:', response.status); // Log status code
+
                     if (!response.ok) {
-                        return response.json().then(err => { // Tangani error validasi
-                            throw new Error(err.message || `HTTP error! Status: ${response.status}`);
-                        });
+                        // Jika respons tidak OK (status 4xx/5xx)
+                        throw new Error(`HTTP error! Status: ${response.status}`);
                     }
                     return response.json();
                 })
                 .then(data => {
-                    console.log('Response data:', data); // Log respons data
+                    console.log(data)
                     Swal.close();
 
+                    // if (data.status === 'success') {
+                    //     Swal.fire({
+                    //         title: 'Surat Berhasil Diupdate!',
+                    //         text: 'Surat akan diunduh secara otomatis.',
+                    //         icon: 'success',
+                    //         timer: 2000,
+                    //         showConfirmButton: false
+                    //     });
                     if (data.status === 'success') {
-                        Swal.fire({
-                            title: 'Surat Berhasil Dibuat!',
-                            text: 'Surat akan diunduh secara otomatis.',
-                            icon: 'success',
-                            timer: 2000,
-                            showConfirmButton: false
-                        }).then(() => {
-                            window.location.href = "{{ route('surat.index') }}";
-                        });
+                            Swal.fire({
+                                title: 'Surat Berhasil Dibuat!',
+                                text: 'Surat akan diunduh secara otomatis.',
+                                icon: 'success',
+                                timer: 2000,
+                                showConfirmButton: false
+                            }).then(() => {
+                                window.location.href = "{{ route('surat.index') }}";
+                            });
 
                         // Mengunduh file secara otomatis
                         const fileUrl = `{{ asset('storage/surat/') }}/${data.file}`;
@@ -1289,15 +1218,17 @@
                     }
                 })
                 .catch(error => {
-                    console.error('Fetch Error:', error); // Debug untuk melihat error
+                    console.log(error)
                     Swal.close();
+                    console.error('Fetch Error:', error); // Debug untuk melihat error
                     Swal.fire({
                         title: 'Gagal Membuat Surat',
-                        text: error.message || 'Terjadi kesalahan koneksi atau server.',
+                        text: 'Terjadi kesalahan koneksi atau server.',
                         icon: 'error',
                     });
                 });
             });
+
 
 
         });

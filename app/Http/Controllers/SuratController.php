@@ -743,7 +743,6 @@ class SuratController extends Controller
             return response()->json(['status' => 'error', 'message' => 'Invalid ID.'], 400);
         }
 
-
         if ($request->input('jenisSurat') == 'format-2') {
             $validated['details'] = 'required';
             $validated['details2'] = 'nullable';
@@ -780,8 +779,8 @@ class SuratController extends Controller
             'ket' => 'nullable|array',
             'details' => 'nullable|array',
             'details2' => 'nullable|array',
-            'registerNomor' => 'required',
-            'imbgNomor' => 'required',
+            'registerNomor' => 'nullable',
+            'imbgNomor' => 'nullable',
             'imbgTanggal' => 'required',
             'registerTanggal' => 'required',
             'provinsiPemohon' => 'required',
@@ -795,11 +794,16 @@ class SuratController extends Controller
         ]);
 
         try {
+            // Pastikan 'details2' adalah array, jika tidak convert ke array
+            // if (isset($validated['details2']) && !is_array($validated['details2'])) {
+            //     $validated['details2'] = json_decode($validated['details2'], true);
+            // }
+
             // Format nama file baru
             $namaFile = 'surat-' . $validated['nomorSurat'] . uniqid() . '.pdf';
 
             // Perbarui data di tabel surat
-            $updated = \DB::table('surat')->where('id', $id)->update([
+            $updated = DB::table('surat')->where('id', $id)->update([
                 'jenisSurat' => $validated['jenisSurat'],
                 'tahun' => $validated['tahun'],
                 'nomorSurat' => $validated['nomorSurat'],
@@ -836,7 +840,7 @@ class SuratController extends Controller
                 'details2' => json_encode($validated['details2']),
                 'file' => $namaFile,
             ]);
-            
+
             // Tampilkan response sukses
             return response()->json(['status' => 'success', 'message' => 'Surat berhasil diperbarui.', 'file' => $namaFile]);
             if ($updated) {

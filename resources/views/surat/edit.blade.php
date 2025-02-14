@@ -540,7 +540,7 @@
 
 
                         <br>
-                        <div class="mt-4" style="width: 100%">
+                        <div class="container mt-4">
                             <div id="detail" style="display: none; margin-left:-15px">
                                 <table class="table-bordered table ">
                                     <tbody id="details">
@@ -622,11 +622,11 @@
 
                                         @foreach ($data['details2'] as $key => $item)
                                             <tr>
-                                                <td>{{$loop->iteration}}</td>  <!-- Menampilkan nomor berdasarkan $key -->
-                                                <td><input type="text" name="details2[{{$key}}][type]" class="form-control"
+                                                <td>{{$key + 1}}</td>  <!-- Menampilkan nomor berdasarkan $key -->
+                                                <td><input type="text" name="details2[{{ $key }}][type]" class="form-control"
                                                         value="{{ $item->type }}">
                                                 </td>
-                                                <td><input type="text" name="details2[{{$key}}][blok]" class="form-control"
+                                                <td><input type="text" name="details2[{{$key }}][blok]" class="form-control"
                                                         value="{{ $item->blok }}">
                                                 </td>
                                                 <td><input type="text" name="details2[{{$key}}][nomor]" class="form-control"
@@ -698,7 +698,7 @@
                         };
                     },
                     processResults: function(data, params) {
-                        console.log("Fetched provinsi data:", data); // Check data structure here
+                        // console.log("Fetched provinsi data:", data); // Check data structure here
                         return {
                             results: data.items.map(function(item) {
                                 return {
@@ -711,7 +711,7 @@
                     cache: true
                 }
             }).on('select2:select', function(e) {
-                console.log("Selected Provinsi:", e.params.data);
+                // console.log("Selected Provinsi:", e.params.data);
                 loadKabupaten(e.params.data.id); // Load kabupaten based on selected provinsi
             });
             function loadKabupaten(provinsiId){
@@ -731,7 +731,7 @@
                             };
                         },
                         processResults: function(data, params) {
-                            console.log("Fetched kabupaten data:", data); // Check data structure here
+                            // console.log("Fetched kabupaten data:", data); // Check data structure here
                             return {
                                 results: data.items.map(function(item) {
                                     return {
@@ -744,7 +744,7 @@
                         cache: true
                     }
                 }).on('select2:select', function(e) {
-                    console.log("Selected Provinsi:", e.params.data);
+                    // console.log("Selected Provinsi:", e.params.data);
                     loadKecamatan(e.params.data.id); // Load kabupaten based on selected provinsi
                 });
             }
@@ -769,7 +769,7 @@
                             };
                         },
                         processResults: function(data, params) {
-                            console.log("Fetched kecamatan data:", data); // Check kecamatan data structure here
+                            // console.log("Fetched kecamatan data:", data); // Check kecamatan data structure here
                             return {
                                 results: data.items.map(function(item) {
                                     return {
@@ -782,7 +782,7 @@
                         cache: true
                     }
                 }).on('select2:select', function(e) {
-                    console.log("Selected Kecamatan:", e.params.data);
+                    // console.log("Selected Kecamatan:", e.params.data);
                     loadKelurahan(e.params.data.id); // Load kelurahan based on selected kecamatan
                 });
             }
@@ -805,7 +805,7 @@
                             };
                         },
                         processResults: function(data, params) {
-                            console.log("Fetched kelurahan data:", data); // Check kelurahan data structure here
+                            // console.log("Fetched kelurahan data:", data); // Check kelurahan data structure here
                             return {
                                 results: data.items.map(function(item) {
                                     return {
@@ -838,7 +838,7 @@
                         };
                     },
                     processResults: function(data, params) {
-                        console.log("Fetched provinsi data:", data); // Check data structure here
+                        // console.log("Fetched provinsi data:", data); // Check data structure here
                         return {
                             results: data.items.map(function(item) {
                                 return {
@@ -851,7 +851,7 @@
                     cache: true
                 }
             }).on('select2:select', function(e) {
-                console.log("Selected Provinsi:", e.params.data);
+                // console.log("Selected Provinsi:", e.params.data);
                 loadKabupaten(e.params.data.id); // Load kabupaten based on selected provinsi
             });
 
@@ -873,7 +873,7 @@
                             };
                         },
                         processResults: function(data, params) {
-                            console.log("Fetched kabupaten data:", data); // Check data structure here
+                            // console.log("Fetched kabupaten data:", data); // Check data structure here
                             return {
                                 results: data.items.map(function(item) {
                                     return {
@@ -886,7 +886,7 @@
                         cache: true
                     }
                 }).on('select2:select', function(e) {
-                    console.log("Selected Kabupaten/Kota:", e.params.data);
+                    // console.log("Selected Kabupaten/Kota:", e.params.data);
                     loadKecamatan(e.params.data.id); // Load kecamatan based on selected kabupaten
                 });
             }
@@ -909,7 +909,7 @@
                             };
                         },
                         processResults: function(data, params) {
-                            console.log("Fetched kecamatan data:", data); // Check kecamatan data structure here
+                            // console.log("Fetched kecamatan data:", data); // Check kecamatan data structure here
                             return {
                                 results: data.items.map(function(item) {
                                     return {
@@ -922,7 +922,7 @@
                         cache: true
                     }
                 }).on('select2:select', function(e) {
-                    console.log("Selected Kecamatan:", e.params.data);
+                    // console.log("Selected Kecamatan:", e.params.data);
                     loadKelurahan(e.params.data.id); // Load kelurahan based on selected kecamatan
                 });
             }
@@ -945,7 +945,7 @@
                             };
                         },
                         processResults: function(data, params) {
-                            console.log("Fetched kelurahan data:", data); // Check kelurahan data structure here
+                            // console.log("Fetched kelurahan data:", data); // Check kelurahan data structure here
                             return {
                                 results: data.items.map(function(item) {
                                     return {
@@ -969,8 +969,7 @@
 
         let detailCount = {{ count($data['details']) }};
 
-        let detail2Count = 1;
-
+        let detail2Count = 1; // Pastikan ini adalah angka
 
         $('#add-detail').on('click', function() {
             const detailHtml = `
@@ -997,9 +996,10 @@
         });
 
         $('#add-detail-2').on('click', function() {
+            const basiCount = $('#details2 tr').length - 1; // untuk penghitungan row atau baris pada sebuah data
             const detailHtml = `
                 <tr>
-                    <td>${detail2Count + 1}</td>
+                    <td>${basiCount + 1}</td>
                     <td><input type="text" name="details2[${detail2Count}][type]" class="form-control" required></td>
                     <td><input type="text" name="details2[${detail2Count}][blok]" class="form-control" required></td>
                     <td><input type="text" name="details2[${detail2Count}][nomor]" class="form-control"></td>
@@ -1112,7 +1112,7 @@
                         // Membuka new window
                         var newWindow = window.open('', '_blank', 'width=800,height=600');
                         // Menulis HTML yang diterima dari server ke dalam new window
-                        console.log(xhr.response);
+                        // console.log(xhr.response);
                         newWindow.document.open();
                         newWindow.document.write(xhr.response);
                         newWindow.document.close();
@@ -1141,7 +1141,7 @@
                         // Membuka new window
                         var newWindow = window.open('', '_blank', 'width=800,height=600');
                         // Menulis HTML yang diterima dari server ke dalam new window
-                        console.log(xhr.response);
+                        // console.log(xhr.response);
                         newWindow.document.open();
                         newWindow.document.write(xhr.response);
                         newWindow.document.close();
@@ -1152,77 +1152,6 @@
 
                 xhr.send(formData);
             });
-
-
-            // $('#submit-surat').click(function() {
-            //     Swal.fire({
-            //         title: 'Menghasilkan Surat...',
-            //         text: 'Mohon tunggu, surat sedang diproses.',
-            //         allowOutsideClick: false,
-            //         didOpen: () => {
-            //             Swal.showLoading();
-            //         }
-            //     });
-
-            //     let form = document.getElementById('suratForm');
-            //     let formData = new FormData(form);
-
-
-            //     fetch(@json($url), {
-            //         method: 'POST',
-            //         headers: {
-            //             'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            //         },
-            //         body: formData
-            //     })
-            //     .then(response => {
-            //         console.log('Response status:', response.status); // Log status code
-            //         if (!response.ok) {
-            //             // Jika respons tidak OK (status 4xx/5xx)
-            //             throw new Error(`HTTP error! Status: ${response.status}`);
-            //         }
-            //         return response.json();
-            //     })
-            //     .then(data => {
-            //         console.log(data)
-            //         Swal.close();
-
-            //         if (data.status === 'success') {
-            //                 Swal.fire({
-            //                     title: 'Surat Berhasil Dibuat!',
-            //                     text: 'Surat akan diunduh secara otomatis.',
-            //                     icon: 'success',
-            //                     timer: 2000,
-            //                     showConfirmButton: false
-            //                 }).then(() => {
-            //                     window.location.href = "{{ route('surat.index') }}";
-            //                 });
-
-            //             // Mengunduh file secara otomatis
-            //             const fileUrl = `{{ asset('storage/surat/') }}/${data.file}`;
-            //             const link = document.createElement('a');
-            //             link.href = fileUrl;
-            //             link.download = data.file; // Nama file yang diunduh
-            //             link.click();
-            //         } else {
-            //             Swal.fire({
-            //                 title: 'Gagal Membuat Surat',
-            //                 text: data.message || 'Terjadi kesalahan saat memproses surat.',
-            //                 icon: 'error',
-            //             });
-            //         }
-            //     })
-            //     .catch(error => {
-            //         console.log(error)
-            //         Swal.close();
-            //         console.error('Fetch Error:', error); // Debug untuk melihat error
-            //         Swal.fire({
-            //             title: 'Gagal Membuat Surat',
-            //             text: 'Terjadi kesalahan koneksi atau server.',
-            //             icon: 'error',
-            //         });
-            //     });
-            // });
 
             $('#submit-surat').click(function() {
                 Swal.fire({
@@ -1239,7 +1168,7 @@
 
                 // Debug FormData
                 for (let [key, value] of formData.entries()) {
-                    console.log(key, value);
+                    // console.log(key, value);
                 }
 
                 fetch(@json($url), {
@@ -1251,7 +1180,7 @@
                     body: formData
                 })
                 .then(response => {
-                    console.log('Response status:', response.status); // Log status code
+                    // console.log('Response status:', response.status); // Log status code
                     if (!response.ok) {
                         return response.json().then(err => { // Tangani error validasi
                             throw new Error(err.message || `HTTP error! Status: ${response.status}`);
@@ -1260,7 +1189,7 @@
                     return response.json();
                 })
                 .then(data => {
-                    console.log('Response data:', data); // Log respons data
+                    // console.log('Response data:', data); // Log respons data
                     Swal.close();
 
                     if (data.status === 'success') {

@@ -555,7 +555,6 @@ class SuratController extends Controller
         // Ambil detail data IMBG
         $details = $data['details'];
         $details2 = $data['details2'];
-        dd('data 1 dan 2', $details, $details2);
         // Load template view dan kirim data
         if ($jenisSurat == 'format-1') {
             $html = view('surat.format-1', compact(
@@ -1712,7 +1711,7 @@ class SuratController extends Controller
     public function getNomorSuratPemohon(Request $request)
     {
         \Log::info('getNomorSuratPemohon called with ID: ' . $request->id);
-        dd($request->all()); // Debugging: Hentikan eksekusi dan tampilkan data request
+        // dd($request->all()); // Debugging: Hentikan eksekusi dan tampilkan data request
 
         // Validasi input
         $request->validate([

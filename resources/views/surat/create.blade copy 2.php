@@ -423,7 +423,6 @@
                                             <th>Jumlah</th>
                                             <th>Hapus</th>
                                         </tr>
-
                                         <tr>
                                             <td>1</td>
                                             <td><input type="text" name="details2[0][type]" class="form-control">
@@ -565,7 +564,7 @@
                         };
                     },
                     processResults: function(data, params) {
-                        // console.log("Fetched kabupaten data:", data); // Check data structure here
+                        console.log("Fetched kabupaten data:", data); // Check data structure here
                         return {
                             results: data.items.map(function(item) {
                                 return {
@@ -578,7 +577,7 @@
                     cache: true
                 }
             }).on('select2:select', function(e) {
-                // console.log("Selected provinsi:", e.params.data);
+                console.log("Selected provinsi:", e.params.data);
                 loadKabupaten(e.params.data.id); // Load kecamatan based on selected kabupaten
             });
 
@@ -599,7 +598,7 @@
                         };
                     },
                     processResults: function(data, params) {
-                        // console.log("Fetched kabupaten data:", data); // Check data structure here
+                        console.log("Fetched kabupaten data:", data); // Check data structure here
                         return {
                             results: data.items.map(function(item) {
                                 return {
@@ -612,7 +611,7 @@
                     cache: true
                 }
             }).on('select2:select', function(e) {
-                // console.log("Selected Kabupaten:", e.params.data);
+                console.log("Selected Kabupaten:", e.params.data);
                 loadKecamatan(e.params.data.id); // Load kecamatan based on selected kabupaten
             });
             }
@@ -636,7 +635,7 @@
                             };
                         },
                         processResults: function(data, params) {
-                            // console.log("Fetched kecamatan data:", data); // Check kecamatan data structure here
+                            console.log("Fetched kecamatan data:", data); // Check kecamatan data structure here
                             return {
                                 results: data.items.map(function(item) {
                                     return {
@@ -649,7 +648,7 @@
                         cache: true
                     }
                 }).on('select2:select', function(e) {
-                    // console.log("Selected Kecamatan:", e.params.data);
+                    console.log("Selected Kecamatan:", e.params.data);
                     loadKelurahan(e.params.data.id); // Load kelurahan based on selected kecamatan
                 });
             }
@@ -672,7 +671,7 @@
                             };
                         },
                         processResults: function(data, params) {
-                            // console.log("Fetched kelurahan data:", data); // Check kelurahan data structure here
+                            console.log("Fetched kelurahan data:", data); // Check kelurahan data structure here
                             return {
                                 results: data.items.map(function(item) {
                                     return {
@@ -705,7 +704,7 @@
                         };
                     },
                     processResults: function(data, params) {
-                        // console.log("Fetched provinsi data:", data); // Check data structure here
+                        console.log("Fetched provinsi data:", data); // Check data structure here
                         return {
                             results: data.items.map(function(item) {
                                 return {
@@ -718,7 +717,7 @@
                     cache: true
                 }
             }).on('select2:select', function(e) {
-                // console.log("Selected Provinsi:", e.params.data);
+                console.log("Selected Provinsi:", e.params.data);
                 loadKabupaten(e.params.data.id); // Load kabupaten based on selected provinsi
             });
 
@@ -740,7 +739,7 @@
                             };
                         },
                         processResults: function(data, params) {
-                            // console.log("Fetched kabupaten data:", data); // Check data structure here
+                            console.log("Fetched kabupaten data:", data); // Check data structure here
                             return {
                                 results: data.items.map(function(item) {
                                     return {
@@ -753,7 +752,7 @@
                         cache: true
                     }
                 }).on('select2:select', function(e) {
-                    // console.log("Selected Kabupaten/Kota:", e.params.data);
+                    console.log("Selected Kabupaten/Kota:", e.params.data);
                     loadKecamatan(e.params.data.id); // Load kecamatan based on selected kabupaten
                 });
             }
@@ -776,7 +775,7 @@
                             };
                         },
                         processResults: function(data, params) {
-                            // console.log("Fetched kecamatan data:", data); // Check kecamatan data structure here
+                            console.log("Fetched kecamatan data:", data); // Check kecamatan data structure here
                             return {
                                 results: data.items.map(function(item) {
                                     return {
@@ -789,7 +788,7 @@
                         cache: true
                     }
                 }).on('select2:select', function(e) {
-                    // console.log("Selected Kecamatan:", e.params.data);
+                    console.log("Selected Kecamatan:", e.params.data);
                     loadKelurahan(e.params.data.id); // Load kelurahan based on selected kecamatan
                 });
             }
@@ -812,7 +811,7 @@
                             };
                         },
                         processResults: function(data, params) {
-                            // console.log("Fetched kelurahan data:", data); // Check kelurahan data structure here
+                            console.log("Fetched kelurahan data:", data); // Check kelurahan data structure here
                             return {
                                 results: data.items.map(function(item) {
                                     return {
@@ -862,14 +861,13 @@
         });
 
         $('#add-detail-2').on('click', function() {
-            const basiCount = $('#details2 tr').length - 1; // untuk penghitungan row atau baris pada sebuah data
             const detailHtml = `
                 <tr>
-                    <td>${basiCount + 1}</td>
-                    <td><input type="text" name="details2[${detail2Count}][type]" class="form-control" required></td>
-                    <td><input type="text" name="details2[${detail2Count}][blok]" class="form-control" required></td>
-                    <td><input type="text" name="details2[${detail2Count}][nomor]" class="form-control"></td>
-                    <td><input type="text" name="details2[${detail2Count}][jumlah]" class="form-control"></td>
+                    <td>${detailCount + 1}</td>
+                    <td><input type="text" name="details2[${detailCount}][type]" class="form-control" required></td>
+                    <td><input type="text" name="details2[${detailCount}][blok]" class="form-control" required></td>
+                    <td><input type="text" name="details2[${detailCount}][nomor]" class="form-control"></td>
+                    <td><input type="text" name="details2[${detailCount}][jumlah]" class="form-control"></td>
                     <td><button type="button" class="btn btn-danger remove-detail-2">Hapus</button></td>
                 </tr>
             `;
@@ -886,6 +884,81 @@
             $(this).closest('tr').remove(); // Menghapus baris utama
         });
 
+        // $('#jenisSurat').on('change', function() {
+        //     // if ($(this).val() === 'format-1') {
+        //     //     $('#detail-2').hide();
+        //     //     $
+
+        //     // } else {
+        //     //     $('#detail-2').show();
+        //     // }
+        //     if ($(this).val() === 'format-2' || $(this).val() === 'format-3') {
+        //         $('#preview-table').show();
+        //     } else {
+        //         $('#preview-table').hide();
+        //     }
+        //     if ($(this).val() === 'format-1' || $(this).val() === 'format-4') {
+        //         $('#detail-2').hide();
+        //         $('#detail').hide();
+        //         $('#preview-table').hide();
+        //         if ($(this).val() == 'format-4') {
+        //             $('#ket1').val(
+        //                 'Nama dan nomor Izin Mendirikan Bangunan Gedung tersebut di atas adalah benar tercatat dalam buku registrasi Izin Mendirikan Bangunan Gedung pada Dinas Perumahan Kawasan Permukiman dan Pertanahan Kabupaten Bogor.'
+        //             )
+        //             $('#ket2').val(
+        //                 'Untuk proses Izin Mendirikan Bangunan Gedung, saat ini mengacu kepada Peraturan Pemerintah Republik Indonesia Nomor 16 Tahun 2021.'
+        //             )
+        //             $('#ket3').val('Demikian disampaikan untuk diketahui dan dipergunakan seperlunya.')
+        //             $('#format-4-tujuan').show();
+        //             $('#format-biasa-tujuan').hide();
+
+        //         } else {
+        //             $('#ket1').val(
+        //                 'Nama dan Nomor Izin Mendirikan Bangunan Gedung tersebut di atas adalah benar tercatat dalam buku register Izin Mendirikan Bangunan pada Dinas Perumahan Kawasan Permukiman Dan Pertanahan Kabupaten Bogor.'
+        //             )
+        //             $('#ket2').val(
+        //                 'Surat Keterangan ini hanya sebagai bahan tindak lanjut persyaratan permohonan Izin Mendirikan Bangunan Gedung di Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Kabupaten Bogor dan bukan merupakan Izin Mendirikan Bangunan Gedung.'
+        //             )
+        //             $('#ket3').val(
+        //                 'Apabila data yang Saudara berikan tidak benar, maka surat keterangan ini dianggap gugur atau tidak berlaku.'
+        //             )
+        //             $('#format-4-tujuan').hide();
+        //             $('#format-biasa-tujuan').show();
+        //         }
+
+
+        //     } else if ($(this).val() === 'format-2') {
+        //         $('#detail-2').hide();
+        //         $('#detail').show();
+        //         $('#ket1').val(
+        //             'Nama dan Nomor Izin Mendirikan Bangunan Gedung tersebut di atas adalah benar tercatat dalam buku register Izin Mendirikan Bangunan pada Dinas Perumahan Kawasan Permukiman Dan Pertanahan Kabupaten Bogor.'
+        //         )
+        //         $('#ket2').val(
+        //             'Surat Keterangan ini hanya sebagai bahan tindak lanjut persyaratan permohonan Izin Mendirikan Bangunan Gedung di Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Kabupaten Bogor dan bukan merupakan Izin Mendirikan Bangunan Gedung.'
+        //         )
+        //         $('#ket3').val(
+        //             'Apabila data yang Saudara berikan tidak benar, maka surat keterangan ini dianggap gugur atau tidak berlaku.'
+        //         )
+        //         $('#format-4-tujuan').hide();
+        //         $('#format-biasa-tujuan').show();
+        //     } else {
+
+        //         $('#detail-2').show();
+        //         $('#detail').show();
+        //         $('#ket1').val(
+        //             'Nama dan Nomor Izin Mendirikan Bangunan Gedung tersebut di atas adalah benar tercatat dalam buku register Izin Mendirikan Bangunan pada Dinas Perumahan Kawasan Permukiman Dan Pertanahan Kabupaten Bogor.'
+        //         )
+        //         $('#ket2').val(
+        //             'Surat Keterangan ini hanya sebagai bahan tindak lanjut persyaratan permohonan Izin Mendirikan Bangunan Gedung di Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Kabupaten Bogor dan bukan merupakan Izin Mendirikan Bangunan Gedung.'
+        //         )
+        //         $('#ket3').val(
+        //             'Apabila data yang Saudara berikan tidak benar, maka surat keterangan ini dianggap gugur atau tidak berlaku.'
+        //         )
+        //         $('#format-4-tujuan').hide();
+        //         $('#format-biasa-tujuan').show();
+        //     }
+
+        // });
         $('#jenisSurat').on('change', function() {
             if ($(this).val() === 'format-2' || $(this).val() === 'format-3') {
                 $('#preview-table').removeClass('hidden').addClass('block');
@@ -962,6 +1035,31 @@
 
     <script>
         $(document).ready(function() {
+            // $('#preview-surat').click(function() {
+            //     // Initialize FormData with the form element
+            //     let form = document.getElementById('suratForm');
+            //     let formData = new FormData(form);
+            //     // Send data with AJAX
+            //     var xhr = new XMLHttpRequest();
+            //     xhr.open('POST', "{{ route('surat.preview') }}", true);
+            //     xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+            //     xhr.responseType = 'blob';
+
+            //     xhr.onload = function() {
+            //         if (xhr.status === 200) {
+            //             var newWindow = window.open('', '_blank', 'width=800,height=600');
+            //             var blob = new Blob([xhr.response], {
+            //                 type: 'application/pdf'
+            //             });
+            //             var url = URL.createObjectURL(blob);
+            //             newWindow.location.href = url;
+            //         } else {
+            //             Swal.close(); // Hide Swal loading indicator
+            //         }
+            //     };
+
+            //     xhr.send(formData);
+            // });
 
             $('#preview-surat').click(function() {
                 // Initialize FormData with the form element
@@ -979,7 +1077,7 @@
                         // Membuka new window
                         var newWindow = window.open('', '_blank', 'width=800,height=600');
                         // Menulis HTML yang diterima dari server ke dalam new window
-                        // console.log(xhr.response);
+                        console.log(xhr.response);
                         newWindow.document.open();
                         newWindow.document.write(xhr.response);
                         newWindow.document.close();
@@ -998,7 +1096,7 @@
 
                 // Log form data
                 for (let [key, value] of formData.entries()) {
-                    // console.log(key, value);
+                    console.log(key, value);
                 }
 
                 // Send data with AJAX
@@ -1012,7 +1110,7 @@
                         // Membuka new window
                         var newWindow = window.open('', '_blank', 'width=800,height=600');
                         // Menulis HTML yang diterima dari server ke dalam new window
-                        // console.log(xhr.response);
+                        console.log(xhr.response);
                         newWindow.document.open();
                         newWindow.document.write(xhr.response);
                         newWindow.document.close();
@@ -1024,6 +1122,64 @@
                 xhr.send(formData);
             });
 
+
+
+            // $('#submit-surat').click(function() {
+            //     Swal.fire({
+            //         title: 'Menghasilkan Surat...',
+            //         text: 'Mohon tunggu, surat sedang diproses.',
+            //         allowOutsideClick: false,
+            //         didOpen: () => {
+            //             Swal.showLoading();
+            //         }
+            //     });
+
+            //     let form = document.getElementById('suratForm');
+            //     let formData = new FormData(form);
+
+            //     fetch("{{ route('surat.store') }}", {
+            //             method: 'POST',
+            //             headers: {
+            //                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            //             },
+            //             body: formData
+            //         })
+            //         .then(response => response.json())
+            //         .then(data => {
+            //             Swal.close();
+
+            //             if (data.status === 'success') {
+            //                 Swal.fire({
+            //                     title: 'Surat Berhasil Dibuat!',
+            //                     text: 'Surat akan diunduh secara otomatis.',
+            //                     icon: 'success',
+            //                     timer: 2000,
+            //                     showConfirmButton: false
+            //                 });
+
+            //                 // Mengunduh file secara otomatis
+            //                 const fileUrl = `{{ asset('storage/surat/') }}/${data.file}`;
+            //                 const link = document.createElement('a');
+            //                 link.href = fileUrl;
+            //                 link.download = data.file; // Nama file yang diunduh
+            //                 link.click();
+            //             } else {
+            //                 Swal.fire({
+            //                     title: 'Gagal Membuat Surat',
+            //                     text: 'Terjadi kesalahan saat memproses surat.',
+            //                     icon: 'error',
+            //                 });
+            //             }
+            //         })
+            //         .catch(error => {
+            //             Swal.close();
+            //             Swal.fire({
+            //                 title: 'Gagal Membuat Surat',
+            //                 text: 'Terjadi kesalahan koneksi atau server.',
+            //                 icon: 'error',
+            //             });
+            //         });
+            // });
             $('#submit-surat').click(function() {
                 Swal.fire({
                     title: 'Menghasilkan Surat...',

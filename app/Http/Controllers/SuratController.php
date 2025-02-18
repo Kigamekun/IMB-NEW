@@ -555,7 +555,6 @@ class SuratController extends Controller
         // Ambil detail data IMBG
         $details = $data['details'];
         $details2 = $data['details2'];
-        dd('data 1 dan 2', $details, $details2);
         // Load template view dan kirim data
         if ($jenisSurat == 'format-1') {
             $html = view('surat.format-1', compact(
@@ -743,7 +742,6 @@ class SuratController extends Controller
             return response()->json(['status' => 'error', 'message' => 'Invalid ID.'], 400);
         }
 
-
         if ($request->input('jenisSurat') == 'format-2') {
             $validated['details'] = 'required';
             $validated['details2'] = 'nullable';
@@ -780,8 +778,8 @@ class SuratController extends Controller
             'ket' => 'nullable|array',
             'details' => 'nullable|array',
             'details2' => 'nullable|array',
-            'registerNomor' => 'required',
-            'imbgNomor' => 'required',
+            'registerNomor' => 'nullable',
+            'imbgNomor' => 'nullable',
             'imbgTanggal' => 'required',
             'registerTanggal' => 'required',
             'provinsiPemohon' => 'required',
@@ -795,6 +793,11 @@ class SuratController extends Controller
         ]);
 
         try {
+            // Pastikan 'details2' adalah array, jika tidak convert ke array
+            // if (isset($validated['details2']) && !is_array($validated['details2'])) {
+            //     $validated['details2'] = json_decode($validated['details2'], true);
+            // }
+
             // Format nama file baru
             $namaFile = 'surat-' . $validated['nomorSurat'] . uniqid() . '.pdf';
 
@@ -836,7 +839,7 @@ class SuratController extends Controller
                 'details2' => json_encode($validated['details2']),
                 'file' => $namaFile,
             ]);
-            
+
             // Tampilkan response sukses
             return response()->json(['status' => 'success', 'message' => 'Surat berhasil diperbarui.', 'file' => $namaFile]);
             if ($updated) {
@@ -1003,11 +1006,7 @@ class SuratController extends Controller
         // Ambil detail data IMBG
         $details = $data['details'];
         $details2 = $data['details2'];
-        // dd($data);
-        // $details = json_decode($data['details'], true);
-        // $details2 = json_decode($data['details2'], true);
-        // dd('data details 1',$details);
-        // dd('data details 2',$details2);
+
 
         // Load template view dan kirim data
         if ($jenisSurat == 'format-1') {
@@ -1708,7 +1707,7 @@ class SuratController extends Controller
     public function getNomorSuratPemohon(Request $request)
     {
         \Log::info('getNomorSuratPemohon called with ID: ' . $request->id);
-        dd($request->all()); // Debugging: Hentikan eksekusi dan tampilkan data request
+        // dd($request->all()); // Debugging: Hentikan eksekusi dan tampilkan data request
 
         // Validasi input
         $request->validate([

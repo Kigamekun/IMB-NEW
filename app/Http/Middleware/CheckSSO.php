@@ -15,27 +15,27 @@ class CheckSSO
      */
     public function handle(Request $request, Closure $next): Response
     {
-        auth()->loginUsingId(1);
+        // auth()->loginUsingId(1);
 
 
-    //     $secretKey = env('SHARED_SECRET_KEY');
-    //     $cookie = $request->cookie('sso');
-    //    // dd($secretKey);
-    //     if ($cookie) {
-    //         list($payload, $signature) = explode('::', base64_decode($cookie), 2);
+        $secretKey = env('SHARED_SECRET_KEY');
+        $cookie = $request->cookie('sso');
+       // dd($secretKey);
+        if ($cookie) {
+            list($payload, $signature) = explode('::', base64_decode($cookie), 2);
 
-    //         if (hash_hmac('sha256', $payload, $secretKey) === $signature) {
-    //             $data = json_decode($payload, true);
-    //             $userId = $data['user_id'] ?? null;
+            if (hash_hmac('sha256', $payload, $secretKey) === $signature) {
+                $data = json_decode($payload, true);
+                $userId = $data['user_id'] ?? null;
 
-    //             if ($userId) {
-    //                 // Optionally, authenticate the user in Laravel
-    //                 auth()->loginUsingId($userId);
-    //             }
-    //         }
-    //     } else {
-    //         return redirect('https://simpol.hasta.my.id/simpol');
-    //     }
+                if ($userId) {
+                    // Optionally, authenticate the user in Laravel
+                    auth()->loginUsingId($userId);
+                }
+            }
+        } else {
+            return redirect('https://simpol.hasta.my.id/simpol');
+        }
         // auth()->loginUsingId(1);
 
         return $next($request);

@@ -1275,42 +1275,89 @@ class RekapController extends Controller
         ini_set('max_input_time', '0'); // Tidak ada batasan waktu input data
         ini_set('max_input_vars', 10000); // Mengatur batas input variabel
 
+        // if ($request->ajax()) {
+        //     $imbInduk = $_GET['imbInduk'];
+
+        //     $data = DB::table('imb_induk_perum as induk')
+        //         ->join('item_imb_induk_perum as item', 'induk.id', '=', 'item.induk_perum_id')
+        //         ->rightJoin('imb_pecahan as pecahan', function ($join) {
+        //             $join->on('pecahan.imb_induk_id', '=', 'induk.imb_induk')
+        //                 ->on('pecahan.type', '=', 'item.type');
+        //         })
+        //         ->selectRaw('
+        //             ROW_NUMBER() OVER (ORDER BY item.type) AS NO,
+        //             item.type AS TIPE,
+        //             SUM(item.jumlah_unit) AS UNIT,
+        //             COUNT(DISTINCT pecahan.id) AS SUDAH_PECAH
+        //         ')
+        //         ->where('induk.imb_induk', $imbInduk)
+        //         ->groupBy('item.type')
+        //         ->orderBy('item.type');
+
+        //         if (!empty($namaPengembang)) {
+        //             $data->where('pecahan.nama', 'LIKE', "%{$namaPengembang}%");
+        //         }
+
+        //         // Tambahkan filter berdasarkan nama perumahan dari tabel pecahan
+        //         if (!empty($namaPerumahan)) {
+        //             $data->where('pecahan.lokasi_perumahan', 'LIKE', "%{$namaPerumahan}%");
+        //         }
+
+
+        //     $data = $data->get();
+
+        //     return Datatables::of($data)
+        //         ->rawColumns(['action'])
+        //         ->addIndexColumn()
+        //         ->make(true);
+        // }
+
+
         if ($request->ajax()) {
             $imbInduk = $_GET['imbInduk'];
 
-            $data = DB::table('imb_induk_perum as induk')
-                ->join('item_imb_induk_perum as item', 'induk.id', '=', 'item.induk_perum_id')
-                ->rightJoin('imb_pecahan as pecahan', function ($join) {
-                    $join->on('pecahan.imb_induk_id', '=', 'induk.imb_induk')
-                        ->on('pecahan.type', '=', 'item.type');
-                })
+            $nama_pengembang = $_GET['nama_pengembang'] ?? '';
+            $nama_perumahan = $_GET['nama_perumahan'] ?? '';
+            $startYear      = $_GET['startYear'] ?? '';
+            $endYear        = $_GET['endYear'] ?? '';
+
+            $data = DB::table('imb_pecahan')
                 ->selectRaw('
-                    ROW_NUMBER() OVER (ORDER BY item.type) AS NO,
-                    item.type AS TIPE,
-                    SUM(item.jumlah_unit) AS UNIT,
-                    COUNT(DISTINCT pecahan.id) AS SUDAH_PECAH
-                ')
-                ->where('induk.imb_induk', $imbInduk)
-                ->groupBy('item.type')
-                ->orderBy('item.type');
+                    ROW_NUMBER() OVER (ORDER BY type) AS NO,
+                    type AS TIPE,
+                    SUM(jumlah_unit) AS UNIT,
+                    COUNT(DISTINCT id) AS SUDAH_PECAH
+                ');
 
-                if (!empty($namaPengembang)) {
-                    $data->where('pecahan.nama', 'LIKE', "%{$namaPengembang}%");
+                if (!empty($imbInduk)) {
+                    $data->where('imb_pecahan.imb_induk_id', $imbInduk);
                 }
 
-                // Tambahkan filter berdasarkan nama perumahan dari tabel pecahan
-                if (!empty($namaPerumahan)) {
-                    $data->where('pecahan.lokasi_perumahan', 'LIKE', "%{$namaPerumahan}%");
-                }
+            if (!empty($nama_pengembang)) {
+                $data->where('atas_nama', 'LIKE', "%{$nama_pengembang}%");
+            }
 
+            if (!empty($nama_perumahan)) {
+                $data->where('lokasi_perumahan', 'LIKE', "%{$nama_perumahan}%");
+            }
 
-            $data = $data->get();
+            if (!empty($startYear)) {
+                $data->whereYear('created_at', '>=', $startYear);
+            }
+
+            if (!empty($endYear)) {
+                $data->whereYear('created_at', '<=', $endYear);
+            }
+
+            $data = $data->groupBy('type')
+            ->orderBy('type')->get();
 
             return Datatables::of($data)
                 ->rawColumns(['action'])
                 ->addIndexColumn()
                 ->make(true);
         }
+
 
 
         $submitType = $request->input('submit_type');
@@ -1333,13 +1380,76 @@ class RekapController extends Controller
 
         if ($request->ajax()) {
 
-            $data = IMBPecahan::
-                where('imb_pecahan.imb_induk_id', $imb_induk)
-                ->leftJoin('app_md_jeniskeg', 'imb_pecahan.jenis_kegiatan', '=', 'app_md_jeniskeg.id_jeniskeg')
-                ->leftJoin('master_district', 'imb_pecahan.kecamatan', '=', 'master_district.code')
-                ->leftJoin('master_subdistrict', 'imb_pecahan.desa_kelurahan', '=', 'master_subdistrict.code')
-                ->select('imb_pecahan.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan', 'master_district.name as kecamatan', 'master_district.code as kecamatan_code', 'master_subdistrict.name as kelurahan', 'master_subdistrict.code as kelurahan_code')
-                ->get();
+            // $data = IMBPecahan::
+            //     where('imb_pecahan.imb_induk_id', $imb_induk)
+            //     ->leftJoin('app_md_jeniskeg', 'imb_pecahan.jenis_kegiatan', '=', 'app_md_jeniskeg.id_jeniskeg')
+            //     ->leftJoin('master_district', 'imb_pecahan.kecamatan', '=', 'master_district.code')
+            //     ->leftJoin('master_subdistrict', 'imb_pecahan.desa_kelurahan', '=', 'master_subdistrict.code')
+            //     ->select('imb_pecahan.*', 'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan', 'master_district.name as kecamatan', 'master_district.code as kecamatan_code', 'master_subdistrict.name as kelurahan', 'master_subdistrict.code as kelurahan_code')
+            //     ->get();
+
+            // Ambil parameter dari $_GET
+            $imb_induk      = $_GET['imb_induk'] ?? '';
+            $nama_pengembang = $_GET['nama_pengembang'] ?? '';
+            $nama_perumahan = $_GET['nama_perumahan'] ?? '';
+            $startYear      = $_GET['startYear'] ?? '';
+            $endYear        = $_GET['endYear'] ?? '';
+
+            $data = IMBPecahan::query();
+
+            $data->leftJoin('app_md_jeniskeg', 'imb_pecahan.jenis_kegiatan', '=', 'app_md_jeniskeg.id_jeniskeg')
+                 ->leftJoin('master_district', 'imb_pecahan.kecamatan', '=', 'master_district.code')
+                 ->leftJoin('master_subdistrict', 'imb_pecahan.desa_kelurahan', '=', 'master_subdistrict.code')
+                 ->select(
+                     'imb_pecahan.*',
+                     'app_md_jeniskeg.name_jeniskeg as jenis_kegiatan',
+                     'master_district.name as kecamatan',
+                     'master_district.code as kecamatan_code',
+                     'master_subdistrict.name as kelurahan',
+                     'master_subdistrict.code as kelurahan_code'
+                 );
+
+            // Gabungkan semua kondisi dengan OR
+            $data->where(function ($query) use ($imb_induk, $nama_pengembang, $nama_perumahan, $startYear, $endYear) {
+                // Kondisi pertama gunakan where (tanpa OR) untuk menghindari awalan "OR"
+                if (!empty($imb_induk)) {
+                    $query->where('imb_pecahan.imb_induk_id', $imb_induk);
+                }
+                if (!empty($nama_pengembang)) {
+                    // Jika kondisi sebelumnya sudah ada, gunakan orWhere, jika tidak cukup aman gunakan where
+                    $query->when(!empty($imb_induk), function ($q) use ($nama_pengembang) {
+                        $q->orWhere('imb_pecahan.atas_nama', 'LIKE', "%{$nama_pengembang}%");
+                    }, function ($q) use ($nama_pengembang) {
+                        $q->where('imb_pecahan.atas_nama', 'LIKE', "%{$nama_pengembang}%");
+                    });
+                }
+                if (!empty($nama_perumahan)) {
+                    $query->when(!empty($imb_induk) || !empty($nama_pengembang), function ($q) use ($nama_perumahan) {
+                        $q->orWhere('imb_pecahan.lokasi_perumahan', 'LIKE', "%{$nama_perumahan}%");
+                    }, function ($q) use ($nama_perumahan) {
+                        $q->where('imb_pecahan.lokasi_perumahan', 'LIKE', "%{$nama_perumahan}%");
+                    });
+                }
+                if (!empty($startYear)) {
+                    $query->when(!empty($imb_induk) || !empty($nama_pengembang) || !empty($nama_perumahan), function ($q) use ($startYear) {
+                        $q->orWhereYear('imb_pecahan.created_at', '>=', $startYear);
+                    }, function ($q) use ($startYear) {
+                        $q->whereYear('imb_pecahan.created_at', '>=', $startYear);
+                    });
+                }
+                if (!empty($endYear)) {
+                    $query->when(!empty($imb_induk) || !empty($nama_pengembang) || !empty($nama_perumahan) || !empty($startYear), function ($q) use ($endYear) {
+                        $q->orWhereYear('imb_pecahan.created_at', '<=', $endYear);
+                    }, function ($q) use ($endYear) {
+                        $q->whereYear('imb_pecahan.created_at', '<=', $endYear);
+                    });
+                }
+            });
+
+            $data = $data->get();
+
+
+
             return Datatables::of($data)
                 ->addColumn('action', function ($row) {
                     return '

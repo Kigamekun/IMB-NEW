@@ -13,9 +13,17 @@
                     <h3 class="text-3xl font-bold">Data Rekap</h3>
 
                     <div>
-                        <a href="{{ route('rekap.DetailIMBPecahanNamaIMB', ['imb_induk'=>$_GET['imbInduk'] != '' ? $_GET['imbInduk'] :  '-']) }}" class="btn btn-info">
+                        <a href="{{ route('rekap.DetailIMBPecahanNamaIMB', [
+                            'imb_induk'      => ($_GET['imbInduk'] != '' ? $_GET['imbInduk'] : '-'),
+                            'nama_pengembang'=> $_GET['nama_pengembang'] ?? '',
+                            'nama_perumahan' => $_GET['nama_perumahan'] ?? '',
+                            'startYear'      => $_GET['startYear'] ?? '',
+                            'endYear'        => $_GET['endYear'] ?? '',
+                            'submit_type'    => 'induk'
+                        ]) }}" class="btn btn-info">
                             Daftar IMB Pecahan
                         </a>
+
                        </div>
                     <br />
                     <div class="table-responsive py-3">
